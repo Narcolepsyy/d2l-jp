@@ -56,6 +56,17 @@ jobs:
       # Run sphinx-build directly instead of `d2lbook build html`
       # because d2lbook's html() always calls colab() → ipynb() → eval()
       # which crashes without GPU frameworks installed.
+      - name: Debug - list build dir
+        run: |
+          echo "=== _build contents ==="
+          ls -la _build/ || echo "No _build dir"
+          echo "=== _build/rst_all contents ==="
+          ls _build/rst_all/ 2>/dev/null | head -30 || echo "No rst_all dir"
+          echo "=== Looking for index files ==="
+          find _build/ -name "index.*" -type f 2>/dev/null | head -20
+          echo "=== Looking for conf.py ==="
+          find _build/ -name "conf.py" -type f 2>/dev/null
+
       - name: Build HTML
         run: |
           sphinx-build _build/rst_all _build/html -b html -c _build/rst_all
