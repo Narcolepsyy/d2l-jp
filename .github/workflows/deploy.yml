@@ -32,6 +32,8 @@ jobs:
           pip install .
           # Pin compatible versions for sphinx bibtex support
           pip install sphinxcontrib-bibtex==2.5.0 pybtex==0.24.0
+          # Pin nbformat to avoid strict validation that rejects notedown output
+          pip install "nbformat<5.10" notedown==1.5.1
 
       - name: Install system dependencies
         run: |
