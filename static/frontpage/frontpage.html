@@ -112,7 +112,7 @@ padding: 10px 0;
     text-align: left;
     padding: 0;
 }
-#logoimg {
+.logoimg {
     padding-top: 0em;
     padding-bottom: 2em;
     width: 100%;
@@ -190,10 +190,30 @@ a {
 </style>
 </head>
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "ディープラーニングを深く学ぶ",
+  "alternateName": "Dive into Deep Learning (日本語版)",
+  "author": [
+    {"@type": "Person", "name": "Aston Zhang"},
+    {"@type": "Person", "name": "Zachary C. Lipton"},
+    {"@type": "Person", "name": "Mu Li"},
+    {"@type": "Person", "name": "Alexander J. Smola"}
+  ],
+  "inLanguage": "ja",
+  "url": "https://d2l-jp.me",
+  "publisher": {"@type": "Organization", "name": "Cambridge University Press"},
+  "datePublished": "2023",
+  "about": "ディープラーニング・機械学習のインタラクティブな教科書"
+}
+</script>
+
 
 <div class = "mdl-grid header">
   <div class = "mdl-cell mdl-cell--3-col">
-    <a href="https://www.amazon.com/Dive-into-Learning-Aston-Zhang/dp/1009389432/"><img src="_images/front-cup.jpg" class="img-fluid" alt=""></a>
+    <a href="https://www.amazon.com/Dive-into-Learning-Aston-Zhang/dp/1009389432/"><img src="_images/front-cup.jpg" class="img-fluid" alt="ディープラーニングを深く学ぶ 書籍カバー"></a>
   </div>
   <div class = "mdl-cell mdl-cell--1-col">
   </div>
@@ -417,7 +437,7 @@ a {
     </div>
   </div>
   <div class = "mdl-cell mdl-cell--7-col">
-  <img src="_images/notebook.gif">
+  <img src="_images/notebook.gif" alt="Jupyterノートブックのインタラクティブデモ">
   </div>
 </div>
 
@@ -428,26 +448,23 @@ a {
   </p>
 
   <div class = "mdl-cell mdl-cell--4-col">
-    <img src="_images/eq.jpg"/>
+    <img src="_images/eq.jpg" alt="数式の例"/>
   </div>
   <div class = "mdl-cell mdl-cell--4-col">
-    <img src="_images/figure.jpg"/>
+    <img src="_images/figure.jpg" alt="図の例"/>
   </div>
   <div class = "mdl-cell mdl-cell--4-col">
-    <img src="_images/code.jpg"/>
+    <img src="_images/code.jpg" alt="コードの例"/>
   </div>
 </div>
 
 <div class = "features mdl-grid">
-  <div class = "mdl-cell mdl-cell--7-col">
-    <img src="_images/forum.gif">
-  </div>
   <div class = "mdl-cell mdl-cell--5-col mdl-cell--middle">
     <div class="content">
-      <h2>活発な<a href="https://discuss.d2l.ai/c/5">コミュニティ</a>サポート</h2>
-      <p>各セクションに用意されたリンクを通じて、
-        コミュニティの何千人もの仲間と議論し、学ぶことができます。
-        </p>
+      <h2>コミュニティサポート</h2>
+      <p>質問やフィードバックは<a href="https://github.com/Narcolepsyy/d2l-jp/issues">GitHub Issues</a>でお気軽にどうぞ。
+        原著の英語コミュニティは<a href="https://discuss.d2l.ai/c/5">D2Lフォーラム</a>で参加できます。
+      </p>
     </div>
   </div>
 </div>
@@ -706,14 +723,14 @@ a {
 <!--end of logos-->
 
 
-<div id="logoimg"><img src="./_images/logos/logoimg1.png" /></div>
-<div id="logoimg"><img src="./_images/logos/logoimg2.png" /></div>
-<div id="logoimg"><img src="./_images/logos/logoimg3.png" /></div>
-<div id="logoimg"><img src="./_images/logos/logoimg4.png" /></div>
-<div id="logoimg"><img src="./_images/logos/logoimg5.png" /></div>
-<div id="logoimg"><img src="./_images/logos/logoimg6.png" /></div>
-<div id="logoimg"><img src="./_images/logos/logoimg7.png" /></div>
-<div id="mapimg"><img src="./_images/map.png" /></div>
+<div class="logoimg"><img src="./_images/logos/logoimg1.png" alt="D2Lを採用している大学のロゴ 1" /></div>
+<div class="logoimg"><img src="./_images/logos/logoimg2.png" alt="D2Lを採用している大学のロゴ 2" /></div>
+<div class="logoimg"><img src="./_images/logos/logoimg3.png" alt="D2Lを採用している大学のロゴ 3" /></div>
+<div class="logoimg"><img src="./_images/logos/logoimg4.png" alt="D2Lを採用している大学のロゴ 4" /></div>
+<div class="logoimg"><img src="./_images/logos/logoimg5.png" alt="D2Lを採用している大学のロゴ 5" /></div>
+<div class="logoimg"><img src="./_images/logos/logoimg6.png" alt="D2Lを採用している大学のロゴ 6" /></div>
+<div class="logoimg"><img src="./_images/logos/logoimg7.png" alt="D2Lを採用している大学のロゴ 7" /></div>
+<div id="mapimg"><img src="./_images/map.png" alt="D2Lを採用している大学の世界地図" /></div>
 
 
     <!--beginning of the map-->
@@ -1565,7 +1582,7 @@ a {
 
 <div class="mdl-grid">
   <div>
-    <h3>BibTeX entry for citing the book</h3>
+    <h3>本書を引用するためのBibTeXエントリ</h3>
     <br>
     <div align="left">
       <div class="highlight-python notranslate">

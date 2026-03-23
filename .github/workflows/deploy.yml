@@ -34,6 +34,8 @@ jobs:
           pip install .
           # Pin compatible versions for sphinx bibtex support
           pip install sphinxcontrib-bibtex==2.5.0 pybtex==0.24.0
+          # SEO extensions
+          pip install sphinx-sitemap sphinxext-opengraph
 
       - name: Install system dependencies
         run: |
@@ -51,6 +53,38 @@ jobs:
 
       - name: Build RST
         run: d2lbook build rst --tab pytorch
+
+      # Inject SEO settings into conf.py after d2lbook generates it
+      - name: Inject SEO config
+        run: |
+          cat >> _build/rst/conf.py << 'SEOEOF'
+
+          # --- SEO Configuration ---
+          language = 'ja'
+
+          # Sitemap generation
+          extensions.append('sphinx_sitemap')
+          html_baseurl = 'https://d2l-jp.me/'
+          sitemap_locales = ['ja']
+
+          # Open Graph meta tags
+          extensions.append('sphinxext.opengraph')
+          ogp_site_url = 'https://d2l-jp.me/'
+          ogp_site_name = 'D2L 日本語版 - ディープラーニングを深く学ぶ'
+          ogp_image = 'https://d2l-jp.me/_images/front-cup.jpg'
+          ogp_type = 'book'
+          ogp_custom_meta_tags = [
+              '<meta property="og:locale" content="ja_JP" />',
+          ]
+
+          # Meta description and keywords
+          html_meta = {
+              'description': 'ディープラーニングを深く学ぶ - コード、数式、議論を通じたインタラクティブな深層学習の日本語教科書。PyTorch対応。500以上の大学で採用。',
+              'keywords': '深層学習, ディープラーニング, deep learning, PyTorch, 機械学習, AI, 人工知能, 日本語, 教科書',
+          }
+          SEOEOF
+          # Remove leading whitespace from heredoc
+          sed -i 's/^          //' _build/rst/conf.py
 
       # Fix chapter toctrees: pandoc mangles toctree directives when
       # converting ipynb markdown cells to RST (options and entries
@@ -130,6 +164,10 @@ jobs:
           if [ -f CNAME ]; then
             cp CNAME _build/html/
           fi
+          # Copy robots.txt
+          if [ -f static/robots.txt ]; then
+            cp static/robots.txt _build/html/
+          fi
           if [ -d static/frontpage/_images ]; then
             mkdir -p _build/html/_images
             cp -r static/frontpage/_images/* _build/html/_images/ 2>/dev/null || true
@@ -140,6 +178,9 @@ jobs:
           done
           # Package built Jupyter notebooks as downloadable zip
           cd _build/eval && zip -r ../../_build/html/d2l-jp.zip . -x '.*' && cd ../..
+
+          # Inject hreflang tags for multilingual SEO
+          find _build/html -name '*.html' -exec sed -i 's|</head>|<link rel="alternate" hreflang="ja" href="https://d2l-jp.me/" />\n<link rel="alternate" hreflang="en" href="https://d2l.ai/" />\n<link rel="alternate" hreflang="zh" href="https://zh.d2l.ai/" />\n<link rel="alternate" hreflang="x-default" href="https://d2l.ai/" />\n</head>|' {} \;
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
