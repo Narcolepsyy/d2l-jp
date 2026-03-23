@@ -52,6 +52,12 @@ jobs:
       - name: Build RST
         run: d2lbook build rst --tab pytorch
 
+      # Fix chapter toctrees: pandoc mangles toctree directives when
+      # converting ipynb markdown cells to RST (options and entries
+      # get collapsed onto single lines).
+      - name: Fix chapter toctrees
+        run: python3 .github/workflow_scripts/fix_chapter_toctrees.py
+
       # Fix index.rst: d2lbook's ipynb→rst conversion mangles RST directives
       # (toctree, raw::html) because they go through markdown→ipynb→rst.
       # Regenerate index.rst directly with proper RST formatting.
