@@ -1,0 +1,85 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install d2lbook==1.0.2
+          pip install .
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y librsvg2-bin
+
+      # Following the original d2l.ai build pipeline:
+      # 1. Build RST from markdown
+      # 2. Copy frontpage assets
+      # 3. Build HTML from RST
+      # 4. Post-process SVGs and copy frontpage images
+      - name: Build RST
+        run: d2lbook build rst --tab pytorch
+
+      - name: Copy frontpage
+        run: |
+          if [ -f static/frontpage/frontpage.html ]; then
+            cp static/frontpage/frontpage.html _build/rst_pytorch/
+          fi
+
+      - name: Build HTML
+        run: d2lbook build html --tab pytorch
+
+      - name: Post-process
+        run: |
+          # Copy frontpage images (same as original build_html.sh)
+          if [ -d static/frontpage/_images ]; then
+            cp -r static/frontpage/_images/* _build/html/_images/
+          fi
+          # Optimize SVGs (same as original build_html.sh)
+          for fn in $(find _build/html/_images/ -iname '*.svg'); do
+            if [[ $fn == *'qr_'* ]]; then
+              continue
+            fi
+            rsvg-convert -z 1 -f svg -o tmp.svg "$fn" && mv tmp.svg "$fn"
+          done
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _build/html
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
