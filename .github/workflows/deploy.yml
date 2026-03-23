@@ -52,6 +52,61 @@ jobs:
       - name: Build RST
         run: d2lbook build rst --tab pytorch
 
+      # Fix index.rst: d2lbook's ipynb→rst conversion mangles RST directives
+      # (toctree, raw::html) because they go through markdown→ipynb→rst.
+      # Regenerate index.rst directly with proper RST formatting.
+      - name: Fix index page
+        run: |
+          cat > _build/rst/index.rst << 'INDEXEOF'
+          ディープラーニングを深く学ぶ
+          ========================
+
+          .. raw:: html
+             :file: frontpage.html
+
+          .. toctree::
+             :maxdepth: 1
+
+             chapter_preface/index
+             chapter_installation/index
+             chapter_notation/index
+
+          .. toctree::
+             :maxdepth: 2
+             :numbered:
+
+             chapter_introduction/index
+             chapter_preliminaries/index
+             chapter_linear-regression/index
+             chapter_linear-classification/index
+             chapter_multilayer-perceptrons/index
+             chapter_builders-guide/index
+             chapter_convolutional-neural-networks/index
+             chapter_convolutional-modern/index
+             chapter_recurrent-neural-networks/index
+             chapter_recurrent-modern/index
+             chapter_attention-mechanisms-and-transformers/index
+             chapter_optimization/index
+             chapter_computational-performance/index
+             chapter_computer-vision/index
+             chapter_natural-language-processing-pretraining/index
+             chapter_natural-language-processing-applications/index
+             chapter_reinforcement-learning/index
+             chapter_gaussian-processes/index
+             chapter_hyperparameter-optimization/index
+             chapter_generative-adversarial-networks/index
+             chapter_recommender-systems/index
+             chapter_appendix-mathematics-for-deep-learning/index
+             chapter_appendix-tools-for-deep-learning/index
+
+          .. toctree::
+             :maxdepth: 1
+
+             chapter_references/zreferences
+          INDEXEOF
+          # Remove leading whitespace from heredoc
+          sed -i 's/^          //' _build/rst/index.rst
+
       - name: Copy frontpage
         run: |
           if [ -f static/frontpage/frontpage.html ]; then
