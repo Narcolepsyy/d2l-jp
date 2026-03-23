@@ -26,62 +26,38 @@ jobs:
         with:
           python-version: '3.9'
 
+      # Match the original d2l-ai Docker image (Dockerfile.d2l-builder):
+      # d2lbook==1.0.0 + torch (CPU-only for CI)
       - name: Install dependencies
         run: |
-          pip install d2lbook==1.0.3
+          pip install d2lbook==1.0.0
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
           pip install .
-          # Pin compatible versions for sphinx bibtex support
-          pip install sphinxcontrib-bibtex==2.5.0 pybtex==0.24.0
-          # Pin nbformat to avoid strict validation that rejects notedown output
-          pip install nbformat==5.7.0 nbclient==0.7.0 notedown==1.5.1
 
       - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y librsvg2-bin pandoc
 
-      # Disable notebook evaluation since we don't have GPU/frameworks in CI.
       - name: Configure build
         run: |
           sed -i 's/eval_notebook = True/eval_notebook = False/' config.ini
 
-      # Monkey-patch d2lbook to handle legacy {.python .input} code fences.
-      # The assertion in split_markdown_cell crashes on this old pandoc format.
-      - name: Patch d2lbook
+      # Following the original d2l.ai build pipeline (build_html.sh)
+      - name: Build
         run: |
-          SITE_PACKAGES=$(python3 -c "import site; print(site.getsitepackages()[0])")
-          NOTEBOOK_PY="$SITE_PACKAGES/d2lbook/notebook.py"
-          # Replace the strict assertion with a lenient check
-          sed -i "s/assert tab.startswith('\`') and tab.endswith('\`'), tab/if not (tab.startswith('\`') and tab.endswith('\`')): tab = '\`python\`'/" "$NOTEBOOK_PY"
-
-      # Build using d2lbook with single tab
-      - name: Build RST
-        run: d2lbook build rst --tab pytorch
-
-      - name: Copy frontpage
-        run: |
+          rm -rf _build/rst _build/html
+          d2lbook build rst --tab pytorch
           if [ -f static/frontpage/frontpage.html ]; then
             cp static/frontpage/frontpage.html _build/rst/
           fi
-
-      # Run sphinx-build directly instead of d2lbook build html
-      # (d2lbook html() always calls colab() → eval() which crashes)
-      - name: Build HTML
-        run: |
-          sphinx-build _build/rst _build/html -b html -c _build/rst
-
-      - name: Post-process
-        run: |
-          # Copy frontpage images
+          d2lbook build html --tab pytorch
           if [ -d static/frontpage/_images ]; then
-            mkdir -p _build/html/_images
             cp -r static/frontpage/_images/* _build/html/_images/
           fi
           # Optimize SVGs
           for fn in $(find _build/html/_images/ -iname '*.svg' 2>/dev/null); do
-            if [[ $fn == *'qr_'* ]]; then
-              continue
-            fi
+            if [[ $fn == *'qr_'* ]]; then continue; fi
             rsvg-convert -z 1 -f svg -o tmp.svg "$fn" && mv tmp.svg "$fn"
           done
 
