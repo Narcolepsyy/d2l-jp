@@ -26,12 +26,14 @@ jobs:
         with:
           python-version: '3.9'
 
-      # Use d2lbook==1.0.0 matching the original d2l-ai Docker images
+      # d2lbook==1.0.0 matches the original d2l-ai Docker images
       - name: Install dependencies
         run: |
           pip install d2lbook==1.0.0
           pip install torch --index-url https://download.pytorch.org/whl/cpu
           pip install .
+          # Pin compatible versions for sphinx bibtex support
+          pip install sphinxcontrib-bibtex==2.5.0 pybtex==0.24.0
 
       - name: Install system dependencies
         run: |
@@ -43,8 +45,7 @@ jobs:
           sed -i 's/eval_notebook = True/eval_notebook = False/' config.ini
 
       # Pre-populate d2lbook's eval cache with stub ipynb files.
-      # This makes d2lbook skip the notedown md→ipynb conversion which
-      # crashes on {.python .input} code fences without S3 cache.
+      # d2lbook skips md→ipynb conversion when _build/eval/ already has files.
       - name: Generate eval cache
         run: python3 .github/workflow_scripts/generate_eval_cache.py
 
@@ -57,12 +58,15 @@ jobs:
             cp static/frontpage/frontpage.html _build/rst/
           fi
 
+      # Use sphinx-build directly instead of d2lbook build html.
+      # d2lbook's html() always calls colab(), which crashes on stub notebooks.
       - name: Build HTML
-        run: d2lbook build html --tab pytorch
+        run: sphinx-build _build/rst _build/html -b html -c _build/rst
 
       - name: Post-process
         run: |
           if [ -d static/frontpage/_images ]; then
+            mkdir -p _build/html/_images
             cp -r static/frontpage/_images/* _build/html/_images/ 2>/dev/null || true
           fi
           for fn in $(find _build/html/_images/ -iname '*.svg' 2>/dev/null); do
