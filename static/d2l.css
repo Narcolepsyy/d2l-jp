@@ -1,3 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+
+/* Override font-family to use Noto Sans JP (Japanese) before Noto Sans SC Sliced (Chinese).
+   The mxtheme bundles Noto Sans SC Sliced which claims Japanese Unicode ranges via unicode-range
+   but fails to render characters like な (U+306A), ー (U+30FC), ッ (U+30C3), etc. */
+body {
+    font-family: Roboto, 'Noto Sans JP', 'Noto Sans SC Sliced', sans-serif !important;
+}
+h1, h2, h3, h4, h5, h6,
+a.download > code.download,
+blockquote,
+span.mdl-layout-title,
+.mdl-layout__drawer > .mdl-layout-title .title-text,
+.page-content pre:hover:before {
+    font-family: Roboto, 'Noto Sans JP', 'Noto Sans SC Sliced', sans-serif !important;
+}
+
 .globaltoc ul:first-of-type li.toctree-l1 .link-wrapper>a {
     padding-left: 18px;
 }
