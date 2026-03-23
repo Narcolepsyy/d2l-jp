@@ -28,7 +28,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install d2lbook==1.0.2
+          pip install d2lbook==1.0.3
           pip install .
           # Pin compatible versions for sphinx bibtex support
           pip install sphinxcontrib-bibtex==2.5.0 pybtex==0.24.0
@@ -36,17 +36,23 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y librsvg2-bin
+          sudo apt-get install -y librsvg2-bin pandoc
 
       # Disable notebook evaluation since we don't have GPU/frameworks in CI.
       - name: Configure build
         run: |
           sed -i 's/eval_notebook = True/eval_notebook = False/' config.ini
 
-      # Build RST using d2lbook with single tab (pytorch).
-      # --tab all triggers merge() which needs per-tab eval dirs.
-      # --tab pytorch triggers eval() directly, which with eval_notebook=False
-      # converts md → ipynb → rst without executing notebooks.
+      # Monkey-patch d2lbook to handle legacy {.python .input} code fences.
+      # The assertion in split_markdown_cell crashes on this old pandoc format.
+      - name: Patch d2lbook
+        run: |
+          SITE_PACKAGES=$(python3 -c "import site; print(site.getsitepackages()[0])")
+          NOTEBOOK_PY="$SITE_PACKAGES/d2lbook/notebook.py"
+          # Replace the strict assertion with a lenient check
+          sed -i "s/assert tab.startswith('\`') and tab.endswith('\`'), tab/if not (tab.startswith('\`') and tab.endswith('\`')): tab = '\`python\`'/" "$NOTEBOOK_PY"
+
+      # Build using d2lbook with single tab
       - name: Build RST
         run: d2lbook build rst --tab pytorch
 
@@ -56,21 +62,20 @@ jobs:
             cp static/frontpage/frontpage.html _build/rst/
           fi
 
-      # Run sphinx-build directly instead of `d2lbook build html`
-      # because d2lbook's html() always calls colab() → ipynb() → eval()
-      # which crashes without GPU frameworks installed.
+      # Run sphinx-build directly instead of d2lbook build html
+      # (d2lbook html() always calls colab() → eval() which crashes)
       - name: Build HTML
         run: |
           sphinx-build _build/rst _build/html -b html -c _build/rst
 
       - name: Post-process
         run: |
-          # Copy frontpage images (same as original build_html.sh)
+          # Copy frontpage images
           if [ -d static/frontpage/_images ]; then
             mkdir -p _build/html/_images
             cp -r static/frontpage/_images/* _build/html/_images/
           fi
-          # Optimize SVGs (same as original build_html.sh)
+          # Optimize SVGs
           for fn in $(find _build/html/_images/ -iname '*.svg' 2>/dev/null); do
             if [[ $fn == *'qr_'* ]]; then
               continue
