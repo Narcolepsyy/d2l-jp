@@ -7,7 +7,7 @@ tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 :label:`sec_utils`
 
 
-この節では、本書で使用するユーティリティ関数とクラスの実装を示します。
+この節では、本書で使用するユーティリティ関数とクラスの実装を示す。
 
 ```{.python .input}
 %%tab mxnet

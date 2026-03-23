@@ -139,7 +139,7 @@ for X, y in data_iter.take(1):
 
 ## 生成器
 
-生成器は、ノイズ変数 $\mathbf z\in\mathbb R^d$（長さ $d$ のベクトル）を、幅と高さが $64\times 64$ の RGB 画像へ写像する必要があります。:numref:`sec_fcn` では、転置畳み込み層（:numref:`sec_transposed_conv` を参照）を用いて入力サイズを拡大する全畳み込みネットワークを紹介しました。生成器の基本ブロックは、転置畳み込み層の後にバッチ正規化と ReLU 活性化を続けたものです。
+生成器は、ノイズ変数 $\mathbf z\in\mathbb R^d$（長さ $d$ のベクトル）を、幅と高さが $64\times 64$ の RGB 画像へ写像する必要があります。 :numref:`sec_fcn` では、転置畳み込み層（:numref:`sec_transposed_conv` を参照）を用いて入力サイズを拡大する全畳み込みネットワークを紹介しました。生成器の基本ブロックは、転置畳み込み層の後にバッチ正規化と ReLU 活性化を続けたものです。
 
 ```{.python .input}
 #@tab mxnet
@@ -381,7 +381,7 @@ class D_block(tf.keras.layers.Layer):
         return self.activation(self.batch_norm(self.conv2d(X)))
 ```
 
-デフォルト設定の基本ブロックは、:numref:`sec_padding` で示したように、入力の幅と高さを半分にします。たとえば、入力形状が $n_h = n_w = 16$、カーネル形状が $k_h = k_w = 4$、ストライド形状が $s_h = s_w = 2$、パディング形状が $p_h = p_w = 1$ のとき、出力形状は次のようになります。
+デフォルト設定の基本ブロックは、 :numref:`sec_padding` で示したように、入力の幅と高さを半分にします。たとえば、入力形状が $n_h = n_w = 16$、カーネル形状が $k_h = k_w = 4$、ストライド形状が $s_h = s_w = 2$、パディング形状が $p_h = p_w = 1$ のとき、出力形状は次のようになります。
 
 $$
 \begin{aligned}

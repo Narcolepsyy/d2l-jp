@@ -421,7 +421,7 @@ d2l.predict_sentiment(net, vocab, 'this movie is so bad')
 
 ## 演習
 
-1. ハイパーパラメータを調整し、:numref:`sec_sentiment_rnn` とこの節の2つのアーキテクチャを、分類精度や計算効率などで比較せよ。
+1. ハイパーパラメータを調整し、 :numref:`sec_sentiment_rnn` とこの節の2つのアーキテクチャを、分類精度や計算効率などで比較せよ。
 1. :numref:`sec_sentiment_rnn` の演習で紹介した手法を用いて、モデルの分類精度をさらに改善できるか。
 1. 入力表現に位置エンコーディングを追加せよ。分類精度は向上するか。
 

@@ -263,7 +263,7 @@ $$L = \frac{1}{T} \sum_{t=1}^T l(\mathbf{o}_t, y_t).$$
 
 
 RNNの計算中にモデル変数とパラメータの間の依存関係を
-可視化するために、:numref:`fig_rnn_bptt` に示すような
+可視化するために、 :numref:`fig_rnn_bptt` に示すような
 モデルの計算グラフを描くことができます。
 たとえば、3番目のタイムステップの隠れ状態
 $\mathbf{h}_3$ の計算は、モデルパラメータ
@@ -274,7 +274,7 @@ $\mathbf{W}_\textrm{hx}$ と $\mathbf{W}_\textrm{hh}$、
 ![3タイムステップのRNNモデルにおける依存関係を示す計算グラフ。箱は変数（塗りつぶしなし）またはパラメータ（塗りつぶしあり）を表し、円は演算子を表す。](../img/rnn-bptt.svg)
 :label:`fig_rnn_bptt`
 
-先ほど述べたように、:numref:`fig_rnn_bptt` のモデルパラメータは
+先ほど述べたように、 :numref:`fig_rnn_bptt` のモデルパラメータは
 $\mathbf{W}_\textrm{hx}$、$\mathbf{W}_\textrm{hh}$、$\mathbf{W}_\textrm{qh}$ です。
 一般に、このモデルの学習には、これらのパラメータに関する
 勾配計算
@@ -313,7 +313,7 @@ $$
 ここで $\partial L/\partial \mathbf{o}_t$ は
 :eqref:`eq_bptt_partial_L_ot` で与えられます。
 
-次に、:numref:`fig_rnn_bptt` に示すように、
+次に、 :numref:`fig_rnn_bptt` に示すように、
 最終タイムステップ $T$ では、目的関数 $L$ は
 出力 $\mathbf{o}_T$ を通じてのみ隠れ状態 $\mathbf{h}_T$ に依存します。
 したがって、連鎖律を用いて
@@ -360,7 +360,7 @@ $$\frac{\partial L}{\partial \mathbf{h}_t}= \sum_{i=t}^T {\left(\mathbf{W}_\text
 後ほど、長短期記憶（LSTM）のような
 より洗練された系列モデルが、これをさらに緩和できることを見ます。 
 
-最後に、:numref:`fig_rnn_bptt` は、
+最後に、 :numref:`fig_rnn_bptt` は、
 目的関数 $L$ が、隠れ状態
 $\mathbf{h}_1, \ldots, \mathbf{h}_T$ を通じて、
 隠れ層のモデルパラメータ

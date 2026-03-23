@@ -116,14 +116,14 @@ def get_tokens_and_segments(tokens_a, tokens_b=None):
 BERT は双方向アーキテクチャとして Transformer エンコーダを採用する。
 Transformer エンコーダで一般的なように、位置埋め込みは BERT 入力系列の各位置に加えられる。
 ただし、元の Transformer エンコーダとは異なり、BERT では *学習可能* な位置埋め込みを用いる。
-要するに、:numref:`fig_bert-input` が示すように、BERT 入力系列の埋め込みは
+要するに、 :numref:`fig_bert-input` が示すように、BERT 入力系列の埋め込みは
 トークン埋め込み、セグメント埋め込み、位置埋め込みの和である。
 
 ![BERT 入力系列の埋め込みは、
 トークン埋め込み、セグメント埋め込み、位置埋め込みの和である。](../img/bert-input.svg)
 :label:`fig_bert-input`
 
-以下の [**`BERTEncoder` クラス**] は、:numref:`sec_transformer` で実装した `TransformerEncoder` クラスに似ている。
+以下の [**`BERTEncoder` クラス**] は、 :numref:`sec_transformer` で実装した `TransformerEncoder` クラスに似ている。
 `TransformerEncoder` とは異なり、`BERTEncoder` は
 セグメント埋め込みと学習可能な位置埋め込みを用いる。
 

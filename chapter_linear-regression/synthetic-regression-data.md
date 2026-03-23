@@ -59,7 +59,7 @@ import tensorflow_datasets as tfds
 得られる設計行列 $\mathbf{X}$ は $\mathbb{R}^{1000 \times 2}$ に属します。
 各ラベルは、*真の値* の線形関数を適用し、さらに各例ごとに独立同分布に生成した加法ノイズ $\boldsymbol{\epsilon}$ によって汚すことで生成します。
 
-(**$$\mathbf{y}= \mathbf{X} \mathbf{w} + b + \boldsymbol{\epsilon}.$$**)
+[**$$\mathbf{y}= \mathbf{X} \mathbf{w} + b + \boldsymbol{\epsilon}.$$**]
 
 便宜上、$\boldsymbol{\epsilon}$ は平均 $\mu= 0$、標準偏差 $\sigma = 0.01$ の正規分布から生成されると仮定します。
 オブジェクト指向設計のために、
@@ -113,7 +113,7 @@ print('features:', data.X[0],'\nlabel:', data.y[0])
 これがどのように機能するかを示すために、
 [**`get_dataloader` メソッドを実装し、**]
 `add_to_class` を介して `SyntheticRegressionData` クラスに登録します（:numref:`oo-design-utilities` で導入）。
-これは（**バッチサイズ、特徴の行列、ラベルのベクトルを受け取り、サイズが `batch_size` のミニバッチを生成します。**）
+これは[**バッチサイズ、特徴の行列、ラベルのベクトルを受け取り、サイズが `batch_size` のミニバッチを生成します。**]
 したがって、各ミニバッチは特徴とラベルのタプルからなります。
 訓練モードか検証モードかに注意する必要があることに留意してください。
 前者ではデータをランダム順に読み出したい一方で、

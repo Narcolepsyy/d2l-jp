@@ -19,7 +19,7 @@ from scipy import stats
 
 ## Searcher
 
-以下では searcher の基底クラスを定義します。これは `sample_configuration` 関数を通じて新しい候補構成を提供します。この関数を実装する簡単な方法は、:numref:`sec_what_is_hpo` でランダムサーチを行ったときのように、構成を一様ランダムにサンプリングすることです。ベイズ最適化のようなより高度なアルゴリズムでは、過去の trial の性能に基づいてこれらの決定を行います。その結果、時間とともにより有望な候補をサンプリングできるようになります。過去の trial の履歴を更新するために `update` 関数を追加し、これをサンプリング分布の改善に利用できるようにします。
+以下では searcher の基底クラスを定義します。これは `sample_configuration` 関数を通じて新しい候補構成を提供します。この関数を実装する簡単な方法は、 :numref:`sec_what_is_hpo` でランダムサーチを行ったときのように、構成を一様ランダムにサンプリングすることです。ベイズ最適化のようなより高度なアルゴリズムでは、過去の trial の性能に基づいてこれらの決定を行います。その結果、時間とともにより有望な候補をサンプリングできるようになります。過去の trial の履歴を更新するために `update` 関数を追加し、これをサンプリング分布の改善に利用できるようにします。
 
 ```{.python .input  n=3}
 %%tab pytorch
@@ -133,7 +133,7 @@ def bookkeeping(self, config: dict, error: float, runtime: float):
 
 ## 例: 畳み込みニューラルネットワークのハイパーパラメータ最適化
 
-ここでは、新しく実装したランダムサーチを使って、:numref:`sec_lenet` の `LeNet` 畳み込みニューラルネットワークの *バッチサイズ* と *学習率* を最適化します。まず、目的関数を定義します。ここでも検証誤差を用います。
+ここでは、新しく実装したランダムサーチを使って、 :numref:`sec_lenet` の `LeNet` 畳み込みニューラルネットワークの *バッチサイズ* と *学習率* を最適化します。まず、目的関数を定義します。ここでも検証誤差を用います。
 
 ```{.python .input  n=9}
 %%tab pytorch
@@ -195,7 +195,7 @@ for time_stamp, error in zip(
 
 ## 演習
 
-1. この演習の目的は、少し難しめの HPO 問題の目的関数を実装し、より現実的な実験を行うことです。:numref:`sec_dropout` で実装した 2 層隠れ層 MLP `DropoutMLP` を使います。
+1. この演習の目的は、少し難しめの HPO 問題の目的関数を実装し、より現実的な実験を行うことです。 :numref:`sec_dropout` で実装した 2 層隠れ層 MLP `DropoutMLP` を使います。
     1. 目的関数をコード化してください。これはモデルのすべてのハイパーパラメータと `batch_size` に依存する必要があります。`max_epochs=50` を使ってください。ここでは GPU は役に立たないので、`num_gpus=0` とします。ヒント: `hpo_objective_lenet` を修正してください。
     2. 妥当な探索空間を選んでください。`num_hiddens_1`、`num_hiddens_2` は $[8, 1024]$ の整数、dropout 値は $[0, 0.95]$、`batch_size` は $[16, 384]$ とします。`scipy.stats` の適切な分布を使って `config_space` のコードを示してください。
     3. この例で `number_of_trials=20` としてランダムサーチを実行し、結果をプロットしてください。まず :numref:`sec_dropout` のデフォルト構成、すなわち `initial_config = {'num_hiddens_1': 256, 'num_hiddens_2': 256, 'dropout_1': 0.5, 'dropout_2': 0.5, 'lr': 0.1, 'batch_size': 256}` を最初に評価することを忘れないでください。

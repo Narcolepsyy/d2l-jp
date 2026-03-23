@@ -1,7 +1,7 @@
 # BERTの事前学習
 :label:`sec_bert-pretraining`
 
-:numref:`sec_bert` で実装した BERT モデルと、:numref:`sec_bert-dataset` で生成した WikiText-2 データセット由来の事前学習用サンプルを用いて、この節では WikiText-2 データセット上で BERT を事前学習します。
+:numref:`sec_bert` で実装した BERT モデルと、 :numref:`sec_bert-dataset` で生成した WikiText-2 データセット由来の事前学習用サンプルを用いて、この節では WikiText-2 データセット上で BERT を事前学習します。
 
 ```{.python .input}
 #@tab mxnet

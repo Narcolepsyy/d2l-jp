@@ -15,7 +15,7 @@
 これまでの節で学んだ知識を
 CIFAR-10 画像分類の Kaggle コンペティションで
 実践します。
-（**コンペティションの Web アドレスは https://www.kaggle.com/c/cifar-10 です**）
+[**コンペティションの Web アドレスは https://www.kaggle.com/c/cifar-10 です**]
 
 :numref:`fig_kaggle_cifar10` はコンペティションの Web ページにある情報を示しています。
 結果を提出するには、
@@ -72,7 +72,7 @@ import shutil
 
 ### データセットのダウンロード
 
-Kaggle にログインした後、:numref:`fig_kaggle_cifar10` に示した CIFAR-10 画像分類コンペティションの Web ページで "Data" タブをクリックし、"Download All" ボタンを押してデータセットをダウンロードできます。
+Kaggle にログインした後、 :numref:`fig_kaggle_cifar10` に示した CIFAR-10 画像分類コンペティションの Web ページで "Data" タブをクリックし、"Download All" ボタンを押してデータセットをダウンロードできます。
 ダウンロードしたファイルを `../data` に解凍し、その中の `train.7z` と `test.7z` をさらに解凍すると、データセット全体は次のパスにあります。
 
 * `../data/cifar-10/train/[1-50000].png`
@@ -178,7 +178,7 @@ def reorg_test(data_dir):
                               'unknown'))
 ```
 
-最後に、[**上で定義した**] `read_csv_labels`、`reorg_train_valid`、`reorg_test`（**関数を呼び出す**）ための関数を使います。
+最後に、[**上で定義した**] `read_csv_labels`、`reorg_train_valid`、`reorg_test`[**関数を呼び出す**]ための関数を使います。
 
 ```{.python .input}
 #@tab all
@@ -383,7 +383,7 @@ def resnet18(num_classes):
 ```
 
 :begin_tab:`mxnet`
-訓練を始める前に、:numref:`subsec_xavier` で説明した Xavier 初期化を用います。
+訓練を始める前に、 :numref:`subsec_xavier` で説明した Xavier 初期化を用います。
 :end_tab:
 
 :begin_tab:`pytorch`

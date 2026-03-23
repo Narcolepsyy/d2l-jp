@@ -16,7 +16,7 @@
 中間特徴マップの空間次元を増やす（アップサンプリングする）別の種類の CNN 層を使うことができます。
 この節では、
 畳み込みによるダウンサンプリング操作を逆にするための、
-*転置畳み込み*（*fractionally-strided convolution* とも呼ばれる）:cite:`Dumoulin.Visin.2016`
+*転置畳み込み*（*fractionally-strided convolution* とも呼ばれる） :cite:`Dumoulin.Visin.2016`
 を紹介します。
 
 ```{.python .input}
@@ -140,7 +140,7 @@ tconv(X)
 :numref:`fig_trans_conv` と同じ入力テンソルおよびカーネルテンソルを用いて、
 ストライドを 1 から 2 に変更すると、
 中間テンソルの高さと幅の両方が増加し、
-その結果、:numref:`fig_trans_conv_stride2` の出力テンソルが得られます。
+その結果、 :numref:`fig_trans_conv_stride2` の出力テンソルが得られます。
 
 
 ![ストライド 2 の $2\times 2$ カーネルを用いた転置畳み込み。網掛け部分は、中間テンソルの一部であると同時に、計算に使われた入力テンソルおよびカーネルテンソルの要素を表している。](../img/trans_conv_stride2.svg)
@@ -148,7 +148,7 @@ tconv(X)
 
 
 
-次のコード片で、:numref:`fig_trans_conv_stride2` におけるストライド 2 の転置畳み込み出力を検証できます。
+次のコード片で、 :numref:`fig_trans_conv_stride2` におけるストライド 2 の転置畳み込み出力を検証できます。
 
 ```{.python .input}
 #@tab mxnet

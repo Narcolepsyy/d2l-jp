@@ -129,7 +129,7 @@ teacher forcing のための学習データを準備しました。
 現在のデコーダ入力として与えることもできます。
 
 
-以下では、:numref:`fig_seq2seq` に示した設計を
+以下では、 :numref:`fig_seq2seq` に示した設計を
 より詳しく説明します。
 このモデルは、
 :numref:`sec_machine_translation` で導入した
@@ -161,7 +161,7 @@ $$\mathbf{h}_t = f(\mathbf{x}_t, \mathbf{h}_{t-1}). $$
 
 $$\mathbf{c} =  q(\mathbf{h}_1, \ldots, \mathbf{h}_T).$$
 
-たとえば、:numref:`fig_seq2seq` では、
+たとえば、 :numref:`fig_seq2seq` では、
 コンテキスト変数は単に隠れ状態 $\mathbf{h}_T$ であり、
 入力系列の最後のトークンを処理した後の
 エンコーダRNNの表現に対応します。

@@ -1,9 +1,9 @@
 # 自然言語推論: Attention の利用
 :label:`sec_natural-language-inference-attention`
 
-自然言語推論タスクと SNLI データセットについては、:numref:`sec_natural-language-inference-and-dataset` で導入しました。複雑で深いアーキテクチャに基づく多くのモデルを踏まえ、:citet:`Parikh.Tackstrom.Das.ea.2016` は attention 機構を用いて自然言語推論に取り組む方法を提案し、これを「decomposable attention model」と呼びました。
+自然言語推論タスクと SNLI データセットについては、 :numref:`sec_natural-language-inference-and-dataset` で導入しました。複雑で深いアーキテクチャに基づく多くのモデルを踏まえ、:citet:`Parikh.Tackstrom.Das.ea.2016` は attention 機構を用いて自然言語推論に取り組む方法を提案し、これを「decomposable attention model」と呼びました。
 その結果、再帰層や畳み込み層を持たないモデルとなり、はるかに少ないパラメータ数で、当時の SNLI データセットにおける最高性能を達成しました。
-この節では、:numref:`fig_nlp-map-nli-attention` に示すような、自然言語推論のためのこの attention ベースの手法（MLP を用いる）を説明し、実装します。
+この節では、 :numref:`fig_nlp-map-nli-attention` に示すような、自然言語推論のためのこの attention ベースの手法（MLP を用いる）を説明し、実装します。
 
 ![この節では、事前学習済み GloVe を、自然言語推論のための attention と MLP に基づくアーキテクチャへ入力します。](../img/nlp-map-nli-attention.svg)
 :label:`fig_nlp-map-nli-attention`
@@ -51,7 +51,7 @@ from torch.nn import functional as F
 同様に、前提文中の "i" を仮説文中の "i" に対応付け、
 前提文中の "need" と "sleep" を仮説文中の "tired" に対応付けたいと考えます。
 このような対応付けは、重み付き平均を用いた *soft* なものです。理想的には、大きな重みが対応付けたいトークンに割り当てられます。
-説明を簡単にするため、:numref:`fig_nli_attention` ではそのような対応付けを *hard* な形で示しています。
+説明を簡単にするため、 :numref:`fig_nli_attention` ではそのような対応付けを *hard* な形で示しています。
 
 ここでは、attention 機構を用いた soft な対応付けをより詳しく説明します。
 前提文と仮説文をそれぞれ $\mathbf{A} = (\mathbf{a}_1, \ldots, \mathbf{a}_m)$
@@ -175,7 +175,7 @@ class Attend(nn.Module):
 
 次のステップでは、一方の系列のトークンと、そのトークンに soft に対応付けられた他方の系列を比較します。
 soft な対応付けでは、一方の系列のすべてのトークンが、重みはおそらく異なるものの、他方の系列のあるトークンと比較されます。
-説明を簡単にするため、:numref:`fig_nli_attention` では対応付けられたトークン同士を *hard* な形で組にしています。
+説明を簡単にするため、 :numref:`fig_nli_attention` では対応付けられたトークン同士を *hard* な形で組にしています。
 たとえば、attending ステップによって、前提文中の "need" と "sleep" の両方が仮説文中の "tired" に対応付けられたとすると、"tired--need sleep" の組が比較されます。
 
 比較ステップでは、一方の系列のトークンと、他方の系列から対応付けられたトークンの連結（演算子 $[\cdot, \cdot]$）を関数 $g$（MLP）に入力します。

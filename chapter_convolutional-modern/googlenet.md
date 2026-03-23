@@ -40,7 +40,7 @@ from jax import numpy as jnp
 import jax
 ```
 
-## (**Inceptionブロック**)
+## [**Inceptionブロック**]
 
 GoogLeNet の基本的な畳み込みブロックは *Inception block* と呼ばれ、映画 *Inception* のミーム「we need to go deeper」に由来します。
 

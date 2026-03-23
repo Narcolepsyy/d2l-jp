@@ -66,14 +66,14 @@ $$
 ![近似学習のための hierarchical softmax。各葉ノードは辞書中の単語を表す。](../img/hi-softmax.svg)
 :label:`fig_hi_softmax`
 
-$L(w)$ を、二分木において根ノードから単語 $w$ を表す葉ノードまでの経路上にあるノード数（両端を含む）とします。$n(w,j)$ をこの経路上の $j^\textrm{th}$ ノードとし、その文脈語ベクトルを $\mathbf{u}_{n(w, j)}$ とします。たとえば、:numref:`fig_hi_softmax` では $L(w_3) = 4$ です。Hierarchical softmax は、:eqref:`eq_skip-gram-softmax` における条件付き確率を次のように近似します。
+$L(w)$ を、二分木において根ノードから単語 $w$ を表す葉ノードまでの経路上にあるノード数（両端を含む）とします。$n(w,j)$ をこの経路上の $j^\textrm{th}$ ノードとし、その文脈語ベクトルを $\mathbf{u}_{n(w, j)}$ とします。たとえば、 :numref:`fig_hi_softmax` では $L(w_3) = 4$ です。Hierarchical softmax は、:eqref:`eq_skip-gram-softmax` における条件付き確率を次のように近似します。
 
 
 $$P(w_o \mid w_c) = \prod_{j=1}^{L(w_o)-1} \sigma\left( [\![  n(w_o, j+1) = \textrm{leftChild}(n(w_o, j)) ]\!] \cdot \mathbf{u}_{n(w_o, j)}^\top \mathbf{v}_c\right),$$
 
 ここで関数 $\sigma$ は :eqref:`eq_sigma-f` で定義され、$\textrm{leftChild}(n)$ はノード $n$ の左の子ノードです。$x$ が真なら $[\![x]\!] = 1$、そうでなければ $[\![x]\!] = -1$ です。
 
-例として、:numref:`fig_hi_softmax` において、単語 $w_c$ が与えられたときに単語 $w_3$ を生成する条件付き確率を計算してみましょう。これには、$w_c$ の単語ベクトル $\mathbf{v}_c$ と、根から $w_3$ までの経路上にある非葉ノードのベクトル（:numref:`fig_hi_softmax` で太字で示された経路）との内積が必要です。この経路は左、右、左の順にたどられます。
+例として、 :numref:`fig_hi_softmax` において、単語 $w_c$ が与えられたときに単語 $w_3$ を生成する条件付き確率を計算してみましょう。これには、$w_c$ の単語ベクトル $\mathbf{v}_c$ と、根から $w_3$ までの経路上にある非葉ノードのベクトル（:numref:`fig_hi_softmax` で太字で示された経路）との内積が必要です。この経路は左、右、左の順にたどられます。
 
 
 $$P(w_3 \mid w_c) = \sigma(\mathbf{u}_{n(w_3, 1)}^\top \mathbf{v}_c) \cdot \sigma(-\mathbf{u}_{n(w_3, 2)}^\top \mathbf{v}_c) \cdot \sigma(\mathbf{u}_{n(w_3, 3)}^\top \mathbf{v}_c).$$

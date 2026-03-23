@@ -81,7 +81,7 @@ Bahdanau注意による系列変換学習とは対照的に、
 :label:`fig_transformer`
 
 
-ここで、:numref:`fig_transformer` における
+ここで、 :numref:`fig_transformer` における
 Transformerアーキテクチャの概要を説明する。
 高レベルでは、
 Transformerエンコーダは複数の同一層のスタックであり、
@@ -249,7 +249,7 @@ ffn.init_with_output(d2l.get_key(), jnp.ones((2, 3, 4)))[0][0]
 
 ## 残差接続と層正規化
 
-ここでは、:numref:`fig_transformer` の「add & norm」コンポーネントに注目しよう。
+ここでは、 :numref:`fig_transformer` の「add & norm」コンポーネントに注目しよう。
 この節の冒頭で述べたように、
 これは残差接続の直後に
 層正規化が続く構成である。

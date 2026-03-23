@@ -161,7 +161,7 @@ d2l.plt.ylabel("objective function")
 
 ## 演習
 
-1. :numref:`sec_dropout` で実装され、:numref:`sec_api_hpo` の演習1で使用した `DropoutMLP` モデルを考えます。
+1. :numref:`sec_dropout` で実装され、 :numref:`sec_api_hpo` の演習1で使用した `DropoutMLP` モデルを考えます。
     1. Syne Tune で使う目的関数 `hpo_objective_dropoutmlp_synetune` を実装しなさい。関数が各エポック後に検証誤差を報告することを確認しなさい。
     2. :numref:`sec_api_hpo` の演習1の設定を用いて、ランダムサーチとベイズ最適化を比較しなさい。SageMaker を使う場合は、Syne Tune のベンチマーク機能を利用して実験を並列実行してよい。ヒント: ベイズ最適化は `syne_tune.optimizer.baselines.BayesianOptimization` として提供されています。
     3. この演習では、少なくとも4つのCPUコアを持つインスタンスで実行する必要があります。上で使った手法のうち1つ（ランダムサーチ、ベイズ最適化）について、`n_workers=1`、`n_workers=2`、`n_workers=4` で実験を行い、結果（incumbent の軌跡）を比較しなさい。少なくともランダムサーチでは、ワーカー数に対して線形スケーリングが観測されるはずです。ヒント: 安定した結果を得るには、それぞれ複数回繰り返して平均を取る必要があるかもしれません。

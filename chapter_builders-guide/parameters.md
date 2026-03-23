@@ -58,7 +58,7 @@ import jax
 from jax import numpy as jnp
 ```
 
-（**まずは隠れ層が1つのMLPに注目します。**）
+[**まずは隠れ層が1つのMLPに注目します。**]
 
 ```{.python .input}
 %%tab mxnet

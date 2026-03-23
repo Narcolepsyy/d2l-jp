@@ -161,7 +161,7 @@ CNN、RNN、自己注意を考えます。
 CNNは階層的であるため、
 逐次演算は $\mathcal{O}(1)$ で済み、
 最大経路長は $\mathcal{O}(n/k)$ です。
-たとえば、:numref:`fig_cnn-rnn-self-attention` では、
+たとえば、 :numref:`fig_cnn-rnn-self-attention` では、
 $\mathbf{x}_1$ と $\mathbf{x}_5$ は
 カーネルサイズ 3 の2層CNNの受容野内にあります。
 

@@ -2,7 +2,7 @@
 :label:`sec_word2vec_pretraining`
 
 
-ここでは、:numref:`sec_word2vec` で定義した
+ここでは、 :numref:`sec_word2vec` で定義した
 skip-gram
 モデルを実装します。
 その後、

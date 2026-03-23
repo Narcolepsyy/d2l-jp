@@ -194,7 +194,7 @@ show_list_len_pair_hist(['source', 'target'], '# tokens per sequence',
 言語モデリングでは、
 [**各例の系列**]が、
 1文の一部であれ複数文にまたがる区間であれ、
-(**固定長であった**)
+[**固定長であった**]
 ことを思い出してください。
 これは :numref:`sec_language-model` の `num_steps`
 （時間ステップ数またはトークン数）引数で指定されていました。

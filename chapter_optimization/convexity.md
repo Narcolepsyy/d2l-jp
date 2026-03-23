@@ -6,7 +6,7 @@
 言い換えると、
 アルゴリズムが凸な設定でさえうまく動かないのであれば、
 通常、それ以外の状況で大きな成果を期待すべきではありません。  
-さらに、深層学習における最適化問題は一般に非凸ですが、局所最小値の近傍では凸関数の性質の一部をしばしば示します。これにより、:cite:`Izmailov.Podoprikhin.Garipov.ea.2018` のような興味深い新しい最適化手法が生まれます。
+さらに、深層学習における最適化問題は一般に非凸ですが、局所最小値の近傍では凸関数の性質の一部をしばしば示します。これにより、 :cite:`Izmailov.Podoprikhin.Garipov.ea.2018` のような興味深い新しい最適化手法が生まれます。
 
 ```{.python .input}
 #@tab mxnet
@@ -48,21 +48,21 @@ import tensorflow as tf
 
 $$\lambda  a + (1-\lambda)  b \in \mathcal{X} \textrm{ whenever } a, b \in \mathcal{X}.$$
 
-これは少し抽象的に聞こえるかもしれません。:numref:`fig_pacman` を考えてみましょう。最初の集合は、含まれない線分が存在するので凸ではありません。
+これは少し抽象的に聞こえるかもしれません。 :numref:`fig_pacman` を考えてみましょう。最初の集合は、含まれない線分が存在するので凸ではありません。
 他の2つの集合にはそのような問題はありません。
 
 ![最初の集合は非凸で、他の2つは凸である。](../img/pacman.svg)
 :label:`fig_pacman`
 
 定義は、それを何かに使えない限り、単独ではあまり有用ではありません。
-この場合、:numref:`fig_convex_intersect` に示すように交差を考えることができます。
+この場合、 :numref:`fig_convex_intersect` に示すように交差を考えることができます。
 $\mathcal{X}$ と $\mathcal{Y}$ が凸集合だと仮定します。このとき $\mathcal{X} \cap \mathcal{Y}$ も凸です。これを見るには、任意の $a, b \in \mathcal{X} \cap \mathcal{Y}$ を考えます。$\mathcal{X}$ と $\mathcal{Y}$ は凸なので、$a$ と $b$ を結ぶ線分は $\mathcal{X}$ と $\mathcal{Y}$ の両方に含まれます。したがって、それらは $\mathcal{X} \cap \mathcal{Y}$ にも含まれなければならず、これで定理が示されます。
 
 ![2つの凸集合の交差は凸である。](../img/convex-intersect.svg)
 :label:`fig_convex_intersect`
 
 この結果はほとんど手間をかけずに強めることができます。すなわち、凸集合 $\mathcal{X}_i$ に対して、その交差 $\cap_{i} \mathcal{X}_i$ は凸です。
-逆が成り立たないことを見るには、互いに交わらない集合 $\mathcal{X} \cap \mathcal{Y} = \emptyset$ を考えます。ここで $a \in \mathcal{X}$ と $b \in \mathcal{Y}$ を取ります。:numref:`fig_nonconvex` の $a$ と $b$ を結ぶ線分には、$\mathcal{X} \cap \mathcal{Y} = \emptyset$ を仮定しているので、$\mathcal{X}$ にも $\mathcal{Y}$ にも属さない部分が含まれていなければなりません。したがって、その線分は $\mathcal{X} \cup \mathcal{Y}$ にも含まれず、一般に凸集合の和集合は凸である必要がないことが示されます。
+逆が成り立たないことを見るには、互いに交わらない集合 $\mathcal{X} \cap \mathcal{Y} = \emptyset$ を考えます。ここで $a \in \mathcal{X}$ と $b \in \mathcal{Y}$ を取ります。 :numref:`fig_nonconvex` の $a$ と $b$ を結ぶ線分には、$\mathcal{X} \cap \mathcal{Y} = \emptyset$ を仮定しているので、$\mathcal{X}$ にも $\mathcal{Y}$ にも属さない部分が含まれていなければなりません。したがって、その線分は $\mathcal{X} \cup \mathcal{Y}$ にも含まれず、一般に凸集合の和集合は凸である必要がないことが示されます。
 
 ![2つの凸集合の和集合は凸であるとは限らない。](../img/nonconvex.svg)
 :label:`fig_nonconvex`
@@ -298,7 +298,7 @@ $$L(\mathbf{x}, \alpha_1, \ldots, \alpha_n) = f(\mathbf{x}) + \sum_{i=1}^n \alph
 制約付き最適化問題を少なくとも *近似的に* 満たす1つの方法は、ラグランジアン $L$ を修正することです。 
 $c_i(\mathbf{x}) \leq 0$ を厳密に満たす代わりに、単に $\alpha_i c_i(\mathbf{x})$ を目的関数 $f(x)$ に加えます。これにより、制約違反がひどくなりすぎることを防げます。
 
-実際、私たちはずっとこの手法を使ってきました。:numref:`sec_weight_decay` の重み減衰を考えてみましょう。そこでは、$\mathbf{w}$ が大きくなりすぎないように、目的関数に $\frac{\lambda}{2} \|\mathbf{w}\|^2$ を加えています。制約付き最適化の観点からは、これはある半径 $r$ に対して $\|\mathbf{w}\|^2 - r^2 \leq 0$ を保証するものと見なせます。$\lambda$ の値を調整することで、$\mathbf{w}$ の大きさを変えられます。
+実際、私たちはずっとこの手法を使ってきました。 :numref:`sec_weight_decay` の重み減衰を考えてみましょう。そこでは、$\mathbf{w}$ が大きくなりすぎないように、目的関数に $\frac{\lambda}{2} \|\mathbf{w}\|^2$ を加えています。制約付き最適化の観点からは、これはある半径 $r$ に対して $\|\mathbf{w}\|^2 - r^2 \leq 0$ を保証するものと見なせます。$\lambda$ の値を調整することで、$\mathbf{w}$ の大きさを変えられます。
 
 一般に、ペナルティを加えることは、制約を近似的に満たすための良い方法です。実際には、これは厳密に満たす方法よりもはるかに頑健であることがわかります。さらに、非凸問題では、凸の場合に厳密な方法を魅力的にしていた多くの性質（たとえば最適性）はもはや成り立ちません。
 
@@ -317,7 +317,7 @@ $$\textrm{Proj}_\mathcal{X}(\mathbf{x}) = \mathop{\mathrm{argmin}}_{\mathbf{x}' 
 ![凸射影。](../img/projections.svg)
 :label:`fig_projections`
 
-射影の数学的定義は少し抽象的に聞こえるかもしれません。:numref:`fig_projections` はそれをもう少し明確に説明しています。そこでは、円とひし形という2つの凸集合があります。 
+射影の数学的定義は少し抽象的に聞こえるかもしれません。 :numref:`fig_projections` はそれをもう少し明確に説明しています。そこでは、円とひし形という2つの凸集合があります。 
 両方の集合の内側にある点（黄色）は、射影の際に変化しません。 
 両方の集合の外側にある点（黒）は、
 元の点（黒）に最も近い集合内の点（赤）へ射影されます。

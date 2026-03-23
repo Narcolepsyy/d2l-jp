@@ -1,7 +1,7 @@
 # シングルショット・マルチボックス検出
 :label:`sec_ssd`
 
-:numref:`sec_bbox`--:numref:`sec_object-detection-dataset` では、
+:numref:`sec_bbox`-- :numref:`sec_object-detection-dataset` では、
 バウンディングボックス、アンカーボックス、
 マルチスケール物体検出、そして物体検出用データセットを紹介しました。
 ここでは、こうした背景知識を用いて
@@ -142,7 +142,7 @@ def cls_predictor(num_inputs, num_anchors, num_classes):
                      kernel_size=3, padding=1)
 ```
 
-### (**バウンディングボックス予測層**)
+### [**バウンディングボックス予測層**]
 
 バウンディングボックス予測層の設計は、クラス予測層と似ています。
 唯一の違いは、各アンカーボックスに対する出力数です。

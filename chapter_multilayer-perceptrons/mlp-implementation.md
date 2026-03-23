@@ -167,7 +167,7 @@ def relu(X):
 空間構造を無視するので、
 各 2 次元画像を `reshape` して
 長さ `num_inputs` の平坦なベクトルに変換します。
-最後に、わずか数行のコードで (**モデルを実装**) します。フレームワーク組み込みの autograd を使うので、これだけで十分です。
+最後に、わずか数行のコードで [**モデルを実装**] します。フレームワーク組み込みの autograd を使うので、これだけで十分です。
 
 ```{.python .input}
 %%tab all
@@ -268,7 +268,7 @@ class MLP(d2l.Classifier):
 変換の列として定義されています。
 `Sequential` クラスは順伝播の過程を抽象化し、
 私たちが変換そのものに集中できるようにします。
-`Sequential` クラスの動作については、:numref:`subsec_model-construction-sequential` でさらに説明します。
+`Sequential` クラスの動作については、 :numref:`subsec_model-construction-sequential` でさらに説明します。
 
 
 ### 学習

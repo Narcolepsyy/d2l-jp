@@ -45,7 +45,7 @@ $$\frac{\mathbf{x}^\top \mathbf{y}}{\|\mathbf{x}\| \|\mathbf{y}\|} \in [-1, 1].$
 
 上記の問題に対処するために [word2vec](https://code.google.com/archive/p/word2vec/) ツールが提案されました。
 これは各単語を固定長ベクトルに写像し、これらのベクトルは異なる単語間の類似性や類推関係をよりよく表現できます。
-word2vec ツールには2つのモデル、すなわち *skip-gram* :cite:`Mikolov.Sutskever.Chen.ea.2013` と *continuous bag of words*（CBOW）:cite:`Mikolov.Chen.Corrado.ea.2013` があります。
+word2vec ツールには2つのモデル、すなわち *skip-gram* :cite:`Mikolov.Sutskever.Chen.ea.2013` と *continuous bag of words*（CBOW） :cite:`Mikolov.Chen.Corrado.ea.2013` があります。
 意味的に有意味な表現を得るために、
 その学習は
 条件付き確率に依存しており、

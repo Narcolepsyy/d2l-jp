@@ -6,7 +6,6 @@ tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 # 画像分類データセット
 :label:`sec_fashion_mnist`
 
-(~~MNISTデータセットは画像分類で広く使われているデータセットの1つですが、ベンチマークデータセットとしては単純すぎます。代わりに、これと似ているがより複雑なFashion-MNISTデータセットを使います~~)
 
 画像分類で広く使われているデータセットの1つに、手書き数字の [MNISTデータセット](https://en.wikipedia.org/wiki/MNIST_database) :cite:`LeCun.Bottou.Bengio.ea.1998` があります。1990年代に公開された当時、これはほとんどの機械学習アルゴリズムにとって手強い課題であり、$28 \times 28$ ピクセル解像度の画像60,000枚（加えて10,000枚のテストデータセット）から構成されていました。参考までに言うと、1995年当時、64MBという膨大なRAMと5 MFLOPsという驚異的な性能を備えたSun SPARCStation 5は、AT&T Bell Laboratoriesにおける機械学習向けの最先端機器と見なされていました。数字認識で高い精度を達成することは、1990年代にUSPSの郵便物仕分けを自動化するうえで重要な要素でした。LeNet-5 :cite:`LeCun.Jackel.Bottou.ea.1995` のような深層ネットワーク、変換不変性を組み込んだサポートベクターマシン :cite:`Scholkopf.Burges.Vapnik.1996`、接線距離分類器 :cite:`Simard.LeCun.Denker.ea.1998` は、いずれも1%未満の誤り率を達成できました。 
 
@@ -134,7 +133,7 @@ len(data.train[0]), len(data.val[0])
 data.train[0][0].shape
 ```
 
-[~~データセットを可視化するための2つのユーティリティ関数~~]
+データセットを可視化するためのユーティリティ関数を定義します。
 
 Fashion-MNISTのカテゴリには、人間にとって理解しやすい名前が付いています。 
 次の便利メソッドは、数値ラベルとその名前を相互に変換します。

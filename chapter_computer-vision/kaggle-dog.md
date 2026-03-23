@@ -1,6 +1,6 @@
 # Kaggle における犬種識別（ImageNet Dogs）
 
-この節では、Kaggle 上の犬種識別問題を実践します。（**このコンペティションの Web アドレスは https://www.kaggle.com/c/dog-breed-identification です**）
+この節では、Kaggle 上の犬種識別問題を実践します。[**このコンペティションの Web アドレスは https://www.kaggle.com/c/dog-breed-identification です**]
 
 このコンペティションでは、
 120 種類の犬種を識別します。

@@ -66,7 +66,7 @@ from d2l import jax as d2l
 from flax import linen as nn
 ```
 
-## (**エンコーダ**)
+## [**エンコーダ**]
 
 エンコーダのインターフェースでは、
 エンコーダが可変長系列を入力 `X` として受け取ることだけを指定します。

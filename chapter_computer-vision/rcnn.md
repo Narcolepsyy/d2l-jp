@@ -78,7 +78,7 @@ CNN の順伝播を
 1. $n$ 個の region proposals それぞれについて、クラスとバウンディングボックスを予測します。より具体的には、クラス予測とバウンディングボックス予測において、全結合層の出力をそれぞれ形状 $n \times q$（$q$ はクラス数）と形状 $n \times 4$ の出力に変換します。クラス予測には softmax 回帰を用います。
 
 
-fast R-CNN で提案された region of interest pooling 層は、:numref:`sec_pooling` で導入した pooling 層とは異なります。
+fast R-CNN で提案された region of interest pooling 層は、 :numref:`sec_pooling` で導入した pooling 層とは異なります。
 pooling 層では、
 pooling ウィンドウ、パディング、ストライドのサイズを指定することで、
 出力形状を間接的に制御します。

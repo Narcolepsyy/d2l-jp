@@ -12,8 +12,8 @@ tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 古典的な汎化理論は、訓練性能とテスト性能の差を縮めるには、
 単純なモデルを目指すべきだと示唆しています。
 単純さは、次元数が少ないという形で現れます。
-これは、:numref:`sec_generalization_basics` で線形モデルの単項式基底関数を議論したときに見ました。
-さらに、:numref:`sec_weight_decay` で重み減衰（$\ell_2$ 正則化）を議論したときに見たように、
+これは、 :numref:`sec_generalization_basics` で線形モデルの単項式基底関数を議論したときに見ました。
+さらに、 :numref:`sec_weight_decay` で重み減衰（$\ell_2$ 正則化）を議論したときに見たように、
 パラメータの（逆）ノルムも単純さの有用な尺度を表します。
 単純さのもう1つの有用な概念は滑らかさ、すなわち、関数が入力の小さな変化に敏感でないことです。
 たとえば、画像を分類するときには、画素に多少のランダムノイズを加えても
@@ -135,7 +135,7 @@ import optax
 これを実装する簡単な方法は、まず一様分布 $U[0, 1]$ からサンプルを生成することです。
 そして、対応するサンプルが $p$ より大きいノードを保持し、それ以外をドロップします。
 
-以下のコードでは、（**テンソル入力 `X` の要素を確率 `dropout` でドロップする `dropout_layer` 関数を実装し**）、
+以下のコードでは、[**テンソル入力 `X` の要素を確率 `dropout` でドロップする `dropout_layer` 関数を実装し**]、
 上で説明したように残りを再スケーリングします。
 つまり、生き残った要素を `1.0-dropout` で割ります。
 
@@ -391,7 +391,7 @@ class DropoutMLP(d2l.Classifier):
 この `dropout_rng` は
 :numref:`oo-design-training` で定義した `d2l.Trainer` クラスの `TrainState` オブジェクトに属性として保存でき、
 各エポックで新しい `dropout_rng` に置き換えられます。
-これは、:numref:`sec_linear_scratch` で定義した `fit_epoch` メソッドですでに処理済みです。
+これは、 :numref:`sec_linear_scratch` で定義した `fit_epoch` メソッドですでに処理済みです。
 :end_tab:
 
 ```{.python .input}

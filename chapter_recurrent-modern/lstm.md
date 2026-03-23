@@ -176,7 +176,7 @@ $$\mathbf{C}_t = \mathbf{F}_t \odot \mathbf{C}_{t-1} + \mathbf{I}_t \odot \tilde
 特に長い系列長を持つデータセットに対して、
 はるかに学習しやすいモデルを実現する。
 
-これにより、:numref:`fig_lstm_2` のフローダイアグラムが得られる。
+これにより、 :numref:`fig_lstm_2` のフローダイアグラムが得られる。
 
 ![LSTM モデルにおける記憶セル内部状態の計算。](../img/lstm-2.svg)
 

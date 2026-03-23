@@ -361,7 +361,7 @@ class DenseNet(d2l.Classifier):
 ```
 
 その後、ResNet が残差ブロックからなる 4 つのモジュールを使うのと同様に、DenseNet は 4 つの dense block を使います。
-ResNet と同様に、各 dense block で使う畳み込み層の数を設定できます。ここでは、:numref:`sec_resnet` の ResNet-18 モデルと一致するように 4 に設定します。さらに、dense block 内の畳み込み層のチャネル数（すなわち growth rate）を 32 に設定するので、各 dense block には 128 チャネルが追加されます。
+ResNet と同様に、各 dense block で使う畳み込み層の数を設定できます。ここでは、 :numref:`sec_resnet` の ResNet-18 モデルと一致するように 4 に設定します。さらに、dense block 内の畳み込み層のチャネル数（すなわち growth rate）を 32 に設定するので、各 dense block には 128 チャネルが追加されます。
 
 ResNet では、各モジュールの間でストライド 2 の残差ブロックによって高さと幅が減少します。ここでは、transition layer を使って高さと幅を半分にし、チャネル数も半分にします。ResNet と同様に、最後に global pooling 層と全結合層を接続して出力を生成します。
 

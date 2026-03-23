@@ -230,13 +230,13 @@ test_augs = torchvision.transforms.Compose([
 :begin_tab:`mxnet`
 次に、画像の読み込みと画像拡張の適用を容易にする補助関数を定義します。  
 Gluon のデータセットが提供する `transform_first` 関数は、各訓練例（画像とラベル）の最初の要素、すなわち画像に画像拡張を適用します。  
-`DataLoader` の詳細な説明については、:numref:`sec_fashion_mnist` を参照してください。
+`DataLoader` の詳細な説明については、 :numref:`sec_fashion_mnist` を参照してください。
 :end_tab:
 
 :begin_tab:`pytorch`
 次に、画像の読み込みと画像拡張の適用を容易にする [**補助関数を定義します**]。  
 PyTorch のデータセットが提供する `transform` 引数は、画像を変換する際に拡張を適用します。  
-`DataLoader` の詳細な説明については、:numref:`sec_fashion_mnist` を参照してください。
+`DataLoader` の詳細な説明については、 :numref:`sec_fashion_mnist` を参照してください。
 :end_tab:
 
 ```{.python .input}

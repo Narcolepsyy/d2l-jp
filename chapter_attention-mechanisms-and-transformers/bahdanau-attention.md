@@ -332,7 +332,7 @@ d2l.check_shape(state[1][0], (batch_size, num_hiddens))
 
 ## [**学習**]
 
-新しいデコーダを定義したので、:numref:`sec_seq2seq_training` と同様に進められる。
+新しいデコーダを定義したので、 :numref:`sec_seq2seq_training` と同様に進められる。
 すなわち、ハイパーパラメータを指定し、通常のエンコーダと注意付きデコーダをインスタンス化し、このモデルを機械翻訳のために学習する。
 
 ```{.python .input}

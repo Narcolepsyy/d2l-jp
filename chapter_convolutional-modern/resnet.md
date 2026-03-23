@@ -63,7 +63,7 @@ $$f^*_\mathcal{F} \stackrel{\textrm{def}}{=} \mathop{\mathrm{argmin}}_f L(\mathb
 実際、$f^*_{\mathcal{F}'}$ のほうが悪いことも十分ありうる。
 :numref:`fig_functionclasses` に示すように、
 入れ子になっていない関数クラスでは、より大きな関数クラスが必ずしも「真の」関数 $f^*$ に近づくとは限らない。
-たとえば、:numref:`fig_functionclasses` の左側では、
+たとえば、 :numref:`fig_functionclasses` の左側では、
 $\mathcal{F}_3$ は $\mathcal{F}_1$ より $f^*$ に近いが、$\mathcal{F}_6$ では逆に遠ざかっており、複雑さをさらに増やしても $f^*$ からの距離が減る保証はない。
 一方、$\mathcal{F}_1 \subseteq \cdots \subseteq \mathcal{F}_6$
 という入れ子の関数クラスでは、
@@ -87,7 +87,7 @@ $\mathcal{F}_3$ は $\mathcal{F}_1$ より $f^*$ に近いが、$\mathcal{F}_6$ 
 なお、ResNet に先立って highway networks :cite:`srivastava2015highway` があり、恒等関数のまわりの洗練されたパラメータ化はないものの、いくつかの動機を共有している。
 
 
-## (**残差ブロック**)
+## [**残差ブロック**]
 :label:`subsec_residual-blks`
 
 :numref:`fig_residual_block` に示すように、ニューラルネットワークの局所的な部分に注目しよう。入力を $\mathbf{x}$ とする。
@@ -224,7 +224,7 @@ class Residual(nn.Module):  #@save
         return nn.relu(Y)
 ```
 
-このコードは 2 種類のネットワークを生成する。`use_1x1conv=False` のときは、ReLU 非線形性を適用する前に入力を出力へ加える。もう一方は、加算の前に $1 \times 1$ 畳み込みによってチャネル数と解像度を調整する。:numref:`fig_resnet_block` はこれを示している。
+このコードは 2 種類のネットワークを生成する。`use_1x1conv=False` のときは、ReLU 非線形性を適用する前に入力を出力へ加える。もう一方は、加算の前に $1 \times 1$ 畳み込みによってチャネル数と解像度を調整する。 :numref:`fig_resnet_block` はこれを示している。
 
 ![$1 \times 1$ 畳み込みの有無による ResNet ブロック。$1 \times 1$ 畳み込みは、加算演算に必要な形状へ入力を変換する。](../img/resnet-block.svg)
 :label:`fig_resnet_block`
@@ -428,7 +428,7 @@ def create_net(self):
 ```
 
 各モジュールには 4 つの畳み込み層がある（$1\times 1$ 畳み込み層を除く）。最初の $7\times 7$ 畳み込み層と最後の全結合層を合わせると、合計 18 層になる。したがって、このモデルは一般に ResNet-18 と呼ばれる。
-モジュール内のチャネル数や残差ブロック数を変えることで、より深い 152 層の ResNet-152 のような別の ResNet モデルを作ることができる。ResNet の主なアーキテクチャは GoogLeNet に似ているが、ResNet の構造はより単純で修正しやすい。こうした要因により、ResNet は急速かつ広範に使われるようになった。:numref:`fig_resnet18` は ResNet-18 全体を示している。
+モジュール内のチャネル数や残差ブロック数を変えることで、より深い 152 層の ResNet-152 のような別の ResNet モデルを作ることができる。ResNet の主なアーキテクチャは GoogLeNet に似ているが、ResNet の構造はより単純で修正しやすい。こうした要因により、ResNet は急速かつ広範に使われるようになった。 :numref:`fig_resnet18` は ResNet-18 全体を示している。
 
 ![ResNet-18 のアーキテクチャ。](../img/resnet18-90.svg)
 :label:`fig_resnet18`
@@ -504,9 +504,9 @@ ResNeXt はすべての分岐で *同じ* 変換を採用し、
 
 $c_\textrm{i}$ チャネルから $c_\textrm{o}$ チャネルへの畳み込みを、サイズ $c_\textrm{i}/g$ の $g$ 個のグループに分け、それぞれがサイズ $c_\textrm{o}/g$ の $g$ 個の出力を生成するように分割することを、まさにその名の通り *grouped convolution* と呼ぶ。計算コスト（比例）は $\mathcal{O}(c_\textrm{i} \cdot c_\textrm{o})$ から $\mathcal{O}(g \cdot (c_\textrm{i}/g) \cdot (c_\textrm{o}/g)) = \mathcal{O}(c_\textrm{i} \cdot c_\textrm{o} / g)$ に減り、つまり $g$ 倍高速になる。さらに良いことに、出力を生成するのに必要なパラメータ数も、$c_\textrm{i} \times c_\textrm{o}$ の行列から、サイズ $(c_\textrm{i}/g) \times (c_\textrm{o}/g)$ のより小さな行列 $g$ 個に減り、これもまた $g$ 倍の削減になる。以下では、$c_\textrm{i}$ と $c_\textrm{o}$ の両方が $g$ で割り切れると仮定する。
 
-この設計における唯一の課題は、$g$ 個のグループ間で情報が交換されないことである。:numref:`fig_resnext_block` の ResNeXt ブロックは、これを 2 つの方法で補っている。すなわち、$3 \times 3$ カーネルを持つ grouped convolution を 2 つの $1 \times 1$ 畳み込みの間に挟んでいる。2 つ目の $1 \times 1$ 畳み込みは、チャネル数を元に戻す役割も兼ねる。利点は、$1 \times 1$ カーネルについては $\mathcal{O}(c \cdot b)$ のコストしか払わず、$3 \times 3$ カーネルについては $\mathcal{O}(b^2 / g)$ のコストで済むことである。:numref:`subsec_residual-blks` の残差ブロック実装と同様に、残差接続は $1 \times 1$ 畳み込みに置き換えられる（したがって一般化される）。
+この設計における唯一の課題は、$g$ 個のグループ間で情報が交換されないことである。 :numref:`fig_resnext_block` の ResNeXt ブロックは、これを 2 つの方法で補っている。すなわち、$3 \times 3$ カーネルを持つ grouped convolution を 2 つの $1 \times 1$ 畳み込みの間に挟んでいる。2 つ目の $1 \times 1$ 畳み込みは、チャネル数を元に戻す役割も兼ねる。利点は、$1 \times 1$ カーネルについては $\mathcal{O}(c \cdot b)$ のコストしか払わず、$3 \times 3$ カーネルについては $\mathcal{O}(b^2 / g)$ のコストで済むことである。 :numref:`subsec_residual-blks` の残差ブロック実装と同様に、残差接続は $1 \times 1$ 畳み込みに置き換えられる（したがって一般化される）。
 
-:numref:`fig_resnext_block` の右図は、得られるネットワークブロックをより簡潔にまとめている。これは、:numref:`sec_cnn-design` における汎用的な現代 CNN の設計でも重要な役割を果たす。grouped convolution の考え方は AlexNet の実装にまでさかのぼることに注意しよう :cite:`Krizhevsky.Sutskever.Hinton.2012`。メモリに制約のある 2 台の GPU にネットワークを分散させる際、実装では各 GPU を独立したチャネルとして扱っていたが、それで悪影響はなかった。
+:numref:`fig_resnext_block` の右図は、得られるネットワークブロックをより簡潔にまとめている。これは、 :numref:`sec_cnn-design` における汎用的な現代 CNN の設計でも重要な役割を果たす。grouped convolution の考え方は AlexNet の実装にまでさかのぼることに注意しよう :cite:`Krizhevsky.Sutskever.Hinton.2012`。メモリに制約のある 2 台の GPU にネットワークを分散させる際、実装では各 GPU を独立したチャネルとして扱っていたが、それで悪影響はなかった。
 
 以下の `ResNeXtBlock` クラスの実装では、引数として `groups`（$g$）と、
 中間（ボトルネック）チャネル数 `bot_channels`（$b$）を取る。最後に、表現の高さと幅を減らす必要があるときは、`use_1x1conv=True, strides=2` としてストライド 2 を追加する。
@@ -693,7 +693,7 @@ Transformer アーキテクチャ :cite:`Vaswani.Shazeer.Parmar.ea.2017`
 
 ResNeXt は、畳み込みニューラルネットワークの設計が時間とともにどのように進化してきたかを示す一例である。計算をより節約し、その代わりに活性化のサイズ（チャネル数）を調整することで、より低コストでより高速かつ高精度なネットワークを実現できる。grouped convolution を別の見方で捉えると、畳み込み重みのブロック対角行列を考えることができる。なお、より効率的なネットワークにつながるこの種の「工夫」はかなり多い。たとえば ShiftNet :cite:`wu2018shift` は、チャネルにシフトした活性化を加えるだけで $3 \times 3$ 畳み込みの効果を模倣し、計算コストを増やさずに関数の複雑さを高めている。
 
-ここまで議論してきた設計に共通する特徴は、ネットワーク設計がかなり手作業に依存しており、主として設計者の創意工夫に頼って「正しい」ネットワークハイパーパラメータを見つける点である。これは明らかに実現可能ではあるが、人手の時間という観点では非常にコストが高く、結果が何らかの意味で最適である保証もない。:numref:`sec_cnn-design` では、より自動化された方法で高品質なネットワークを得るためのいくつかの戦略を議論する。特に、RegNetX/Y モデルにつながった *ネットワーク設計空間* の概念を概観する :cite:`Radosavovic.Kosaraju.Girshick.ea.2020`。
+ここまで議論してきた設計に共通する特徴は、ネットワーク設計がかなり手作業に依存しており、主として設計者の創意工夫に頼って「正しい」ネットワークハイパーパラメータを見つける点である。これは明らかに実現可能ではあるが、人手の時間という観点では非常にコストが高く、結果が何らかの意味で最適である保証もない。 :numref:`sec_cnn-design` では、より自動化された方法で高品質なネットワークを得るためのいくつかの戦略を議論する。特に、RegNetX/Y モデルにつながった *ネットワーク設計空間* の概念を概観する :cite:`Radosavovic.Kosaraju.Girshick.ea.2020`。
 
 ## 演習
 
