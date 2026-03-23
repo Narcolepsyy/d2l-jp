@@ -36,6 +36,37 @@ def parse_md_to_cells(content, tab='pytorch'):
 
         # Check for code block start
         if line.startswith('```'):
+            # Determine the fence type
+            fence_type = line[3:].strip()
+
+            # d2lbook-specific fences: eval_rst, toc
+            # These must be preserved as RST directives in markdown cells
+            if fence_type in ('eval_rst', 'toc'):
+                # Flush accumulated markdown
+                if current_text:
+                    src = '\n'.join(current_text)
+                    if src.strip():
+                        cells.append(make_md_cell(src))
+                    current_text = []
+
+                rst_lines = []
+                i += 1
+                while i < len(lines) and not lines[i].startswith('```'):
+                    rst_lines.append(lines[i])
+                    i += 1
+                # Skip closing ```
+                if i < len(lines):
+                    i += 1
+
+                rst_content = '\n'.join(rst_lines)
+                if fence_type == 'toc':
+                    # Convert ```toc to .. toctree:: directive
+                    rst_content = '.. toctree::\n' + rst_content
+                # Embed as raw RST in a markdown cell
+                if rst_content.strip():
+                    cells.append(make_md_cell(rst_content))
+                continue
+
             # Flush accumulated markdown
             if current_text:
                 src = '\n'.join(current_text)
