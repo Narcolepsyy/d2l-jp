@@ -22,10 +22,15 @@ def parse_md_to_cells(content, tab='pytorch'):
 
     Handles:
     - ```{.python .input} code fences
-    - #@tab markers for framework-specific code
+    - %%tab and #@tab markers for framework-specific code
     - :begin_tab: / :end_tab: blocks
+    - Files starting with bare {.python .input} (missing leading ```)
     - Regular markdown content
     """
+    # Fix files that start with bare {.python .input} without leading ```
+    # These are d2lbook setup blocks that should be skipped entirely
+    content = _fix_malformed_opening(content)
+
     lines = content.split('\n')
     cells = []
     current_text = []
@@ -89,6 +94,14 @@ def parse_md_to_cells(content, tab='pytorch'):
                     i += 1
                     continue
 
+                # Check for %%tab directive (d2l format)
+                if code_line.strip().startswith('%%tab'):
+                    tab_value = code_line.strip().replace('%%tab', '').strip()
+                    # %%tab can list multiple tabs: "%%tab mxnet, pytorch"
+                    cell_tab = tab_value
+                    i += 1
+                    continue
+
                 code_lines.append(code_line)
                 i += 1
 
@@ -98,7 +111,7 @@ def parse_md_to_cells(content, tab='pytorch'):
 
             # Decide whether to include this code cell
             code_src = '\n'.join(code_lines)
-            if cell_tab is None or cell_tab == 'all' or cell_tab == tab:
+            if _tab_matches(cell_tab, tab):
                 if code_src.strip():
                     cells.append(make_code_cell(code_src))
 
@@ -138,6 +151,46 @@ def parse_md_to_cells(content, tab='pytorch'):
         cells.append(make_md_cell(' '))
 
     return cells
+
+
+def _fix_malformed_opening(content):
+    """Fix files that start with bare {.python .input} without leading ```.
+
+    Some d2l files start with:
+        {.python .input}
+        %load_ext d2lbook.tab
+        tab.interact_select([...])
+        ```
+
+    This is a d2lbook setup block that should be completely removed.
+    """
+    lines = content.split('\n')
+    if lines and lines[0].strip() in ('{.python .input}',
+                                       '{.python .input  n=1}',
+                                       '{.python .input  n=2}'):
+        # Find the closing ``` and skip everything up to and including it
+        for j in range(1, len(lines)):
+            if lines[j].startswith('```'):
+                content = '\n'.join(lines[j + 1:])
+                break
+    return content
+
+
+def _tab_matches(cell_tab, target_tab):
+    """Check if a cell's tab specification matches the target tab.
+
+    Handles:
+    - None (no tab specified) -> include
+    - 'all' -> include
+    - Single tab like 'pytorch' -> exact match
+    - Multiple tabs like 'mxnet, pytorch' -> check if target is in list
+    - 'pytorch, mxnet, tensorflow' -> check if target is in list
+    """
+    if cell_tab is None or cell_tab == 'all':
+        return True
+    # Split by comma and strip whitespace
+    tabs = [t.strip() for t in cell_tab.split(',')]
+    return target_tab in tabs
 
 
 def make_md_cell(source):
