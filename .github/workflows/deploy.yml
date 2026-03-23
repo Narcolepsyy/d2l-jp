@@ -36,11 +36,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y librsvg2-bin
 
-      # Disable notebook evaluation since we don't have GPU/frameworks in CI.
-      # This follows the d2l.ai approach but skips the eval step.
+      # Disable notebook evaluation and Colab/SageMaker integration
+      # since we don't have GPU/frameworks in CI.
       - name: Configure build
         run: |
           sed -i 's/eval_notebook = True/eval_notebook = False/' config.ini
+          # Remove [colab], [sagemaker], and [slides] sections entirely.
+          # These trigger notebook eval internally which crashes without frameworks.
+          sed -i '/^\[colab\]/,$d' config.ini
 
       # Following the original d2l.ai build pipeline (build_html.sh):
       # 1. Build RST from markdown
