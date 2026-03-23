@@ -36,20 +36,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y librsvg2-bin
 
-      # Disable notebook evaluation and Colab/SageMaker integration
-      # since we don't have GPU/frameworks in CI.
+      # Disable notebook evaluation since we don't have GPU/frameworks in CI.
       - name: Configure build
         run: |
           sed -i 's/eval_notebook = True/eval_notebook = False/' config.ini
-          # Remove [colab], [sagemaker], and [slides] sections entirely.
-          # These trigger notebook eval internally which crashes without frameworks.
-          sed -i '/^\[colab\]/,$d' config.ini
 
-      # Following the original d2l.ai build pipeline (build_html.sh):
-      # 1. Build RST from markdown
-      # 2. Copy frontpage assets
-      # 3. Build HTML from RST
-      # 4. Post-process SVGs and copy frontpage images
+      # Build RST using d2lbook (this works with eval_notebook=False)
       - name: Build RST
         run: d2lbook build rst --tab all
 
@@ -59,17 +51,22 @@ jobs:
             cp static/frontpage/frontpage.html _build/rst_all/
           fi
 
+      # Run sphinx-build directly instead of `d2lbook build html`
+      # because d2lbook's html() always calls colab() → ipynb() → eval()
+      # which crashes without GPU frameworks installed.
       - name: Build HTML
-        run: d2lbook build html --tab all
+        run: |
+          sphinx-build _build/rst_all _build/html -b html -c _build/rst_all
 
       - name: Post-process
         run: |
           # Copy frontpage images (same as original build_html.sh)
           if [ -d static/frontpage/_images ]; then
+            mkdir -p _build/html/_images
             cp -r static/frontpage/_images/* _build/html/_images/
           fi
           # Optimize SVGs (same as original build_html.sh)
-          for fn in $(find _build/html/_images/ -iname '*.svg'); do
+          for fn in $(find _build/html/_images/ -iname '*.svg' 2>/dev/null); do
             if [[ $fn == *'qr_'* ]]; then
               continue
             fi
