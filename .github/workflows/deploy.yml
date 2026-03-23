@@ -26,8 +26,7 @@ jobs:
         with:
           python-version: '3.9'
 
-      # Match the original d2l-ai Docker image (Dockerfile.d2l-builder):
-      # d2lbook==1.0.0 + torch (CPU-only for CI)
+      # Use d2lbook==1.0.0 matching the original d2l-ai Docker images
       - name: Install dependencies
         run: |
           pip install d2lbook==1.0.0
@@ -43,19 +42,29 @@ jobs:
         run: |
           sed -i 's/eval_notebook = True/eval_notebook = False/' config.ini
 
-      # Following the original d2l.ai build pipeline (build_html.sh)
-      - name: Build
+      # Pre-populate d2lbook's eval cache with stub ipynb files.
+      # This makes d2lbook skip the notedown md→ipynb conversion which
+      # crashes on {.python .input} code fences without S3 cache.
+      - name: Generate eval cache
+        run: python3 .github/workflow_scripts/generate_eval_cache.py
+
+      - name: Build RST
+        run: d2lbook build rst --tab pytorch
+
+      - name: Copy frontpage
         run: |
-          rm -rf _build/rst _build/html
-          d2lbook build rst --tab pytorch
           if [ -f static/frontpage/frontpage.html ]; then
             cp static/frontpage/frontpage.html _build/rst/
           fi
-          d2lbook build html --tab pytorch
+
+      - name: Build HTML
+        run: d2lbook build html --tab pytorch
+
+      - name: Post-process
+        run: |
           if [ -d static/frontpage/_images ]; then
-            cp -r static/frontpage/_images/* _build/html/_images/
+            cp -r static/frontpage/_images/* _build/html/_images/ 2>/dev/null || true
           fi
-          # Optimize SVGs
           for fn in $(find _build/html/_images/ -iname '*.svg' 2>/dev/null); do
             if [[ $fn == *'qr_'* ]]; then continue; fi
             rsvg-convert -z 1 -f svg -o tmp.svg "$fn" && mv tmp.svg "$fn"
