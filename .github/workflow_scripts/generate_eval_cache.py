@@ -149,7 +149,7 @@ def make_md_cell(source):
     return {
         "cell_type": "markdown",
         "metadata": {},
-        "source": source.split('\n') if source else ['']
+        "source": _lines_with_newlines(source)
     }
 
 
@@ -160,8 +160,17 @@ def make_code_cell(source):
         "execution_count": None,
         "metadata": {},
         "outputs": [],
-        "source": source.split('\n') if source else ['']
+        "source": _lines_with_newlines(source)
     }
+
+
+def _lines_with_newlines(source):
+    """Split source into lines with trailing newlines (nbformat spec)."""
+    if not source:
+        return ['']
+    lines = source.split('\n')
+    # Each line except the last gets a trailing newline
+    return [line + '\n' for line in lines[:-1]] + [lines[-1]]
 
 
 def create_notebook(cells):
