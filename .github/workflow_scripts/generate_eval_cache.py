@@ -3,67 +3,28 @@
 
 d2lbook's eval() function skips files that already exist in _build/eval/.
 Without cached ipynb files, eval() tries to convert md→ipynb via notedown
-which crashes on {.python .input} code fences.
+which crashes on {.python .input} code fences without S3 cache.
 
-This script creates minimal valid ipynb files so d2lbook skips the conversion.
+This script creates minimal valid ipynb files (with empty cells) so
+d2lbook skips the conversion. Cells are empty to avoid triggering
+remove_slide_marks() assertions on unmatched bold markers.
 """
 import os
 import json
 import glob
-import re
+import configparser
 
-def md_to_stub_ipynb(md_path):
-    """Convert a markdown file to a minimal ipynb with markdown-only cells."""
-    with open(md_path, 'r', encoding='utf-8') as f:
-        content = f.read()
 
-    # Strip code blocks entirely - we can't evaluate them anyway
-    # Keep only markdown content
-    lines = content.split('\n')
-    cells = []
-    current_md = []
-    in_code_block = False
-
-    for line in lines:
-        if line.startswith('```') and not in_code_block:
-            # Start of code block - flush markdown
-            if current_md:
-                cells.append({
-                    "cell_type": "markdown",
-                    "metadata": {},
-                    "source": [l + '\n' for l in current_md]
-                })
-                current_md = []
-            in_code_block = True
-            # Create empty code cell
-            cells.append({
-                "cell_type": "code",
-                "execution_count": None,
+def create_stub_notebook():
+    """Create a minimal valid ipynb with a single empty markdown cell."""
+    return {
+        "cells": [
+            {
+                "cell_type": "markdown",
                 "metadata": {},
-                "outputs": [],
-                "source": []
-            })
-        elif line.startswith('```') and in_code_block:
-            in_code_block = False
-        elif not in_code_block:
-            current_md.append(line)
-
-    if current_md:
-        cells.append({
-            "cell_type": "markdown",
-            "metadata": {},
-            "source": [l + '\n' for l in current_md]
-        })
-
-    if not cells:
-        cells.append({
-            "cell_type": "markdown",
-            "metadata": {},
-            "source": [""]
-        })
-
-    nb = {
-        "cells": cells,
+                "source": [""]
+            }
+        ],
         "metadata": {
             "kernelspec": {
                 "display_name": "Python 3",
@@ -78,11 +39,9 @@ def md_to_stub_ipynb(md_path):
         "nbformat": 4,
         "nbformat_minor": 5
     }
-    return nb
 
 
 def main():
-    import configparser
     config = configparser.ConfigParser()
     config.read('config.ini')
 
@@ -105,11 +64,11 @@ def main():
     md_files = [f for f in md_files if f not in excluded]
 
     count = 0
+    nb = create_stub_notebook()
     for md_file in sorted(set(md_files)):
         ipynb_path = os.path.join(eval_dir, md_file.replace('.md', '.ipynb'))
         os.makedirs(os.path.dirname(ipynb_path), exist_ok=True)
 
-        nb = md_to_stub_ipynb(md_file)
         with open(ipynb_path, 'w', encoding='utf-8') as f:
             json.dump(nb, f, indent=1, ensure_ascii=False)
         count += 1
