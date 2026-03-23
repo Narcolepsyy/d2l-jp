@@ -47,7 +47,7 @@ jobs:
       # Pre-populate d2lbook's eval cache with stub ipynb files.
       # d2lbook skips md→ipynb conversion when _build/eval/ already has files.
       - name: Generate eval cache
-        run: python3 .github/workflow_scripts/generate_eval_cache.py
+        run: python3 .github/workflow_scripts/generate_eval_cache.py pytorch
 
       - name: Build RST
         run: d2lbook build rst --tab pytorch
