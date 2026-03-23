@@ -34,8 +34,8 @@ jobs:
           pip install .
           # Pin compatible versions for sphinx bibtex support
           pip install sphinxcontrib-bibtex==2.5.0 pybtex==0.24.0
-          # SEO extensions
-          pip install sphinx-sitemap sphinxext-opengraph
+          # SEO extensions + jQuery (Sphinx 5.x dropped bundled jQuery)
+          pip install sphinx-sitemap sphinxext-opengraph sphinxcontrib-jquery
 
       - name: Install system dependencies
         run: |
