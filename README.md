@@ -6,7 +6,7 @@
 
 [![Continuous Integration](https://github.com/d2l-ai/d2l-en/actions/workflows/ci.yml/badge.svg)](https://github.com/d2l-ai/d2l-en/actions/workflows/ci.yml)
 
-[Book website](https://d2l.ai/) | [STAT 157 Course at UC Berkeley](http://courses.d2l.ai/berkeley-stat-157/index.html)
+[Book website](https://d2l-jp.me/) | [STAT 157 Course at UC Berkeley](http://courses.d2l.ai/berkeley-stat-157/index.html)
 
 <h5 align="center"><i>ディープラーニングを理解する最良の方法は、実際に手を動かして学ぶことです。</i></h5>
 
