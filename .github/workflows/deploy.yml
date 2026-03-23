@@ -62,6 +62,9 @@ jobs:
           # --- SEO Configuration ---
           language = 'ja'
 
+          # jQuery (Sphinx 5.x dropped bundled jQuery)
+          extensions.append('sphinxcontrib.jquery')
+
           # Sitemap generation
           extensions.append('sphinx_sitemap')
           html_baseurl = 'https://d2l-jp.me/'
