@@ -72,4 +72,4 @@
 
 このオープンソースの本に含まれるサンプルコードおよび参照コードは、修正版 MIT ライセンスの下で公開されています。[LICENSE-SAMPLECODE](LICENSE-SAMPLECODE) ファイルを参照してください。
 
-[Chinese version](https://github.com/d2l-ai/d2l-zh) | [Discuss and report issues](https://discuss.d2l.ai/) | [Code of conduct](CODE_OF_CONDUCT.md)\n
+[Chinese version](https://github.com/d2l-ai/d2l-zh) | [Discuss and report issues](https://discuss.d2l.ai/) | [Code of conduct](CODE_OF_CONDUCT.md)
