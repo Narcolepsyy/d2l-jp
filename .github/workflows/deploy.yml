@@ -65,6 +65,10 @@ jobs:
 
       - name: Post-process
         run: |
+          # Copy CNAME for custom domain
+          if [ -f CNAME ]; then
+            cp CNAME _build/html/
+          fi
           if [ -d static/frontpage/_images ]; then
             mkdir -p _build/html/_images
             cp -r static/frontpage/_images/* _build/html/_images/ 2>/dev/null || true
