@@ -36,22 +36,28 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y librsvg2-bin
 
-      # Following the original d2l.ai build pipeline:
+      # Disable notebook evaluation since we don't have GPU/frameworks in CI.
+      # This follows the d2l.ai approach but skips the eval step.
+      - name: Configure build
+        run: |
+          sed -i 's/eval_notebook = True/eval_notebook = False/' config.ini
+
+      # Following the original d2l.ai build pipeline (build_html.sh):
       # 1. Build RST from markdown
       # 2. Copy frontpage assets
       # 3. Build HTML from RST
       # 4. Post-process SVGs and copy frontpage images
       - name: Build RST
-        run: d2lbook build rst --tab pytorch
+        run: d2lbook build rst --tab all
 
       - name: Copy frontpage
         run: |
           if [ -f static/frontpage/frontpage.html ]; then
-            cp static/frontpage/frontpage.html _build/rst_pytorch/
+            cp static/frontpage/frontpage.html _build/rst_all/
           fi
 
       - name: Build HTML
-        run: d2lbook build html --tab pytorch
+        run: d2lbook build html --tab all
 
       - name: Post-process
         run: |
