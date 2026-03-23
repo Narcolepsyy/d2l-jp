@@ -132,6 +132,8 @@ jobs:
             if [[ $fn == *'qr_'* ]]; then continue; fi
             rsvg-convert -z 1 -f svg -o tmp.svg "$fn" && mv tmp.svg "$fn"
           done
+          # Package built Jupyter notebooks as downloadable zip
+          cd _build/eval && zip -r ../../_build/html/d2l-jp.zip . -x '.*' && cd ../..
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
