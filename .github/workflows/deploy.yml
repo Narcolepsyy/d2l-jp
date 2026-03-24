@@ -61,6 +61,8 @@ jobs:
 
           # --- SEO Configuration ---
           language = 'ja'
+          html_title = 'ディープラーニングを深く学ぶ'
+          html_short_title = 'D2L 日本語版'
 
           # jQuery (Sphinx 5.x dropped bundled jQuery)
           extensions.append('sphinxcontrib.jquery')
@@ -184,6 +186,12 @@ jobs:
 
           # Inject hreflang tags for multilingual SEO
           find _build/html -name '*.html' -exec sed -i 's|</head>|<link rel="alternate" hreflang="ja" href="https://d2l-jp.me/" />\n<link rel="alternate" hreflang="en" href="https://d2l.ai/" />\n<link rel="alternate" hreflang="zh" href="https://zh.d2l.ai/" />\n<link rel="alternate" hreflang="x-default" href="https://d2l.ai/" />\n</head>|' {} \;
+
+          # Inject per-page SEO tags (canonical URLs, meta descriptions, clean titles)
+          python3 .github/workflow_scripts/inject_seo_tags.py
+
+          # Page speed optimizations (lazy loading, defer JS, resource hints, async fonts)
+          python3 .github/workflow_scripts/optimize_pagespeed.py
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
