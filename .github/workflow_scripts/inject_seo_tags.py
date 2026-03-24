@@ -199,6 +199,16 @@ def process_file(filepath, build_dir):
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(content)
 
+    # 4. Add favicon if not present
+    if 'rel="icon"' not in content and 'rel="shortcut icon"' not in content:
+        favicon_tag = '<link rel="icon" type="image/png" href="/_static/favicon.png" />'
+        content = content.replace("</head>", f"{favicon_tag}\n</head>")
+        modified = True
+
+    if modified:
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(content)
+
     return modified
 
 

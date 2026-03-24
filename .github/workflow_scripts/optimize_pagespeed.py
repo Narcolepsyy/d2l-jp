@@ -26,10 +26,9 @@ def add_lazy_loading(html):
     - The first image on the page (likely above the fold / LCP)
     - Logo images in the header
     """
-    img_count = 0
+    img_count = [0]
 
     def replace_img(m):
-        nonlocal img_count
         tag = m.group(0)
 
         # Skip if already has loading attribute
@@ -40,10 +39,10 @@ def add_lazy_loading(html):
         if 'class="logo"' in tag or "favicon" in tag:
             return tag
 
-        img_count += 1
+        img_count[0] += 1
 
         # Skip first image (likely above-the-fold / LCP candidate)
-        if img_count <= 1:
+        if img_count[0] <= 1:
             return tag
 
         # Add lazy loading and decoding
