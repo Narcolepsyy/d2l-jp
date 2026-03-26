@@ -547,17 +547,4 @@ $$
 1. $\int_1^2 \frac{1}{x} \;dx$ はいくらか？
 2. 変数変換公式を用いて、$\int_0^{\sqrt{\pi}}x\sin(x^2)\;dx$ を積分せよ。
 3. $\int_{[0,1]^2} xy \;dx\;dy$ はいくらか？
-4. 変数変換公式を用いて $\int_0^2\int_0^1xy(x^2-y^2)/(x^2+y^2)^3\;dy\;dx$ と $\int_0^1\int_0^2f(x, y) = xy(x^2-y^2)/(x^2+y^2)^3\;dx\;dy$ を計算し、それらが異なることを確かめよ。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/414)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1092)
-:end_tab:
-
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1093)
-:end_tab:\n
+4. 変数変換公式を用いて $\int_0^2\int_0^1xy(x^2-y^2)/(x^2+y^2)^3\;dy\;dx$ と $\int_0^1\int_0^2f(x, y) = xy(x^2-y^2)/(x^2+y^2)^3\;dx\;dy$ を計算し、それらが異なることを確かめよ。\n

@@ -581,12 +581,4 @@ Kaggle への結果提出方法は
 ## 演習
 
 1. この Kaggle コンペティションで CIFAR-10 の完全なデータセットを使いなさい。ハイパーパラメータを `batch_size = 128`, `num_epochs = 100`, `lr = 0.1`, `lr_period = 50`, `lr_decay = 0.1` に設定しなさい。このコンペティションでどの程度の精度と順位を達成できるか調べなさい。さらに改善できますか？
-1. 画像拡張を使わない場合、どの程度の精度が得られますか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/379)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1479)
-:end_tab:\n
+1. 画像拡張を使わない場合、どの程度の精度が得られますか？\n

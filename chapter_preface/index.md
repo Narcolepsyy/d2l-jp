@@ -57,7 +57,6 @@
 (ii) 実際に応用機械学習研究者となるための出発点として、十分な技術的深さを備えていること
 (iii) 実行可能なコードを含み、実践で問題を*どのように*解くかを読者に示すこと
 (iv) 私たち自身だけでなく、広いコミュニティを通じても迅速に更新できること
-(v) 技術的詳細について対話的に議論し、質問に答えるための [フォーラム](https://discuss.d2l.ai/c/5) が併設されていること
 
 これらの目標は、しばしば互いに衝突した。
 数式、定理、引用は LaTeX で管理・整形するのが最適である。
@@ -267,7 +266,6 @@ Joe Blitzstein 氏による確率と推論に関する [書籍](https://www.amaz
 ### ノートブック、Webサイト、GitHub、フォーラム
 
 すべてのノートブックは [D2L.ai のWebサイト](https://d2l.ai) と [GitHub](https://github.com/d2l-ai/d2l-en) からダウンロードできる。
-本書に関連して、[discuss.d2l.ai](https://discuss.d2l.ai/c/5) に議論フォーラムを開設した。
 本書のどの節についても質問があるときは、各ノートブックの末尾にある関連議論ページへのリンクをたどることができる。
 
 
@@ -344,22 +342,5 @@ pggPL, RohanKarthikeyan, Ryan Choi, and Likun Lei.
 
 ## 演習
 
-1. 本書の議論フォーラム [discuss.d2l.ai](https://discuss.d2l.ai/) にアカウントを登録すること。
 1. 自分のコンピュータに Python をインストールすること。
-1. 節の下部にあるリンクからフォーラムへ移動し、著者やより広いコミュニティと交流しながら、助けを求めたり、本書について議論したり、質問への答えを見つけたりしてほしい。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/18)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/20)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/186)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/17963)
-:end_tab:\n
+1. 節の下部にあるリンクからフォーラムへ移動し、著者やより広いコミュニティと交流しながら、助けを求めたり、本書について議論したり、質問への答えを見つけたりしてほしい。\n

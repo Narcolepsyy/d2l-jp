@@ -86,5 +86,3 @@ beam search の計算コストは $\mathcal{O}(k\left|\mathcal{Y}\right|T')$ で
 1. exhaustive search を beam search の特殊な種類として扱うことはできますか。なぜですか、なぜではありませんか。
 1. :numref:`sec_seq2seq` の機械翻訳問題に beam search を適用してください。beam size は翻訳結果と予測速度にどのような影響を与えますか。
 1. :numref:`sec_rnn-scratch` では、ユーザが与えたプレフィックスに続くテキストを生成するために言語モデルを使いました。これはどの種類の探索戦略を使っていますか。改善できますか。
-
-[Discussions](https://discuss.d2l.ai/t/338)\n

@@ -321,16 +321,4 @@ $$
 1. モメンタムのハイパーパラメータと学習率の他の組み合わせを使い、異なる実験結果を観察して分析せよ。
 1. 複数の固有値を持つ2次問題、すなわち $f(x) = \frac{1}{2} \sum_i \lambda_i x_i^2$、たとえば $\lambda_i = 2^{-i}$ に対して、勾配降下法とモメンタムを試せ。初期値 $x_i = 1$ のときに $x$ の値がどのように減少するかをプロットせよ。
 1. $h(\mathbf{x}) = \frac{1}{2} \mathbf{x}^\top \mathbf{Q} \mathbf{x} + \mathbf{x}^\top \mathbf{c} + b$ の最小値と最小化点を導出せよ。
-1. モメンタム付き確率的勾配降下法を行うと何が変わるか。モメンタム付きミニバッチ確率的勾配降下法を使うと何が起こるか。パラメータを変えて実験せよ。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/354)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1070)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1071)
-:end_tab:\n
+1. モメンタム付き確率的勾配降下法を行うと何が変わるか。モメンタム付きミニバッチ確率的勾配降下法を使うと何が起こるか。パラメータを変えて実験せよ。\n

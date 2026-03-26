@@ -285,12 +285,4 @@ $\mathbf{W}^\top$ と $\mathbf{W}$ を掛けます。
 ## 演習
 
 1. :numref:`subsec-connection-to-mat-transposition` では、畳み込みの入力 `X` と転置畳み込みの出力 `Z` は同じ形状を持ちます。では、それらは同じ値でしょうか。なぜですか。
-1. 畳み込みを実装するのに行列積を使うのは効率的でしょうか。なぜですか。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/376)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1450)
-:end_tab:\n
+1. 畳み込みを実装するのに行列積を使うのは効率的でしょうか。なぜですか。\n

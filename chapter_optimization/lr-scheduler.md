@@ -495,16 +495,4 @@ train(net, train_iter, test_iter, num_epochs, lr,
 1. 学習率の減衰指数を変えると収束はどう変わりますか。実験では `PolyScheduler` を使うと便利です。
 1. コサインスケジューラを大規模なコンピュータビジョン問題、たとえば ImageNet の学習に適用してください。他のスケジューラと比べて性能にどのような影響がありますか。
 1. ウォームアップはどのくらいの長さにすべきでしょうか。
-1. 最適化とサンプリングを結びつけられますか。まずは :citet:`Welling.Teh.2011` の確率的勾配ランジュバン動力学に関する結果を使ってみてください。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/359)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1080)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1081)
-:end_tab:\n
+1. 最適化とサンプリングを結びつけられますか。まずは :citet:`Welling.Teh.2011` の確率的勾配ランジュバン動力学に関する結果を使ってみてください。\n

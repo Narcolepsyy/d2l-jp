@@ -318,20 +318,4 @@ with d2l.try_gpu():
     1. 学習率やその他の学習設定（たとえば初期化やエポック数）を調整する。
 1. 改良したネットワークを元の MNIST データセットで試してみましょう。
 1. 異なる入力（たとえばセーターやコート）に対する LeNet の第1層と第2層の活性化を表示しましょう。
-1. ネットワークに大きく異なる画像（たとえば猫、車、あるいはランダムノイズ）を入力すると、活性化はどうなりますか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/73)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/74)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/275)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18000)
-:end_tab:\n
+1. ネットワークに大きく異なる画像（たとえば猫、車、あるいはランダムノイズ）を入力すると、活性化はどうなりますか？\n

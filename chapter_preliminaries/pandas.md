@@ -7,9 +7,9 @@ tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 :label:`sec_pandas`
 
 これまで、私たちはすぐに使えるテンソルとして届く合成データを扱ってきました。  
-しかし、現実世界で深層学習を適用するには、任意の形式で保存された雑然としたデータを取り出し、必要に応じて前処理しなければなりません。  
-幸いなことに、*pandas* [ライブラリ](https://pandas.pydata.org/) はその大部分を担ってくれます。  
-この節は、適切な *pandas* [チュートリアル](https://pandas.pydata.org/pandas-docs/stable/user_guide/10min.html) の代わりにはなりませんが、よく使う基本的な処理についての速習になります。
+現実世界で深層学習を適用するには、さまざまな形式で保存された雑多なデータを取り込み、必要に応じて前処理を行う必要があります。
+幸いなことに、*pandas* [ライブラリ](https://pandas.pydata.org/) はその大部分を自動化・簡略化してくれます。
+この節は pandas の包括的な [チュートリアル](https://pandas.pydata.org/pandas-docs/stable/user_guide/10min.html) ではありませんが、よく使われる基本的なデータ処理についての速習になります。
 
 ## データセットの読み込み
 
@@ -50,9 +50,9 @@ print(data)
 
 お気づきかもしれませんが、`pandas` は CSV の `NA` の値をすべて、特別な `NaN`（*not a number*）値に置き換えました。  
 これは、たとえば "3,,,270000" のように、項目が空欄の場合にも起こります。  
-これらは *欠損値* と呼ばれ、データサイエンス分野における「悩みの種」のようなもので、あなたのキャリアを通じてずっと向き合うことになる厄介な問題です。  
-文脈に応じて、欠損値は *補完* か *削除* によって扱われます。  
-補完では欠損値をその値の推定値で置き換え、削除では欠損値を含む行または列を単純に捨てます。
+これらは *欠損値* と呼ばれ、データサイエンスにおける難所の一つです。あなたのキャリアを通じて向き合い続けることになる厄介な問題と言えるでしょう。
+文脈に応じて、欠損値は *補完* (imputation) か *削除* (deletion) によって処理されます。
+補完では欠損値を推定値で置き換え、削除では欠損値を含む行または列をデータセットから除外します。
 
 以下に、よく使われる補完のヒューリスティックを示します。  
 [**カテゴリ型の入力欄では、`NaN` を1つのカテゴリとして扱うことができます。**]  
@@ -135,20 +135,4 @@ X, y
 1. 列番号ではなく列名によってデータ列をインデックス指定し、選択してみましょう。pandas の [indexing](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html) のドキュメントには、その方法の詳細が載っています。
 1. この方法でどれくらい大きなデータセットまで読み込めると思いますか。どのような制約があるでしょうか。ヒント：データの読み込み時間、表現、処理、メモリ使用量を考えてみてください。自分のノートパソコンで試してみましょう。サーバー上で試すとどうなりますか。
 1. カテゴリ数が非常に多いデータをどのように扱いますか。カテゴリラベルがすべて一意だったらどうでしょうか。後者も含めるべきでしょうか。
-1. pandas の代替として何が考えられますか。ファイルから NumPy テンソルを読み込む方法はどうでしょうか。[Pillow](https://python-pillow.org/)、つまり Python Imaging Library も調べてみましょう。 
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/28)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/29)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/195)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/17967)
-:end_tab:\n
+1. pandas の代替として何が考えられますか。ファイルから NumPy テンソルを読み込む方法はどうでしょうか。[Pillow](https://python-pillow.org/)、つまり Python Imaging Library も調べてみましょう。 \n

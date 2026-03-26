@@ -118,20 +118,4 @@ show_heatmaps(attention_weights, xlabel='Keys', ylabel='Queries')
 1. 古典的なデータベースで使われる近似的な（キー、クエリ）一致を再実装したいとします。どの attention 関数を選びますか？ 
 1. attention 関数が $a(\mathbf{q}, \mathbf{k}_i) = \mathbf{q}^\top \mathbf{k}_i$ で与えられ、かつ $i = 1, \ldots, m$ に対して $\mathbf{k}_i = \mathbf{v}_i$ であるとします。:eqref:`eq_softmax_attention` における softmax 正規化を用いたときのキー上の確率分布を $p(\mathbf{k}_i; \mathbf{q})$ と表します。$\nabla_{\mathbf{q}} \mathop{\textrm{Attention}}(\mathbf{q}, \mathcal{D}) = \textrm{Cov}_{p(\mathbf{k}_i; \mathbf{q})}[\mathbf{k}_i]$ を証明しなさい。
 1. 注意機構を用いた微分可能な検索エンジンを設計しなさい。 
-1. Squeeze and Excitation Networks :cite:`Hu.Shen.Sun.2018` の設計を見直し、注意機構の観点から解釈しなさい。 
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/1596)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1592)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1710)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18024)
-:end_tab:\n
+1. Squeeze and Excitation Networks :cite:`Hu.Shen.Sun.2018` の設計を見直し、注意機構の観点から解釈しなさい。 \n

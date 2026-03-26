@@ -629,20 +629,4 @@ d2l.show_heatmaps(d2l.reshape(attention_weights, (1, 1, 2, 10)),
 
 1. `DotProductAttention` のコードを修正して、距離ベースのアテンションを実装せよ。効率的な実装には、キーの二乗ノルム $\|\mathbf{k}_i\|^2$ だけが必要であることに注意せよ。 
 1. 行列を用いて次元を調整することで、異なる次元のクエリとキーを扱えるように内積アテンションを修正せよ。 
-1. 計算コストは、キー、クエリ、値の次元およびその個数に対してどのようにスケールするか。メモリ帯域幅の要件についてはどうか。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/346)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1064)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/3867)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18027)
-:end_tab:\n
+1. 計算コストは、キー、クエリ、値の次元およびその個数に対してどのようにスケールするか。メモリ帯域幅の要件についてはどうか。\n

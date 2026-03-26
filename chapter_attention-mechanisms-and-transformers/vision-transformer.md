@@ -407,12 +407,4 @@ Swin Transformerは画像サイズに対する二次的な計算複雑性を
 
 1. `img_size` の値は学習時間にどのように影響するか。
 1. “&lt;cls&gt;” トークン表現を出力へ射影する代わりに、平均化したパッチ表現をどのように射影するか。これを実装し、精度への影響を調べよ。
-1. ハイパーパラメータを調整して、vision Transformerの精度を改善できるか。
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/8943)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18032)
-:end_tab:\n
+1. ハイパーパラメータを調整して、vision Transformerの精度を改善できるか。\n

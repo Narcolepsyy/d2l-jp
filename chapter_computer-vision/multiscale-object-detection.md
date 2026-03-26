@@ -163,13 +163,4 @@ display_anchors(fmap_w=1, fmap_h=1, s=[0.8])
 
 1. :numref:`sec_alexnet` での議論によれば、深層ニューラルネットワークは、画像に対して抽象度が高まる階層的な特徴を学習します。マルチスケール物体検出では、異なるスケールの特徴マップは異なる抽象度のレベルに対応するのでしょうか。なぜそう言えるのか、あるいは言えないのか。
 1. :numref:`subsec_multiscale-anchor-boxes` の実験の最初のスケール（`fmap_w=4, fmap_h=4`）で、重なりうる一様分布のアンカーボックスを生成しなさい。
-1. 形状が $1 \times c \times h \times w$ の特徴マップ変数が与えられたとします。ここで、$c$, $h$, $w$ はそれぞれ特徴マップのチャネル数、高さ、幅です。この変数をアンカーボックスのクラスとオフセットにどのように変換できますか。出力の形状はどうなりますか。
-
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/371)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1607)
-:end_tab:\n
+1. 形状が $1 \times c \times h \times w$ の特徴マップ変数が与えられたとします。ここで、$c$, $h$, $w$ はそれぞれ特徴マップのチャネル数、高さ、幅です。この変数をアンカーボックスのクラスとオフセットにどのように変換できますか。出力の形状はどうなりますか。\n

@@ -423,20 +423,4 @@ GoogLeNet の重要な特徴は、先行モデルよりも計算コストが*低
 1. GoogLeNet が動作するために必要な最小の画像サイズはどれくらいですか？
 1. Fashion-MNIST のネイティブ解像度である $28 \times 28$ ピクセルで動作する GoogLeNet の変種を設計できますか？ その場合、ネットワークの stem、body、head をどのように変更する必要がありますか。あるいは、変更は不要でしょうか？
 1. AlexNet、VGG、NiN、GoogLeNet のモデルパラメータサイズを比較してください。後者2つのネットワークアーキテクチャは、どのようにしてモデルパラメータサイズを大幅に削減しているのでしょうか？
-1. GoogLeNet と AlexNet に必要な計算量を比較してください。これは、たとえばメモリ容量、メモリ帯域幅、キャッシュサイズ、計算量、特殊演算の利点といった観点で、アクセラレータチップの設計にどのような影響を与えるでしょうか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/81)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/82)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/316)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18004)
-:end_tab:\n
+1. GoogLeNet と AlexNet に必要な計算量を比較してください。これは、たとえばメモリ容量、メモリ帯域幅、キャッシュサイズ、計算量、特殊演算の利点といった観点で、アクセラレータチップの設計にどのような影響を与えるでしょうか？\n

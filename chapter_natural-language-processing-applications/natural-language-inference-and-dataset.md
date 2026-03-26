@@ -275,12 +275,4 @@ for X, Y in train_iter:
 ## 演習
 
 1. 機械翻訳は長い間、出力翻訳と正解翻訳の表面的な $n$-gram の一致に基づいて評価されてきました。自然言語推論を用いて、機械翻訳結果を評価する指標を設計できますか？
-1. 語彙サイズを小さくするには、どのようにハイパーパラメータを変更すればよいでしょうか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/394)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1388)
-:end_tab:\n
+1. 語彙サイズを小さくするには、どのようにハイパーパラメータを変更すればよいでしょうか？\n

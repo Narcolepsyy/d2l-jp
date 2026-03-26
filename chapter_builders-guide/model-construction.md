@@ -738,20 +738,4 @@ chimera.apply(params, X)
 
 1. `MySequential` をPythonのリストにモジュールを保存するよう変更すると、どのような問題が起こりますか？
 1. 2つのモジュール、たとえば `net1` と `net2` を引数に取り、順伝播で両方のネットワークの連結出力を返すモジュールを実装してください。これは*並列モジュール*とも呼ばれます。
-1. 同じネットワークの複数インスタンスを連結したいとします。同じモジュールの複数インスタンスを生成するファクトリ関数を実装し、それを使ってより大きなネットワークを構築してください。
-
-:begin_tab:`mxnet`
-[議論](https://discuss.d2l.ai/t/54)
-:end_tab:
-
-:begin_tab:`pytorch`
-[議論](https://discuss.d2l.ai/t/55)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[議論](https://discuss.d2l.ai/t/264)
-:end_tab:
-
-:begin_tab:`jax`
-[議論](https://discuss.d2l.ai/t/17989)
-:end_tab:\n
+1. 同じネットワークの複数インスタンスを連結したいとします。同じモジュールの複数インスタンスを生成するファクトリ関数を実装し、それを使ってより大きなネットワークを構築してください。\n

@@ -321,20 +321,4 @@ Y_clone == Y
 
 1. 学習済みモデルを別のデバイスにデプロイする必要がない場合でも、モデルパラメータを保存する実用上の利点は何ですか？
 1. 異なるアーキテクチャを持つネットワークに組み込むために、ネットワークの一部だけを再利用したいとします。たとえば、以前のネットワークの最初の2層を新しいネットワークで使うには、どのようにすればよいでしょうか？
-1. ネットワークのアーキテクチャとパラメータを保存するには、どのようにすればよいでしょうか？ アーキテクチャにはどのような制約を課しますか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/60)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/61)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/327)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/17994)
-:end_tab:\n
+1. ネットワークのアーキテクチャとパラメータを保存するには、どのようにすればよいでしょうか？ アーキテクチャにはどのような制約を課しますか？\n

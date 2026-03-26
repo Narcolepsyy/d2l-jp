@@ -32,6 +32,3 @@ Colab は自動的に GPU インスタンスへの接続を要求する。
 
 1. Google Colab を使って、この本の任意の節を開いてみよう。
 1. Google Colab を使って、GPU を必要とする任意の節を編集して実行してみよう。
-
-
-[議論](https://discuss.d2l.ai/t/424)\n

@@ -414,12 +414,4 @@ train(net_D, net_G, data_iter, num_epochs, lr_D, lr_G,
 
 ## 演習
 
-* 生成器が勝つ、すなわち有限サンプル上で識別器が2つの分布を区別できなくなるような平衡は存在するでしょうか？
-
-:begin_tab:`mxnet`
-[議論](https://discuss.d2l.ai/t/408)
-:end_tab:
-
-:begin_tab:`pytorch`
-[議論](https://discuss.d2l.ai/t/1082)
-:end_tab:\n
+* 生成器が勝つ、すなわち有限サンプル上で識別器が2つの分布を区別できなくなるような平衡は存在するでしょうか？\n

@@ -672,17 +672,4 @@ $$
 0.3 & 0.1 & 5.0 & 0.0 \\
 1.0 & 0.2 & 0.0 & 1.8
 \end{bmatrix}.
-$$
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/411)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1086)
-:end_tab:
-
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1087)
-:end_tab:\n
+$$\n

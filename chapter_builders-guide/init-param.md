@@ -395,20 +395,4 @@ net.layers[1].weights[0]
 
 ## 演習
 
-さらに多くの組み込み初期化子についてオンラインドキュメントを調べてみましょう。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/8089)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/8090)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/8091)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/17991)
-:end_tab:\n
+さらに多くの組み込み初期化子についてオンラインドキュメントを調べてみましょう。\n

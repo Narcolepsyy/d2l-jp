@@ -336,20 +336,4 @@ Y
 ## 演習
 
 1. 入力を受け取りテンソル縮約を計算する層を設計せよ。つまり、$y_k = \sum_{i, j} W_{ijk} x_i x_j$ を返す層である。
-1. データのフーリエ係数の前半を返す層を設計せよ。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/58)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/59)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/279)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/17993)
-:end_tab:\n
+1. データのフーリエ係数の前半を返す層を設計せよ。\n

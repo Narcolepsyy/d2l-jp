@@ -442,13 +442,4 @@ def load_data_voc(batch_size, crop_size):
 ## 演習
 
 1. セマンティックセグメンテーションは、自動運転車や医用画像診断にどのように応用できますか？ 他の応用例も考えられますか？
-1. :numref:`sec_image_augmentation` のデータ拡張の説明を思い出してください。画像分類で用いられる画像拡張手法のうち、セマンティックセグメンテーションには適用できないものはどれでしょうか？
-
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/375)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1480)
-:end_tab:\n
+1. :numref:`sec_image_augmentation` のデータ拡張の説明を思い出してください。画像分類で用いられる画像拡張手法のうち、セマンティックセグメンテーションには適用できないものはどれでしょうか？\n

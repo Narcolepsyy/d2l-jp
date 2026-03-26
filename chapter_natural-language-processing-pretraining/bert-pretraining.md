@@ -292,12 +292,4 @@ encoded_pair.shape, encoded_pair_cls.shape, encoded_pair_crane[0][:3]
 ## 演習
 
 1. 実験から、マスク付き言語モデルの損失が次文予測の損失よりかなり大きいことがわかります。なぜでしょうか。
-2. BERT 入力系列の最大長を 512（元の BERT モデルと同じ）に設定します。元の BERT モデル、たとえば $\textrm{BERT}_{\textrm{LARGE}}$ の設定を使ってください。この節を実行するとエラーは発生しますか。なぜでしょうか。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/390)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1497)
-:end_tab:\n
+2. BERT 入力系列の最大長を 512（元の BERT モデルと同じ）に設定します。元の BERT モデル、たとえば $\textrm{BERT}_{\textrm{LARGE}}$ の設定を使ってください。この節を実行するとエラーは発生しますか。なぜでしょうか。\n

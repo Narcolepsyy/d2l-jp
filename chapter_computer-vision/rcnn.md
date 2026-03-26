@@ -263,12 +263,4 @@ region of interest pooling 層を
 ## 演習
 
 1. 物体検出を、バウンディングボックスとクラス確率の予測のような単一の回帰問題として定式化できるでしょうか？ YOLO モデルの設計を参照してもよいです :cite:`Redmon.Divvala.Girshick.ea.2016`。
-1. 単発マルチボックス検出と、この節で紹介した手法を比較してください。主な違いは何でしょうか？ :citet:`Zhao.Zheng.Xu.ea.2019` の図 2 を参照してもよいです。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/374)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1409)
-:end_tab:\n
+1. 単発マルチボックス検出と、この節で紹介した手法を比較してください。主な違いは何でしょうか？ :citet:`Zhao.Zheng.Xu.ea.2019` の図 2 を参照してもよいです。\n

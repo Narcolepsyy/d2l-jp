@@ -400,12 +400,4 @@ train(num_gpus=2, batch_size=256, lr=0.2)
 1. $k$ 枚のGPUで学習するとき、ミニバッチサイズを $b$ から $k \cdot b$ に変更し、つまりGPU数に応じて拡大しなさい。
 1. 異なる学習率で精度を比較しなさい。GPU数に応じてどのようにスケールするか。
 1. 異なるGPU上の異なるパラメータを集約する、より効率的な `allreduce` 関数を実装しなさい。なぜそれがより効率的なのか。
-1. 複数GPUでのテスト精度計算を実装しなさい。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/364)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1669)
-:end_tab:\n
+1. 複数GPUでのテスト精度計算を実装しなさい。\n

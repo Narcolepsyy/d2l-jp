@@ -364,12 +364,4 @@ hotdog_w.shape
 weight = pretrained_net.fc.weight
 hotdog_w = torch.split(weight.data, 1, dim=0)[934]
 hotdog_w.shape
-```
-
-:begin_tab:`mxnet`
-[議論](https://discuss.d2l.ai/t/368)
-:end_tab:
-
-:begin_tab:`pytorch`
-[議論](https://discuss.d2l.ai/t/1439)
-:end_tab:\n
+```\n

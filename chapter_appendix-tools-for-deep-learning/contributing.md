@@ -126,5 +126,3 @@ git push
 1. `d2l-ai/d2l-en` リポジトリに star と fork をする。
 1. 改善が必要だと思う点（たとえば、参照の欠落）を見つけたら、pull request を提出する。 
 1. 通常は、新しいブランチを使って pull request を作成するほうがよい方法である。[Git branching](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell) でその方法を学びましょう。
-
-[Discussions](https://discuss.d2l.ai/t/426)\n

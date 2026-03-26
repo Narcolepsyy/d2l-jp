@@ -98,8 +98,4 @@ train_data[0]
 
 ## 演習
 
-* 提供された `CTRDataset` を使って、Criteo と Avazu のデータセットを読み込めますか。なお、Criteo データセットには実数値特徴が含まれているため、コードを少し修正する必要があるかもしれません。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/405)
-:end_tab:\n
+* 提供された `CTRDataset` を使って、Criteo と Avazu のデータセットを読み込めますか。なお、Criteo データセットには実数値特徴が含まれているため、コードを少し修正する必要があるかもしれません。\n

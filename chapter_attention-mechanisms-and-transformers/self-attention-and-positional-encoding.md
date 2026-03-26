@@ -490,20 +490,4 @@ CNNと自己注意はいずれも並列計算の恩恵を受け、
 
 1. 位置エンコーディングを用いた自己注意層を積み重ねることで系列を表現する深いアーキテクチャを設計するとします。どのような問題が起こりうるでしょうか？
 1. 学習可能な位置エンコーディング手法を設計できますか？
-1. 自己注意で比較されるクエリとキーの間の異なるオフセットに応じて、異なる学習済み埋め込みを割り当てることはできますか？ ヒント：相対位置埋め込みを参照してください :cite:`shaw2018self,huang2018music`。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/1651)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1652)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/3870)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18030)
-:end_tab:\n
+1. 自己注意で比較されるクエリとキーの間の異なるオフセットに応じて、異なる学習済み埋め込みを割り当てることはできますか？ ヒント：相対位置埋め込みを参照してください :cite:`shaw2018self,huang2018music`。\n

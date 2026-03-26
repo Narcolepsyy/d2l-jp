@@ -222,17 +222,4 @@ d2l.train_ch11(yogi, init_adam_states(feature_dim),
 1. 学習率を調整し、実験結果を観察して分析しなさい。
 1. バイアス補正を必要としないように、モーメンタムと2次モーメントの更新を書き換えられるか。
 1. 収束に伴って学習率 $\eta$ を下げる必要があるのはなぜか。
-1. Adam が発散し、Yogi が収束する例を構成してみなさい。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/358)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1078)
-:end_tab:
-
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1079)
-:end_tab:\n
+1. Adam が発散し、Yogi が収束する例を構成してみなさい。\n

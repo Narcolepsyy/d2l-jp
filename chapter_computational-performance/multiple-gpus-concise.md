@@ -280,14 +280,4 @@ train(net, num_gpus=2, batch_size=512, lr=0.2)
 :begin_tab:`pytorch`
 1. この節では ResNet-18 を使いました。エポック数、バッチサイズ、学習率を変えてみてください。計算により多くのGPUを使ってみましょう。16個のGPU（たとえば AWS p2.16xlarge インスタンス）で試すとどうなりますか？
 1. ときには、デバイスごとに計算能力が異なることがあります。GPU と CPU を同時に使うこともできます。どのように仕事を分担すべきでしょうか？その労力に見合う価値はあるでしょうか？なぜですか？なぜではないですか？
-:end_tab:
-
-
-
-:begin_tab:`mxnet`
-[議論](https://discuss.d2l.ai/t/365)
-:end_tab:
-
-:begin_tab:`pytorch`
-[議論](https://discuss.d2l.ai/t/1403)
 :end_tab:\n

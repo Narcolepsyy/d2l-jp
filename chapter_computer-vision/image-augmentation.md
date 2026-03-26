@@ -420,12 +420,4 @@ train_with_data_aug(train_augs, test_augs, net)
 
 1. 画像拡張を使わずにモデルを学習してください: `train_with_data_aug(test_augs, test_augs)`. 画像拡張を使う場合と使わない場合の訓練精度とテスト精度を比較してください。この比較実験は、画像拡張が過学習を緩和できるという主張を支持できますか。なぜですか。
 1. CIFAR-10 データセットでのモデル学習に、複数の異なる画像拡張手法を組み合わせてください。テスト精度は向上しますか。 
-1. 深層学習フレームワークのオンラインドキュメントを参照してください。ほかにどのような画像拡張手法が提供されていますか。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/367)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1404)
-:end_tab:\n
+1. 深層学習フレームワークのオンラインドキュメントを参照してください。ほかにどのような画像拡張手法が提供されていますか。\n

@@ -192,12 +192,4 @@ with d2l.Benchmark('Run on GPU1 and copy to CPU'):
 1. 個々の演算子のワークロードが十分に小さい場合、単一の CPU や GPU 上でも並列化が役立ちます。これを検証する実験を設計しなさい。
 1. CPU、GPU、および両デバイス間の通信を用いた並列計算の実験を設計しなさい。
 1. NVIDIA の [Nsight](https://developer.nvidia.com/nsight-compute-2019_5) のようなデバッガを使って、コードが効率的であることを確認しなさい。
-1. より複雑なデータ依存関係を含む計算タスクを設計し、性能を改善しつつ正しい結果が得られるかどうかを確認する実験を行いなさい。
-
-:begin_tab:`mxnet`
-[議論](https://discuss.d2l.ai/t/362)
-:end_tab:
-
-:begin_tab:`pytorch`
-[議論](https://discuss.d2l.ai/t/1681)
-:end_tab:\n
+1. より複雑なデータ依存関係を含む計算タスクを設計し、性能を改善しつつ正しい結果が得られるかどうかを確認する実験を行いなさい。\n

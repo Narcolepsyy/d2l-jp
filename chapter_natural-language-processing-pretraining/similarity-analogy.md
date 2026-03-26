@@ -263,12 +263,4 @@ get_analogy('do', 'did', 'go', glove_6b50d)
 ## 演習
 
 1. `TokenEmbedding('wiki.en')` を使って fastText の結果を試してください。
-1. 語彙が非常に大きい場合、類似単語の検索や単語アナロジーの補完をより高速に行うにはどうすればよいでしょうか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/387)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1336)
-:end_tab:\n
+1. 語彙が非常に大きい場合、類似単語の検索や単語アナロジーの補完をより高速に行うにはどうすればよいでしょうか？\n

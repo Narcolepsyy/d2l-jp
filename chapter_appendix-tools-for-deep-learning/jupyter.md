@@ -123,6 +123,3 @@ jupyter nbextension enable execute_time/ExecuteTime
 1. ローカルマシン上の Jupyter Notebook を使って、本書のコードを編集・実行しなさい。
 1. ポートフォワーディングを介して、Jupyter Notebook を *リモートで* 使い、本書のコードを編集・実行しなさい。
 1. 2 つの正方行列 $\mathbb{R}^{1024 \times 1024}$ に対して、操作 $\mathbf{A}^\top \mathbf{B}$ と $\mathbf{A} \mathbf{B}$ の実行時間を比較しなさい。どちらが速いか。
-
-
-[Discussions](https://discuss.d2l.ai/t/421)\n

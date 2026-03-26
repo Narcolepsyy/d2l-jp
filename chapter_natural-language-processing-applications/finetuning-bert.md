@@ -188,5 +188,3 @@ Stanford Question Answering Dataset (SQuAD v1.1) は
 1. ニュース記事向けの検索エンジンアルゴリズムを設計しましょう。システムがクエリ（たとえば "oil industry during the coronavirus outbreak"）を受け取ったら、そのクエリに最も関連するニュース記事の順位付きリストを返すものとします。大量のニュース記事と多数のクエリがあると仮定します。問題を簡単にするため、各クエリに対して最も関連する記事がラベル付けされていると仮定します。負例サンプリング（:numref:`subsec_negative-sampling` を参照）と BERT をアルゴリズム設計にどのように適用できますか？
 1. 言語モデルの学習に BERT をどのように活用できますか？
 1. 機械翻訳に BERT を活用できますか？
-
-[Discussions](https://discuss.d2l.ai/t/396)\n

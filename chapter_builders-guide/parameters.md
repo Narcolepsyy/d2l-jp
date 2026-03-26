@@ -345,20 +345,4 @@ print(len(params['params']) == 3)
 
 1. :numref:`sec_model_construction` で定義した `NestMLP` モデルを使い、各層のパラメータにアクセスしなさい。
 1. 共有パラメータ層を含むMLPを構成して学習しなさい。学習の過程で、各層のモデルパラメータと勾配を観察しなさい。
-1. パラメータ共有はなぜ良い考えなのか。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/56)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/57)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/269)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/17990)
-:end_tab:\n
+1. パラメータ共有はなぜ良い考えなのか。\n

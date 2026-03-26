@@ -424,12 +424,4 @@ d2l.show_images(imgs[::3] + imgs[1::3] + imgs[2::3], 3, n, scale=2);
 1. 実験で転置畳み込み層にXavier初期化を用いると、結果はどのように変わりますか？
 1. ハイパーパラメータを調整することで、モデルの精度をさらに改善できますか？
 1. テスト画像内のすべてのピクセルのクラスを予測してください。
-1. 元の完全畳み込みネットワークの論文では、いくつかの中間CNN層の出力も使用しています :cite:`Long.Shelhamer.Darrell.2015`。このアイデアを実装してみてください。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/377)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1582)
-:end_tab:\n
+1. 元の完全畳み込みネットワークの論文では、いくつかの中間CNN層の出力も使用しています :cite:`Long.Shelhamer.Darrell.2015`。このアイデアを実装してみてください。\n

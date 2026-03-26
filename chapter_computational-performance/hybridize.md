@@ -397,19 +397,4 @@ net(x)
 
 :begin_tab:`pytorch,tensorflow` 
 1. 以前の章で興味を持ったモデルを見直してください。再実装することで計算性能を改善できますか。
-:end_tab:
-
-
-
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/360)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/2490)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/2492)
 :end_tab:\n

@@ -172,16 +172,4 @@ class BiGRU(d2l.RNN):
 
 1. 異なる方向で異なる数の隠れユニットを使う場合、$\mathbf{H}_t$ の形状はどのように変わりますか？
 1. 複数の隠れ層を持つ双方向 RNN を設計しなさい。
-1. 自然言語では多義性が一般的です。たとえば、単語 "bank" は “i went to the bank to deposit cash” と “i went to the bank to sit down” という文脈で異なる意味を持ちます。文脈系列と単語が与えられたときに、その単語の正しい文脈におけるベクトル表現を返すようなニューラルネットワークモデルをどのように設計できますか？ 多義性の扱いにはどのような種類のニューラルアーキテクチャが好まれますか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/339)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1059)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18019)
-:end_tab:\n
+1. 自然言語では多義性が一般的です。たとえば、単語 "bank" は “i went to the bank to deposit cash” と “i went to the bank to sit down” という文脈で異なる意味を持ちます。文脈系列と単語が与えられたときに、その単語の正しい文脈におけるベクトル表現を返すようなニューラルネットワークモデルをどのように設計できますか？ 多義性の扱いにはどのような種類のニューラルアーキテクチャが好まれますか？\n

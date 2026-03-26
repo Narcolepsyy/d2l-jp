@@ -220,20 +220,4 @@ def apply_init(self, dummy_input, key):
 
 1. 最初の層には入力次元を指定するが、その後の層には指定しない場合、どうなりますか？ すぐに初期化されますか？
 1. 次元が一致しないように指定した場合、どうなりますか？
-1. 入力の次元が変化する場合、何をする必要がありますか？ ヒント: パラメータ共有を見てください。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/280)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/8092)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/281)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/17992)
-:end_tab:\n
+1. 入力の次元が変化する場合、何をする必要がありますか？ ヒント: パラメータ共有を見てください。\n

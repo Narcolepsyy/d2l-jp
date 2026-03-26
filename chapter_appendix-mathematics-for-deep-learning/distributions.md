@@ -832,17 +832,4 @@ $$
 
 1. 独立な二項確率変数 $X, Y \sim \textrm{Binomial}(16, 1/2)$ の差 $X-Y$ である確率変数の標準偏差はいくつか。
 2. ポアソン確率変数 $X \sim \textrm{Poisson}(\lambda)$ を取り、$\lambda \rightarrow \infty$ のときの $(X - \lambda)/\sqrt{\lambda}$ を考えると、これが近似的にガウス分布になることを示せる。なぜこれは自然なのか。
-3. $n$ 個の要素を持つ2つの離散一様確率変数の和の確率質量関数は何か。
-
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/417)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1098)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1099)
-:end_tab:\n
+3. $n$ 個の要素を持つ2つの離散一様確率変数の和の確率質量関数は何か。\n

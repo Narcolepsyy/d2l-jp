@@ -278,20 +278,4 @@ RNNを用いて
 ## 演習
 
 1. ニューラルネットワークを用いてエンコーダ--デコーダアーキテクチャを実装すると仮定します。エンコーダとデコーダは同じ種類のニューラルネットワークでなければならないでしょうか。
-1. 機械翻訳以外に、エンコーダ--デコーダアーキテクチャを適用できる別の応用例を考えられますか。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/341)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1061)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/3864)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18021)
-:end_tab:\n
+1. 機械翻訳以外に、エンコーダ--デコーダアーキテクチャを適用できる別の応用例を考えられますか。\n

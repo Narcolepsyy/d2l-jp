@@ -237,20 +237,4 @@ model.predict('it has', 20, data.vocab)
 ## 演習
 
 1. 高水準APIを使ってRNNモデルを過学習させることはできますか？
-1. :numref:`sec_sequence` の自己回帰モデルをRNNを用いて実装してください。
-
-:begin_tab:`mxnet`
-[議論](https://discuss.d2l.ai/t/335)
-:end_tab:
-
-:begin_tab:`pytorch`
-[議論](https://discuss.d2l.ai/t/1053)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[議論](https://discuss.d2l.ai/t/2211)
-:end_tab:
-
-:begin_tab:`jax`
-[議論](https://discuss.d2l.ai/t/18015)
-:end_tab:\n
+1. :numref:`sec_sequence` の自己回帰モデルをRNNを用いて実装してください。\n

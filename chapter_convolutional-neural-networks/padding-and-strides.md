@@ -349,20 +349,4 @@ comp_conv2d(conv2d, X).shape
 1. ミラーリングパディング、すなわち境界値をそのまま鏡映してテンソルを拡張するパディングを実装しなさい。 
 1. 1 より大きいストライドの計算上の利点は何か？
 1. 1 より大きいストライドには、統計的にどのような利点がありうるか？
-1. ストライド $\frac{1}{2}$ はどのように実装するか？ それは何に対応するか？ どのような場合に有用か？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/67)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/68)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/272)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/17997)
-:end_tab:\n
+1. ストライド $\frac{1}{2}$ はどのように実装するか？ それは何に対応するか？ どのような場合に有用か？\n

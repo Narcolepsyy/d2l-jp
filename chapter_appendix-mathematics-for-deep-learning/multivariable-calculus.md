@@ -880,18 +880,4 @@ $$
 2. $\mathbf{v}$ を $n$ 次元ベクトルとする。$\frac{\partial}{\partial\mathbf{v}}\|\mathbf{v}\|_2$ は何か。
 3. $L(x, y) = \log(e^x + e^y)$ とする。  勾配を求めよ。  勾配の成分の和はいくつか。
 4. $f(x, y) = x^2y + xy^2$ とする。臨界点が $(0,0)$ のみであることを示せ。  また、$f(x, x)$ を考えることで、$(0,0)$ が最大値か最小値か、それともどちらでもないかを判定せよ。
-5. $f(\mathbf{x}) = g(\mathbf{x}) + h(\mathbf{x})$ を最小化しているとする。  $\nabla f = 0$ の条件を $g$ と $h$ の観点から幾何学的にどう解釈できるか。
-
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/413)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1090)
-:end_tab:
-
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1091)
-:end_tab:\n
+5. $f(\mathbf{x}) = g(\mathbf{x}) + h(\mathbf{x})$ を最小化しているとする。  $\nabla f = 0$ の条件を $g$ と $h$ の観点から幾何学的にどう解釈できるか。\n

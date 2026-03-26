@@ -106,8 +106,4 @@ d2l.train_ch13(net, train_iter, test_iter, loss, trainer, num_epochs, devices)
 ## 演習
 
 * Avazu、MovieLens、Criteo などの他のデータセットで FM を試せますか？
-* 埋め込みサイズを変えて性能への影響を確認してください。行列分解の場合と同様の傾向が観察できますか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/406)
-:end_tab:\n
+* 埋め込みサイズを変えて性能への影響を確認してください。行列分解の場合と同様の傾向が観察できますか？\n

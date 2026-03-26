@@ -509,12 +509,4 @@ Kaggle に提出できます。
 ## 演習
 
 1. Kaggle コンペティションの完全なデータセットを使う場合、`batch_size`（バッチサイズ）と `num_epochs`（エポック数）を増やし、他のハイパーパラメータを `lr = 0.01`, `lr_period = 10`, `lr_decay = 0.1` に設定すると、どのような結果が得られますか？
-1. より深い事前学習済みモデルを使うと、より良い結果が得られますか？ハイパーパラメータはどのように調整しますか？さらに結果を改善できますか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/380)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1481)
-:end_tab:\n
+1. より深い事前学習済みモデルを使うと、より良い結果が得られますか？ハイパーパラメータはどのように調整しますか？さらに結果を改善できますか？\n

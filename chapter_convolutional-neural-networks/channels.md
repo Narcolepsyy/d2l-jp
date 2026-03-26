@@ -189,20 +189,4 @@ assert float(d2l.reduce_sum(d2l.abs(Y1 - Y2))) < 1e-6
 1. あなたの課題は、$k \times k$ カーネルを用いた高速畳み込みを実装することです。候補となるアルゴリズムの 1 つは、ソース上を水平方向に走査し、幅 $k$ の帯を読み込んで、幅 1 の出力帯を 1 値ずつ計算する方法です。別の方法は、幅 $k + \Delta$ の帯を読み込み、幅 $\Delta$ の出力帯を計算することです。なぜ後者のほうが望ましいのでしょうか。$\Delta$ をどれだけ大きく選ぶべきかに上限はありますか。
 1. $c \times c$ の行列があると仮定します。 
     1. 行列が $b$ 個のブロックに分割されているとき、ブロック対角行列との積はどれくらい高速になりますか。
-    1. $b$ 個のブロックをもつことの欠点は何ですか。少なくとも部分的に、それをどう修正できますか。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/69)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/70)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/273)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/17998)
-:end_tab:\n
+    1. $b$ 個のブロックをもつことの欠点は何ですか。少なくとも部分的に、それをどう修正できますか。\n

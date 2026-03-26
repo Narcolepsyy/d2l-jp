@@ -373,5 +373,3 @@ $$\mathbf{x} \leftarrow \mathbf{x} - \eta \textrm{diag}(\mathbf{H})^{-1} \nabla 
     1. 実際の（符号付きの）値ではなく、その絶対値を使え。
     1. 上の問題に適用せよ。
 1. 上のアルゴリズムをいくつかの目的関数（凸でも非凸でもよい）に適用せよ。座標を $45$ 度回転させると何が起こるか。
-
-[Discussions](https://discuss.d2l.ai/t/351)\n

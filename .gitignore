@@ -35,3 +35,4 @@ latex_style/*
 static/latex_style/*
 venv/
 .agent
+_docs

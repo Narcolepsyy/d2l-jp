@@ -224,6 +224,3 @@ jupyter notebook
 1. クラウドは便利であるが、安くはない。費用を抑えるために [spot instances](https://aws.amazon.com/ec2/spot/) を起動する方法を調べてください。
 1. さまざまな GPU サーバーを試してみてください。どれくらい速いだろうか。
 1. マルチ GPU サーバーを試してみてください。どの程度スケールアップできるだろうか。
-
-
-[Discussions](https://discuss.d2l.ai/t/423)\n

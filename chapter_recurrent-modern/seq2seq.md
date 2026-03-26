@@ -862,20 +862,4 @@ $n$-gram を照合する代表的な尺度です。
 1. エンコーダとデコーダの層数または隠れユニット数が異なる場合、デコーダの隠れ状態をどのように初期化できますか？
 1. 学習時に、teacher forcing の代わりに前時刻の予測をデコーダへ入力するように置き換えてください。性能にどのような影響がありますか？
 1. GRUをLSTMに置き換えて実験を再実行してください。
-1. デコーダの出力層を設計する他の方法はありますか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/345)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1062)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/3865)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18022)
-:end_tab:\n
+1. デコーダの出力層を設計する他の方法はありますか？\n

@@ -87,8 +87,4 @@ class HingeLossbRec(gluon.loss.Loss):
 ## 演習
 
 - BPR と hinge loss には、利用可能な変種はありますか？
-- BPR または hinge loss を使用する推薦モデルを見つけられますか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/402)
-:end_tab:\n
+- BPR または hinge loss を使用する推薦モデルを見つけられますか？\n

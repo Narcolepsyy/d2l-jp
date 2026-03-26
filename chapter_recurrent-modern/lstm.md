@@ -512,20 +512,4 @@ LSTM は勾配消失と勾配爆発を緩和できる。
 1. 文字列の系列ではなく、適切な単語を生成するには、モデルをどのように変更する必要があるか。
 1. 与えられた隠れ次元に対して、GRU、LSTM、通常の RNN の計算コストを比較せよ。特に学習時と推論時のコストに注意せよ。
 1. 候補記憶セルは $\tanh$ 関数を用いて値域を $-1$ から $1$ に保つのに、なぜ隠れ状態でも再び $\tanh$ 関数を用いて出力値域を $-1$ から $1$ に保つ必要があるのか。
-1. 文字系列予測ではなく、時系列予測のための LSTM モデルを実装せよ。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/343)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1057)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/3861)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18016)
-:end_tab:\n
+1. 文字系列予測ではなく、時系列予測のための LSTM モデルを実装せよ。\n

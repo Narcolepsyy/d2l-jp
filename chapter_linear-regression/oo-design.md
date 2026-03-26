@@ -24,7 +24,7 @@ tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 それらのオブジェクトと相互作用を定義する
 クラスを作ることから始められます。
 この実装のためのオブジェクト指向設計は、
-説明を大幅に整理してくれますし、あなたのプロジェクトでも使いたくなるかもしれません。
+説明を大幅に整理するだけでなく、実際のプロジェクトでも有用にお使いいただけるでしょう。
 
 
 [PyTorch Lightning](https://www.pytorchlightning.ai/) のようなオープンソースライブラリに着想を得て、
@@ -468,20 +468,4 @@ class Trainer(d2l.HyperParameters):  #@save
 ## 演習
 
 1. [D2Lライブラリ](https://github.com/d2l-ai/d2l-en/tree/master/d2l) に保存されている上記クラスの完全実装を見つけてください。深層学習モデリングにもう少し慣れたら、実装を詳しく読むことを強く勧めます。
-1. `B` クラスの `save_hyperparameters` 文を削除してください。それでも `self.a` と `self.b` を表示できますか？ 任意: `HyperParameters` クラスの完全実装まで読み進めたなら、なぜそうなるのか説明できますか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/6645)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/6646)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/6647)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/17974)
-:end_tab:\n
+1. `B` クラスの `save_hyperparameters` 文を削除してください。それでも `self.a` と `self.b` を表示できますか？ 任意: `HyperParameters` クラスの完全実装まで読み進めたなら、なぜそうなるのか説明できますか？\n

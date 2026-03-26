@@ -447,20 +447,4 @@ d2l.check_shape(attention.init_with_output(d2l.get_key(), X, Y, Y, valid_lens,
 ## 演習
 
 1. この実験における複数ヘッドのアテンション重みを可視化しなさい。
-1. マルチヘッドアテンションに基づく学習済みモデルがあり、予測速度を上げるために重要度の低いアテンションヘッドを剪定したいとします。アテンションヘッドの重要度を測定する実験をどのように設計できますか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/1634)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1635)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/3869)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18029)
-:end_tab:\n
+1. マルチヘッドアテンションに基づく学習済みモデルがあり、予測速度を上げるために重要度の低いアテンションヘッドを剪定したいとします。アテンションヘッドの重要度を測定する実験をどのように設計できますか？\n

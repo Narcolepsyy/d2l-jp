@@ -448,9 +448,9 @@ if tab.selected('pytorch', 'mxnet', 'tensorflow'):
 
 ここまでで、単純な線形関数を構成するものについて
 一つの考え方に触れました。
-しかし、単純な非線形関数であっても、状況ははるかに複雑になりえます。これを見るために、[再生核ヒルベルト空間（RKHS）](https://en.wikipedia.org/wiki/Reproducing_kernel_Hilbert_space) の概念は、
+しかし、単純な非線形関数であっても、状況ははるかに複雑になりえます。これを理解する上で有用なのが[再生核ヒルベルト空間（RKHS）](https://en.wikipedia.org/wiki/Reproducing_kernel_Hilbert_space)の概念であり、これを使うことで、
 線形関数のために導入された道具を
-非線形の文脈に適用することを可能にします。
+非線形の文脈に適用できるようになります。
 残念ながら、RKHS ベースのアルゴリズムは
 大規模で高次元のデータに対しては
 スケーリングがうまくいかない傾向があります。
@@ -474,20 +474,4 @@ if tab.selected('pytorch', 'mxnet', 'tensorflow'):
 1. 罰則として $\|\mathbf{w}\|^2$ の代わりに $\sum_i |w_i|$ を用いた場合（$\ell_1$ 正則化）、更新方程式はどのようになりますか？
 1. $\|\mathbf{w}\|^2 = \mathbf{w}^\top \mathbf{w}$ であることは分かっています。行列に対しても同様の式を見つけられますか（:numref:`subsec_lin-algebra-norms` のフロベニウスノルムを参照）？
 1. 訓練誤差と汎化誤差の関係を復習しなさい。重み減衰に加えて、訓練の増加や適切な複雑さを持つモデルの使用以外に、過学習に対処するのに役立つ方法は何でしょうか？
-1. ベイズ統計では、事前分布と尤度の積を用いて $P(w \mid x) \propto P(x \mid w) P(w)$ により事後分布を得ます。$P(w)$ を正則化とどのように対応づけられますか？
-
-:begin_tab:`mxnet`
-[議論](https://discuss.d2l.ai/t/98)
-:end_tab:
-
-:begin_tab:`pytorch`
-[議論](https://discuss.d2l.ai/t/99)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[議論](https://discuss.d2l.ai/t/236)
-:end_tab:
-
-:begin_tab:`jax`
-[議論](https://discuss.d2l.ai/t/17979)
-:end_tab:\n
+1. ベイズ統計では、事前分布と尤度の積を用いて $P(w \mid x) \propto P(x \mid w) P(w)$ により事後分布を得ます。$P(w)$ を正則化とどのように対応づけられますか？\n

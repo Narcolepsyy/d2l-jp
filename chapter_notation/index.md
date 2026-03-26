@@ -85,7 +85,3 @@
 * $\rho(X, Y)$: $X$ と $Y$ のピアソン相関係数。$\frac{\textrm{Cov}(X, Y)}{\sigma_X \sigma_Y}$ に等しい
 * $H(X)$: 確率変数 $X$ のエントロピー
 * $D_{\textrm{KL}}(P\|Q)$: 分布 $Q$ から分布 $P$ への KL ダイバージェンス（または相対エントロピー）
-
-
-
-[Discussions](https://discuss.d2l.ai/t/25)\n

@@ -339,20 +339,4 @@ print('target:', data.tgt_vocab.to_tokens(d2l.astype(tgt[0], d2l.int32)))
 ## 演習
 
 1. `_tokenize` メソッドの `max_examples` 引数にさまざまな値を試してみてください。これはソース言語とターゲット言語の語彙サイズにどのような影響を与えますか？
-1. 中国語や日本語のように、単語境界を示す記号（たとえばスペース）がない言語もあります。そのような場合でも単語単位のトークン化は良い考えでしょうか？ なぜそう言えるか、あるいはなぜそう言えないかを説明してください。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/344)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1060)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/3863)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18020)
-:end_tab:\n
+1. 中国語や日本語のように、単語境界を示す記号（たとえばスペース）がない言語もあります。そのような場合でも単語単位のトークン化は良い考えでしょうか？ なぜそう言えるか、あるいはなぜそう言えないかを説明してください。\n

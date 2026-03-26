@@ -708,16 +708,4 @@ loss
     * サルに不満なので、酔っぱらいの植字工に置き換えた。彼は、整合的ではないものの、単語を生成できる。代わりに、語彙 $2,000$ 語からランダムに1語を選ぶとする。英語での単語の平均長を4.5文字と仮定する。今度は1文字あたり何ビットのランダム性を観測するか。
     * それでも結果に不満なので、植字工を高品質な言語モデルに置き換える。その言語モデルは現在、1語あたり15程度の低い perplexity を達成できる。言語モデルの文字レベルの *perplexity* は、各確率が単語中の1文字に対応する確率の集合の幾何平均の逆数として定義される。具体的には、与えられた単語の長さが $l$ なら、  $\textrm{PPL}(\textrm{word}) = \left[\prod_i p(\textrm{character}_i)\right]^{ -\frac{1}{l}} = \exp \left[ - \frac{1}{l} \sum_i{\log p(\textrm{character}_i)} \right].$  テスト単語の長さが4.5文字だと仮定すると、今度は1文字あたり何ビットのランダム性を観測するか。
 1. なぜ $I(X, Y) = H(X) - H(X \mid Y)$ が直感的に成り立つのか説明せよ。次に、両辺を同時分布に関する期待値として表すことで、これが真であることを示せ。
-1. 2つのガウス分布 $\mathcal{N}(\mu_1, \sigma_1^2)$ と $\mathcal{N}(\mu_2, \sigma_2^2)$ の間の KL ダイバージェンスは何か。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/420)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1104)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1105)
-:end_tab:\n
+1. 2つのガウス分布 $\mathcal{N}(\mu_1, \sigma_1^2)$ と $\mathcal{N}(\mu_2, \sigma_2^2)$ の間の KL ダイバージェンスは何か。\n

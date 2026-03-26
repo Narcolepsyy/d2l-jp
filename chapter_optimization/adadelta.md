@@ -147,17 +147,4 @@ d2l.train_concise_ch11(trainer, {'learning_rate':5.0, 'rho': 0.9}, data_iter)
 1. $\rho$ の値を調整してみてください。何が起こりますか？
 1. $\mathbf{g}_t'$ を使わずにアルゴリズムを実装する方法を示してください。なぜそれがよい考えなのでしょうか？
 1. Adadelta は本当に学習率不要なのでしょうか？ Adadelta を破綻させる最適化問題を見つけられますか？
-1. Adadelta と Adagrad、RMS prop を比較し、それらの収束挙動について議論してください。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/357)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1076)
-:end_tab:
-
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1077)
-:end_tab:\n
+1. Adadelta と Adagrad、RMS prop を比較し、それらの収束挙動について議論してください。\n

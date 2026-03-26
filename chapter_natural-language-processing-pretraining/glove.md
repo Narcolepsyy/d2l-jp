@@ -105,6 +105,3 @@ $$\mathbf{u}_j^\top \mathbf{v}_i + b_i + c_j \approx \log\, x_{ij}.$$
 
 1. 単語 $w_i$ と $w_j$ が同じコンテキストウィンドウ内で共起する場合、テキスト系列におけるそれらの距離をどのように用いて、条件付き確率 $p_{ij}$ を計算する方法を再設計できるか。ヒント: GloVe 論文 :cite:`Pennington.Socher.Manning.2014` の第4.2節を参照せよ。
 1. 任意の単語について、その中心語バイアスと文脈語バイアスは GloVe において数学的に等価か。なぜか？
-
-
-[Discussions](https://discuss.d2l.ai/t/385)\n

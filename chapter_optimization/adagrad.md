@@ -211,16 +211,4 @@ d2l.train_concise_ch11(trainer, {'learning_rate' : 0.1}, data_iter)
 1. 行列 $\mathbf{M}$ の固有値 $\lambda_i$ が少なくとも一つの $j$ の選び方について $|\lambda_i - \mathbf{M}_{jj}| \leq \sum_{k \neq j} |\mathbf{M}_{jk}|$ を満たすことを述べる [Gerschgorin の円定理](https://en.wikipedia.org/wiki/Gershgorin_circle_theorem) を証明せよ。
 1. Gerschgorin の定理は、対角前処理された行列 $\textrm{diag}^{-\frac{1}{2}}(\mathbf{M}) \mathbf{M} \textrm{diag}^{-\frac{1}{2}}(\mathbf{M})$ の固有値について何を教えてくれるか。
 1. Fashion-MNIST に適用した :numref:`sec_lenet` のような適切な深層ネットワークで Adagrad を試してみよ。
-1. 学習率の減衰をより緩やかにするには、Adagrad をどのように修正する必要があるか。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/355)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1072)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1073)
-:end_tab:\n
+1. 学習率の減衰をより緩やかにするには、Adagrad をどのように修正する必要があるか。\n

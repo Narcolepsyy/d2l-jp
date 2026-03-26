@@ -507,12 +507,4 @@ class BERTModel(nn.Module):
 ## 演習
 
 1. 他の条件がすべて同じなら、マスク付き言語モデルは左から右への言語モデルよりも、収束に必要な事前学習ステップ数が多くなるだろうか、それとも少なくなるだろうか。なぜか。
-1. BERT の元の実装では、`BERTEncoder`（`d2l.TransformerEncoderBlock` 経由）の位置ごとのフィードフォワードネットワークと `MaskLM` の全結合層の両方で、活性化関数としてガウス誤差線形ユニット（GELU） :cite:`Hendrycks.Gimpel.2016` が使われている。GELU と ReLU の違いについて調べよ。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/388)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1490)
-:end_tab:\n
+1. BERT の元の実装では、`BERTEncoder`（`d2l.TransformerEncoderBlock` 経由）の位置ごとのフィードフォワードネットワークと `MaskLM` の全結合層の両方で、活性化関数としてガウス誤差線形ユニット（GELU） :cite:`Hendrycks.Gimpel.2016` が使われている。GELU と ReLU の違いについて調べよ。\n

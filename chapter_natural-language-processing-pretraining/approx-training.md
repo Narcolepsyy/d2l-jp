@@ -95,5 +95,3 @@ $$\sum_{w \in \mathcal{V}} P(w \mid w_c) = 1.$$
 1. Negative sampling では、どのようにノイズ語をサンプリングできますか？
 1. :eqref:`eq_hi-softmax-sum-one` が成り立つことを確認しなさい。
 1. continuous bag of words モデルを、それぞれ negative sampling と hierarchical softmax を用いてどのように学習しますか？
-
-[Discussions](https://discuss.d2l.ai/t/382)\n

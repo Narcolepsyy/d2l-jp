@@ -155,8 +155,4 @@ def split_and_load_ml100k(split_mode='seq-aware', feedback='explicit',
 ## 演習
 
 * これに似た他の推薦データセットにはどのようなものがありますか？
-* MovieLens についてさらに詳しく知るために、[https://movielens.org/](https://movielens.org/) のサイトを見てみましょう。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/399)
-:end_tab:\n
+* MovieLens についてさらに詳しく知るために、[https://movielens.org/](https://movielens.org/) のサイトを見てみましょう。\n

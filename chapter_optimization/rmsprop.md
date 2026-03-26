@@ -175,16 +175,4 @@ d2l.train_concise_ch11(trainer, {'learning_rate': 0.01, 'rho': 0.9},
 1. $\gamma = 1$ とすると、実験的に何が起こるでしょうか？ なぜでしょうか？
 1. 最適化問題を回転させて、$f(\mathbf{x}) = 0.1 (x_1 + x_2)^2 + 2 (x_1 - x_2)^2$ を最小化してみてください。収束はどうなりますか？
 1. Fashion-MNIST での学習など、実際の機械学習問題で RMSProp を試してみてください。学習率の調整方法を変えて実験してみましょう。
-1. 最適化が進むにつれて $\gamma$ を調整したいと思いますか？ RMSProp はこれにどれくらい敏感でしょうか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/356)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1074)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1075)
-:end_tab:\n
+1. 最適化が進むにつれて $\gamma$ を調整したいと思いますか？ RMSProp はこれにどれくらい敏感でしょうか？\n

@@ -1025,16 +1025,4 @@ $$
  * $\left\{\begin{pmatrix}1\\1\\0\end{pmatrix}, \begin{pmatrix}0\\1\\-1\end{pmatrix}, \begin{pmatrix}1\\0\\1\end{pmatrix}\right\}$
 5. ある値 $a, b, c, d$ の選び方に対して、$A = \begin{bmatrix}c\\d\end{bmatrix}\cdot\begin{bmatrix}a & b\end{bmatrix}$ と書ける行列があるとする。真か偽か：このような行列の行列式は常に $0$ である。
 6. ベクトル $e_1 = \begin{bmatrix}1\\0\end{bmatrix}$ と $e_2 = \begin{bmatrix}0\\1\end{bmatrix}$ は直交している。$Ae_1$ と $Ae_2$ が直交するための行列 $A$ の条件は何か？
-7. 任意の行列 $A$ について、$\textrm{tr}(\mathbf{A}^4)$ をアインシュタイン記法でどのように書けるか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/410)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1084)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1085)
-:end_tab:\n
+7. 任意の行列 $A$ について、$\textrm{tr}(\mathbf{A}^4)$ をアインシュタイン記法でどのように書けるか？\n

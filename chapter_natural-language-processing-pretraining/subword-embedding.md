@@ -222,14 +222,4 @@ print(segment_BPE(tokens, symbols))
 1. 例として、英語には約 $3\times 10^8$ 個の可能な $6$-gram がある。サブワードが多すぎるとどのような問題が生じるか。どう対処すればよいか。ヒント: fastText 論文 :cite:`Bojanowski.Grave.Joulin.ea.2017` の Section 3.2 の末尾を参照せよ。
 1. continuous bag-of-words モデルに基づくサブワード埋め込みモデルをどのように設計するか。
 1. サイズ $m$ の語彙を得るには、初期シンボル語彙サイズが $n$ のとき、何回の結合操作が必要か。
-1. バイトペアエンコーディングの考え方を拡張してフレーズを抽出するにはどうすればよいか。
-
-
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/386)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/4587)
-:end_tab:\n
+1. バイトペアエンコーディングの考え方を拡張してフレーズを抽出するにはどうすればよいか。\n

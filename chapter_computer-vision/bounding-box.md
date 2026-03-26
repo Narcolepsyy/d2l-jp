@@ -156,13 +156,4 @@ fig.axes.add_patch(bbox_to_rect(cat_bbox, 'red'));
 ## 演習
 
 1. 別の画像を見つけて、物体を含むバウンディングボックスをラベル付けしてみなさい。バウンディングボックスのラベル付けとカテゴリのラベル付けを比較すると、通常どちらに時間がかかりますか？
-1. `box_corner_to_center` と `box_center_to_corner` の入力引数 `boxes` の最内次元が常に 4 であるのはなぜですか？
-
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/369)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1527)
-:end_tab:\n
+1. `box_corner_to_center` と `box_center_to_corner` の入力引数 `boxes` の最内次元が常に 4 であるのはなぜですか？\n

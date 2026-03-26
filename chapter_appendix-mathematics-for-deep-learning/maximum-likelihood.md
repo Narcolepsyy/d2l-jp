@@ -280,17 +280,4 @@ $$
 
 ## 演習
 1. 非負の確率変数が、ある $\alpha>0$ に対して密度 $\alpha e^{-\alpha x}$ をもつことがわかっているとする。この確率変数から 1 つの観測値として数 $3$ を得た。$\alpha$ の最尤推定値は何でしょうか？
-2. 平均は未知だが分散は $1$ のガウス分布から、サンプル $\{x_i\}_{i=1}^N$ からなるデータセットが与えられているとする。平均の最尤推定値は何でしょうか？
-
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/416)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1096)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1097)
-:end_tab:\n
+2. 平均は未知だが分散は $1$ のガウス分布から、サンプル $\{x_i\}_{i=1}^N$ からなるデータセットが与えられているとする。平均の最尤推定値は何でしょうか？\n

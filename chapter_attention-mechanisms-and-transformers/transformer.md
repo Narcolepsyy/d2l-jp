@@ -1394,20 +1394,4 @@ Transformerモデルの位置ごとのフィードフォワードネットワー
 1. Transformerでスケールド・ドット積注意を加法注意に置き換えるのはよい考えか。なぜか。
 1. 言語モデル化では、Transformerのエンコーダ、デコーダ、あるいは両方のどれを使うべきか。この方法をどのように設計するか。
 1. 入力系列が非常に長い場合、Transformerはどのような課題に直面するか。なぜか。
-1. Transformerの計算効率とメモリ効率をどのように改善するか。ヒント：:citet:`Tay.Dehghani.Bahri.ea.2020` のサーベイ論文を参照してよい。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/348)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1066)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/3871)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18031)
-:end_tab:\n
+1. Transformerの計算効率とメモリ効率をどのように改善するか。ヒント：:citet:`Tay.Dehghani.Bahri.ea.2020` のサーベイ論文を参照してよい。\n

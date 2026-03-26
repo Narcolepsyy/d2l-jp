@@ -421,12 +421,4 @@ len(vocab)
 ## 演習
 
 1. 簡単のため、文の分割にはピリオドのみを区切り文字として使いました。spaCy や NLTK など、他の文分割手法も試してみてください。例として NLTK を使います。まず NLTK をインストールする必要があります: `pip install nltk`。コードでは最初に `import nltk` します。次に、Punkt 文トークナイザをダウンロードします: `nltk.download('punkt')`。`sentences = 'This is great ! Why not ?'` のような文を分割するには、`nltk.tokenize.sent_tokenize(sentences)` を呼び出すと、2つの文文字列からなるリスト `['This is great !', 'Why not ?']` が返ります。
-1. 低頻度トークンを一切除外しない場合、語彙サイズはいくつになりますか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/389)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1496)
-:end_tab:\n
+1. 低頻度トークンを一切除外しない場合、語彙サイズはいくつになりますか？\n

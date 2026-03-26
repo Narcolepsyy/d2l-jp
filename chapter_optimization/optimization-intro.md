@@ -205,16 +205,4 @@ annotate('vanishing gradient', (4, 1), (2, 0.0))
 1. 深層学習の最適化に関わる他の課題として、どのようなものが考えられますか。
 1. （実際の）ボールを（実際の）鞍の上で釣り合わせたいと仮定する。
     1. なぜこれは難しいのか。
-    1. この効果を最適化アルゴリズムにも利用できるか。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/349)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/487)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/489)
-:end_tab:\n
+    1. この効果を最適化アルゴリズムにも利用できるか。\n

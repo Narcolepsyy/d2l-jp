@@ -161,6 +161,3 @@ git pull
 
 1. Amazon SageMaker を使って、GPU を必要とする任意の節を編集して実行しなさい。
 1. ターミナルを開いて、本書のすべてのノートブックを格納しているローカルディレクトリにアクセスしなさい。
-
-
-[Discussions](https://discuss.d2l.ai/t/422)\n

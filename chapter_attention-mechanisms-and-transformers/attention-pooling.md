@@ -243,20 +243,4 @@ Nadaraya--Watson カーネル回帰は、現在のアテンション機構の初
     1. 上の推定値をそのまま使って $(f(\mathbf{x_i}) - y_i)^2$ を直接最小化するとどうなりますか？ ヒント: $y_i$ は $f$ を計算するために使われる項の一部です。
     1. $f(\mathbf{x}_i)$ の推定から $(\mathbf{x}_i, y_i)$ を除外し、カーネル幅について最適化しなさい。それでも過学習は観測されますか？
 1. すべての $\mathbf{x}$ が単位球面上にある、すなわちすべて $\|\mathbf{x}\| = 1$ を満たすと仮定します。指数関数内の $\|\mathbf{x} - \mathbf{x}_i\|^2$ の項を簡単化できますか？ ヒント: これは後で、ドット積アテンションと非常に密接に関係していることが分かります。 
-1. :citet:`mack1982weak` が Nadaraya--Watson 推定の整合性を証明したことを思い出してください。データが増えるにつれて、アテンション機構のスケールをどのくらいの速さで小さくすべきでしょうか？ 答えの直感も述べなさい。これはデータの次元に依存しますか？ どのように依存しますか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/1598)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1599)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/3866)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18026)
-:end_tab:\n
+1. :citet:`mack1982weak` が Nadaraya--Watson 推定の整合性を証明したことを思い出してください。データが増えるにつれて、アテンション機構のスケールをどのくらいの速さで小さくすべきでしょうか？ 答えの直感も述べなさい。これはデータの次元に依存しますか？ どのように依存しますか？\n

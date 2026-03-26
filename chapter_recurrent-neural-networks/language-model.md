@@ -279,20 +279,4 @@ for X, Y in data.train_dataloader():
 1. 各エポックの最初に、最初の数個のトークンを一様ランダムな数だけ捨てる方法を考える。
     1. これは文書上の系列に対して、本当に完全に一様な分布をもたらすか。
     1. さらに一様にするには何をすべきか。 
-1. ある系列例を完全な文にしたい場合、ミニバッチサンプリングではどのような問題が生じるか。どうすれば修正できるか。
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/117)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/118)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1049)
-:end_tab:
-
-:begin_tab:`jax`
-[Discussions](https://discuss.d2l.ai/t/18012)
-:end_tab:\n
+1. ある系列例を完全な文にしたい場合、ミニバッチサンプリングではどのような問題が生じるか。どうすれば修正できるか。\n

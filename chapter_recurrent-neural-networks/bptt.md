@@ -421,5 +421,3 @@ $\partial L / \partial \mathbf{W}_\textrm{hh}$ の両方の計算に
    1. ランダムなベクトル $\mathbf{x} \in \mathbb{R}^n$ に対して、高い確率で $\mathbf{M}^k \mathbf{x}$ が $\mathbf{M}$ の固有ベクトル $\mathbf{v}_1$ に非常によく整列することを証明しなさい。この主張を形式化しなさい。
    1. 上の結果はRNNの勾配にとって何を意味するか。
 1. 勾配クリッピング以外に、再帰型ニューラルネットワークにおける勾配爆発に対処する他の方法を思いつきますか？
-
-[Discussions](https://discuss.d2l.ai/t/334)\n

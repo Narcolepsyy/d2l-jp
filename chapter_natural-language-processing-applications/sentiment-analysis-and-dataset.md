@@ -208,13 +208,4 @@ def load_data_imdb(batch_size, num_steps=500):
 
 
 1. この節で、感情分析モデルの学習を高速化するために変更できるハイパーパラメータは何ですか？
-1. [Amazon reviews](https://snap.stanford.edu/data/web-Amazon.html) のデータセットを、感情分析用のデータイテレータとラベルに読み込む関数を実装できますか？
-
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/391)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1387)
-:end_tab:\n
+1. [Amazon reviews](https://snap.stanford.edu/data/web-Amazon.html) のデータセットを、感情分析用のデータイテレータとラベルに読み込む関数を実装できますか？\n

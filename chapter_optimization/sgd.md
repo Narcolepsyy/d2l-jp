@@ -281,16 +281,4 @@ $${n \choose 1} \frac{1}{n} \left(1-\frac{1}{n}\right)^{n-1} = \frac{n}{n-1} \le
 1. 関数 $f(x_1, x_2) = x_1^2 + 2 x_2^2$ に対して、勾配に正規ノイズを加えることが、$\mathbf{x}$ が正規分布から引かれるときの損失関数 $f(\mathbf{x}, \mathbf{w}) = (x_1 - w_1)^2 + 2 (x_2 - w_2)^2$ を最小化することと等価であることを証明しなさい。
 1. $\{(x_1, y_1), \ldots, (x_n, y_n)\}$ から復元抽出する場合と非復元抽出する場合で、確率的勾配降下法の収束を比較しなさい。
 1. ある勾配（あるいはそれに対応するある座標）が他のすべての勾配より一貫して大きい場合、確率的勾配降下法ソルバをどのように変更しますか？
-1. $f(x) = x^2 (1 + \sin x)$ と仮定します。$f$ には局所最小値がいくつありますか？ それを最小化するために、すべての局所最小値を評価する必要があるように $f$ を変更できますか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/352)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/497)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/1067)
-:end_tab:\n
+1. $f(x) = x^2 (1 + \sin x)$ と仮定します。$f$ には局所最小値がいくつありますか？ それを最小化するために、すべての局所最小値を評価する必要があるように $f$ を変更できますか？\n

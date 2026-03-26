@@ -392,12 +392,4 @@ for name, data in zip(names, batch):
 
 1. サブサンプリングを使わない場合、この節のコードの実行時間はどのように変化しますか？
 1. `RandomGenerator` クラスは `k` 個の乱数サンプリング結果をキャッシュします。`k` を他の値に設定すると、データ読み込み速度にどのような影響がありますか？
-1. この節のコードにおける他のどのハイパーパラメータがデータ読み込み速度に影響しうるでしょうか？
-
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/383)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/1330)
-:end_tab:\n
+1. この節のコードにおける他のどのハイパーパラメータがデータ読み込み速度に影響しうるでしょうか？\n
