@@ -184,8 +184,8 @@ jobs:
           # Package built Jupyter notebooks as downloadable zip
           cd _build/eval && zip -r ../../_build/html/d2l-jp.zip . -x '.*' && cd ../..
           # Copy PDF to deploy output for self-hosting
-          if [ -f _build/latex/d2l-jp.pdf ]; then
-            cp _build/latex/d2l-jp.pdf _build/html/
+          if [ -f static/d2l-jp.pdf ]; then
+            cp static/d2l-jp.pdf _build/html/
           fi
 
           # Inject Google Analytics (gtag.js)
