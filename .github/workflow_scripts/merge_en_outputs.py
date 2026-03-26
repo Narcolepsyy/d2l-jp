@@ -41,8 +41,18 @@ def extract_en_release():
     print("Extracted")
 
 
+def _normalize_source(cell):
+    """Normalize cell source for comparison (strip whitespace, join lines)."""
+    src = "".join(cell.get("source", []))
+    return src.strip()
+
+
 def merge_outputs(jp_eval_dir, tab="pytorch"):
-    """Merge EN outputs into JP notebooks."""
+    """Merge EN outputs into JP notebooks.
+
+    Uses positional matching when cell counts match, and fuzzy source-based
+    matching when they differ (e.g. JP has extra setup cells from tab processing).
+    """
     en_dir = Path(EN_EXTRACT_DIR) / tab
     jp_dir = Path(jp_eval_dir)
 
@@ -80,16 +90,38 @@ def merge_outputs(jp_eval_dir, tab="pytorch"):
             en_code = [c for c in en_nb["cells"] if c["cell_type"] == "code"]
             jp_code = [c for c in jp_nb["cells"] if c["cell_type"] == "code"]
 
-            if len(en_code) != len(jp_code):
-                skipped += 1
+            # Skip if EN has no code cells with outputs
+            en_with_outputs = [c for c in en_code if c.get("outputs")]
+            if not en_with_outputs:
                 continue
 
             cells_added = 0
-            for en_cell, jp_cell in zip(en_code, jp_code):
-                if en_cell.get("outputs"):
-                    jp_cell["outputs"] = en_cell["outputs"]
-                    jp_cell["execution_count"] = en_cell.get("execution_count")
-                    cells_added += 1
+
+            if len(en_code) == len(jp_code):
+                # Fast path: positional matching
+                for en_cell, jp_cell in zip(en_code, jp_code):
+                    if en_cell.get("outputs"):
+                        jp_cell["outputs"] = en_cell["outputs"]
+                        jp_cell["execution_count"] = en_cell.get("execution_count")
+                        cells_added += 1
+            else:
+                # Fuzzy path: match by normalized source content
+                # Build a lookup of JP code cells by their normalized source
+                jp_source_map = {}
+                for jp_cell in jp_code:
+                    src = _normalize_source(jp_cell)
+                    if src:
+                        jp_source_map[src] = jp_cell
+
+                for en_cell in en_code:
+                    if not en_cell.get("outputs"):
+                        continue
+                    en_src = _normalize_source(en_cell)
+                    if en_src and en_src in jp_source_map:
+                        jp_cell = jp_source_map[en_src]
+                        jp_cell["outputs"] = en_cell["outputs"]
+                        jp_cell["execution_count"] = en_cell.get("execution_count")
+                        cells_added += 1
 
             if cells_added > 0:
                 jp_nb_path.write_text(json.dumps(jp_nb, indent=1, ensure_ascii=False))

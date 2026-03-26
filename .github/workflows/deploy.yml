@@ -63,8 +63,13 @@ jobs:
       - name: Merge notebook outputs from d2l-en (all tabs)
         run: python3 .github/workflow_scripts/merge_en_outputs.py _build/eval pytorch mxnet jax tensorflow
 
+      # Merge per-tab notebooks into the default eval dir with tab UI.
+      # Injects Material Design tab selectors so readers can switch frameworks.
+      - name: Merge framework tabs
+        run: python3 .github/workflow_scripts/merge_tabs.py _build/eval pytorch mxnet jax tensorflow
+
       - name: Build RST
-        run: d2lbook build rst
+        run: d2lbook build rst --tab pytorch
 
       # Inject SEO settings into conf.py after d2lbook generates it
       - name: Inject SEO config
