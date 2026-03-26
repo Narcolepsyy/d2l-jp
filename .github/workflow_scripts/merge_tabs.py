@@ -33,7 +33,10 @@ def get_tab_panel_begin(tab, tab_id, default_tab):
 def make_raw_html_md_cell(html):
     """Create a markdown cell with raw RST/HTML."""
     source = f"```eval_rst\n\n.. raw:: html\n\n    {html}\n```"
-    return {"cell_type": "markdown", "metadata": {}, "source": source.split("\n")}
+    # nbformat requires each line except the last to end with \n
+    lines = source.split("\n")
+    source_list = [line + "\n" for line in lines[:-1]] + [lines[-1]]
+    return {"cell_type": "markdown", "metadata": {}, "source": source_list}
 
 
 def merge_chapter_notebook(default_nb_path, tab_nb_paths, tabs, default_tab):
