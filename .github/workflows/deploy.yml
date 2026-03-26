@@ -70,7 +70,7 @@ jobs:
           # Sitemap generation
           extensions.append('sphinx_sitemap')
           html_baseurl = 'https://d2l-jp.me/'
-          sitemap_locales = ['ja']
+          sitemap_locales = [None]
 
           # Open Graph meta tags
           extensions.append('sphinxext.opengraph')
@@ -183,6 +183,9 @@ jobs:
           done
           # Package built Jupyter notebooks as downloadable zip
           cd _build/eval && zip -r ../../_build/html/d2l-jp.zip . -x '.*' && cd ../..
+
+          # Inject Google Analytics (gtag.js)
+          find _build/html -name '*.html' -exec sed -i 's|<head>|<head>\n<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-X354G2ERZT"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('\''js'\'', new Date());\n  gtag('\''config'\'', '\''G-X354G2ERZT'\'');\n</script>|' {} \;
 
           # Inject hreflang tags for multilingual SEO
           find _build/html -name '*.html' -exec sed -i 's|</head>|<link rel="alternate" hreflang="ja" href="https://d2l-jp.me/" />\n<link rel="alternate" hreflang="en" href="https://d2l.ai/" />\n<link rel="alternate" hreflang="zh" href="https://zh.d2l.ai/" />\n<link rel="alternate" hreflang="x-default" href="https://d2l.ai/" />\n</head>|' {} \;
