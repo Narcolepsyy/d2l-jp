@@ -46,13 +46,25 @@ jobs:
         run: |
           sed -i 's/eval_notebook = True/eval_notebook = False/' config.ini
 
-      # Pre-populate d2lbook's eval cache with stub ipynb files.
-      # d2lbook skips md→ipynb conversion when _build/eval/ already has files.
-      - name: Generate eval cache
-        run: python3 .github/workflow_scripts/generate_eval_cache.py pytorch
+      # Pre-populate d2lbook's eval cache with stub ipynb files for all tabs.
+      # d2lbook uses per-tab eval directories:
+      #   pytorch (default) → _build/eval/
+      #   others → _build/eval_<tab>/
+      - name: Generate eval cache (all tabs)
+        run: |
+          python3 .github/workflow_scripts/generate_eval_cache.py pytorch
+          python3 .github/workflow_scripts/generate_eval_cache.py mxnet
+          python3 .github/workflow_scripts/generate_eval_cache.py jax
+          python3 .github/workflow_scripts/generate_eval_cache.py tensorflow
+
+      # Merge pre-executed outputs from d2l-en release into eval caches.
+      # Downloads d2l-en-1.0.3.zip and copies execution outputs (plots, tables,
+      # training curves) for all tabs. Code cells are identical between EN and JP.
+      - name: Merge notebook outputs from d2l-en (all tabs)
+        run: python3 .github/workflow_scripts/merge_en_outputs.py _build/eval pytorch mxnet jax tensorflow
 
       - name: Build RST
-        run: d2lbook build rst --tab pytorch
+        run: d2lbook build rst
 
       # Inject SEO settings into conf.py after d2lbook generates it
       - name: Inject SEO config

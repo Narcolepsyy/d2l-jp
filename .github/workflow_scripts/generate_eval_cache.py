@@ -255,7 +255,15 @@ def main():
     notebooks_pattern = config.get('build', 'notebooks', fallback='*.md */*.md')
     exclusions = config.get('build', 'exclusions', fallback='').split()
 
-    eval_dir = '_build/eval'
+    # d2lbook uses tab-based eval directories:
+    # default tab (pytorch) → _build/eval/
+    # other tabs → _build/eval_<tab>/
+    tabs_str = config.get('build', 'tabs', fallback='pytorch')
+    default_tab = tabs_str.split(',')[0].strip()
+    if tab == default_tab:
+        eval_dir = '_build/eval'
+    else:
+        eval_dir = f'_build/eval_{tab}'
     os.makedirs(eval_dir, exist_ok=True)
 
     # Find all markdown files
