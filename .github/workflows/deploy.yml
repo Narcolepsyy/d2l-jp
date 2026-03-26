@@ -183,6 +183,10 @@ jobs:
           done
           # Package built Jupyter notebooks as downloadable zip
           cd _build/eval && zip -r ../../_build/html/d2l-jp.zip . -x '.*' && cd ../..
+          # Copy PDF to deploy output for self-hosting
+          if [ -f _build/latex/d2l-jp.pdf ]; then
+            cp _build/latex/d2l-jp.pdf _build/html/
+          fi
 
           # Inject Google Analytics (gtag.js)
           find _build/html -name '*.html' -exec sed -i 's|<head>|<head>\n<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-X354G2ERZT"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('\''js'\'', new Date());\n  gtag('\''config'\'', '\''G-X354G2ERZT'\'');\n</script>|' {} \;
