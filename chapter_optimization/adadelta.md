@@ -1,43 +1,43 @@
 # Adadelta
 :label:`sec_adadelta`
 
-Adadelta は AdaGrad (:numref:`sec_adagrad`) のもう一つの変種です。主な違いは、学習率が座標ごとに適応的に変化する度合いを小さくしている点にあります。さらに、伝統的には、変化量そのものを将来の変化の較正に用いるため、学習率を持たない手法だとされています。このアルゴリズムは :citet:`Zeiler.2012` で提案されました。ここまでの前節までのアルゴリズムの議論を踏まえると、かなり素直に理解できます。
+Adadelta は AdaGrad (:numref:`sec_adagrad`) のもう一つの変種である。主な違いは、学習率が座標ごとに適応的に変化する度合いを小さくしている点にある。さらに、伝統的には、変化量そのものを将来の変化の較正に用いるため、学習率を持たない手法だとされている。このアルゴリズムは :citet:`Zeiler.2012` で提案された。ここまでの前節までのアルゴリズムの議論を踏まえると、かなり素直に理解できる。
 
 ## アルゴリズム
 
-要するに、Adadelta は 2 つの状態変数を使います。$\mathbf{s}_t$ は勾配の 2 次モーメントのリーキー平均を保持し、$\Delta\mathbf{x}_t$ はモデル自体のパラメータ変化の 2 次モーメントのリーキー平均を保持します。なお、他の文献や実装との互換性のため、著者らの元の記法と命名をそのまま用いています（モメンタム、Adagrad、RMSProp、Adadelta で同じ目的の変数を表すのに、わざわざ異なるギリシャ文字を使うべき実質的な理由はありません）。
+要するに、Adadelta は 2 つの状態変数を使う。$\mathbf{s}_t$ は勾配の 2 次モーメントのリーキー平均を保持し、$\Delta\mathbf{x}_t$ はモデル自体のパラメータ変化の 2 次モーメントのリーキー平均を保持する。なお、他の文献や実装との互換性のため、著者らの元の記法と命名をそのまま用いている（モメンタム、Adagrad、RMSProp、Adadelta で同じ目的の変数を表すのに、わざわざ異なるギリシャ文字を使うべき実質的な理由はない）。
 
-以下に Adadelta の技術的詳細を示します。ここでのパラメータを $\rho$ とすると、 :numref:`sec_rmsprop` と同様に次のリーキー更新を得ます。
+以下に Adadelta の技術的詳細を示す。ここでのパラメータを $\rho$ とすると、 :numref:`sec_rmsprop` と同様に次のリーキー更新を得る。
 
 $$\begin{aligned}
     \mathbf{s}_t & = \rho \mathbf{s}_{t-1} + (1 - \rho) \mathbf{g}_t^2.
 \end{aligned}$$
 
-:numref:`sec_rmsprop` との違いは、再スケールした勾配 $\mathbf{g}_t'$ を用いて更新を行う点です。すなわち、
+:numref:`sec_rmsprop` との違いは、再スケールした勾配 $\mathbf{g}_t'$ を用いて更新を行う点である。すなわち、
 
 $$\begin{aligned}
     \mathbf{x}_t  & = \mathbf{x}_{t-1} - \mathbf{g}_t'. \\
 \end{aligned}$$
 
-では、再スケールした勾配 $\mathbf{g}_t'$ とは何でしょうか。次のように計算できます。
+では、再スケールした勾配 $\mathbf{g}_t'$ とは何だろうか。次のように計算できる。
 
 $$\begin{aligned}
     \mathbf{g}_t' & = \frac{\sqrt{\Delta\mathbf{x}_{t-1} + \epsilon}}{\sqrt{{\mathbf{s}_t + \epsilon}}} \odot \mathbf{g}_t, \\
 \end{aligned}$$
 
-ここで $\Delta \mathbf{x}_{t-1}$ は、再スケールした勾配 $\mathbf{g}_t'$ の二乗のリーキー平均です。$\Delta \mathbf{x}_{0}$ を $0$ に初期化し、各ステップで $\mathbf{g}_t'$ を用いて更新します。すなわち、
+ここで $\Delta \mathbf{x}_{t-1}$ は、再スケールした勾配 $\mathbf{g}_t'$ の二乗のリーキー平均である。$\Delta \mathbf{x}_{0}$ を $0$ に初期化し、各ステップで $\mathbf{g}_t'$ を用いて更新する。すなわち、
 
 $$\begin{aligned}
     \Delta \mathbf{x}_t & = \rho \Delta\mathbf{x}_{t-1} + (1 - \rho) {\mathbf{g}_t'}^2,
 \end{aligned}$$
 
-また、数値安定性を保つために $\epsilon$（$10^{-5}$ のような小さな値）を加えます。
+また、数値安定性を保つために $\epsilon$（$10^{-5}$ のような小さな値）を加える。
 
 
 
 ## 実装
 
-Adadelta では、各変数ごとに 2 つの状態変数 $\mathbf{s}_t$ と $\Delta\mathbf{x}_t$ を保持する必要があります。これにより、次の実装になります。
+Adadelta では、各変数ごとに 2 つの状態変数 $\mathbf{s}_t$ と $\Delta\mathbf{x}_t$ を保持する必要がある。これにより、次の実装になる。
 
 ```{.python .input}
 #@tab mxnet
@@ -106,7 +106,7 @@ def adadelta(params, grads, states, hyperparams):
         delta[:].assign(rho * delta + (1 - rho) * g * g)
 ```
 
-$\rho = 0.9$ を選ぶと、各パラメータ更新の半減期は 10 になります。これはかなりうまく機能する傾向があります。結果は次のようになります。
+$\rho = 0.9$ を選ぶと、各パラメータ更新の半減期は 10 になる。これはかなりうまく機能する傾向がある。結果は次のようになる。
 
 ```{.python .input}
 #@tab all
@@ -115,7 +115,7 @@ d2l.train_ch11(adadelta, init_adadelta_states(feature_dim),
                {'rho': 0.9}, data_iter, feature_dim);
 ```
 
-簡潔な実装としては、高レベル API の Adadelta アルゴリズムをそのまま使います。これにより、より簡潔な呼び出しを 1 行で書けます。
+簡潔な実装としては、高レベル API の Adadelta アルゴリズムをそのまま使う。これにより、より簡潔な呼び出しを 1 行で書ける。
 
 ```{.python .input}
 #@tab mxnet
@@ -138,13 +138,13 @@ d2l.train_concise_ch11(trainer, {'learning_rate':5.0, 'rho': 0.9}, data_iter)
 
 ## まとめ
 
-* Adadelta には学習率パラメータがありません。その代わりに、パラメータの変化率そのものを用いて学習率を適応させます。
-* Adadelta では、勾配とパラメータ変化の 2 次モーメントを保存するために 2 つの状態変数が必要です。
-* Adadelta はリーキー平均を用いて、適切な統計量の逐次推定を維持します。
+* Adadelta には学習率パラメータがない。その代わりに、パラメータの変化率そのものを用いて学習率を適応させる。
+* Adadelta では、勾配とパラメータ変化の 2 次モーメントを保存するために 2 つの状態変数が必要である。
+* Adadelta はリーキー平均を用いて、適切な統計量の逐次推定を維持する。
 
 ## 演習
 
-1. $\rho$ の値を調整してみてください。何が起こりますか？
-1. $\mathbf{g}_t'$ を使わずにアルゴリズムを実装する方法を示してください。なぜそれがよい考えなのでしょうか？
-1. Adadelta は本当に学習率不要なのでしょうか？ Adadelta を破綻させる最適化問題を見つけられますか？
-1. Adadelta と Adagrad、RMS prop を比較し、それらの収束挙動について議論してください。
+1. $\rho$ の値を調整してみよ。何が起こるか。
+1. $\mathbf{g}_t'$ を使わずにアルゴリズムを実装する方法を示せ。なぜそれがよい考えなのか。
+1. Adadelta は本当に学習率不要なのか。Adadelta を破綻させる最適化問題を見つけられるか。
+1. Adadelta と Adagrad、RMS prop を比較し、それらの収束挙動について議論せよ。
