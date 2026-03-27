@@ -132,8 +132,13 @@ def process_file(filepath):
         f.writelines(new_lines)
 
 if __name__ == '__main__':
-    target_dir = 'chapter_recurrent-neural-networks'
-    for f in os.listdir(target_dir):
-        if f.endswith('.md'):
-            process_file(os.path.join(target_dir, f))
-    print("Polishing script execution complete.")
+    import sys
+    if len(sys.argv) > 1:
+        target_dir = sys.argv[1]
+        for f in os.listdir(target_dir):
+            if f.endswith('.md'):
+                process_file(os.path.join(target_dir, f))
+        print(f"Polishing script execution complete for {target_dir}.")
+    else:
+        print("Please provide a target directory as an argument.")
+        print("Example: python3 jppolish.py chapter_recurrent-neural-networks")
