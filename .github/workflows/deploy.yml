@@ -114,6 +114,19 @@ jobs:
       - name: Fix chapter toctrees
         run: python3 .github/workflow_scripts/fix_chapter_toctrees.py
 
+      # Fix references RST: d2lbook's ipynb→rst conversion mangles the
+      # bibliography directive. Regenerate with proper RST formatting.
+      - name: Fix references page
+        run: |
+          cat > _build/rst/chapter_references/zreferences.rst << 'REFEOF'
+
+          参考文献
+          ==========
+
+          .. bibliography:: ../d2l.bib
+          REFEOF
+          sed -i 's/^          //' _build/rst/chapter_references/zreferences.rst
+
       # Fix index.rst: d2lbook's ipynb→rst conversion mangles RST directives
       # (toctree, raw::html) because they go through markdown→ipynb→rst.
       # Regenerate index.rst directly with proper RST formatting.

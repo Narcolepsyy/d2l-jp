@@ -1,10 +1,7 @@
+# 参考文献
+
 ```eval_rst
 
-.. only:: html
-
-   参考文献
-   ==========
+.. bibliography:: ../d2l.bib
 
 ```
-
-:bibliography:`../d2l.bib`

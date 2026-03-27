@@ -180,3 +180,30 @@ html.page-ready .mdl-layout__content {
         padding: 0 !important;
     }
 }
+
+/* ==========================================================================
+   Bibliography (References Page) — match d2l.ai professional style
+   ========================================================================== */
+
+/* Each bibliography entry */
+.page-content .citation {
+    margin-bottom: 1.2em;
+    padding-left: 2em;
+    text-indent: -2em;
+    line-height: 1.6;
+}
+
+/* Citation label (e.g. [Zhang et al., 2023]) — bold and block */
+.page-content .citation > .label,
+.page-content .citation > span:first-child {
+    font-weight: 700;
+    display: block;
+    text-indent: 0;
+    margin-bottom: 0.2em;
+}
+
+/* Paragraph within citation */
+.page-content .citation p {
+    margin: 0;
+    text-indent: 0;
+}
