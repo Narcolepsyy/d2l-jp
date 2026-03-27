@@ -7,7 +7,7 @@
 
 ## ローカルでコードを編集・実行する
 
-本書のコードのローカルパスが `xx/yy/d2l-en/` だとする。シェルを使ってこのパスにディレクトリを移動し（`cd xx/yy/d2l-en`）、`jupyter notebook` コマンドを実行する。ブラウザが自動的に開かない場合は、http://localhost:8888 を開いてください。すると、 :numref:`fig_jupyter00` に示すように、Jupyter のインターフェースと、本書のコードを含むすべてのフォルダが表示される。
+本書のコードのローカルパスが `xx/yy/d2l-en/` だとする。シェルを使ってこのパスにディレクトリを移動し（`cd xx/yy/d2l-en`）、`jupyter notebook` コマンドを実行する。ブラウザが自動的に開かない場合は、http://localhost:8888 を開いよ。すると、 :numref:`fig_jupyter00` に示すように、Jupyter のインターフェースと、本書のコードを含むすべてのフォルダが表示される。
 
 ![本書のコードを含むフォルダ。](../img/jupyter00.png)
 :width:`600px`
@@ -74,14 +74,14 @@ jupyter notebook --NotebookApp.contents_manager_class='notedown.NotedownContents
 ```
 
 
-Jupyter Notebook を実行するたびに、既定で notedown プラグインを有効にすることもできる。まず、Jupyter Notebook の設定ファイルを生成する（すでに生成済みであれば、この手順は省略できます）。
+Jupyter Notebook を実行するたびに、既定で notedown プラグインを有効にすることもできる。まず、Jupyter Notebook の設定ファイルを生成する（すでに生成済みであれば、この手順は省略できる）。
 
 ```
 jupyter notebook --generate-config
 ```
 
 
-次に、Jupyter Notebook の設定ファイルの末尾に次の行を追加する（Linux または macOS では、通常 `~/.jupyter/jupyter_notebook_config.py` にあります）。
+次に、Jupyter Notebook の設定ファイルの末尾に次の行を追加する（Linux または macOS では、通常 `~/.jupyter/jupyter_notebook_config.py` にある）。
 
 ```
 c.NotebookApp.contents_manager_class = 'notedown.NotedownContentsManager'
@@ -92,7 +92,7 @@ c.NotebookApp.contents_manager_class = 'notedown.NotedownContentsManager'
 
 ### リモートサーバー上で Jupyter Notebook を実行する
 
-ときには、リモートサーバー上で Jupyter Notebook を実行し、ローカルコンピュータのブラウザからアクセスしたいことがある。ローカルマシンに Linux または macOS がインストールされている場合（Windows でも PuTTY などのサードパーティソフトウェアを通じてこの機能を利用できます）、ポートフォワーディングを使える。
+ときには、リモートサーバー上で Jupyter Notebook を実行し、ローカルコンピュータのブラウザからアクセスしたいことがある。ローカルマシンに Linux または macOS がインストールされている場合（Windows でも PuTTY などのサードパーティソフトウェアを通じてこの機能を利用できる）、ポートフォワーディングを使える。
 
 ```
 ssh myserver -L 8888:localhost:8888

@@ -1,9 +1,9 @@
 # Deep Convolutional Generative Adversarial Networks
 :label:`sec_dcgan`
 
-:numref:`sec_basic_gan` では、GAN がどのように動作するかの基本的な考え方を紹介しました。GAN は、一様分布や正規分布のような、単純でサンプリングしやすい分布からサンプルを取り出し、それをデータセットの分布に一致しているように見えるサンプルへと変換できることを示しました。2 次元ガウス分布を一致させる例でも要点は伝わりますが、特に刺激的というわけではありません。
+:numref:`sec_basic_gan` では、GAN がどのように動作するかの基本的な考え方を紹介した。GAN は、一様分布や正規分布のような、単純でサンプリングしやすい分布からサンプルを取り出し、それをデータセットの分布に一致しているように見えるサンプルへと変換できることを示した。2 次元ガウス分布を一致させる例でも要点は伝わるが、特に刺激的というわけではない。
 
-この節では、GAN を用いて写実的な画像を生成する方法を示します。ここでは、:citet:`Radford.Metz.Chintala.2015` で導入された deep convolutional GAN（DCGAN）を基にモデルを構築します。識別的なコンピュータビジョン問題で大きな成功を収めてきた畳み込みアーキテクチャを取り入れ、GAN を通じてそれらが写実的な画像生成に活用できることを示します。
+この節では、GAN を用いて写実的な画像を生成する方法を示す。ここでは、:citet:`Radford.Metz.Chintala.2015` で導入された deep convolutional GAN（DCGAN）を基にモデルを構築する。識別的なコンピュータビジョン問題で大きな成功を収めてきた畳み込みアーキテクチャを取り入れ、GAN を通じてそれらが写実的な画像生成に活用できることを示す。
 
 ```{.python .input}
 #@tab mxnet
@@ -31,7 +31,7 @@ import tensorflow as tf
 
 ## ポケモンデータセット
 
-ここで使用するデータセットは、[pokemondb](https://pokemondb.net/sprites) から取得したポケモンのスプライト画像のコレクションです。まず、このデータセットをダウンロード、展開、読み込みします。
+ここで使用するデータセットは、[pokemondb](https://pokemondb.net/sprites) から取得したポケモンのスプライト画像のコレクションである。まず、このデータセットをダウンロード、展開、読み込みする。
 
 ```{.python .input}
 #@tab mxnet
@@ -65,7 +65,7 @@ pokemon = tf.keras.preprocessing.image_dataset_from_directory(
     data_dir, batch_size=batch_size, image_size=(64, 64))
 ```
 
-各画像を $64\times 64$ にリサイズします。`ToTensor` 変換は画素値を $[0, 1]$ に写像し、生成器は tanh 関数を用いて $[-1, 1]$ の出力を得ます。したがって、値の範囲を合わせるために、平均 $0.5$、標準偏差 $0.5$ でデータを正規化します。
+各画像を $64\times 64$ にリサイズする。`ToTensor` 変換は画素値を $[0, 1]$ に写像し、生成器は tanh 関数を用いて $[-1, 1]$ の出力を得る。したがって、値の範囲を合わせるために、平均 $0.5$、標準偏差 $0.5$ でデータを正規化する。
 
 ```{.python .input}
 #@tab mxnet
@@ -108,7 +108,7 @@ data_iter = data_iter.cache().shuffle(buffer_size=1000).prefetch(
     buffer_size=tf.data.experimental.AUTOTUNE)
 ```
 
-最初の 20 枚の画像を可視化してみましょう。
+最初の 20 枚の画像を可視化してみよう。
 
 ```{.python .input}
 #@tab mxnet
@@ -139,7 +139,7 @@ for X, y in data_iter.take(1):
 
 ## 生成器
 
-生成器は、ノイズ変数 $\mathbf z\in\mathbb R^d$（長さ $d$ のベクトル）を、幅と高さが $64\times 64$ の RGB 画像へ写像する必要があります。 :numref:`sec_fcn` では、転置畳み込み層（:numref:`sec_transposed_conv` を参照）を用いて入力サイズを拡大する全畳み込みネットワークを紹介しました。生成器の基本ブロックは、転置畳み込み層の後にバッチ正規化と ReLU 活性化を続けたものです。
+生成器は、ノイズ変数 $\mathbf z\in\mathbb R^d$（長さ $d$ のベクトル）を、幅と高さが $64\times 64$ の RGB 画像へ写像する必要がある。 :numref:`sec_fcn` では、転置畳み込み層（:numref:`sec_transposed_conv` を参照）を用いて入力サイズを拡大する全畳み込みネットワークを紹介した。生成器の基本ブロックは、転置畳み込み層の後にバッチ正規化と ReLU 活性化を続けたものである。
 
 ```{.python .input}
 #@tab mxnet
@@ -186,7 +186,7 @@ class G_block(tf.keras.layers.Layer):
         return self.activation(self.batch_norm(self.conv2d_trans(X)))
 ```
 
-デフォルトでは、転置畳み込み層は $k_h = k_w = 4$ のカーネル、$s_h = s_w = 2$ のストライド、$p_h = p_w = 1$ のパディングを用います。入力形状が $n_h^{'} \times n_w^{'} = 16 \times 16$ のとき、生成器ブロックは入力の幅と高さを 2 倍にします。
+デフォルトでは、転置畳み込み層は $k_h = k_w = 4$ のカーネル、$s_h = s_w = 2$ のストライド、$p_h = p_w = 1$ のパディングを用いる。入力形状が $n_h^{'} \times n_w^{'} = 16 \times 16$ のとき、生成器ブロックは入力の幅と高さを 2 倍にする。
 
 $$
 \begin{aligned}
@@ -219,7 +219,7 @@ g_blk = G_block(20)
 g_blk(x).shape
 ```
 
-転置畳み込み層を $4\times 4$ カーネル、$1\times 1$ ストライド、ゼロパディングに変更するとします。入力サイズが $1 \times 1$ のとき、出力の幅と高さはそれぞれ 3 ずつ増加します。
+転置畳み込み層を $4\times 4$ カーネル、$1\times 1$ ストライド、ゼロパディングに変更するとする。入力サイズが $1 \times 1$ のとき、出力の幅と高さはそれぞれ 3 ずつ増加する。
 
 ```{.python .input}
 #@tab mxnet
@@ -244,7 +244,7 @@ g_blk = G_block(20, strides=1, padding="valid")
 g_blk(x).shape
 ```
 
-生成器は 4 つの基本ブロックからなり、入力の幅と高さを 1 から 32 へ増やします。同時に、まず潜在変数を $64\times 8$ チャネルへ射影し、その後は各段階でチャネル数を半分にします。最後に、出力を生成するために転置畳み込み層を用います。これにより幅と高さをさらに 2 倍にして、望ましい $64\times 64$ の形状に合わせ、チャネル数を $3$ に減らします。tanh 活性化関数を適用して、出力値を $(-1, 1)$ の範囲に射影します。
+生成器は 4 つの基本ブロックからなり、入力の幅と高さを 1 から 32 へ増やする。同時に、まず潜在変数を $64\times 8$ チャネルへ射影し、その後は各段階でチャネル数を半分にする。最後に、出力を生成するために転置畳み込み層を用いる。これにより幅と高さをさらに 2 倍にして、望ましい $64\times 64$ の形状に合わせ、チャネル数を $3$ に減らする。tanh 活性化関数を適用して、出力値を $(-1, 1)$ の範囲に射影する。
 
 ```{.python .input}
 #@tab mxnet
@@ -289,7 +289,7 @@ net_G = tf.keras.Sequential([
 ])
 ```
 
-生成器の出力形状を確認するために、100 次元の潜在変数を生成します。
+生成器の出力形状を確認するために、100 次元の潜在変数を生成する。
 
 ```{.python .input}
 #@tab mxnet
@@ -312,11 +312,11 @@ net_G(x).shape
 
 ## 識別器
 
-識別器は通常の畳み込みネットワークですが、活性化関数として leaky ReLU を用いる点が異なります。$\alpha \in[0, 1]$ に対して、その定義は次のとおりです。
+識別器は通常の畳み込みネットワークであるが、活性化関数として leaky ReLU を用いる点が異なる。$\alpha \in[0, 1]$ に対して、その定義は次のとおりである。
 
 $$\textrm{leaky ReLU}(x) = \begin{cases}x & \textrm{if}\ x > 0\\ \alpha x &\textrm{otherwise}\end{cases}.$$
 
-見てのとおり、$\alpha=0$ なら通常の ReLU、$\alpha=1$ なら恒等関数です。$\alpha \in (0, 1)$ では、leaky ReLU は負の入力に対しても 0 でない出力を返す非線形関数です。これは、ニューロンが常に負の値を出力してしまい、ReLU の勾配が 0 であるために学習が進まなくなる「dying ReLU」問題を解決することを目的としています。
+見てのとおり、$\alpha=0$ なら通常の ReLU、$\alpha=1$ なら恒等関数である。$\alpha \in (0, 1)$ では、leaky ReLU は負の入力に対しても 0 でない出力を返す非線形関数である。これは、ニューロンが常に負の値を出力してしまい、ReLU の勾配が 0 であるために学習が進まなくなる「dying ReLU」問題を解決することを目的としている。
 
 ```{.python .input}
 #@tab mxnet,pytorch
@@ -334,7 +334,7 @@ Y = [tf.keras.layers.LeakyReLU(alpha)(x).numpy() for alpha in alphas]
 d2l.plot(x.numpy(), Y, 'x', 'y', alphas)
 ```
 
-識別器の基本ブロックは、畳み込み層の後にバッチ正規化層と leaky ReLU 活性化を続けたものです。畳み込み層のハイパーパラメータは、生成器ブロックの転置畳み込み層と似ています。
+識別器の基本ブロックは、畳み込み層の後にバッチ正規化層と leaky ReLU 活性化を続けたものである。畳み込み層のハイパーパラメータは、生成器ブロックの転置畳み込み層と似ている。
 
 ```{.python .input}
 #@tab mxnet
@@ -381,7 +381,7 @@ class D_block(tf.keras.layers.Layer):
         return self.activation(self.batch_norm(self.conv2d(X)))
 ```
 
-デフォルト設定の基本ブロックは、 :numref:`sec_padding` で示したように、入力の幅と高さを半分にします。たとえば、入力形状が $n_h = n_w = 16$、カーネル形状が $k_h = k_w = 4$、ストライド形状が $s_h = s_w = 2$、パディング形状が $p_h = p_w = 1$ のとき、出力形状は次のようになります。
+デフォルト設定の基本ブロックは、 :numref:`sec_padding` で示したように、入力の幅と高さを半分にする。たとえば、入力形状が $n_h = n_w = 16$、カーネル形状が $k_h = k_w = 4$、ストライド形状が $s_h = s_w = 2$、パディング形状が $p_h = p_w = 1$ のとき、出力形状は次のようになる。
 
 $$
 \begin{aligned}
@@ -413,7 +413,7 @@ d_blk = D_block(20)
 d_blk(x).shape
 ```
 
-識別器は生成器の鏡像です。
+識別器は生成器の鏡像である。
 
 ```{.python .input}
 #@tab mxnet
@@ -451,7 +451,7 @@ net_D = tf.keras.Sequential([
 ])
 ```
 
-最終層には出力チャネル数 $1$ の畳み込み層を用いて、単一の予測値を得ます。
+最終層には出力チャネル数 $1$ の畳み込み層を用いて、単一の予測値を得る。
 
 ```{.python .input}
 #@tab mxnet
@@ -474,7 +474,7 @@ net_D(x).shape
 
 ## 学習
 
-:numref:`sec_basic_gan` の基本的な GAN と比べると、生成器と識別器は互いに似ているため、両者に同じ学習率を用います。さらに、Adam（:numref:`sec_adam`）の $\beta_1$ を $0.9$ から $0.5$ に変更します。これは、生成器と識別器が互いに競い合うことで勾配が急速に変化するため、過去の勾配の指数移動平均であるモーメンタムの滑らかさを下げるものです。加えて、ランダムに生成されるノイズ `Z` は 4 次元テンソルであり、計算の高速化のために GPU を使用します。
+:numref:`sec_basic_gan` の基本的な GAN と比べると、生成器と識別器は互いに似ているため、両者に同じ学習率を用いる。さらに、Adam（:numref:`sec_adam`）の $\beta_1$ を $0.9$ から $0.5$ に変更する。これは、生成器と識別器が互いに競い合うことで勾配が急速に変化するため、過去の勾配の指数移動平均であるモーメンタムの滑らかさを下げるものである。加えて、ランダムに生成されるノイズ `Z` は 4 次元テンソルであり、計算の高速化のために GPU を使用する。
 
 ```{.python .input}
 #@tab mxnet
@@ -611,7 +611,7 @@ def train(net_D, net_G, data_iter, num_epochs, lr, latent_dim,
           f'{metric[2] / timer.stop():.1f} examples/sec on {str(device._device_name)}')
 ```
 
-ここでは、デモのために少ないエポック数でモデルを学習します。より良い性能を得るには、変数 `num_epochs` をより大きな値に設定できます。
+ここでは、デモのために少ないエポック数でモデルを学習する。より良い性能を得るには、変数 `num_epochs` をより大きな値に設定できる。
 
 ```{.python .input}
 #@tab mxnet, pytorch
@@ -627,12 +627,12 @@ train(net_D, net_G, data_iter, num_epochs, lr, latent_dim)
 
 ## まとめ
 
-* DCGAN アーキテクチャは、識別器に 4 層の畳み込み層、生成器に 4 層の「fractionally-strided」畳み込み層を持ちます。
-* 識別器は、バッチ正規化（入力層を除く）と leaky ReLU 活性化を備えた 4 層のストライド付き畳み込みからなります。
-* Leaky ReLU は、負の入力に対して 0 でない出力を返す非線形関数です。「dying ReLU」問題を解決し、アーキテクチャ全体で勾配が流れやすくなるのを助けます。
+* DCGAN アーキテクチャは、識別器に 4 層の畳み込み層、生成器に 4 層の「fractionally-strided」畳み込み層を持つ。
+* 識別器は、バッチ正規化（入力層を除く）と leaky ReLU 活性化を備えた 4 層のストライド付き畳み込みからなる。
+* Leaky ReLU は、負の入力に対して 0 でない出力を返す非線形関数である。「dying ReLU」問題を解決し、アーキテクチャ全体で勾配が流れやすくなるのを助ける。
 
 
 ## 演習
 
-1. leaky ReLU の代わりに標準的な ReLU 活性化を使うとどうなりますか？
+1. leaky ReLU の代わりに標準的な ReLU 活性化を使うとどうなるか？
 1. DCGAN を Fashion-MNIST に適用し、どのカテゴリがうまくいき、どのカテゴリがうまくいかないかを調べなさい。

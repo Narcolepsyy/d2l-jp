@@ -81,7 +81,7 @@ SageMaker で実行するための ipynb 形式の本書全体は https://github
 
 作業を終えたら、
 それ以上課金されないように
-インスタンスを停止することを忘れないでください（:numref:`fig_sagemaker-stop`）。
+インスタンスを停止することを忘れないこと（:numref:`fig_sagemaker-stop`）。
 
 ![Stop a SageMaker instance.](../img/sagemaker-stop.png)
 :width:`300px`
@@ -113,7 +113,7 @@ SageMaker インスタンス上でターミナルを開きます（:numref:`fig_
 :width:`300px`
 :label:`fig_sagemaker-terminal`
 
-リモートリポジトリから更新を取り込む前に、ローカルの変更をコミットしておくとよいでしょう。 
+リモートリポジトリから更新を取り込む前に、ローカルの変更をコミットしておくとよいだろう。 
 そうでない場合は、ターミナルで次のコマンドを実行して
 ローカルの変更をすべて破棄する。
 

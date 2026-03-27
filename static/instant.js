@@ -37,6 +37,27 @@
   var MAX_CACHE = 30;
 
   // =========================================================================
+  // Fix: Normalize all sidebar & content links to absolute paths on init.
+  // Relative hrefs break after pushState changes the base URL.
+  // =========================================================================
+  function normalizeSidebarLinks() {
+    var drawer = document.querySelector(DRAWER_SELECTOR);
+    if (!drawer) return;
+    var links = drawer.querySelectorAll('a[href]');
+    for (var i = 0; i < links.length; i++) {
+      // link.href (property) resolves to absolute based on current base URL.
+      // On initial page load, the base URL is correct, so we capture it now.
+      var absoluteUrl = links[i].href; // already resolved to absolute
+      var attr = links[i].getAttribute('href');
+      // Only fix if the attribute is relative (doesn't start with / or http)
+      if (attr && !attr.startsWith('/') && !attr.startsWith('http') && !attr.startsWith('#')) {
+        links[i].setAttribute('href', new URL(absoluteUrl).pathname);
+      }
+    }
+  }
+  normalizeSidebarLinks();
+
+  // =========================================================================
   // 1. PJAX Navigation Core
   // =========================================================================
 
