@@ -61,8 +61,8 @@ html.page-ready .mdl-layout__content {
     display: flex !important;
     align-items: center;
     justify-content: center;
-    padding: 16px 12px !important;
-    min-height: 80px !important;
+    padding: 16px 4px !important;
+    min-height: 140px !important;
     box-sizing: border-box;
 }
 
@@ -76,7 +76,7 @@ html.page-ready .mdl-layout__content {
 .mdl-layout__drawer > .mdl-layout-title .title > img.logo {
     width: auto !important;
     max-width: 100%;
-    max-height: 72px;
+    max-height: 120px;
     object-fit: contain;
     margin: 0 auto;
 }
