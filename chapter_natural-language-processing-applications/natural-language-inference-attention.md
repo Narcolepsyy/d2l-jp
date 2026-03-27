@@ -1,11 +1,11 @@
 # 自然言語推論: Attention の利用
 :label:`sec_natural-language-inference-attention`
 
-自然言語推論タスクと SNLI データセットについては、 :numref:`sec_natural-language-inference-and-dataset` で導入しました。複雑で深いアーキテクチャに基づく多くのモデルを踏まえ、:citet:`Parikh.Tackstrom.Das.ea.2016` は attention 機構を用いて自然言語推論に取り組む方法を提案し、これを「decomposable attention model」と呼びました。
-その結果、再帰層や畳み込み層を持たないモデルとなり、はるかに少ないパラメータ数で、当時の SNLI データセットにおける最高性能を達成しました。
-この節では、 :numref:`fig_nlp-map-nli-attention` に示すような、自然言語推論のためのこの attention ベースの手法（MLP を用いる）を説明し、実装します。
+自然言語推論タスクと SNLI データセットについては、 :numref:`sec_natural-language-inference-and-dataset` で導入した。複雑で深いアーキテクチャに基づく多くのモデルを踏まえ、:citet:`Parikh.Tackstrom.Das.ea.2016` は attention 機構を用いて自然言語推論に取り組む方法を提案し、これを「decomposable attention model」と呼んだ。
+その結果、再帰層や畳み込み層を持たないモデルとなり、はるかに少ないパラメータ数で、当時の SNLI データセットにおける最高性能を達成した。
+この節では、 :numref:`fig_nlp-map-nli-attention` に示すような、自然言語推論のためのこの attention ベースの手法（MLP を用いる）を説明し、実装する。
 
-![この節では、事前学習済み GloVe を、自然言語推論のための attention と MLP に基づくアーキテクチャへ入力します。](../img/nlp-map-nli-attention.svg)
+![この節では、事前学習済み GloVe を、自然言語推論のための attention と MLP に基づくアーキテクチャへ入力する。](../img/nlp-map-nli-attention.svg)
 :label:`fig_nlp-map-nli-attention`
 
 
@@ -13,16 +13,16 @@
 
 前提文と仮説文におけるトークンの順序を保持するよりも、
 一方のテキスト系列の各トークンを他方のすべてのトークンに対応付け、その逆も行い、
-その後でそのような情報を比較・集約して、前提文と仮説文の論理関係を予測すればよいのです。
+その後でそのような情報を比較・集約して、前提文と仮説文の論理関係を予測すればよいのである。
 機械翻訳におけるソース文とターゲット文のトークン対応付けと同様に、
-前提文と仮説文のトークン対応付けは attention 機構によってきれいに実現できます。
+前提文と仮説文のトークン対応付けは attention 機構によってきれいに実現できる。
 
 ![Attention 機構を用いた自然言語推論。](../img/nli-attention.svg)
 :label:`fig_nli_attention`
 
-:numref:`fig_nli_attention` は、attention 機構を用いた自然言語推論の手法を示しています。
-高レベルでは、これは attending、comparing、aggregating の 3 つのステップを共同で学習する構成です。
-以下で、それらを順に説明します。
+:numref:`fig_nli_attention` は、attention 機構を用いた自然言語推論の手法を示している。
+高レベルでは、これは attending、comparing、aggregating の 3 つのステップを共同で学習する構成である。
+以下で、それらを順に説明する。
 
 ```{.python .input}
 #@tab mxnet
@@ -43,28 +43,28 @@ from torch.nn import functional as F
 
 ### Attending
 
-最初のステップは、一方のテキスト系列の各トークンを、他方の系列の各トークンに対応付けることです。
-前提文が "i do need sleep"、仮説文が "i am tired" だとしましょう。
+最初のステップは、一方のテキスト系列の各トークンを、他方の系列の各トークンに対応付けることである。
+前提文が "i do need sleep"、仮説文が "i am tired" だとしよう。
 意味的な類似性により、
 仮説文中の "i" を前提文中の "i" に対応付け、
-仮説文中の "tired" を前提文中の "sleep" に対応付けたいと考えます。
+仮説文中の "tired" を前提文中の "sleep" に対応付けたいと考える。
 同様に、前提文中の "i" を仮説文中の "i" に対応付け、
-前提文中の "need" と "sleep" を仮説文中の "tired" に対応付けたいと考えます。
-このような対応付けは、重み付き平均を用いた *soft* なものです。理想的には、大きな重みが対応付けたいトークンに割り当てられます。
-説明を簡単にするため、 :numref:`fig_nli_attention` ではそのような対応付けを *hard* な形で示しています。
+前提文中の "need" と "sleep" を仮説文中の "tired" に対応付けたいと考える。
+このような対応付けは、重み付き平均を用いた *soft* なものである。理想的には、大きな重みが対応付けたいトークンに割り当てられる。
+説明を簡単にするため、 :numref:`fig_nli_attention` ではそのような対応付けを *hard* な形で示している。
 
-ここでは、attention 機構を用いた soft な対応付けをより詳しく説明します。
+ここでは、attention 機構を用いた soft な対応付けをより詳しく説明する。
 前提文と仮説文をそれぞれ $\mathbf{A} = (\mathbf{a}_1, \ldots, \mathbf{a}_m)$
-および $\mathbf{B} = (\mathbf{b}_1, \ldots, \mathbf{b}_n)$ と表します。
+および $\mathbf{B} = (\mathbf{b}_1, \ldots, \mathbf{b}_n)$ と表す。
 それぞれのトークン数は $m$ と $n$ であり、
-$\mathbf{a}_i, \mathbf{b}_j \in \mathbb{R}^{d}$ ($i = 1, \ldots, m, j = 1, \ldots, n$) は $d$ 次元の単語ベクトルです。
-soft な対応付けのために、attention 重み $e_{ij} \in \mathbb{R}$ を次のように計算します。
+$\mathbf{a}_i, \mathbf{b}_j \in \mathbb{R}^{d}$ ($i = 1, \ldots, m, j = 1, \ldots, n$) は $d$ 次元の単語ベクトルである。
+soft な対応付けのために、attention 重み $e_{ij} \in \mathbb{R}$ を次のように計算する。
 
 $$e_{ij} = f(\mathbf{a}_i)^\top f(\mathbf{b}_j),$$
 :eqlabel:`eq_nli_e`
 
-ここで関数 $f$ は、以下の `mlp` 関数で定義される MLP です。
-$f$ の出力次元は `mlp` の `num_hiddens` 引数で指定されます。
+ここで関数 $f$ は、以下の `mlp` 関数で定義される MLP である。
+$f$ の出力次元は `mlp` の `num_hiddens` 引数で指定される。
 
 ```{.python .input}
 #@tab mxnet
@@ -95,25 +95,25 @@ def mlp(num_inputs, num_hiddens, flatten):
 ```
 
 強調しておくべき点は、:eqref:`eq_nli_e` において
-$f$ は入力として $\mathbf{a}_i$ と $\mathbf{b}_j$ を別々に受け取り、2 つをまとめて入力するわけではないことです。
-この *分解* の工夫により、$f$ の適用回数は $mn$ 回（計算量は二次）ではなく、$m + n$ 回（計算量は線形）で済みます。
+$f$ は入力として $\mathbf{a}_i$ と $\mathbf{b}_j$ を別々に受け取り、2 つをまとめて入力するわけではないことである。
+この *分解* の工夫により、$f$ の適用回数は $mn$ 回（計算量は二次）ではなく、$m + n$ 回（計算量は線形）で済みる。
 
 
 :eqref:`eq_nli_e` の attention 重みを正規化し、
 仮説文中のすべてのトークンベクトルの重み付き平均を計算して、
-前提文中の $i$ 番目のトークンに soft に対応付けられた仮説文の表現を得ます。
+前提文中の $i$ 番目のトークンに soft に対応付けられた仮説文の表現を得る。
 
 $$
 \boldsymbol{\beta}_i = \sum_{j=1}^{n}\frac{\exp(e_{ij})}{ \sum_{k=1}^{n} \exp(e_{ik})} \mathbf{b}_j.
 $$
 
-同様に、仮説文中の各トークン $j$ に対して、前提文トークンの soft な対応付けを計算します。
+同様に、仮説文中の各トークン $j$ に対して、前提文トークンの soft な対応付けを計算する。
 
 $$
 \boldsymbol{\alpha}_j = \sum_{i=1}^{m}\frac{\exp(e_{ij})}{ \sum_{k=1}^{m} \exp(e_{kj})} \mathbf{a}_i.
 $$
 
-以下では、入力前提文 `A` に対する仮説文の soft な対応付け（`beta`）と、入力仮説文 `B` に対する前提文の soft な対応付け（`alpha`）を計算する `Attend` クラスを定義します。
+以下では、入力前提文 `A` に対する仮説文の soft な対応付け（`beta`）と、入力仮説文 `B` に対する前提文の soft な対応付け（`alpha`）を計算する `Attend` クラスを定義する。
 
 ```{.python .input}
 #@tab mxnet
@@ -173,21 +173,21 @@ class Attend(nn.Module):
 
 ### Comparing
 
-次のステップでは、一方の系列のトークンと、そのトークンに soft に対応付けられた他方の系列を比較します。
-soft な対応付けでは、一方の系列のすべてのトークンが、重みはおそらく異なるものの、他方の系列のあるトークンと比較されます。
-説明を簡単にするため、 :numref:`fig_nli_attention` では対応付けられたトークン同士を *hard* な形で組にしています。
-たとえば、attending ステップによって、前提文中の "need" と "sleep" の両方が仮説文中の "tired" に対応付けられたとすると、"tired--need sleep" の組が比較されます。
+次のステップでは、一方の系列のトークンと、そのトークンに soft に対応付けられた他方の系列を比較する。
+soft な対応付けでは、一方の系列のすべてのトークンが、重みはおそらく異なるものの、他方の系列のあるトークンと比較される。
+説明を簡単にするため、 :numref:`fig_nli_attention` では対応付けられたトークン同士を *hard* な形で組にしている。
+たとえば、attending ステップによって、前提文中の "need" と "sleep" の両方が仮説文中の "tired" に対応付けられたとすると、"tired--need sleep" の組が比較される。
 
-比較ステップでは、一方の系列のトークンと、他方の系列から対応付けられたトークンの連結（演算子 $[\cdot, \cdot]$）を関数 $g$（MLP）に入力します。
+比較ステップでは、一方の系列のトークンと、他方の系列から対応付けられたトークンの連結（演算子 $[\cdot, \cdot]$）を関数 $g$（MLP）に入力する。
 
 $$\mathbf{v}_{A,i} = g([\mathbf{a}_i, \boldsymbol{\beta}_i]), i = 1, \ldots, m\\ \mathbf{v}_{B,j} = g([\mathbf{b}_j, \boldsymbol{\alpha}_j]), j = 1, \ldots, n.$$
 
 :eqlabel:`eq_nli_v_ab`
 
 
-:eqref:`eq_nli_v_ab` において、$\mathbf{v}_{A,i}$ は、前提文中のトークン $i$ と、そのトークン $i$ に soft に対応付けられたすべての仮説文トークンとの比較を表します。
-一方、$\mathbf{v}_{B,j}$ は、仮説文中のトークン $j$ と、そのトークン $j$ に soft に対応付けられたすべての前提文トークンとの比較を表します。
-以下の `Compare` クラスは、この比較ステップを定義します。
+:eqref:`eq_nli_v_ab` において、$\mathbf{v}_{A,i}$ は、前提文中のトークン $i$ と、そのトークン $i$ に soft に対応付けられたすべての仮説文トークンとの比較を表す。
+一方、$\mathbf{v}_{B,j}$ は、仮説文中のトークン $j$ と、そのトークン $j$ に soft に対応付けられたすべての前提文トークンとの比較を表す。
+以下の `Compare` クラスは、この比較ステップを定義する。
 
 ```{.python .input}
 #@tab mxnet
@@ -218,20 +218,20 @@ class Compare(nn.Module):
 ### Aggregating
 
 2 つの比較ベクトル集合 $\mathbf{v}_{A,i}$ ($i = 1, \ldots, m$) と $\mathbf{v}_{B,j}$ ($j = 1, \ldots, n$) が得られたら、
-最後のステップでは、それらの情報を集約して論理関係を推論します。
-まず、両方の集合をそれぞれ総和します。
+最後のステップでは、それらの情報を集約して論理関係を推論する。
+まず、両方の集合をそれぞれ総和する。
 
 $$
 \mathbf{v}_A = \sum_{i=1}^{m} \mathbf{v}_{A,i}, \quad \mathbf{v}_B = \sum_{j=1}^{n}\mathbf{v}_{B,j}.
 $$
 
-次に、両方の要約結果を連結して関数 $h$（MLP）に入力し、論理関係の分類結果を得ます。
+次に、両方の要約結果を連結して関数 $h$（MLP）に入力し、論理関係の分類結果を得る。
 
 $$
 \hat{\mathbf{y}} = h([\mathbf{v}_A, \mathbf{v}_B]).
 $$
 
-集約ステップは、以下の `Aggregate` クラスで定義されます。
+集約ステップは、以下の `Aggregate` クラスで定義される。
 
 ```{.python .input}
 #@tab mxnet
@@ -270,7 +270,7 @@ class Aggregate(nn.Module):
 ### 全体をまとめる
 
 attending、comparing、aggregating の各ステップを組み合わせることで、
-これら 3 つのステップを共同で学習する decomposable attention model を定義します。
+これら 3 つのステップを共同で学習する decomposable attention model を定義する。
 
 ```{.python .input}
 #@tab mxnet
@@ -317,13 +317,13 @@ class DecomposableAttention(nn.Module):
 
 ## モデルの学習と評価
 
-ここでは、定義した decomposable attention model を SNLI データセットで学習し、評価します。
-まずデータセットを読み込みます。
+ここでは、定義した decomposable attention model を SNLI データセットで学習し、評価する。
+まずデータセットを読み込みる。
 
 
 ### データセットの読み込み
 
-:numref:`sec_natural-language-inference-and-dataset` で定義した関数を用いて、SNLI データセットをダウンロードして読み込みます。バッチサイズと系列長はそれぞれ $256$ と $50$ に設定します。
+:numref:`sec_natural-language-inference-and-dataset` で定義した関数を用いて、SNLI データセットをダウンロードして読み込む。バッチサイズと系列長はそれぞれ $256$ と $50$ に設定する。
 
 ```{.python .input}
 #@tab all
@@ -333,11 +333,11 @@ train_iter, test_iter, vocab = d2l.load_data_snli(batch_size, num_steps)
 
 ### モデルの作成
 
-入力トークンを表現するために、事前学習済みの 100 次元 GloVe 埋め込みを用います。
-したがって、:eqref:`eq_nli_e` におけるベクトル $\mathbf{a}_i$ と $\mathbf{b}_j$ の次元を 100 にあらかじめ定めます。
-:eqref:`eq_nli_e` における関数 $f$ と、:eqref:`eq_nli_v_ab` における関数 $g$ の出力次元は 200 に設定します。
+入力トークンを表現するために、事前学習済みの 100 次元 GloVe 埋め込みを用いる。
+したがって、:eqref:`eq_nli_e` におけるベクトル $\mathbf{a}_i$ と $\mathbf{b}_j$ の次元を 100 にあらかじめ定める。
+:eqref:`eq_nli_e` における関数 $f$ と、:eqref:`eq_nli_v_ab` における関数 $g$ の出力次元は 200 に設定する。
 その後、モデルインスタンスを作成し、パラメータを初期化し、
-GloVe 埋め込みを読み込んで入力トークンのベクトルを初期化します。
+GloVe 埋め込みを読み込んで入力トークンのベクトルを初期化する。
 
 ```{.python .input}
 #@tab mxnet
@@ -361,7 +361,7 @@ net.embedding.weight.data.copy_(embeds);
 ### モデルの学習と評価
 
 :numref:`sec_multi_gpu` にある、テキスト系列や画像のような単一入力を受け取る `split_batch` 関数とは対照的に、
-ここでは前提文と仮説文のような複数入力をミニバッチで受け取る `split_batch_multi_inputs` 関数を定義します。
+ここでは前提文と仮説文のような複数入力をミニバッチで受け取る `split_batch_multi_inputs` 関数を定義する。
 
 ```{.python .input}
 #@tab mxnet
@@ -373,7 +373,7 @@ def split_batch_multi_inputs(X, y, devices):
     return (X, gluon.utils.split_and_load(y, devices, even_split=False))
 ```
 
-これで、SNLI データセット上でモデルを学習・評価できます。
+これで、SNLI データセット上でモデルを学習・評価できる。
 
 ```{.python .input}
 #@tab mxnet
@@ -394,7 +394,7 @@ d2l.train_ch13(net, train_iter, test_iter, loss, trainer, num_epochs, devices)
 
 ### モデルの利用
 
-最後に、前提文と仮説文のペアに対する論理関係を出力する予測関数を定義します。
+最後に、前提文と仮説文のペアに対する論理関係を出力する予測関数を定義する。
 
 ```{.python .input}
 #@tab mxnet
@@ -423,7 +423,7 @@ def predict_snli(net, vocab, premise, hypothesis):
             else 'neutral'
 ```
 
-学習済みモデルを使って、文のペアの自然言語推論結果を得ることができます。
+学習済みモデルを使って、文のペアの自然言語推論結果を得ることができる。
 
 ```{.python .input}
 #@tab all
@@ -432,14 +432,14 @@ predict_snli(net, vocab, ['he', 'is', 'good', '.'], ['he', 'is', 'bad', '.'])
 
 ## まとめ
 
-* decomposable attention model は、前提文と仮説文の論理関係を予測するために、attending、comparing、aggregating の 3 ステップから構成されます。
-* attention 機構を用いると、一方のテキスト系列の各トークンを他方のすべてのトークンに対応付け、その逆も行えます。そのような対応付けは重み付き平均を用いた soft なものであり、理想的には大きな重みが対応付けたいトークンに割り当てられます。
-* 分解の工夫により、attention 重みを計算する際の計算量は二次ではなく線形となり、より望ましい性質を持ちます。
-* 事前学習済みの単語ベクトルを、自然言語推論のような下流の自然言語処理タスクの入力表現として利用できます。
+* decomposable attention model は、前提文と仮説文の論理関係を予測するために、attending、comparing、aggregating の 3 ステップから構成される。
+* attention 機構を用いると、一方のテキスト系列の各トークンを他方のすべてのトークンに対応付け、その逆も行える。そのような対応付けは重み付き平均を用いた soft なものであり、理想的には大きな重みが対応付けたいトークンに割り当てられる。
+* 分解の工夫により、attention 重みを計算する際の計算量は二次ではなく線形となり、より望ましい性質を持つ。
+* 事前学習済みの単語ベクトルを、自然言語推論のような下流の自然言語処理タスクの入力表現として利用できる。
 
 
 ## 演習
 
-1. 他のハイパーパラメータの組み合わせでモデルを学習してみましょう。テストセットでより高い精度を得られますか？
+1. 他のハイパーパラメータの組み合わせでモデルを学習してみよう。テストセットでより高い精度を得られるか？
 1. 自然言語推論における decomposable attention model の主な欠点は何ですか？
-1. 任意の文のペアについて、意味的類似度の程度（たとえば 0 から 1 の連続値）を得たいとします。データセットをどのように収集し、ラベル付けすればよいでしょうか？ attention 機構を用いたモデルを設計できますか？
+1. 任意の文のペアについて、意味的類似度の程度（たとえば 0 から 1 の連続値）を得たいとする。データセットをどのように収集し、ラベル付けすればよいだろうか？ attention 機構を用いたモデルを設計できるか？

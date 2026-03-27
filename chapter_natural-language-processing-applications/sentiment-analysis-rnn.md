@@ -3,25 +3,25 @@
 
 
 単語類似度や類推のタスクと同様に、
-感情分析にも事前学習済みの単語ベクトルを適用できます。
+感情分析にも事前学習済みの単語ベクトルを適用できる。
 :numref:`sec_sentiment` の IMDb レビューデータセットは
 それほど大きくないため、
 大規模コーパスで事前学習された
 テキスト表現を用いることで、
-モデルの過学習を抑えられる可能性があります。
+モデルの過学習を抑えられる可能性がある。
 :numref:`fig_nlp-map-sa-rnn` に示す具体例では、
 各トークンを
 事前学習済みの GloVe モデルで表現し、
 それらのトークン表現を
 多層双方向 RNN に入力して
-テキスト系列表現を得ます。
+テキスト系列表現を得る。
 その表現は
-感情分析の出力へと変換されます :cite:`Maas.Daly.Pham.ea.2011`。
+感情分析の出力へと変換される :cite:`Maas.Daly.Pham.ea.2011`。
 同じ下流アプリケーションに対して、
 後ほど別のアーキテクチャ上の
-選択肢も検討します。
+選択肢も検討する。
 
-![この節では、事前学習済み GloVe を RNN ベースの感情分析アーキテクチャに入力します。](../img/nlp-map-sa-rnn.svg)
+![この節では、事前学習済み GloVe を RNN ベースの感情分析アーキテクチャに入力する。](../img/nlp-map-sa-rnn.svg)
 :label:`fig_nlp-map-sa-rnn`
 
 ```{.python .input}
@@ -49,21 +49,21 @@ train_iter, test_iter, vocab = d2l.load_data_imdb(batch_size)
 
 感情分析のようなテキスト分類タスクでは、
 可変長のテキスト系列を
-固定長のカテゴリへ変換します。
+固定長のカテゴリへ変換する。
 以下の `BiRNN` クラスでは、
 テキスト系列の各トークンが
 埋め込み層 (`self.embedding`) を通じて
-個別の事前学習済み GloVe 表現を得ますが、
-系列全体は双方向 RNN (`self.encoder`) によって符号化されます。
+個別の事前学習済み GloVe 表現を得るが、
+系列全体は双方向 RNN (`self.encoder`) によって符号化される。
 より具体的には、
 双方向 LSTM の
 （最終層における）
 最初と最後の時間ステップでの隠れ状態を連結し、
-テキスト系列の表現とします。
+テキスト系列の表現とする。
 この単一のテキスト表現は、
 全結合層 (`self.decoder`) によって
 2 つの出力（"positive" と "negative"）を持つ
-出力カテゴリへ変換されます。
+出力カテゴリへ変換される。
 
 ```{.python .input}
 #@tab mxnet
@@ -128,7 +128,7 @@ class BiRNN(nn.Module):
         return outs
 ```
 
-感情分析のために単一テキストを表現する双方向 RNN を、2 層の隠れ層で構成してみましょう。
+感情分析のために単一テキストを表現する双方向 RNN を、2 層の隠れ層で構成してみよう。
 
 ```{.python .input}
 #@tab all
@@ -156,8 +156,8 @@ net.apply(init_weights);
 ## 事前学習済み単語ベクトルの読み込み
 
 以下では、語彙内のトークンに対応する
-事前学習済みの 100 次元（`embed_size` と一致している必要があります）の
-GloVe 埋め込みを読み込みます。
+事前学習済みの 100 次元（`embed_size` と一致している必要がある）の
+GloVe 埋め込みを読み込みる。
 
 ```{.python .input}
 #@tab all
@@ -165,7 +165,7 @@ glove_embedding = d2l.TokenEmbedding('glove.6b.100d')
 ```
 
 語彙内のすべてのトークンに対する
-ベクトルの形状を表示します。
+ベクトルの形状を表示す。
 
 ```{.python .input}
 #@tab all
@@ -176,7 +176,7 @@ embeds.shape
 これらの事前学習済み
 単語ベクトルを用いて
 レビュー中のトークンを表現し、
-学習中にこれらのベクトルは更新しません。
+学習中にこれらのベクトルは更新しない。
 
 ```{.python .input}
 #@tab mxnet
@@ -192,7 +192,7 @@ net.embedding.weight.requires_grad = False
 
 ## モデルの学習と評価
 
-これで、感情分析のために双方向 RNN を学習できます。
+これで、感情分析のために双方向 RNN を学習できる。
 
 ```{.python .input}
 #@tab mxnet
@@ -212,7 +212,7 @@ d2l.train_ch13(net, train_iter, test_iter, loss, trainer, num_epochs, devices)
 
 学習済みモデル `net` を用いて
 テキスト系列の感情を予測するために、
-以下の関数を定義します。
+以下の関数を定義する。
 
 ```{.python .input}
 #@tab mxnet
@@ -235,7 +235,7 @@ def predict_sentiment(net, vocab, sequence):
 ```
 
 最後に、学習済みモデルを使って
-2 つの簡単な文の感情を予測してみましょう。
+2 つの簡単な文の感情を予測してみよう。
 
 ```{.python .input}
 #@tab all
@@ -249,13 +249,13 @@ predict_sentiment(net, vocab, 'this movie is so bad')
 
 ## まとめ
 
-* 事前学習済み単語ベクトルは、テキスト系列内の個々のトークンを表現できます。
-* 双方向 RNN は、最初と最後の時間ステップでの隠れ状態の連結などによって、テキスト系列を表現できます。この単一のテキスト表現は、全結合層を用いてカテゴリへ変換できます。
+* 事前学習済み単語ベクトルは、テキスト系列内の個々のトークンを表現できる。
+* 双方向 RNN は、最初と最後の時間ステップでの隠れ状態の連結などによって、テキスト系列を表現できる。この単一のテキスト表現は、全結合層を用いてカテゴリへ変換できる。
 
 
 
 ## 演習
 
-1. エポック数を増やしてみましょう。学習精度とテスト精度を改善できますか？ 他のハイパーパラメータを調整した場合はどうでしょうか？
-1. 300 次元 GloVe 埋め込みのような、より大きな事前学習済み単語ベクトルを使ってみましょう。分類精度は向上しますか？
-1. spaCy のトークン化を使うことで分類精度を改善できますか？ spaCy をインストールし（`pip install spacy`）、英語パッケージをインストールする必要があります（`python -m spacy download en`）。コードでは、まず spaCy をインポートし（`import spacy`）、次に spaCy の英語パッケージを読み込みます（`spacy_en = spacy.load('en')`）。最後に、`def tokenizer(text): return [tok.text for tok in spacy_en.tokenizer(text)]` を定義して、元の `tokenizer` 関数を置き換えてください。GloVe と spaCy ではフレーズトークンの形式が異なることに注意してください。たとえば、フレーズトークン "new york" は、GloVe では "new-york" の形式であり、spaCy のトークン化後は "new york" の形式になります。
+1. エポック数を増やしてみよう。学習精度とテスト精度を改善できるか？ 他のハイパーパラメータを調整した場合はどうだろうか？
+1. 300 次元 GloVe 埋め込みのような、より大きな事前学習済み単語ベクトルを使ってみよう。分類精度は向上するか？
+1. spaCy のトークン化を使うことで分類精度を改善できるか？ spaCy をインストールし（`pip install spacy`）、英語パッケージをインストールする必要がある（`python -m spacy download en`）。コードでは、まず spaCy をインポートし（`import spacy`）、次に spaCy の英語パッケージを読み込みます（`spacy_en = spacy.load('en')`）。最後に、`def tokenizer(text): return [tok.text for tok in spacy_en.tokenizer(text)]` を定義して、元の `tokenizer` 関数を置き換えよ。GloVe と spaCy ではフレーズトークンの形式が異なることに注意しよ。たとえば、フレーズトークン "new york" は、GloVe では "new-york" の形式であり、spaCy のトークン化後は "new york" の形式になる。
