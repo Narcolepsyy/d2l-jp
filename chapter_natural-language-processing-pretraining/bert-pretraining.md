@@ -1,7 +1,7 @@
 # BERTの事前学習
 :label:`sec_bert-pretraining`
 
-:numref:`sec_bert` で実装した BERT モデルと、 :numref:`sec_bert-dataset` で生成した WikiText-2 データセット由来の事前学習用サンプルを用いて、この節では WikiText-2 データセット上で BERT を事前学習します。
+:numref:`sec_bert` で実装した BERT モデルと、 :numref:`sec_bert-dataset` で生成した WikiText-2 データセット由来の事前学習用サンプルを用いて、この節では WikiText-2 データセット上で BERT を事前学習する。
 
 ```{.python .input}
 #@tab mxnet
@@ -18,9 +18,9 @@ import torch
 from torch import nn
 ```
 
-まず、WikiText-2 データセットを、マスク付き言語モデルと次文予測のための事前学習サンプルのミニバッチとして読み込みます。
-バッチサイズは 512 で、BERT 入力系列の最大長は 64 です。
-なお、元の BERT モデルでは最大長は 512 です。
+まず、WikiText-2 データセットを、マスク付き言語モデルと次文予測のための事前学習サンプルのミニバッチとして読み込みる。
+バッチサイズは 512 で、BERT 入力系列の最大長は 64 である。
+なお、元の BERT モデルでは最大長は 512 である。
 
 ```{.python .input}
 #@tab all
@@ -30,12 +30,12 @@ train_iter, vocab = d2l.load_data_wiki(batch_size, max_len)
 
 ## BERTの事前学習
 
-元の BERT には、異なるモデルサイズの 2 つのバージョンがあります :cite:`Devlin.Chang.Lee.ea.2018`。
-ベースモデル（$\textrm{BERT}_{\textrm{BASE}}$）は、12 層（Transformer エンコーダブロック）を用い、768 個の隠れユニット（隠れサイズ）と 12 個の自己注意ヘッドを持ちます。
-ラージモデル（$\textrm{BERT}_{\textrm{LARGE}}$）は、24 層、1024 個の隠れユニット、16 個の自己注意ヘッドを持ちます。
-特に、前者は 1 億 1000 万個のパラメータを持ち、後者は 3 億 4000 万個のパラメータを持ちます。
+元の BERT には、異なるモデルサイズの 2 つのバージョンがある :cite:`Devlin.Chang.Lee.ea.2018`。
+ベースモデル（$\textrm{BERT}_{\textrm{BASE}}$）は、12 層（Transformer エンコーダブロック）を用い、768 個の隠れユニット（隠れサイズ）と 12 個の自己注意ヘッドを持つ。
+ラージモデル（$\textrm{BERT}_{\textrm{LARGE}}$）は、24 層、1024 個の隠れユニット、16 個の自己注意ヘッドを持つ。
+特に、前者は 1 億 1000 万個のパラメータを持ち、後者は 3 億 4000 万個のパラメータを持つ。
 デモを容易にするため、
-[**2 層、128 個の隠れユニット、2 個の自己注意ヘッドを用いた小さな BERT を定義します**]。
+[**2 層、128 個の隠れユニット、2 個の自己注意ヘッドを用いた小さな BERT を定義する**]。
 
 ```{.python .input}
 #@tab mxnet
@@ -55,11 +55,11 @@ loss = nn.CrossEntropyLoss()
 ```
 
 学習ループを定義する前に、
-補助関数 `_get_batch_loss_bert` を定義します。
+補助関数 `_get_batch_loss_bert` を定義する。
 学習サンプルのシャードが与えられると、
-この関数は[**マスク付き言語モデルと次文予測の両方のタスクに対する損失を計算します**]。
+この関数は[**マスク付き言語モデルと次文予測の両方のタスクに対する損失を計算する**]。
 BERT の事前学習における最終的な損失は、
-マスク付き言語モデルの損失と次文予測の損失の単純な和です。
+マスク付き言語モデルの損失と次文予測の損失の単純な和である。
 
 ```{.python .input}
 #@tab mxnet
@@ -116,10 +116,10 @@ def _get_batch_loss_bert(net, loss, vocab_size, tokens_X,
 ```
 
 前述の 2 つの補助関数を呼び出して、
-次の `train_bert` 関数は、[**WikiText-2 (`train_iter`) データセット上で BERT (`net`) を事前学習する**] 手順を定義します。
-BERT の学習には非常に長い時間がかかることがあります。
+次の `train_bert` 関数は、[**WikiText-2 (`train_iter`) データセット上で BERT (`net`) を事前学習する**] 手順を定義する。
+BERT の学習には非常に長い時間がかかることがある。
 `train_ch13` 関数（:numref:`sec_image_augmentation` を参照）のように学習エポック数を指定する代わりに、
-以下の関数の入力 `num_steps` は学習の反復ステップ数を指定します。
+以下の関数の入力 `num_steps` は学習の反復ステップ数を指定する。
 
 ```{.python .input}
 #@tab mxnet
@@ -209,7 +209,7 @@ def train_bert(train_iter, net, loss, vocab_size, devices, num_steps):
           f'{str(devices)}')
 ```
 
-BERT の事前学習中に、マスク付き言語モデルの損失と次文予測の損失の両方をプロットできます。
+BERT の事前学習中に、マスク付き言語モデルの損失と次文予測の損失の両方をプロットできる。
 
 ```{.python .input}
 #@tab all
@@ -218,8 +218,8 @@ train_bert(train_iter, net, loss, len(vocab), devices, 50)
 
 ## [**BERTによるテキスト表現**]
 
-BERT を事前学習した後は、単一のテキスト、テキストのペア、あるいはそれらの中の任意のトークンを表現するために利用できます。
-次の関数は、`tokens_a` と `tokens_b` に含まれるすべてのトークンに対する BERT (`net`) の表現を返します。
+BERT を事前学習した後は、単一のテキスト、テキストのペア、あるいはそれらの中の任意のトークンを表現するために利用できる。
+次の関数は、`tokens_a` と `tokens_b` に含まれるすべてのトークンに対する BERT (`net`) の表現を返す。
 
 ```{.python .input}
 #@tab mxnet
@@ -244,14 +244,14 @@ def get_bert_encoding(net, tokens_a, tokens_b=None):
     return encoded_X
 ```
 
-[**文 "a crane is flying" を考えます。**]
-:numref:`subsec_bert_input_rep` で説明した BERT の入力表現を思い出してください。
+[**文 "a crane is flying" を考える。**]
+:numref:`subsec_bert_input_rep` で説明した BERT の入力表現を思い出してほしい。
 特殊トークン “&lt;cls&gt;”（分類に使用）と “&lt;sep&gt;”（区切りに使用）を挿入すると、
-BERT の入力系列の長さは 6 になります。
+BERT の入力系列の長さは 6 になる。
 “&lt;cls&gt;” トークンのインデックスは 0 なので、
-`encoded_text[:, 0, :]` は入力文全体の BERT 表現です。
+`encoded_text[:, 0, :]` は入力文全体の BERT 表現である。
 多義語トークン "crane" を評価するために、
-その BERT 表現の最初の 3 要素も出力します。
+その BERT 表現の最初の 3 要素も出力する。
 
 ```{.python .input}
 #@tab all
@@ -264,10 +264,10 @@ encoded_text.shape, encoded_text_cls.shape, encoded_text_crane[0][:3]
 ```
 
 [**次に、文対
-"a crane driver came" と "he just left" を考えます。**]
-同様に、`encoded_pair[:, 0, :]` は事前学習済み BERT による文対全体の符号化結果です。
-多義語トークン "crane" の最初の 3 要素は、文脈が異なるときには先ほどとは異なることに注意してください。
-これは、BERT の表現が文脈依存であることを示しています。
+"a crane driver came" と "he just left" を考える。**]
+同様に、`encoded_pair[:, 0, :]` は事前学習済み BERT による文対全体の符号化結果である。
+多義語トークン "crane" の最初の 3 要素は、文脈が異なるときには先ほどとは異なることに注意しよ。
+これは、BERT の表現が文脈依存であることを示している。
 
 ```{.python .input}
 #@tab all
@@ -280,16 +280,16 @@ encoded_pair_crane = encoded_pair[:, 2, :]
 encoded_pair.shape, encoded_pair_cls.shape, encoded_pair_crane[0][:3]
 ```
 
-:numref:`chap_nlp_app` では、事前学習済み BERT モデルを下流の自然言語処理アプリケーション向けにファインチューニングします。
+:numref:`chap_nlp_app` では、事前学習済み BERT モデルを下流の自然言語処理アプリケーション向けにファインチューニングする。
 
 ## 要約
 
-* 元の BERT には 2 つのバージョンがあり、ベースモデルは 1 億 1000 万個のパラメータを持ち、ラージモデルは 3 億 4000 万個のパラメータを持ちます。
-* BERT を事前学習した後は、単一テキスト、テキスト対、あるいはそれらの中の任意のトークンを表現するために利用できます。
-* 実験では、同じトークンでも文脈が異なると BERT 表現が異なります。これは、BERT の表現が文脈依存であることを示しています。
+* 元の BERT には 2 つのバージョンがあり、ベースモデルは 1 億 1000 万個のパラメータを持ち、ラージモデルは 3 億 4000 万個のパラメータを持つ。
+* BERT を事前学習した後は、単一テキスト、テキスト対、あるいはそれらの中の任意のトークンを表現するために利用できる。
+* 実験では、同じトークンでも文脈が異なると BERT 表現が異なる。これは、BERT の表現が文脈依存であることを示している。
 
 
 ## 演習
 
-1. 実験から、マスク付き言語モデルの損失が次文予測の損失よりかなり大きいことがわかります。なぜでしょうか。
-2. BERT 入力系列の最大長を 512（元の BERT モデルと同じ）に設定します。元の BERT モデル、たとえば $\textrm{BERT}_{\textrm{LARGE}}$ の設定を使ってください。この節を実行するとエラーは発生しますか。なぜでしょうか。
+1. 実験から、マスク付き言語モデルの損失が次文予測の損失よりかなり大きいことがわかる。なぜだろうか。
+2. BERT 入力系列の最大長を 512（元の BERT モデルと同じ）に設定する。元の BERT モデル、たとえば $\textrm{BERT}_{\textrm{LARGE}}$ の設定を使っよ。この節を実行するとエラーは発生するか。なぜだろうか。

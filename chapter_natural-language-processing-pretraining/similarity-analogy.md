@@ -3,13 +3,13 @@
 
 :numref:`sec_word2vec_pretraining` では、  
 小さなデータセットで word2vec モデルを学習し、  
-入力単語に対して意味的に類似した単語を見つけるために適用しました。  
+入力単語に対して意味的に類似した単語を見つけるために適用した。  
 実際には、大規模コーパスで事前学習された単語ベクトルは、  
-後続の自然言語処理タスクに適用できます。  
-これについては、後ほど :numref:`chap_nlp_app` で扱います。  
+後続の自然言語処理タスクに適用できる。  
+これについては、後ほど :numref:`chap_nlp_app` で扱いる。  
 大規模コーパスから得られた事前学習済み単語ベクトルの意味を  
 わかりやすく示すために、  
-単語の類似性とアナロジーのタスクに適用してみましょう。
+単語の類似性とアナロジーのタスクに適用してみよう。
 
 ```{.python .input}
 #@tab mxnet
@@ -30,11 +30,11 @@ import os
 
 ## 事前学習済み単語ベクトルの読み込み
 
-以下に、次元 50、100、300 の事前学習済み GloVe 埋め込みを示します。  
-これらは [GloVe website](https://nlp.stanford.edu/projects/glove/) からダウンロードできます。  
-事前学習済み fastText 埋め込みは複数の言語で利用できます。  
+以下に、次元 50、100、300 の事前学習済み GloVe 埋め込みを示す。  
+これらは [GloVe website](https://nlp.stanford.edu/projects/glove/) からダウンロードできる。  
+事前学習済み fastText 埋め込みは複数の言語で利用できる。  
 ここでは英語版の 1 つ（300 次元の "wiki.en"）を扱い、  
-[fastText website](https://fasttext.cc/) からダウンロードできます。
+[fastText website](https://fasttext.cc/) からダウンロードできる。
 
 ```{.python .input}
 #@tab all
@@ -56,7 +56,7 @@ d2l.DATA_HUB['wiki.en'] = (d2l.DATA_URL + 'wiki.en.zip',
 ```
 
 これらの事前学習済み GloVe および fastText 埋め込みを読み込むために、  
-以下の `TokenEmbedding` クラスを定義します。
+以下の `TokenEmbedding` クラスを定義する。
 
 ```{.python .input}
 #@tab all
@@ -97,23 +97,23 @@ class TokenEmbedding:
 ```
 
 以下では、  
-50 次元の GloVe 埋め込み（Wikipedia の一部で事前学習済み）を読み込みます。  
+50 次元の GloVe 埋め込み（Wikipedia の一部で事前学習済み）を読み込みる。  
 `TokenEmbedding` インスタンスを作成するとき、  
-指定した埋め込みファイルがまだ存在しなければダウンロードされます。
+指定した埋め込みファイルがまだ存在しなければダウンロードされる。
 
 ```{.python .input}
 #@tab all
 glove_6b50d = TokenEmbedding('glove.6b.50d')
 ```
 
-語彙サイズを出力します。語彙には 400000 語（トークン）と特別な未知語トークンが含まれます。
+語彙サイズを出力する。語彙には 400000 語（トークン）と特別な未知語トークンが含まれる。
 
 ```{.python .input}
 #@tab all
 len(glove_6b50d)
 ```
 
-語彙中の単語のインデックスを取得したり、その逆を行ったりできます。
+語彙中の単語のインデックスを取得したり、その逆を行ったりできる。
 
 ```{.python .input}
 #@tab all
@@ -124,7 +124,7 @@ glove_6b50d.token_to_idx['beautiful'], glove_6b50d.idx_to_token[3367]
 
 読み込んだ GloVe ベクトルを用いて、  
 以下の単語類似性およびアナロジーのタスクに適用することで、  
-その意味を示します。
+その意味を示す。
 
 
 ### 単語の類似性
@@ -133,7 +133,7 @@ glove_6b50d.token_to_idx['beautiful'], glove_6b50d.idx_to_token[3367]
 単語ベクトル間のコサイン類似度に基づいて  
 入力単語に意味的に類似した単語を見つけるために、  
 以下の `knn`  
-（$k$-最近傍）関数を実装します。
+（$k$-最近傍）関数を実装する。
 
 ```{.python .input}
 #@tab mxnet
@@ -157,7 +157,7 @@ def knn(W, x, k):
 ```
 
 次に、`TokenEmbedding` インスタンス `embed` に含まれる事前学習済み単語ベクトルを使って、  
-類似単語を検索します。
+類似単語を検索する。
 
 ```{.python .input}
 #@tab all
@@ -167,17 +167,17 @@ def get_similar_tokens(query_token, k, embed):
         print(f'cosine sim={float(c):.3f}: {embed.idx_to_token[int(i)]}')
 ```
 
-事前学習済み単語ベクトル `glove_6b50d` の語彙には 400000 語と特別な未知語トークンが含まれます。  
+事前学習済み単語ベクトル `glove_6b50d` の語彙には 400000 語と特別な未知語トークンが含まれる。  
 入力単語と未知語トークンを除いて、  
 この語彙の中から  
-単語 "chip" に意味的に最も類似した 3 語を見つけてみましょう。
+単語 "chip" に意味的に最も類似した 3 語を見つけてみよう。
 
 ```{.python .input}
 #@tab all
 get_similar_tokens('chip', 3, glove_6b50d)
 ```
 
-以下は "baby" と "beautiful" に類似した単語を出力します。
+以下は "baby" と "beautiful" に類似した単語を出力する。
 
 ```{.python .input}
 #@tab all
@@ -192,19 +192,19 @@ get_similar_tokens('beautiful', 3, glove_6b50d)
 ### 単語のアナロジー
 
 類似単語を見つけるだけでなく、  
-単語ベクトルを単語アナロジーのタスクにも適用できます。  
+単語ベクトルを単語アナロジーのタスクにも適用できる。  
 たとえば、  
 “man”:“woman”::“son”:“daughter”  
-は単語アナロジーの形式です。  
+は単語アナロジーの形式である。  
 つまり、  
 “man” は “woman” に対して、  
-“son” は “daughter” に対する、という関係です。  
+“son” は “daughter” に対する、という関係である。  
 具体的には、  
-単語アナロジー補完タスクは次のように定義できます。  
-単語アナロジー $a : b :: c : d$ に対して、最初の 3 語 $a$, $b$, $c$ が与えられたとき、$d$ を見つけます。  
-単語 $w$ のベクトルを $\textrm{vec}(w)$ と表します。  
+単語アナロジー補完タスクは次のように定義できる。  
+単語アナロジー $a : b :: c : d$ に対して、最初の 3 語 $a$, $b$, $c$ が与えられたとき、$d$ を見つける。  
+単語 $w$ のベクトルを $\textrm{vec}(w)$ と表す。  
 このアナロジーを完成させるために、  
-$\textrm{vec}(c)+\textrm{vec}(b)-\textrm{vec}(a)$ の結果に最も類似したベクトルを持つ単語を見つけます。
+$\textrm{vec}(c)+\textrm{vec}(b)-\textrm{vec}(a)$ の結果に最も類似したベクトルを持つ単語を見つける。
 
 ```{.python .input}
 #@tab all
@@ -215,7 +215,7 @@ def get_analogy(token_a, token_b, token_c, embed):
     return embed.idx_to_token[int(topk[0])]  # Remove unknown words
 ```
 
-読み込んだ単語ベクトルを使って、"male-female" のアナロジーを確認してみましょう。
+読み込んだ単語ベクトルを使って、"male-female" のアナロジーを確認してみよう。
 
 ```{.python .input}
 #@tab all
@@ -223,10 +223,10 @@ get_analogy('man', 'woman', 'son', glove_6b50d)
 ```
 
 以下は  
-“capital-country” のアナロジーを完成させます。  
+“capital-country” のアナロジーを完成させる。  
 “beijing”:“china”::“tokyo”:“japan”。  
 これは、  
-事前学習済み単語ベクトルに意味情報が含まれていることを示しています。
+事前学習済み単語ベクトルに意味情報が含まれていることを示している。
 
 ```{.python .input}
 #@tab all
@@ -237,7 +237,7 @@ get_analogy('beijing', 'china', 'tokyo', glove_6b50d)
 のような  
 “形容詞-最上級形容詞” のアナロジーでは、  
 事前学習済み単語ベクトルが  
-統語情報を捉えている可能性があることがわかります。
+統語情報を捉えている可能性があることがわかる。
 
 ```{.python .input}
 #@tab all
@@ -247,7 +247,7 @@ get_analogy('bad', 'worst', 'big', glove_6b50d)
 事前学習済み単語ベクトルにおける過去形の概念が捉えられていることを示すために、  
 "do":“did”::“go”:“went”  
 という  
-"現在形-過去形" のアナロジーで構文をテストできます。
+"現在形-過去形" のアナロジーで構文をテストできる。
 
 ```{.python .input}
 #@tab all
@@ -256,11 +256,11 @@ get_analogy('do', 'did', 'go', glove_6b50d)
 
 ## まとめ
 
-* 実際には、大規模コーパスで事前学習された単語ベクトルは、後続の自然言語処理タスクに適用できます。
-* 事前学習済み単語ベクトルは、単語の類似性とアナロジーのタスクに適用できます。
+* 実際には、大規模コーパスで事前学習された単語ベクトルは、後続の自然言語処理タスクに適用できる。
+* 事前学習済み単語ベクトルは、単語の類似性とアナロジーのタスクに適用できる。
 
 
 ## 演習
 
-1. `TokenEmbedding('wiki.en')` を使って fastText の結果を試してください。
-1. 語彙が非常に大きい場合、類似単語の検索や単語アナロジーの補完をより高速に行うにはどうすればよいでしょうか？
+1. `TokenEmbedding('wiki.en')` を使って fastText の結果を試しよ。
+1. 語彙が非常に大きい場合、類似単語の検索や単語アナロジーの補完をより高速に行うにはどうすればよいだろうか？

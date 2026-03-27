@@ -4,24 +4,24 @@
 :numref:`sec_bert` で実装した BERT モデルを事前学習するには、
 2つの事前学習タスク、すなわち
 マスク付き言語モデルと次文予測を容易にするための、
-理想的な形式のデータセットを生成する必要があります。
+理想的な形式のデータセットを生成する必要がある。
 一方で、
 元の BERT モデルは BookCorpus と English Wikipedia という
 2つの巨大なコーパスの連結上で事前学習されており
 (:numref:`subsec_bert_pretraining_tasks` を参照)、
-本書の多くの読者にとっては実行が難しいです。
+本書の多くの読者にとっては実行が難しいである。
 他方で、
 既製の事前学習済み BERT モデルは、
-医療のような特定分野のアプリケーションには適さない場合があります。
+医療のような特定分野のアプリケーションには適さない場合がある。
 そのため、カスタマイズしたデータセット上で BERT を事前学習することが
-一般的になりつつあります。
+一般的になりつつある。
 BERT の事前学習を示しやすくするために、
-ここではより小さなコーパスである WikiText-2 :cite:`Merity.Xiong.Bradbury.ea.2016` を用います。
+ここではより小さなコーパスである WikiText-2 :cite:`Merity.Xiong.Bradbury.ea.2016` を用いる。
 
 :numref:`sec_word2vec_data` で word2vec の事前学習に用いた PTB データセットと比べると、
 WikiText-2 は (i) 元の句読点を保持しているため、次文予測に適している、
 (ii) 元の大文字小文字と数値を保持している、
-(iii) 2倍以上大きい、という特徴があります。
+(iii) 2倍以上大きい、という特徴がある。
 
 ```{.python .input}
 #@tab mxnet
@@ -43,10 +43,10 @@ import torch
 
 [**WikiText-2 データセット**]では、
 各行が1つの段落を表し、
-任意の句読点とその直前のトークンの間には空白が挿入されています。
-少なくとも2文を含む段落のみを残します。
-文の分割には、簡単のためにピリオドのみを区切り文字として使います。
-より複雑な文分割手法については、この節の最後の演習で扱います。
+任意の句読点とその直前のトークンの間には空白が挿入されている。
+少なくとも2文を含む段落のみを残す。
+文の分割には、簡単のためにピリオドのみを区切り文字として使う。
+より複雑な文分割手法については、この節の最後の演習で扱いる。
 
 ```{.python .input}
 #@tab all
@@ -71,15 +71,15 @@ def _read_wiki(data_dir):
 
 以下ではまず、
 BERT の2つの事前学習タスク、
-次文予測とマスク付き言語モデルのための補助関数を実装します。
+次文予測とマスク付き言語モデルのための補助関数を実装する。
 これらの補助関数は後で、
-生のテキストコーパスを BERT の事前学習に適した理想的な形式のデータセットへ変換する際に呼び出されます。
+生のテキストコーパスを BERT の事前学習に適した理想的な形式のデータセットへ変換する際に呼び出される。
 
 ### [**次文予測タスクの生成**]
 
 :numref:`subsec_nsp` の説明に従い、
 `_get_next_sentence` 関数は
-二値分類タスクのための学習例を生成します。
+二値分類タスクのための学習例を生成する。
 
 ```{.python .input}
 #@tab all
@@ -95,9 +95,9 @@ def _get_next_sentence(sentence, next_sentence, paragraphs):
 ```
 
 次の関数は、`_get_next_sentence` 関数を呼び出すことで、
-入力 `paragraph` から次文予測の学習例を生成します。
-ここで `paragraph` は文のリストであり、各文はトークンのリストです。
-引数 `max_len` は、事前学習中の BERT 入力系列の最大長を指定します。
+入力 `paragraph` から次文予測の学習例を生成する。
+ここで `paragraph` は文のリストであり、各文はトークンのリストである。
+引数 `max_len` は、事前学習中の BERT 入力系列の最大長を指定する。
 
 ```{.python .input}
 #@tab all
@@ -120,17 +120,17 @@ def _get_nsp_data_from_paragraph(paragraph, paragraphs, vocab, max_len):
 
 BERT 入力系列から
 マスク付き言語モデルタスクの学習例を生成するために、
-次の `_replace_mlm_tokens` 関数を定義します。
+次の `_replace_mlm_tokens` 関数を定義する。
 入力において、`tokens` は BERT 入力系列を表すトークンのリスト、
 `candidate_pred_positions` は特殊トークンを除いた BERT 入力系列中のトークンインデックスのリストです
-（特殊トークンはマスク付き言語モデルタスクでは予測されません）、
-`num_mlm_preds` は予測数を示します（予測対象としてランダムな15%のトークンを思い出してください）。
+（特殊トークンはマスク付き言語モデルタスクでは予測されない）、
+`num_mlm_preds` は予測数を示す（予測対象としてランダムな15%のトークンを思い出してほしい）。
 :numref:`subsec_mlm` で定義したマスク付き言語モデルタスクに従い、
 各予測位置では、入力は特殊な “&lt;mask&gt;” トークンやランダムなトークンに置き換えられるか、
-あるいはそのまま保持されます。
+あるいはそのまま保持される。
 最終的にこの関数は、置換後の入力トークン、
 予測が行われるトークンインデックス、
-およびそれらのラベルを返します。
+およびそれらのラベルを返す。
 
 ```{.python .input}
 #@tab all
@@ -169,7 +169,7 @@ def _replace_mlm_tokens(tokens, candidate_pred_positions, num_mlm_preds,
 入力トークンのインデックス
 （:numref:`subsec_mlm` で説明したようなトークン置換後）、
 予測が行われるトークンインデックス、
-およびそれらのラベルインデックスを返します。
+およびそれらのラベルインデックスを返す。
 
 ```{.python .input}
 #@tab all
@@ -196,10 +196,10 @@ def _get_mlm_data_from_tokens(tokens, vocab):
 
 ## テキストを事前学習データセットへ変換する
 
-これで、BERT 事前学習用の `Dataset` クラスをカスタマイズする準備がほぼ整いました。
+これで、BERT 事前学習用の `Dataset` クラスをカスタマイズする準備がほぼ整った。
 その前に、
-入力に [**特殊な “&lt;pad&gt;” トークンを追加する**] ための補助関数 `_pad_bert_inputs` を定義する必要があります。
-その引数 `examples` には、2つの事前学習タスクに対する補助関数 `_get_nsp_data_from_paragraph` と `_get_mlm_data_from_tokens` の出力が含まれます。
+入力に [**特殊な “&lt;pad&gt;” トークンを追加する**] ための補助関数 `_pad_bert_inputs` を定義する必要がある。
+その引数 `examples` には、2つの事前学習タスクに対する補助関数 `_get_nsp_data_from_paragraph` と `_get_mlm_data_from_tokens` の出力が含まれる。
 
 ```{.python .input}
 #@tab mxnet
@@ -264,16 +264,16 @@ def _pad_bert_inputs(examples, max_len, vocab):
 
 2つの事前学習タスクの学習例を生成する補助関数と、
 入力をパディングする補助関数をまとめて、
-以下の `_WikiTextDataset` クラスを [**BERT 事前学習用の WikiText-2 データセット**] としてカスタマイズします。
+以下の `_WikiTextDataset` クラスを [**BERT 事前学習用の WikiText-2 データセット**] としてカスタマイズする。
 `__getitem__ `関数を実装することで、
 WikiText-2 コーパス中の文のペアから生成された事前学習
-（マスク付き言語モデルと次文予測）の例に任意にアクセスできます。
+（マスク付き言語モデルと次文予測）の例に任意にアクセスできる。
 
-元の BERT モデルは、語彙サイズが 30000 の WordPiece 埋め込みを使用します :cite:`Wu.Schuster.Chen.ea.2016`。
+元の BERT モデルは、語彙サイズが 30000 の WordPiece 埋め込みを使用する :cite:`Wu.Schuster.Chen.ea.2016`。
 WordPiece のトークン化手法は、
 :numref:`subsec_Byte_Pair_Encoding` にある元の byte pair encoding アルゴリズムをわずかに修正したものです。
-簡単のため、ここではトークン化に `d2l.tokenize` 関数を使います。
-5回未満しか現れない低頻度トークンは除外します。
+簡単のため、ここではトークン化に `d2l.tokenize` 関数を使う。
+5回未満しか現れない低頻度トークンは除外する。
 
 ```{.python .input}
 #@tab mxnet
@@ -355,7 +355,7 @@ class _WikiTextDataset(torch.utils.data.Dataset):
 
 `_read_wiki` 関数と `_WikiTextDataset` クラスを用いて、
 以下の `load_data_wiki` を定義し、
-[**WikiText-2 データセットをダウンロードして、そこから事前学習例を生成**] します。
+[**WikiText-2 データセットをダウンロードして、そこから事前学習例を生成**] する。
 
 ```{.python .input}
 #@tab mxnet
@@ -386,9 +386,9 @@ def load_data_wiki(batch_size, max_len):
 ```
 
 バッチサイズを 512、BERT 入力系列の最大長を 64 に設定して、
-[**BERT 事前学習例のミニバッチの形状を出力**] してみます。
+[**BERT 事前学習例のミニバッチの形状を出力**] してみる。
 各 BERT 入力系列では、
-マスク付き言語モデルタスクのために $10$（$64 \times 0.15$）個の位置が予測対象になります。
+マスク付き言語モデルタスクのために $10$（$64 \times 0.15$）個の位置が予測対象になる。
 
 ```{.python .input}
 #@tab all
@@ -403,9 +403,9 @@ for (tokens_X, segments_X, valid_lens_x, pred_positions_X, mlm_weights_X,
     break
 ```
 
-最後に、語彙サイズを見てみましょう。
+最後に、語彙サイズを見てみよう。
 低頻度トークンを除外した後でも、
-それは依然として PTB データセットの2倍以上の大きさです。
+それは依然として PTB データセットの2倍以上の大きさである。
 
 ```{.python .input}
 #@tab all
@@ -414,11 +414,11 @@ len(vocab)
 
 ## まとめ
 
-* PTB データセットと比べると、WikiText-2 データセットは元の句読点、大文字小文字、数値を保持しており、2倍以上大きいです。
-* WikiText-2 コーパス中の文のペアから生成された事前学習（マスク付き言語モデルと次文予測）の例に任意にアクセスできます。
+* PTB データセットと比べると、WikiText-2 データセットは元の句読点、大文字小文字、数値を保持しており、2倍以上大きいである。
+* WikiText-2 コーパス中の文のペアから生成された事前学習（マスク付き言語モデルと次文予測）の例に任意にアクセスできる。
 
 
 ## 演習
 
-1. 簡単のため、文の分割にはピリオドのみを区切り文字として使いました。spaCy や NLTK など、他の文分割手法も試してみてください。例として NLTK を使います。まず NLTK をインストールする必要があります: `pip install nltk`。コードでは最初に `import nltk` します。次に、Punkt 文トークナイザをダウンロードします: `nltk.download('punkt')`。`sentences = 'This is great ! Why not ?'` のような文を分割するには、`nltk.tokenize.sent_tokenize(sentences)` を呼び出すと、2つの文文字列からなるリスト `['This is great !', 'Why not ?']` が返ります。
-1. 低頻度トークンを一切除外しない場合、語彙サイズはいくつになりますか？
+1. 簡単のため、文の分割にはピリオドのみを区切り文字として使った。spaCy や NLTK など、他の文分割手法も試してみよ。例として NLTK を使う。まず NLTK をインストールする必要がある: `pip install nltk`。コードでは最初に `import nltk` する。次に、Punkt 文トークナイザをダウンロードする: `nltk.download('punkt')`。`sentences = 'This is great ! Why not ?'` のような文を分割するには、`nltk.tokenize.sent_tokenize(sentences)` を呼び出すと、2つの文文字列からなるリスト `['This is great !', 'Why not ?']` が返りる。
+1. 低頻度トークンを一切除外しない場合、語彙サイズはいくつになるか？
