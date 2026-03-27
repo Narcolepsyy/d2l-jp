@@ -441,6 +441,19 @@
 
     document.documentElement.setAttribute('lang', 'ja');
 
+    // Ensure favicon is always present with an absolute path
+    var existingFavicon = document.querySelector('link[rel="icon"], link[rel="shortcut icon"]');
+    if (existingFavicon) {
+      // Normalize to absolute path so it works on every subpage
+      existingFavicon.href = '/_static/favicon.png';
+    } else {
+      var faviconLink = document.createElement('link');
+      faviconLink.rel = 'icon';
+      faviconLink.type = 'image/png';
+      faviconLink.href = '/_static/favicon.png';
+      head.appendChild(faviconLink);
+    }
+
     if (!document.querySelector('link[rel="canonical"]')) {
       var canonical = document.createElement('link');
       canonical.rel = 'canonical';
