@@ -6,6 +6,7 @@
    but fails to render characters like な (U+306A), ー (U+30FC), ッ (U+30C3), etc. */
 body {
     font-family: Roboto, 'Noto Sans JP', 'Noto Sans SC Sliced', sans-serif !important;
+    font-size: 17px !important;
 }
 h1, h2, h3, h4, h5, h6,
 a.download > code.download,
@@ -75,7 +76,7 @@ html.page-ready .mdl-layout__content {
 .mdl-layout__drawer > .mdl-layout-title .title > img.logo {
     width: auto !important;
     max-width: 100%;
-    max-height: 56px;
+    max-height: 72px;
     object-fit: contain;
     margin: 0 auto;
 }
