@@ -50,5 +50,6 @@ chapter_appendix-tools-for-deep-learning/index
 ```toc
 :maxdepth: 1
 
+chapter_glossary/index
 chapter_references/zreferences
 ```\n

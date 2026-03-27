@@ -1,0 +1,93 @@
+# ディープラーニング用語集 (Deep Learning Glossary)
+:label:`chap_glossary`
+
+これは、Dive into Deep Learning (D2L) で使用される重要なディープラーニングおよび機械学習の概念をまとめた用語集です。
+各用語ページには、定義と関連する章へのリンクが含まれています。
+
+```toc
+:maxdepth: 1
+
+   action
+   actions
+   actuator
+   agents
+   algorithm
+   aligned
+   artificial-general-intelligence
+   backpropagation
+   binary-classification
+   cbow
+   censored-feedback
+   classification
+   cnn
+   contextual-bandit-problem
+   covariates
+   cpu
+   credit-assignment
+   cross-entropy
+   data
+   data-instance
+   data-point
+   dataset
+   deep
+   deep-learning
+   deep-reinforcement-learning
+   dense-convolutional-network
+   dimensionality
+   distribution-shift
+   end-to-end-training
+   exploit
+   explore
+   family
+   feature-engineering
+   firm
+   gpgpus
+   gpu
+   gradient-descent
+   hdd
+   hierarchical-classification
+   inputs
+   intelligent
+   layers
+   learning
+   learning-algorithm
+   loss-functions
+   machine-learning
+   markov-decision-process
+   model
+   multi-armed-bandit-problem
+   multi-label-classification
+   multiclass-classification
+   nas
+   neural-networks
+   nms
+   objective-function
+   objective-functions
+   observation
+   offline-learning
+   overfitting
+   parameters
+   personalization
+   policy
+   programming-with-data
+   regression
+   reinforcement-learning
+   right
+   rnn
+   sample
+   self-supervised-learning
+   seq2seq
+   sequence-learning
+   sequence-to-sequence-learning
+   sgd
+   squared-error
+   statistical-models
+   supervised-learning
+   surrogate-objective
+   target
+   text-to-speech
+   train
+   unsupervised-learning
+   vit
+   wake-word
+```
