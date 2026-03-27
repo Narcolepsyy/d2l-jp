@@ -19,3 +19,154 @@ span.mdl-layout-title,
 .globaltoc ul:first-of-type li.toctree-l1 .link-wrapper>a {
     padding-left: 18px;
 }
+
+/* ==========================================================================
+   Anti-Flicker & Page Transition Styles
+   ========================================================================== */
+
+html {
+    background-color: #fafafa;
+}
+
+html:not(.page-ready) body {
+    opacity: 0;
+}
+
+html.page-ready body {
+    opacity: 1;
+    transition: opacity 0.15s ease-in;
+}
+
+html.page-leaving body {
+    opacity: 0;
+    transition: opacity 0.1s ease-out;
+}
+
+/* ==========================================================================
+   Sidebar Drawer — Logo & Title (match d2l.ai)
+   ========================================================================== */
+
+/* Symmetric vertical padding around the logo, vertically centered */
+.mdl-layout__drawer > .mdl-layout-title {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 12px !important;
+    min-height: 80px !important;
+    box-sizing: border-box;
+}
+
+.mdl-layout__drawer > .mdl-layout-title .title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.mdl-layout__drawer > .mdl-layout-title .title > img.logo {
+    width: auto !important;
+    max-width: 100%;
+    max-height: 56px;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   Minimal Responsive Fixes (conservative — preserve d2l.ai look)
+   Only fix actual overflow/usability issues, don't change desktop look.
+   ========================================================================== */
+
+/* --- Math/MathJax overflow fix (mobile) --- */
+.MathJax_Display,
+.MathJax,
+.page-content .math,
+.page-content mjx-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 100%;
+}
+
+/* --- Tables: ensure horizontal scroll on small screens --- */
+.page-content .section {
+    overflow-x: auto;
+}
+
+/* --- Mobile-only fixes (≤768px) --- */
+@media (max-width: 768px) {
+    /* Slightly smaller code font on mobile for readability */
+    .page-content .highlight pre,
+    .page-content pre {
+        font-size: 85% !important;
+        padding: 0.5rem 0.75rem !important;
+    }
+
+    /* Tighter padding for more content space */
+    .document .page-content {
+        padding: 0 3% !important;
+    }
+
+    /* Compact pagination */
+    .pagenation {
+        height: auto !important;
+        min-height: 60px;
+    }
+
+    .pagenation-text {
+        font-size: 14px !important;
+    }
+}
+
+/* --- Mobile Floating ToC Button --- */
+.mobile-toc-btn {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #1565c0;
+    color: #fff;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, transform 0.2s;
+    line-height: 1;
+}
+
+.mobile-toc-btn:hover {
+    background-color: #0d47a1;
+    transform: scale(1.1);
+}
+
+.mobile-toc-btn:active {
+    transform: scale(0.95);
+}
+
+@media (max-width: 1199px) {
+    .mobile-toc-btn {
+        display: flex;
+    }
+}
+
+/* --- Print styles --- */
+@media print {
+    .mdl-layout__header,
+    .mdl-layout__drawer,
+    .side-doc-outline,
+    .pagenation,
+    .mobile-toc-btn,
+    .giscus-container {
+        display: none !important;
+    }
+
+    .document .page-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+}
