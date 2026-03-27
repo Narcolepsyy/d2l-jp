@@ -7,8 +7,8 @@ tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 :label:`sec_densenet`
 
 ResNet は、深いネットワークにおける関数をどのようにパラメータ化するかという見方を大きく変えました。*DenseNet*（dense convolutional network）は、ある意味でその論理的な拡張です :cite:`Huang.Liu.Van-Der-Maaten.ea.2017`。
-DenseNet の特徴は、各層がそれ以前のすべての層と接続される接続パターンと、ResNet の加算演算子ではなく連結演算を用いて、以前の層からの特徴を保持し再利用する点にあります。
-これをどのように導くかを理解するために、少し数学に寄り道しましょう。
+DenseNet の特徴は、各層がそれ以前のすべての層と接続される接続パターンと、ResNet の加算演算子ではなく連結演算を用いて、以前の層からの特徴を保持し再利用する点にある。
+これをどのように導くかを理解するために、少し数学に寄り道しよう。
 
 ```{.python .input}
 %%tab mxnet
@@ -41,16 +41,16 @@ import jax
 
 ## ResNet から DenseNet へ
 
-関数のテイラー展開を思い出してください。点 $x = 0$ においては、次のように書けます。
+関数のテイラー展開を思い出してください。点 $x = 0$ においては、次のように書ける。
 
 $$f(x) = f(0) + x \cdot \left[f'(0) + x \cdot \left[\frac{f''(0)}{2!}  + x \cdot \left[\frac{f'''(0)}{3!}  + \cdots \right]\right]\right].$$
 
 
-重要なのは、関数を次数の高い項へと分解している点です。同様に、ResNet は関数を次のように分解します。
+重要なのは、関数を次数の高い項へと分解している点である。同様に、ResNet は関数を次のように分解する。
 
 $$f(\mathbf{x}) = \mathbf{x} + g(\mathbf{x}).$$
 
-つまり、ResNet は $f$ を単純な線形項と、より複雑な非線形項に分解します。
+つまり、ResNet は $f$ を単純な線形項と、より複雑な非線形項に分解する。
 2項を超える情報を（必ずしも加算せずに）取り込みたいとしたらどうでしょうか？
 その一つの解が DenseNet です :cite:`Huang.Liu.Van-Der-Maaten.ea.2017`。
 
@@ -58,27 +58,27 @@ $$f(\mathbf{x}) = \mathbf{x} + g(\mathbf{x}).$$
 :label:`fig_densenet_block`
 
 :numref:`fig_densenet_block` に示すように、ResNet と DenseNet の主な違いは、後者では出力を加算するのではなく、*連結*（$[,]$ で表す）する点です。
-その結果、ますます複雑な関数列を適用した後の値へと、$\mathbf{x}$ を写像します。
+その結果、ますます複雑な関数列を適用した後の値へと、$\mathbf{x}$ を写像する。
 
 $$\mathbf{x} \to \left[
 \mathbf{x},
 f_1(\mathbf{x}),
 f_2\left(\left[\mathbf{x}, f_1\left(\mathbf{x}\right)\right]\right), f_3\left(\left[\mathbf{x}, f_1\left(\mathbf{x}\right), f_2\left(\left[\mathbf{x}, f_1\left(\mathbf{x}\right)\right]\right)\right]\right), \ldots\right].$$
 
-最終的には、これらすべての関数を MLP でまとめて、特徴数を再び減らします。実装の観点では、これは非常に単純です。
-項を加算する代わりに、それらを連結するだけです。DenseNet という名前は、変数間の依存グラフが非常に密になることに由来します。このような連鎖の最終層は、すべての前の層と密に接続されています。密な接続は :numref:`fig_densenet` に示されています。
+最終的には、これらすべての関数を MLP でまとめて、特徴数を再び減らする。実装の観点では、これは非常に単純である。
+項を加算する代わりに、それらを連結するだけである。DenseNet という名前は、変数間の依存グラフが非常に密になることに由来する。このような連鎖の最終層は、すべての前の層と密に接続されている。密な接続は :numref:`fig_densenet` に示されている。
 
 ![DenseNet における密な接続。深くなるにつれて次元が増加することに注意。](../img/densenet.svg)
 :label:`fig_densenet`
 
-DenseNet を構成する主な要素は、*dense block* と *transition layer* です。前者は入力と出力をどのように連結するかを定義し、後者はチャネル数を制御して大きくなりすぎないようにします。というのも、$\mathbf{x} \to \left[\mathbf{x}, f_1(\mathbf{x}),
-f_2\left(\left[\mathbf{x}, f_1\left(\mathbf{x}\right)\right]\right), \ldots \right]$ という拡張は、かなり高次元になりうるからです。
+DenseNet を構成する主な要素は、*dense block* と *transition layer* である。前者は入力と出力をどのように連結するかを定義し、後者はチャネル数を制御して大きくなりすぎないようにする。というのも、$\mathbf{x} \to \left[\mathbf{x}, f_1(\mathbf{x}),
+f_2\left(\left[\mathbf{x}, f_1\left(\mathbf{x}\right)\right]\right), \ldots \right]$ という拡張は、かなり高次元になりうるからである。
 
 
 ## [**Dense Block**]
 
-DenseNet は、ResNet の「バッチ正規化、活性化、畳み込み」を組み合わせた修正版の構造を使います（:numref:`sec_resnet` の演習を参照）。
-まず、この畳み込みブロック構造を実装します。
+DenseNet は、ResNet の「バッチ正規化、活性化、畳み込み」を組み合わせた修正版の構造を使う（:numref:`sec_resnet` の演習を参照）。
+まず、この畳み込みブロック構造を実装する。
 
 ```{.python .input}
 %%tab mxnet
@@ -132,7 +132,7 @@ class ConvBlock(nn.Module):
         return Y
 ```
 
-*dense block* は複数の畳み込みブロックからなり、それぞれが同じ数の出力チャネルを使います。ただし順伝播では、各畳み込みブロックの入力と出力をチャネル次元で連結します。遅延評価により、次元を自動的に調整できます。
+*dense block* は複数の畳み込みブロックからなり、それぞれが同じ数の出力チャネルを使う。ただし順伝播では、各畳み込みブロックの入力と出力をチャネル次元で連結する。遅延評価により、次元を自動的に調整できる。
 
 ```{.python .input}
 %%tab mxnet
@@ -201,8 +201,8 @@ class DenseBlock(nn.Module):
         return self.net(X)
 ```
 
-次の例では、出力チャネル数が 10 の畳み込みブロックを 2 つ持つ `DenseBlock` インスタンスを[**定義**]します。
-3 チャネルの入力を使うと、出力は $3 + 10 + 10=23$ チャネルになります。畳み込みブロックのチャネル数は、入力チャネル数に対する出力チャネル数の増加量を制御します。これは *growth rate* とも呼ばれます。
+次の例では、出力チャネル数が 10 の畳み込みブロックを 2 つ持つ `DenseBlock` インスタンスを[**定義**]する。
+3 チャネルの入力を使うと、出力は $3 + 10 + 10=23$ チャネルになる。畳み込みブロックのチャネル数は、入力チャネル数に対する出力チャネル数の増加量を制御する。これは *growth rate* とも呼ばれる。
 
 ```{.python .input}
 %%tab pytorch, mxnet, tensorflow
@@ -228,7 +228,7 @@ Y.shape
 
 ## [**Transition Layer**]
 
-各 dense block はチャネル数を増やすため、それをあまり多く重ねると、モデルが過度に複雑になります。*transition layer* はモデルの複雑さを制御するために使われます。これは $1\times 1$ 畳み込みを用いてチャネル数を減らします。さらに、ストライド 2 の平均プーリングによって高さと幅を半分にします。
+各 dense block はチャネル数を増やすため、それをあまり多く重ねると、モデルが過度に複雑になる。*transition layer* はモデルの複雑さを制御するために使われる。これは $1\times 1$ 畳み込みを用いてチャネル数を減らする。さらに、ストライド 2 の平均プーリングによって高さと幅を半分にする。
 
 ```{.python .input}
 %%tab mxnet
@@ -281,7 +281,7 @@ class TransitionBlock(nn.Module):
         return X
 ```
 
-前の例の dense block の出力に対して、10 チャネルの transition layer を[**適用**]します。これにより出力チャネル数は 10 に減り、高さと幅は半分になります。
+前の例の dense block の出力に対して、10 チャネルの transition layer を[**適用**]する。これにより出力チャネル数は 10 に減り、高さと幅は半分になる。
 
 ```{.python .input}
 %%tab mxnet
@@ -310,7 +310,7 @@ blk.init_with_output(d2l.get_key(), Y)[0].shape
 
 ## [**DenseNet モデル**]
 
-次に、DenseNet モデルを構築します。DenseNet はまず、ResNet と同じ単一の畳み込み層と max-pooling 層を使います。
+次に、DenseNet モデルを構築する。DenseNet はまず、ResNet と同じ単一の畳み込み層と max-pooling 層を使う。
 
 ```{.python .input}
 %%tab pytorch, mxnet, tensorflow
@@ -360,10 +360,10 @@ class DenseNet(d2l.Classifier):
         ])
 ```
 
-その後、ResNet が残差ブロックからなる 4 つのモジュールを使うのと同様に、DenseNet は 4 つの dense block を使います。
-ResNet と同様に、各 dense block で使う畳み込み層の数を設定できます。ここでは、 :numref:`sec_resnet` の ResNet-18 モデルと一致するように 4 に設定します。さらに、dense block 内の畳み込み層のチャネル数（すなわち growth rate）を 32 に設定するので、各 dense block には 128 チャネルが追加されます。
+その後、ResNet が残差ブロックからなる 4 つのモジュールを使うのと同様に、DenseNet は 4 つの dense block を使う。
+ResNet と同様に、各 dense block で使う畳み込み層の数を設定できる。ここでは、 :numref:`sec_resnet` の ResNet-18 モデルと一致するように 4 に設定する。さらに、dense block 内の畳み込み層のチャネル数（すなわち growth rate）を 32 に設定するので、各 dense block には 128 チャネルが追加される。
 
-ResNet では、各モジュールの間でストライド 2 の残差ブロックによって高さと幅が減少します。ここでは、transition layer を使って高さと幅を半分にし、チャネル数も半分にします。ResNet と同様に、最後に global pooling 層と全結合層を接続して出力を生成します。
+ResNet では、各モジュールの間でストライド 2 の残差ブロックによって高さと幅が減少する。ここでは、transition layer を使って高さと幅を半分にし、チャネル数も半分にする。ResNet と同様に、最後に global pooling 層と全結合層を接続して出力を生成する。
 
 ```{.python .input}
 %%tab pytorch, mxnet, tensorflow
@@ -453,7 +453,7 @@ def create_net(self):
 
 ## [**学習**]
 
-ここではより深いネットワークを使うため、計算を簡単にする目的で、入力の高さと幅を 224 から 96 に縮小します。
+ここではより深いネットワークを使うため、計算を簡単にする目的で、入力の高さと幅を 224 から 96 に縮小する。
 
 ```{.python .input}
 %%tab mxnet, pytorch, jax
@@ -474,17 +474,17 @@ with d2l.try_gpu():
 
 ## 要約と考察
 
-DenseNet を構成する主な要素は dense block と transition layer です。後者については、ネットワークを組み立てる際にチャネル数が再び縮小する transition layer を追加して、次元を制御する必要があります。
-層間接続の観点では、入力と出力を加算する ResNet とは対照的に、DenseNet は入力と出力をチャネル次元で連結します。
-これらの連結操作は、特徴を再利用して計算効率を高めますが、残念ながら GPU メモリの消費が大きくなります。
-その結果、DenseNet を適用するには、学習時間が増える可能性のある、よりメモリ効率の高い実装が必要になることがあります :cite:`pleiss2017memory`。
+DenseNet を構成する主な要素は dense block と transition layer である。後者については、ネットワークを組み立てる際にチャネル数が再び縮小する transition layer を追加して、次元を制御する必要がある。
+層間接続の観点では、入力と出力を加算する ResNet とは対照的に、DenseNet は入力と出力をチャネル次元で連結する。
+これらの連結操作は、特徴を再利用して計算効率を高めるが、残念ながら GPU メモリの消費が大きくなる。
+その結果、DenseNet を適用するには、学習時間が増える可能性のある、よりメモリ効率の高い実装が必要になることがある :cite:`pleiss2017memory`。
 
 
 ## 演習
 
 1. なぜ transition layer では max-pooling ではなく average pooling を使うのでしょうか？
-1. DenseNet の論文で挙げられている利点の一つは、モデルパラメータが ResNet より小さいことです。なぜそうなるのでしょうか？
-1. DenseNet が批判される問題の一つに、高いメモリ消費があります。
+1. DenseNet の論文で挙げられている利点の一つは、モデルパラメータが ResNet より小さいことである。なぜそうなるのでしょうか？
+1. DenseNet が批判される問題の一つに、高いメモリ消費がある。
     1. これは本当にそうでしょうか？入力形状を $224\times 224$ に変更して、実際の GPU メモリ消費を経験的に比較してみてください。
     1. メモリ消費を減らす別の方法を考えられますか？その場合、フレームワークをどのように変更する必要があるでしょうか？
 1. DenseNet 論文 :cite:`Huang.Liu.Van-Der-Maaten.ea.2017` の Table 1 に示されているさまざまな DenseNet 版を実装してください。
