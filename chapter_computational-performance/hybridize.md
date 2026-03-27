@@ -397,4 +397,4 @@ net(x)
 
 :begin_tab:`pytorch,tensorflow` 
 1. 以前の章で興味を持ったモデルを見直してください。再実装することで計算性能を改善できますか。
-:end_tab:\n
+:end_tab:

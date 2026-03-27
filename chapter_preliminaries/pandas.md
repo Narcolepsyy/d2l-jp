@@ -135,4 +135,4 @@ X, y
 1. 列番号ではなく列名によってデータ列をインデックス指定し、選択してみましょう。pandas の [indexing](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html) のドキュメントには、その方法の詳細が載っています。
 1. この方法でどれくらい大きなデータセットまで読み込めると思いますか。どのような制約があるでしょうか。ヒント：データの読み込み時間、表現、処理、メモリ使用量を考えてみてください。自分のノートパソコンで試してみましょう。サーバー上で試すとどうなりますか。
 1. カテゴリ数が非常に多いデータをどのように扱いますか。カテゴリラベルがすべて一意だったらどうでしょうか。後者も含めるべきでしょうか。
-1. pandas の代替として何が考えられますか。ファイルから NumPy テンソルを読み込む方法はどうでしょうか。[Pillow](https://python-pillow.org/)、つまり Python Imaging Library も調べてみましょう。 \n
+1. pandas の代替として何が考えられますか。ファイルから NumPy テンソルを読み込む方法はどうでしょうか。[Pillow](https://python-pillow.org/)、つまり Python Imaging Library も調べてみましょう。 

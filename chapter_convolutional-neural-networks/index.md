@@ -20,4 +20,4 @@ padding-and-strides
 channels
 pooling
 lenet
-```\n
+```

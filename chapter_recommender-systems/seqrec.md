@@ -215,4 +215,4 @@ trainer = gluon.Trainer(net.collect_params(), optimizer,
 
 * 水平畳み込みネットワークと垂直畳み込みネットワークの一方を取り除くアブレーション研究を行ってください。どちらのコンポーネントがより重要でしょうか？
 * ハイパーパラメータ $L$ を変えてみてください。より長い履歴のインタラクションは、より高い精度をもたらすでしょうか？
-* 上で紹介したシーケンスを考慮した推薦タスクのほかに、session-based recommendation と呼ばれる別の種類のシーケンスを考慮した推薦タスクがあります :cite:`Hidasi.Karatzoglou.Baltrunas.ea.2015`。この 2 つのタスクの違いを説明できますか？\n
+* 上で紹介したシーケンスを考慮した推薦タスクのほかに、session-based recommendation と呼ばれる別の種類のシーケンスを考慮した推薦タスクがあります :cite:`Hidasi.Karatzoglou.Baltrunas.ea.2015`。この 2 つのタスクの違いを説明できますか？

@@ -168,4 +168,4 @@ d2l.plt.ylabel("objective function")
 2. *発展*. この演習の目標は、Syne Tune に新しいスケジューラを実装することです。
     1. [d2lbook](https://github.com/d2l-ai/d2l-en/blob/master/INFO.md#installation-for-developers) と [syne-tune](https://syne-tune.readthedocs.io/en/latest/getting_started.html) の両方のソースを含む仮想環境を作成しなさい。
     2. :numref:`sec_api_hpo` の演習2での `LocalSearcher` を、Syne Tune の新しいサーチャーとして実装しなさい。ヒント: [このチュートリアル](https://syne-tune.readthedocs.io/en/latest/tutorials/developer/README.html) を読んでください。あるいは、この [例](https://syne-tune.readthedocs.io/en/latest/examples.html#launch-hpo-experiment-with-home-made-scheduler) に従ってもよいです。
-    3. 新しく実装した `LocalSearcher` と `DropoutMLP` ベンチマーク上の `RandomSearch` を比較しなさい。\n
+    3. 新しく実装した `LocalSearcher` と `DropoutMLP` ベンチマーク上の `RandomSearch` を比較しなさい。

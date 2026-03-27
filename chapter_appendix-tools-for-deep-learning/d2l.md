@@ -193,4 +193,4 @@
 
 .. autofunction:: use_svg_display
 
-```\n
+```

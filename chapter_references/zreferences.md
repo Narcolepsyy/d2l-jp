@@ -7,4 +7,4 @@ eval_rst
 
 ```
 
-:bibliography:`../d2l.bib`\n
+:bibliography:`../d2l.bib`

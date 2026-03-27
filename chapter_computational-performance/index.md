@@ -19,4 +19,4 @@ hardware
 multiple-gpus
 multiple-gpus-concise
 parameterserver
-```\n
+```

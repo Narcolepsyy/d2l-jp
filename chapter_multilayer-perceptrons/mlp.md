@@ -572,5 +572,5 @@ $\sigma(x) = x \operatorname{sigmoid}(\beta x)$ は :citet:`Ramachandran.Zoph.Le
     1. $\operatorname{tanh}(x) + 1 = 2 \operatorname{sigmoid}(2x)$ を示しなさい。
     1. 両方の非線形性でパラメータ化される関数クラスが同一であることを証明しなさい。ヒント: アフィン層にもバイアス項がある。
 1. バッチ正規化 :cite:`Ioffe.Szegedy.2015` のように、1 つのミニバッチごとに作用する非線形性があると仮定する。どのような問題が生じると予想されますか？
-1. シグモイド活性化関数で勾配が消失する例を示しなさい。\n
+1. シグモイド活性化関数で勾配が消失する例を示しなさい。
 

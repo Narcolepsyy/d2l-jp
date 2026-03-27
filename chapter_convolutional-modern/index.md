@@ -18,4 +18,4 @@ batch-norm
 resnet
 densenet
 cnn-design
-```\n
+```

@@ -24,4 +24,4 @@ seqrec
 ctr
 fm
 deepfm
-```\n
+```

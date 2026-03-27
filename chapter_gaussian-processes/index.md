@@ -16,4 +16,4 @@
 gp-intro
 gp-priors
 gp-inference
-```\n
+```

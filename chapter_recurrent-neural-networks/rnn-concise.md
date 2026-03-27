@@ -237,4 +237,4 @@ model.predict('it has', 20, data.vocab)
 ## 演習
 
 1. 高水準APIを使ってRNNモデルを過学習させることはできますか？
-1. :numref:`sec_sequence` の自己回帰モデルをRNNを用いて実装してください。\n
+1. :numref:`sec_sequence` の自己回帰モデルをRNNを用いて実装してください。

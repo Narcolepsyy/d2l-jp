@@ -258,4 +258,4 @@ predict_sentiment(net, vocab, 'this movie is so bad')
 
 1. エポック数を増やしてみましょう。学習精度とテスト精度を改善できますか？ 他のハイパーパラメータを調整した場合はどうでしょうか？
 1. 300 次元 GloVe 埋め込みのような、より大きな事前学習済み単語ベクトルを使ってみましょう。分類精度は向上しますか？
-1. spaCy のトークン化を使うことで分類精度を改善できますか？ spaCy をインストールし（`pip install spacy`）、英語パッケージをインストールする必要があります（`python -m spacy download en`）。コードでは、まず spaCy をインポートし（`import spacy`）、次に spaCy の英語パッケージを読み込みます（`spacy_en = spacy.load('en')`）。最後に、`def tokenizer(text): return [tok.text for tok in spacy_en.tokenizer(text)]` を定義して、元の `tokenizer` 関数を置き換えてください。GloVe と spaCy ではフレーズトークンの形式が異なることに注意してください。たとえば、フレーズトークン "new york" は、GloVe では "new-york" の形式であり、spaCy のトークン化後は "new york" の形式になります。\n
+1. spaCy のトークン化を使うことで分類精度を改善できますか？ spaCy をインストールし（`pip install spacy`）、英語パッケージをインストールする必要があります（`python -m spacy download en`）。コードでは、まず spaCy をインポートし（`import spacy`）、次に spaCy の英語パッケージを読み込みます（`spacy_en = spacy.load('en')`）。最後に、`def tokenizer(text): return [tok.text for tok in spacy_en.tokenizer(text)]` を定義して、元の `tokenizer` 関数を置き換えてください。GloVe と spaCy ではフレーズトークンの形式が異なることに注意してください。たとえば、フレーズトークン "new york" は、GloVe では "new-york" の形式であり、spaCy のトークン化後は "new york" の形式になります。

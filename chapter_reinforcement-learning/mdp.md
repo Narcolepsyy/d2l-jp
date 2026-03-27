@@ -54,4 +54,4 @@ $$s_{t+1} = \textrm{some function}(s_t, a_t, s_{t-1});$$
     1. 状態の集合は何になるでしょうか？
     2. 行動の集合は何になるでしょうか？
     3. 取りうる報酬関数は何でしょうか？
-2. [Pong game](https://www.gymlibrary.dev/environments/atari/pong/) のような Atari ゲームのために、どのようにMDPを設計しますか？\n
+2. [Pong game](https://www.gymlibrary.dev/environments/atari/pong/) のような Atari ゲームのために、どのようにMDPを設計しますか？

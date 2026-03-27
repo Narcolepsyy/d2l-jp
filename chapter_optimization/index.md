@@ -30,4 +30,4 @@ rmsprop
 adadelta
 adam
 lr-scheduler
-```\n
+```

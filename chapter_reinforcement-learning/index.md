@@ -20,4 +20,4 @@
 mdp
 value-iter
 qlearning
-```\n
+```

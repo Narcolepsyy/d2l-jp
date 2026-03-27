@@ -635,4 +635,4 @@ train(net_D, net_G, data_iter, num_epochs, lr, latent_dim)
 ## 演習
 
 1. leaky ReLU の代わりに標準的な ReLU 活性化を使うとどうなりますか？
-1. DCGAN を Fashion-MNIST に適用し、どのカテゴリがうまくいき、どのカテゴリがうまくいかないかを調べなさい。\n
+1. DCGAN を Fashion-MNIST に適用し、どのカテゴリがうまくいき、どのカテゴリがうまくいかないかを調べなさい。

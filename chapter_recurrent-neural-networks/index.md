@@ -134,4 +134,4 @@ rnn
 rnn-scratch
 rnn-concise
 bptt
-```\n
+```

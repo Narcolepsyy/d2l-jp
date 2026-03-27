@@ -36,4 +36,4 @@ distributions
 naive-bayes
 statistics
 information-theory
-```\n
+```

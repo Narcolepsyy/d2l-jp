@@ -155,4 +155,4 @@ def split_and_load_ml100k(split_mode='seq-aware', feedback='explicit',
 ## 演習
 
 * これに似た他の推薦データセットにはどのようなものがありますか？
-* MovieLens についてさらに詳しく知るために、[https://movielens.org/](https://movielens.org/) のサイトを見てみましょう。\n
+* MovieLens についてさらに詳しく知るために、[https://movielens.org/](https://movielens.org/) のサイトを見てみましょう。

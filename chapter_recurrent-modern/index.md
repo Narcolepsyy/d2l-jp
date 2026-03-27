@@ -33,4 +33,4 @@ machine-translation-and-dataset
 encoder-decoder
 seq2seq
 beam-search
-```\n
+```

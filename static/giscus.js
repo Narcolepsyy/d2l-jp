@@ -1,3 +1,8 @@
+// Stub for tagClick (used by d2l-book tab bars, normally provided by GA)
+if (typeof tagClick === 'undefined') {
+  var tagClick = function(tab) {};
+}
+
 // Giscus comment system integration for d2l-jp
 // Automatically appends a Giscus widget to every page
 (function () {

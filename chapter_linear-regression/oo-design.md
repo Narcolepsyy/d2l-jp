@@ -468,4 +468,4 @@ class Trainer(d2l.HyperParameters):  #@save
 ## 演習
 
 1. [D2Lライブラリ](https://github.com/d2l-ai/d2l-en/tree/master/d2l) に保存されている上記クラスの完全実装を見つけてください。深層学習モデリングにもう少し慣れたら、実装を詳しく読むことを強く勧めます。
-1. `B` クラスの `save_hyperparameters` 文を削除してください。それでも `self.a` と `self.b` を表示できますか？ 任意: `HyperParameters` クラスの完全実装まで読み進めたなら、なぜそうなるのか説明できますか？\n
+1. `B` クラスの `save_hyperparameters` 文を削除してください。それでも `self.a` と `self.b` を表示できますか？ 任意: `HyperParameters` クラスの完全実装まで読み進めたなら、なぜそうなるのか説明できますか？

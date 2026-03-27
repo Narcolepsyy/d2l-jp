@@ -33,4 +33,4 @@ calculus
 autograd
 probability
 lookup-api
-```\n
+```
