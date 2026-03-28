@@ -23,6 +23,14 @@ jobs:
         with:
           lfs: true
 
+      - name: Pull LFS assets
+        run: |
+          git lfs pull --include="static/d2l-jp.pdf"
+          if [ -f static/d2l-jp.pdf ] && grep -q "https://git-lfs.github.com/spec/v1" static/d2l-jp.pdf; then
+            echo "Error: static/d2l-jp.pdf is still an LFS pointer file."
+            exit 1
+          fi
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:

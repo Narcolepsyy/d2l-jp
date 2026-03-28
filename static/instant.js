@@ -75,7 +75,22 @@
     // Must be same origin
     try {
       var url = new URL(href, window.location.origin);
-      return url.origin === window.location.origin;
+      if (url.origin !== window.location.origin) {
+        return false;
+      }
+
+      // Let the browser handle non-HTML assets (PDF, ZIP, images, etc.)
+      var path = url.pathname.toLowerCase();
+      if (/\.(pdf|zip|png|jpe?g|gif|svg|webp|ico|mp4|mp3|wav|json|xml|txt|csv|xlsx?)$/.test(path)) {
+        return false;
+      }
+
+      // If it has a file extension other than .html, treat it as a static asset
+      if (path.indexOf('.') !== -1 && !path.endsWith('.html')) {
+        return false;
+      }
+
+      return true;
     } catch (e) {
       return false;
     }
