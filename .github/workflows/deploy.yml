@@ -26,8 +26,16 @@ jobs:
       - name: Pull LFS assets
         run: |
           git lfs pull --include="static/d2l-jp.pdf"
-          if [ -f static/d2l-jp.pdf ] && grep -q "https://git-lfs.github.com/spec/v1" static/d2l-jp.pdf; then
-            echo "Error: static/d2l-jp.pdf is still an LFS pointer file."
+          if [ ! -f static/d2l-jp.pdf ]; then
+            echo "Error: static/d2l-jp.pdf does not exist."
+            exit 1
+          fi
+          # A real PDF starts with %PDF; an LFS pointer is a small text file
+          if head -c 4 static/d2l-jp.pdf | grep -q '%PDF'; then
+            echo "OK: static/d2l-jp.pdf is a valid PDF ($(stat -c%s static/d2l-jp.pdf) bytes)"
+          else
+            echo "Error: static/d2l-jp.pdf is not a valid PDF (likely still an LFS pointer)."
+            head -c 200 static/d2l-jp.pdf
             exit 1
           fi
 
