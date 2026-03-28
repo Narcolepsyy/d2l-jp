@@ -39,7 +39,7 @@ body{margin:0;font-family:Roboto,'Noto Sans JP',sans-serif;font-size:17px;color:
 /* Content area */
 .mdl-layout__content{display:inline-block;flex-grow:1;overflow:auto;order:1}
 .mdl-layout--fixed-drawer>.mdl-layout__content{margin-left:250px}
-@media(max-width:1024px){.mdl-layout--fixed-drawer>.mdl-layout__content{margin-left:0}.mdl-layout__drawer{transform:translateX(-250px)}}
+@media(max-width:1024px){.mdl-layout--fixed-drawer>.mdl-layout__content{margin-left:0}.mdl-layout--fixed-drawer>.mdl-layout__drawer{transform:translateX(-250px)}}
 </style>
 """.strip()
 
@@ -313,15 +313,20 @@ def fix_font_display(html):
 
 def fix_missing_logo(html):
     """Replace text-only title with logo image in sidebar and header."""
-    if '<span class="mdl-layout-title">d2l-jp</span>' not in html:
+    target_1 = '<span class="mdl-layout-title">d2l-jp</span>'
+    target_2 = '<span class="mdl-layout-title">ディープラーニングを深く学ぶ</span>'
+    
+    if target_1 not in html and target_2 not in html:
         return html
     
     # Find relative path to _static from any CSS link
     match = re.search(r'href="([^"]*/_static/)d2l\.css"', html)
     static_prefix = match.group(1) if match else "_static/"
     
-    logo_img = f'<img class="logo" src="{static_prefix}logo-with-text.png" alt="d2l-jp"/>'
-    return html.replace('<span class="mdl-layout-title">d2l-jp</span>', logo_img)
+    logo_img = f'<img class="logo" src="{static_prefix}logo-with-text.png" alt="ディープラーニングを深く学ぶ"/>'
+    html = html.replace(target_1, logo_img)
+    html = html.replace(target_2, logo_img)
+    return html
 
 
 def add_image_dimensions(html):
@@ -349,6 +354,54 @@ def add_image_dimensions(html):
     return html
 
 
+def reformat_bibliography(html):
+    """Format Sphinx bibtex citations to author-year APA style."""
+    if 'class="citation"' not in html:
+        return html
+
+    def replace_citation(m):
+        original = m.group(0)
+        p_match = re.search(r"<p>(.*?)</p>", original, re.DOTALL)
+        if not p_match: return original
+            
+        p_text = re.sub(r"<[^>]+>", "", p_match.group(1)).strip().replace('\n', ' ')
+        
+        year_match = re.search(r"\((\d{4})\)", p_text)
+        year = year_match.group(1) if year_match else "n.d."
+        
+        last_name_match = re.search(r"^([^,]+),", p_text)
+        last_name = last_name_match.group(1).strip() if last_name_match else "Unknown"
+        
+        authors_part = p_text.split("(")[0]
+        if "&" in authors_part or "et al" in authors_part or "…" in authors_part or authors_part.count(",") > 2:
+            label = f"{last_name} et al., {year}"
+        else:
+            label = f"{last_name}, {year}"
+            
+        return re.sub(r'<span class="label">.*?</span></span>', f'<span class="label">{label}</span>', original, flags=re.DOTALL)
+
+    return re.sub(r'<div class="citation"[^>]*>.*?</div>', replace_citation, html, flags=re.DOTALL)
+
+
+def fix_mobile_drawer_close(html):
+    """Inject vanilla JS to ensure clicking the obfuscator closes the mobile sidebar."""
+    script = '''<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("click", function(e) {
+        if (e.target.classList.contains("mdl-layout__obfuscator")) {
+            var drawer = document.querySelector(".mdl-layout__drawer");
+            if (drawer) {
+                drawer.classList.remove("is-visible");
+                e.target.classList.remove("is-visible");
+            }
+        }
+    });
+});
+</script>
+</body>'''
+    return html.replace("</body>", script)
+
+
 def process_file(filepath):
     """Apply all page speed optimizations to a single HTML file."""
     with open(filepath, "r", encoding="utf-8") as f:
@@ -366,6 +419,8 @@ def process_file(filepath):
     content = fix_font_display(content)
     content = fix_missing_logo(content)
     content = add_image_dimensions(content)
+    content = reformat_bibliography(content)
+    content = fix_mobile_drawer_close(content)
 
     if content != original:
         with open(filepath, "w", encoding="utf-8") as f:
