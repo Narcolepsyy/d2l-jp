@@ -303,11 +303,25 @@ def fix_font_display(html):
             f'<link rel="preload" as="style" href="{gf_url}" />\n'
             f'<link rel="stylesheet" href="{gf_url}"'
             ' media="print" onload="this.media=\'all\'" />\n'
-            f'<noscript><link rel="stylesheet" href="{gf_url}" /></noscript>'
+            f'<noscript><link rel="stylesheet" href="{gf_url}" /></noscript>\n'
+            '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />'
         )
         html = html.replace("</head>", font_link + "\n</head>")
 
     return html
+
+
+def fix_missing_logo(html):
+    """Replace text-only title with logo image in sidebar and header."""
+    if '<span class="mdl-layout-title">d2l-jp</span>' not in html:
+        return html
+    
+    # Find relative path to _static from any CSS link
+    match = re.search(r'href="([^"]*/_static/)d2l\.css"', html)
+    static_prefix = match.group(1) if match else "_static/"
+    
+    logo_img = f'<img class="logo" src="{static_prefix}logo-with-text.png" alt="d2l-jp"/>'
+    return html.replace('<span class="mdl-layout-title">d2l-jp</span>', logo_img)
 
 
 def add_image_dimensions(html):
@@ -350,6 +364,7 @@ def process_file(filepath):
     content = defer_css(content)
     content = add_fetchpriority(content)
     content = fix_font_display(content)
+    content = fix_missing_logo(content)
     content = add_image_dimensions(content)
 
     if content != original:
