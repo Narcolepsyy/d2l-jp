@@ -30,9 +30,6 @@ CRITICAL_CSS = """
 /* Critical CSS – inlined for fast first paint */
 html{background-color:#fafafa}
 body{margin:0;font-family:Roboto,'Noto Sans JP',sans-serif;font-size:17px;color:rgba(0,0,0,.87)}
-/* Hide content until page is ready (matches d2l.css PJAX gate) */
-html:not(.page-ready) .mdl-layout__content{opacity:0}
-html.page-ready .mdl-layout__content{opacity:1;transition:opacity .15s ease-in}
 /* Header skeleton */
 .mdl-layout__header{display:flex;flex-direction:column;background-color:rgb(25,118,210);color:#fff;min-height:64px;z-index:3;box-shadow:0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.12),0 1px 5px 0 rgba(0,0,0,.2)}
 .mdl-layout__header-row{display:flex;align-items:center;height:64px;padding:0 40px 0 80px}

@@ -22,34 +22,11 @@ span.mdl-layout-title,
 }
 
 /* ==========================================================================
-   PJAX Content Transition Styles
-   Only the main content area fades — sidebar & navbar stay persistent.
+   Base Styles
    ========================================================================== */
 
 html {
     background-color: #fafafa;
-}
-
-/* Initial page load fade-in */
-html:not(.page-ready) .mdl-layout__content {
-    opacity: 0;
-}
-
-html.page-ready .mdl-layout__content {
-    opacity: 1;
-    transition: opacity 0.15s ease-in;
-}
-
-/* PJAX navigation fade-out */
-.mdl-layout__content.pjax-leaving {
-    opacity: 0;
-    transition: opacity 0.12s ease-out;
-}
-
-/* PJAX navigation fade-in */
-.mdl-layout__content.pjax-entering {
-    opacity: 1;
-    transition: opacity 0.15s ease-in;
 }
 
 /* ==========================================================================
