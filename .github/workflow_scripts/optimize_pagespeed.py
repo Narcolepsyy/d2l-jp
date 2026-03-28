@@ -30,6 +30,8 @@ CRITICAL_CSS = """
 /* Critical CSS – inlined for fast first paint */
 html{background-color:#fafafa}
 body{margin:0;font-family:Roboto,'Noto Sans JP',sans-serif;font-size:17px;color:rgba(0,0,0,.87)}
+/* Responsive images for frontpage */
+.img-fluid{max-width:100%;height:auto;display:block;margin:0 auto}
 /* Header skeleton */
 .mdl-layout__header{display:flex;flex-direction:column;background-color:rgb(25,118,210);color:#fff;min-height:64px;z-index:3;box-shadow:0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.12),0 1px 5px 0 rgba(0,0,0,.2)}
 .mdl-layout__header-row{display:flex;align-items:center;height:64px;padding:0 40px 0 80px}
@@ -40,6 +42,8 @@ body{margin:0;font-family:Roboto,'Noto Sans JP',sans-serif;font-size:17px;color:
 .mdl-layout__content{display:inline-block;flex-grow:1;overflow:auto;order:1}
 .mdl-layout--fixed-drawer>.mdl-layout__content{margin-left:250px}
 @media(max-width:1024px){.mdl-layout--fixed-drawer>.mdl-layout__content{margin-left:0}.mdl-layout--fixed-drawer>.mdl-layout__drawer{transform:translateX(-250px)}}
+/* Frontpage Header Stacking (Mobile/Tablet) */
+@media(max-width:1024px){.header.mdl-grid{flex-direction:column;text-align:center}.header.mdl-grid .mdl-cell{width:100%!important;margin:15px 0}}
 </style>
 """.strip()
 
@@ -221,9 +225,14 @@ def add_fetchpriority(html):
 
 def inline_critical_css(html):
     """Inject critical inline CSS immediately after <head> for fast first paint."""
-    # Don't add if already present
-    if "Critical CSS" in html:
-        return html
+    # Overwrite if already present (supports local iterative testing)
+    if "/* Critical CSS" in html:
+        return re.sub(
+            r'<style>\n/\* Critical CSS(.*?)</style>', 
+            CRITICAL_CSS, 
+            html, 
+            flags=re.DOTALL
+        )
 
     # Insert right after the charset meta tag (placed by preconnect hints)
     # or after <head> as fallback
