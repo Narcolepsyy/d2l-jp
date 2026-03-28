@@ -114,6 +114,10 @@ jobs:
               'description': 'ディープラーニングを深く学ぶ - コード、数式、議論を通じたインタラクティブな深層学習の日本語教科書。PyTorch対応。500以上の大学で採用。',
               'keywords': '深層学習, ディープラーニング, deep learning, PyTorch, 機械学習, AI, 人工知能, 日本語, 教科書',
           }
+
+          # Use lighter MathJax bundle: tex-chtml.js drops the unused MathML
+          # input parser (~70 KiB savings). Sphinx only generates TeX notation.
+          mathjax_path = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js'
           SEOEOF
           # Remove leading whitespace from heredoc
           sed -i 's/^          //' _build/rst/conf.py

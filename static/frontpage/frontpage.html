@@ -230,7 +230,34 @@ a {
 <div class="mdl-grid">
   <div>
     <div align="center">
-    <a href="https://twitter.com/D2L_ai?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-count="true">Follow @D2L_ai</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <a href="https://twitter.com/D2L_ai?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-size="large" data-show-count="true">Follow @D2L_ai</a>
+    <script>
+    /* Lazy-load Twitter widgets.js when the follow button scrolls into view */
+    (function() {
+      var btn = document.querySelector('.twitter-follow-button');
+      if (!btn) return;
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries) {
+          if (entries[0].isIntersecting) {
+            obs.disconnect();
+            var s = document.createElement('script');
+            s.src = 'https://platform.twitter.com/widgets.js';
+            s.charset = 'utf-8';
+            s.async = true;
+            document.head.appendChild(s);
+          }
+        }, {rootMargin: '200px'});
+        obs.observe(btn);
+      } else {
+        /* Fallback: load immediately for older browsers */
+        var s = document.createElement('script');
+        s.src = 'https://platform.twitter.com/widgets.js';
+        s.charset = 'utf-8';
+        s.async = true;
+        document.head.appendChild(s);
+      }
+    })();
+    </script>
     </div>
     <div align="left">
     <ul>
@@ -255,7 +282,7 @@ a {
   </div>
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/aston.jpg"/>
+      <img src="./_images/aston.jpg" alt="Aston Zhangの写真"/>
       <h3><a href="https://www.astonzhang.com/">Aston Zhang</a></h3>
       <p>Amazon</p>
     </div>
@@ -263,21 +290,21 @@ a {
 
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/zack.jpg"/>
+      <img src="./_images/zack.jpg" alt="Zack C. Liptonの写真"/>
       <h3><a href="http://zacklipton.com/">Zack C. Lipton</a></h3>
       <p>CMU and Amazon</p>
     </div>
   </div>
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/mu.jpg"/>
+      <img src="./_images/mu.jpg" alt="Mu Liの写真"/>
       <h3><a href="https://www.cs.cmu.edu/~muli/">Mu Li</a></h3>
       <p>Amazon</p>
     </div>
   </div>
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/alex.jpg"/>
+      <img src="./_images/alex.jpg" alt="Alex J. Smolaの写真"/>
       <h3><a href="https://alex.smola.org/">Alex J. Smola</a></h3>
       <p>Amazon</p>
     </div>
@@ -289,7 +316,7 @@ a {
 
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/pratik.jpg"/>
+      <img src="./_images/pratik.jpg" alt="Pratik Chaudhariの写真"/>
       <h3><a href="https://pratikac.github.io/">Pratik Chaudhari</a></h3>
       <p>UPenn and Amazon<br><i><a href="chapter_reinforcement-learning/index.html">Reinforcement Learning</a></i></p>
     </div>
@@ -297,7 +324,7 @@ a {
 
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/rasool.jpg"/>
+      <img src="./_images/rasool.jpg" alt="Rasool Fakoorの写真"/>
       <h3><a href="https://sites.google.com/site/rfakoor">Rasool Fakoor</a></h3>
       <p>Amazon<br><i><a href="chapter_reinforcement-learning/index.html">Reinforcement Learning</a></i></p>
     </div>
@@ -305,7 +332,7 @@ a {
 
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/kavosh.jpg"/>
+      <img src="./_images/kavosh.jpg" alt="Kavosh Asadiの写真"/>
       <h3><a href="https://cs.brown.edu/~kasadiat/">Kavosh Asadi</a></h3>
       <p>Amazon<br><i><a href="chapter_reinforcement-learning/index.html">Reinforcement Learning</a></i></p>
     </div>
@@ -313,7 +340,7 @@ a {
 
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/andrew.jpg"/>
+      <img src="./_images/andrew.jpg" alt="Andrew Gordon Wilsonの写真"/>
       <h3><a href="https://cims.nyu.edu/~andrewgw/">Andrew Gordon Wilson</a></h3>
       <p>NYU and Amazon<br><i><a href="chapter_gaussian-processes/index.html">Gaussian Processes</a></i></p>
     </div>
@@ -321,7 +348,7 @@ a {
 
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/aaron.jpg"/>
+      <img src="./_images/aaron.jpg" alt="Aaron Kleinの写真"/>
       <h3><a href="https://aaronkl.github.io/">Aaron Klein</a></h3>
       <p>Amazon<br><i><a href="chapter_hyperparameter-optimization/index.html">Hyperparameter Optimization</a></i></p>
     </div>
@@ -329,7 +356,7 @@ a {
 
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/matthias.jpg"/>
+      <img src="./_images/matthias.jpg" alt="Matthias Seegerの写真"/>
       <h3><a href="https://mseeger.github.io/">Matthias Seeger</a></h3>
       <p>Amazon<br><i><a href="chapter_hyperparameter-optimization/index.html">Hyperparameter Optimization</a></i></p>
     </div>
@@ -337,7 +364,7 @@ a {
 
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/cedric.png"/>
+      <img src="./_images/cedric.png" alt="Cedric Archambeauの写真"/>
       <h3><a href="http://www0.cs.ucl.ac.uk/staff/c.archambeau/">Cedric Archambeau</a></h3>
       <p>Amazon<br><i><a href="chapter_hyperparameter-optimization/index.html">Hyperparameter Optimization</a></i></p>
     </div>
@@ -348,7 +375,7 @@ a {
 
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/shuai.jpg"/>
+      <img src="./_images/shuai.jpg" alt="Shuai Zhangの写真"/>
       <h3><a href="https://shuaizhang.tech/">Shuai Zhang</a></h3>
       <p>Amazon
         <br><i><a href="chapter_recommender-systems/index.html">Recommender Systems</a></i></p>
@@ -357,7 +384,7 @@ a {
 
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/yi.jpg"/>
+      <img src="./_images/yi.jpg" alt="Yi Tayの写真"/>
       <h3><a href="https://vanzytay.github.io/">Yi Tay</a></h3>
       <p>Google
         <br><i><a href="chapter_recommender-systems/index.html">Recommender Systems</a></i></p>
@@ -366,7 +393,7 @@ a {
 
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/brent.jpg"/>
+      <img src="./_images/brent.jpg" alt="Brent Wernessの写真"/>
       <h3><a href="https://www.linkedin.com/in/brent-werness-1506471b7/">Brent Werness</a></h3>
       <p>Amazon<br><i><a href="chapter_appendix-mathematics-for-deep-learning/index.html">Mathematics
         for Deep Learning</a></i></p>
@@ -374,7 +401,7 @@ a {
   </div>
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/rachel.jpeg"/>
+      <img src="./_images/rachel.jpeg" alt="Rachel Huの写真"/>
       <h3><a href="https://www.linkedin.com/in/rachelsonghu/">Rachel Hu</a></h3>
       <p>Amazon<br><i><a href="chapter_appendix-mathematics-for-deep-learning/index.html">Mathematics
         for Deep Learning</a></i></p>
@@ -386,14 +413,14 @@ a {
   </div>
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/anirudh.jpg"/>
+      <img src="./_images/anirudh.jpg" alt="Anirudh Dagarの写真"/>
       <h3><a href="https://github.com/AnirudhDagar">Anirudh Dagar</a></h3>
       <p>Amazon<br><i>PyTorch Adaptation</i><br><i>JAX Adaptation</i></p>
     </div>
   </div>
   <div class = "mdl-cell mdl-cell--3-col mdl-cell--top">
     <div class="author-item">
-      <img src="./_images/yuan.jpg"/>
+      <img src="./_images/yuan.jpg" alt="Yuan Tangの写真"/>
       <h3><a href="https://terrytangyuan.github.io/about/">Yuan Tang</a></h3>
       <p>Red Hat<br><i>TensorFlow Adaptation</i></p>
     </div>
@@ -412,24 +439,24 @@ a {
       <div class = "mdl-grid running">
         <div class="running-item">
           <a href="./chapter_installation/index.html">
-            <img src="./_images/laptop_jupyter.png"/>
+            <img src="./_images/laptop_jupyter.png" alt="Jupyterノートブック"/>
             <p>ローカルで<br>実行</p>
         </div>
         <div class="running-item">
           <a href="https://studiolab.sagemaker.aws/import/github/d2l-ai/d2l-pytorch-sagemaker-studio-lab/blob/main/GettingStarted-D2L.ipynb">
-            <img src="./_images/logos/sagemaker-studio-lab.png"/>
+            <img src="./_images/logos/sagemaker-studio-lab.png" alt="Amazon SageMaker Studio Lab"/>
             <p>Amazon SageMaker<br>Studio Lab</p>
           </a>
         </div>
         <div class="running-item">
           <a href="./chapter_appendix-tools-for-deep-learning/sagemaker.html">
-            <img src="./_images/logos/sagemaker.png"/>
+            <img src="./_images/logos/sagemaker.png" alt="Amazon SageMaker"/>
             <p>Amazon<br>SageMaker</p>
           </a>
         </div>
         <div class="running-item">
           <a href="./chapter_appendix-tools-for-deep-learning/colab.html">
-            <img src="./_images/logos/colab.png" />
+            <img src="./_images/logos/colab.png" alt="Google Colab" />
             <p>Google<br>Colab</p>
           </a>
         </div>

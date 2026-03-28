@@ -4,7 +4,7 @@ if (typeof tagClick === 'undefined') {
 }
 
 // Giscus comment system integration for d2l-jp
-// Automatically appends a Giscus widget to every page
+// Lazy-loads via Intersection Observer - only when user scrolls near comments section
 (function () {
   'use strict';
 
@@ -12,8 +12,12 @@ if (typeof tagClick === 'undefined') {
   var path = window.location.pathname;
   if (path === '/' || path === '/index.html') return;
 
-  // Wait for DOM to be ready
+  let giscusLoaded = false;
+
   function initGiscus() {
+    if (giscusLoaded) return;
+    giscusLoaded = true;
+
     // Find the main content area
     var container = document.querySelector('.page-content');
     if (!container) return;
@@ -53,9 +57,34 @@ if (typeof tagClick === 'undefined') {
     container.appendChild(wrapper);
   }
 
+  // Use Intersection Observer for true lazy loading
+  // Only load Giscus when user scrolls near the bottom of the page
+  function setupObserver() {
+    var container = document.querySelector('.page-content');
+    if (!container) return;
+
+    // Create a sentinel element at the bottom
+    var sentinel = document.createElement('div');
+    sentinel.className = 'giscus-sentinel';
+    
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          initGiscus();
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '50px' // Start loading 50px before user reaches bottom
+    });
+
+    container.appendChild(sentinel);
+    observer.observe(sentinel);
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initGiscus);
+    document.addEventListener('DOMContentLoaded', setupObserver);
   } else {
-    initGiscus();
+    setupObserver();
   }
 })();
