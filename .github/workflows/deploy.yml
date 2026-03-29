@@ -106,6 +106,7 @@ jobs:
           extensions.append('sphinx_sitemap')
           html_baseurl = 'https://d2l-jp.me/'
           sitemap_locales = [None]
+          sitemap_url_scheme = '{link}'
 
           # Open Graph meta tags
           extensions.append('sphinxext.opengraph')
