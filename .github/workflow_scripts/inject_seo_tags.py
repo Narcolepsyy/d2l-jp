@@ -154,6 +154,16 @@ def process_file(filepath, build_dir):
 
     modified = False
 
+    # Ensure logo image in sidebar (Sphinx/mxtheme may omit html_logo and use text instead)
+    new_content = re.sub(
+        r'<span\s+class="title-text">\s*ディープラーニングを深く学ぶ\s*</span>',
+        r'<img class="logo" src="/_static/logo-with-text.png" alt="ディープラーニングを深く学ぶ"/>',
+        content
+    )
+    if new_content != content:
+        content = new_content
+        modified = True
+
     # 1. Clean title format
     new_content = clean_title(content)
     if new_content != content:
