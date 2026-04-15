@@ -244,8 +244,8 @@ jobs:
           # Inject Google Analytics (gtag.js)
           find _build/html -name '*.html' -exec sed -i 's|<head>|<head>\n<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-X354G2ERZT"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('\''js'\'', new Date());\n  gtag('\''config'\'', '\''G-X354G2ERZT'\'');\n</script>|' {} \;
 
-          # Inject hreflang tags for multilingual SEO
-          find _build/html -name '*.html' -exec sed -i 's|</head>|<link rel="alternate" hreflang="ja" href="https://d2l-jp.me/" />\n<link rel="alternate" hreflang="en" href="https://d2l.ai/" />\n<link rel="alternate" hreflang="zh" href="https://zh.d2l.ai/" />\n<link rel="alternate" hreflang="x-default" href="https://d2l.ai/" />\n</head>|' {} \;
+          # Inject per-page hreflang tags for multilingual SEO
+          python3 .github/workflow_scripts/inject_hreflang.py
 
           # Inject per-page SEO tags (canonical URLs, meta descriptions, clean titles)
           python3 .github/workflow_scripts/inject_seo_tags.py
