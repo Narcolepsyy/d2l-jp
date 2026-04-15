@@ -44,6 +44,12 @@ body{margin:0;font-family:Roboto,'Noto Sans JP',sans-serif;font-size:17px;color:
 @media(max-width:1024px){.mdl-layout--fixed-drawer>.mdl-layout__content{margin-left:0}.mdl-layout--fixed-drawer>.mdl-layout__drawer{transform:translateX(-250px)}}
 /* Frontpage Header Stacking (Mobile/Tablet) */
 @media(max-width:1024px){.header.mdl-grid{flex-direction:column;text-align:center}.header.mdl-grid .mdl-cell{width:100%!important;margin:15px 0}}
+/* CLS prevention: reserve space for MathJax before render */
+div.math.notranslate{min-height:3.5em;contain:content}
+div.math.notranslate[id*="equation"]{min-height:4.5em}
+div.math.notranslate:has(mjx-container){min-height:0;contain:none}
+span.math.notranslate{display:inline-block;vertical-align:middle;min-height:1.2em}
+span.math.notranslate:has(mjx-container){display:inline;min-height:0}
 </style>
 """.strip()
 

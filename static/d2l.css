@@ -73,6 +73,47 @@ html {
     max-width: 100%;
 }
 
+/* --- CLS prevention: reserve space for math before MathJax renders --- */
+
+/* Display math blocks: reserve vertical space so the page doesn't jump
+   when MathJax converts raw TeX into rendered output.  The TeX source text
+   is ~1 line tall; rendered output is typically 2–4 lines.  A min-height
+   of 3em covers single-line equations, and multi-line blocks (\begin{split},
+   \begin{align}) get more via the content-visibility hint below. */
+div.math.notranslate {
+    min-height: 3.5em;
+    /* contain: content prevents the block from affecting layout of siblings
+       while MathJax is still processing it */
+    contain: content;
+    transition: min-height 0.15s ease-out;
+}
+
+/* Multi-line equations (matrices, aligned, split) need more space */
+div.math.notranslate[id*="equation"] {
+    min-height: 4.5em;
+}
+
+/* Once MathJax has rendered (it injects mjx-container), release the
+   reservation so the actual rendered height takes over */
+div.math.notranslate:has(mjx-container) {
+    min-height: 0;
+    contain: none;
+}
+
+/* Inline math: prevent text reflow by giving a stable minimum size.
+   Raw TeX like \(\mathbf{x}\) is a few chars; rendered is usually wider. */
+span.math.notranslate {
+    display: inline-block;
+    vertical-align: middle;
+    min-height: 1.2em;
+}
+
+/* Once rendered, let MathJax control sizing */
+span.math.notranslate:has(mjx-container) {
+    display: inline;
+    min-height: 0;
+}
+
 /* --- Tables: ensure horizontal scroll on small screens --- */
 .page-content .section {
     overflow-x: auto;
