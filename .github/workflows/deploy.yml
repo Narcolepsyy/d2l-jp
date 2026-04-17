@@ -44,6 +44,7 @@ jobs:
         with:
           python-version: '3.9'
           cache: 'pip'
+          cache-dependency-path: setup.py
 
       # d2lbook==1.0.0 matches the original d2l-ai Docker images
       - name: Install dependencies
