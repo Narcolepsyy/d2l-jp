@@ -43,6 +43,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
+          cache: 'pip'
 
       # d2lbook==1.0.0 matches the original d2l-ai Docker images
       - name: Install dependencies
@@ -59,6 +60,14 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y librsvg2-bin pandoc webp
+
+      - name: Cache Sphinx Build
+        uses: actions/cache@v4
+        with:
+          path: _build
+          key: ${{ runner.os }}-sphinx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-sphinx-
 
       - name: Configure build
         run: |
