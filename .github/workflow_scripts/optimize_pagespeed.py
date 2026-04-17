@@ -347,11 +347,11 @@ def fix_missing_logo(html):
 def add_image_dimensions(html):
     """Add width/height to known frontpage images to prevent CLS."""
     known_images = {
-        "front-cup.jpg": ('width="300"', 'height="400"'),
-        "notebook.gif": ('width="700"', 'height="400"'),
-        "eq.jpg": ('width="350"', 'height="200"'),
-        "figure.jpg": ('width="350"', 'height="200"'),
-        "code.jpg": ('width="350"', 'height="200"'),
+        "front-cup.jpg": ('width="300"', 'height="300"'),
+        "notebook.jpg": ('width="700"', 'height="537"'),
+        "eq.jpg": ('width="440"', 'height="336"'),
+        "figure.jpg": ('width="440"', 'height="336"'),
+        "code.jpg": ('width="440"', 'height="336"'),
     }
 
     for img_name, (w, h) in known_images.items():

@@ -241,8 +241,9 @@ jobs:
             cp static/d2l-jp.pdf _build/html/
           fi
 
-          # Inject Google Analytics (gtag.js)
-          find _build/html -name '*.html' -exec sed -i 's|<head>|<head>\n<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-X354G2ERZT"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('\''js'\'', new Date());\n  gtag('\''config'\'', '\''G-X354G2ERZT'\'');\n</script>|' {} \;
+          # Inject Google Analytics (gtag.js) — placed at end of <head> to avoid
+          # blocking critical CSS/resource hints that come first.
+          find _build/html -name '*.html' -exec sed -i 's|</head>|<!-- Google tag (gtag.js) -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=G-X354G2ERZT"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('\''js'\'', new Date());\n  gtag('\''config'\'', '\''G-X354G2ERZT'\'');\n</script>\n</head>|' {} \;
 
           # Inject per-page hreflang tags for multilingual SEO
           python3 .github/workflow_scripts/inject_hreflang.py
