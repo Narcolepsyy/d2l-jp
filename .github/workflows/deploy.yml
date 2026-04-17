@@ -228,10 +228,10 @@ jobs:
 
       - name: Post-process
         run: |
-          # Minify CSS/JS
+          # Minify CSS/JS in parallel
           npm install -g clean-css-cli terser
-          find _build/html/_static -name '*.css' -exec cleancss -o {} {} \;
-          find _build/html/_static -name '*.js' -exec terser {} -o {} -c -m \;
+          find _build/html/_static -name '*.css' | xargs -P 4 -I {} cleancss -o {} {}
+          find _build/html/_static -name '*.js' | xargs -P 4 -I {} terser {} -o {} -c -m
 
           # Copy CNAME for custom domain
           if [ -f CNAME ]; then
@@ -250,8 +250,8 @@ jobs:
             rsvg-convert -z 1 -f svg -o tmp.svg "$fn" && mv tmp.svg "$fn"
           done
 
-          # Convert images to WebP for massive LCP/bandwidth savings
-          find _build/html/ -type f \( -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" \) -exec bash -c 'cwebp -quiet -q 80 "$0" -o "${0%.*}.webp" || true' {} \;
+          # Convert images to WebP in parallel
+          find _build/html/ -type f \( -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" \) | xargs -P 4 -I {} bash -c 'cwebp -quiet -q 80 "$1" -o "${1%.*}.webp" || true' _ {}
           # Package built Jupyter notebooks as downloadable zip
           cd _build/eval && zip -r ../../_build/html/d2l-jp.zip . -x '.*' && cd ../..
           # Copy PDF to deploy output for self-hosting
