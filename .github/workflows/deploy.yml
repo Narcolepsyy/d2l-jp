@@ -48,7 +48,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install d2lbook==1.0.0
-          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
           pip install .
           # Pin compatible versions for sphinx bibtex support
           pip install sphinxcontrib-bibtex==2.5.0 pybtex==0.24.0
