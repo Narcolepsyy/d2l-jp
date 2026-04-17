@@ -228,10 +228,8 @@ jobs:
 
       - name: Post-process
         run: |
-          # Purge unused CSS and Minify CSS/JS
-          npm install -g clean-css-cli terser purgecss
-          npx purgecss --css _build/html/_static/*.css --content "_build/html/**/*.html" --safelist html body /^mdl-/ /^is-/ /^has-/ /^mjx-/ /^MathJax/ /^math/ /^caption/ /^fa-/ /^fas/ /^fab/ /^far/ --output _build/html/_static/ || true
-          
+          # Minify CSS/JS
+          npm install -g clean-css-cli terser
           find _build/html/_static -name '*.css' -exec cleancss -o {} {} \;
           find _build/html/_static -name '*.js' -exec terser {} -o {} -c -m \;
 
