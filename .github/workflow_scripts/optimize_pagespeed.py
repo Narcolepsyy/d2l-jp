@@ -417,6 +417,25 @@ document.addEventListener("DOMContentLoaded", function() {
     return html.replace("</body>", script)
 
 
+def convert_img_src_to_webp(html):
+    """Rewrite img src to point to .webp versions."""
+    def replace_src(m):
+        tag = m.group(0)
+        tag = re.sub(r'src="([^"]+)\.jpg"', r'src="\1.webp"', tag)
+        tag = re.sub(r'src="([^"]+)\.jpeg"', r'src="\1.webp"', tag)
+        tag = re.sub(r'src="([^"]+)\.png"', r'src="\1.webp"', tag)
+        return tag
+    return re.sub(r"<img\s[^>]+>", replace_src, html)
+
+
+def add_fetchpriority_lcp(html):
+    """Add fetchpriority="high" to the Largest Contentful Paint image."""
+    targets = ['src="_images/front-cup.webp"', 'src="_images/front-cup.jpg"']
+    for t in targets:
+        html = html.replace(t, f'fetchpriority="high" {t}')
+    return html
+
+
 def process_file(filepath):
     """Apply all page speed optimizations to a single HTML file."""
     with open(filepath, "r", encoding="utf-8") as f:
@@ -424,6 +443,7 @@ def process_file(filepath):
 
     original = content
 
+    content = convert_img_src_to_webp(content)
     content = add_resource_hints(content)
     content = inline_critical_css(content)
     content = strip_unused_css(content)
@@ -436,6 +456,7 @@ def process_file(filepath):
     content = add_image_dimensions(content)
     content = reformat_bibliography(content)
     content = fix_mobile_drawer_close(content)
+    content = add_fetchpriority_lcp(content)
 
     if content != original:
         with open(filepath, "w", encoding="utf-8") as f:

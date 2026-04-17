@@ -58,7 +58,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y librsvg2-bin pandoc
+          sudo apt-get install -y librsvg2-bin pandoc webp
 
       - name: Configure build
         run: |
@@ -218,6 +218,16 @@ jobs:
 
       - name: Post-process
         run: |
+          # Convert images to WebP for massive LCP/bandwidth savings
+          find _build/html/ -type f \( -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" \) -exec bash -c 'cwebp -quiet -q 80 "$0" -o "${0%.*}.webp" || true' {} \;
+
+          # Purge unused CSS and Minify CSS/JS
+          npm install -g clean-css-cli terser purgecss
+          npx purgecss --css _build/html/_static/*.css --content "_build/html/**/*.html" --safelist html body /^mdl-/ /^is-/ /^has-/ /^mjx-/ /^MathJax/ /^math/ /^caption/ /^fa-/ /^fas/ /^fab/ /^far/ --output _build/html/_static/ || true
+          
+          find _build/html/_static -name '*.css' -exec cleancss -o {} {} \;
+          find _build/html/_static -name '*.js' -exec terser {} -o {} -c -m \;
+
           # Copy CNAME for custom domain
           if [ -f CNAME ]; then
             cp CNAME _build/html/
