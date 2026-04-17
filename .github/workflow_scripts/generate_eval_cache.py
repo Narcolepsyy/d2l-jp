@@ -67,9 +67,15 @@ def parse_md_to_cells(content, tab='pytorch'):
                 if fence_type == 'toc':
                     # Convert ```toc to .. toctree:: directive
                     rst_content = '.. toctree::\n' + rst_content
-                # Embed as raw RST in a markdown cell
-                if rst_content.strip():
-                    cells.append(make_md_cell(rst_content))
+                    # Embed as raw RST in a markdown cell (toc is special case)
+                    if rst_content.strip():
+                        cells.append(make_md_cell(rst_content))
+                else:
+                    # For eval_rst, preserve the fences so d2lbook's ipynb2rst
+                    # can properly extract it as raw RST without pandoc escaping it!
+                    if rst_content.strip():
+                        fenced_rst = f"```{fence_type}\n{rst_content}\n```"
+                        cells.append(make_md_cell(fenced_rst))
                 continue
 
             # Flush accumulated markdown
