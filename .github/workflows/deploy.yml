@@ -230,8 +230,8 @@ jobs:
         run: |
           # Minify CSS/JS in parallel
           npm install -g clean-css-cli terser
-          find _build/html/_static -name '*.css' | xargs -P 4 -I {} cleancss -o {} {}
-          find _build/html/_static -name '*.js' | xargs -P 4 -I {} terser {} -o {} -c -m
+          find _build/html/_static -name '*.css' -print0 | xargs -0 -P 4 -I {} cleancss -o {} {}
+          find _build/html/_static -name '*.js' -print0 | xargs -0 -P 4 -I {} terser {} -o {} -c -m
 
           # Copy CNAME for custom domain
           if [ -f CNAME ]; then
@@ -251,7 +251,7 @@ jobs:
           done
 
           # Convert images to WebP in parallel
-          find _build/html/ -type f \( -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" \) | xargs -P 4 -I {} bash -c 'cwebp -quiet -q 80 "$1" -o "${1%.*}.webp" || true' _ {}
+          find _build/html/ -type f \( -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" \) -print0 | xargs -0 -P 4 -I {} bash -c 'cwebp -quiet -q 80 "$1" -o "${1%.*}.webp" || true' _ {}
           # Package built Jupyter notebooks as downloadable zip
           cd _build/eval && zip -r ../../_build/html/d2l-jp.zip . -x '.*' && cd ../..
           # Copy PDF to deploy output for self-hosting
