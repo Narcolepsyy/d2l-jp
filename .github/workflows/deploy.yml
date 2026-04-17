@@ -228,9 +228,6 @@ jobs:
 
       - name: Post-process
         run: |
-          # Convert images to WebP for massive LCP/bandwidth savings
-          find _build/html/ -type f \( -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" \) -exec bash -c 'cwebp -quiet -q 80 "$0" -o "${0%.*}.webp" || true' {} \;
-
           # Purge unused CSS and Minify CSS/JS
           npm install -g clean-css-cli terser purgecss
           npx purgecss --css _build/html/_static/*.css --content "_build/html/**/*.html" --safelist html body /^mdl-/ /^is-/ /^has-/ /^mjx-/ /^MathJax/ /^math/ /^caption/ /^fa-/ /^fas/ /^fab/ /^far/ --output _build/html/_static/ || true
@@ -254,6 +251,9 @@ jobs:
             if [[ $fn == *'qr_'* ]]; then continue; fi
             rsvg-convert -z 1 -f svg -o tmp.svg "$fn" && mv tmp.svg "$fn"
           done
+
+          # Convert images to WebP for massive LCP/bandwidth savings
+          find _build/html/ -type f \( -iname "*.jpg" -o -iname "*.png" -o -iname "*.jpeg" \) -exec bash -c 'cwebp -quiet -q 80 "$0" -o "${0%.*}.webp" || true' {} \;
           # Package built Jupyter notebooks as downloadable zip
           cd _build/eval && zip -r ../../_build/html/d2l-jp.zip . -x '.*' && cd ../..
           # Copy PDF to deploy output for self-hosting
