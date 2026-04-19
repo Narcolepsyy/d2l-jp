@@ -3,11 +3,11 @@
 tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 ```
 
-# 画像分類データセット
+# 画像分類データセット（Fashion-MNISTの読み込みと実践）
 :label:`sec_fashion_mnist`
 
 
-画像分類で広く使われているデータセットの1つに、手書き数字の [MNISTデータセット](https://en.wikipedia.org/wiki/MNIST_database) :cite:`LeCun.Bottou.Bengio.ea.1998` がある。1990年代に公開された当時、これはほとんどの機械学習アルゴリズムにとって手強い課題であり、$28 \times 28$ ピクセル解像度の画像60,000枚（加えて10,000枚のテストデータセット）から構成されていた。参考までに言うと、1995年当時、64MBという膨大なRAMと5 MFLOPsという驚異的な性能を備えたSun SPARCStation 5は、AT&T Bell Laboratoriesにおける機械学習向けの最先端機器と見なされていた。数字認識で高い精度を達成することは、1990年代にUSPSの郵便物仕分けを自動化するうえで重要だった。LeNet-5 :cite:`LeCun.Jackel.Bottou.ea.1995` のような深層ネットワーク、変換不変性を組み込んだサポートベクターマシン :cite:`Scholkopf.Burges.Vapnik.1996`、接線距離分類器 :cite:`Simard.LeCun.Denker.ea.1998` は、いずれも1%未満の誤り率を達成できた。 
+機械学習やディープラーニングのモデル性能を正しく評価・検証する上で、適切な画像分類データセットの活用は不可欠である。画像分類で広く使われているデータセットの1つに、手書き数字の [MNISTデータセット](https://en.wikipedia.org/wiki/MNIST_database) :cite:`LeCun.Bottou.Bengio.ea.1998` がある。1990年代に公開された当時、これはほとんどの機械学習アルゴリズムにとって手強い課題であり、$28 \times 28$ ピクセル解像度の画像60,000枚（加えて10,000枚のテストデータセット）から構成されていた。参考までに言うと、1995年当時、64MBという膨大なRAMと5 MFLOPsという驚異的な性能を備えたSun SPARCStation 5は、AT&T Bell Laboratoriesにおける機械学習向けの最先端機器と見なされていた。数字認識で高い精度を達成することは、1990年代にUSPSの郵便物仕分けを自動化するうえで重要だった。LeNet-5 :cite:`LeCun.Jackel.Bottou.ea.1995` のような深層ネットワーク、変換不変性を組み込んだサポートベクターマシン :cite:`Scholkopf.Burges.Vapnik.1996`、接線距離分類器 :cite:`Simard.LeCun.Denker.ea.1998` は、いずれも1%未満の誤り率を達成できた。
 
 10年以上にわたり、MNISTは機械学習アルゴリズムを比較するための*基準*として機能してきた。 
 ベンチマークデータセットとして長く活躍したが、

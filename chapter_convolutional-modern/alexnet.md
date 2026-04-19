@@ -3,9 +3,10 @@
 tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 ```
 
-# 畳み込み深層ニューラルネットワーク（AlexNet）
+# 畳み込み深層ニューラルネットワーク（AlexNet）とは
 :label:`sec_alexnet`
 
+**AlexNet（アレックスネット）とは**、2012年のImageNetコンペティションで圧倒的な精度を達成し、現在の深層学習（ディープラーニング）ブームの火付け役となった画期的な畳み込み深層ニューラルネットワーク（CNN）アーキテクチャである。
 
 CNNは、LeNet の導入 :cite:`LeCun.Jackel.Bottou.ea.1995` 以降、
 コンピュータビジョンおよび機械学習のコミュニティではよく知られていたが、

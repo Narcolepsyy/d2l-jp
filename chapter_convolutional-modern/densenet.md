@@ -3,8 +3,10 @@
 tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 ```
 
-# 密に接続されたネットワーク（DenseNet）
+# 密に接続されたネットワーク（DenseNet）とは
 :label:`sec_densenet`
+
+**密に接続されたネットワーク（DenseNet: Dense Convolutional Network）とは**、各層がそれ以前のすべての層の出力マップを連結（コンカチネーション）して入力として受け取ることで、特徴の再利用を促進し、勾配消失を防ぎながらパラメータ数を削減するCNNアーキテクチャである。
 
 ResNet は、深いネットワークにおける関数をどのようにパラメータ化するかという見方を大きく変えた。*DenseNet*（dense convolutional network）は、ある意味でその論理的な拡張である :cite:`Huang.Liu.Van-Der-Maaten.ea.2017`。
 DenseNet の特徴は、各層がそれ以前のすべての層と接続される接続パターンと、ResNet の加算演算子ではなく連結演算を用いて、以前の層からの特徴を保持し再利用する点にある。

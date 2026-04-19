@@ -3,8 +3,10 @@
 tab.interact_select(['pytorch', 'jax'])
 ```
 
-# 画像向けTransformer
+# 画像向けTransformer（Vision Transformer: ViT）とは
 :label:`sec_vision-transformer`
+
+**画像向けTransformer（Vision Transformer: ViT）とは**、自然言語処理で成功を収めたTransformerアーキテクチャを、畳み込み（CNN）を使わずに画像認識タスクに直接適用し、大規模データセットにおいて極めて高い性能を発揮する画期的なモデルである。
 
 Transformerアーキテクチャは当初、
 機械翻訳に焦点を当てた

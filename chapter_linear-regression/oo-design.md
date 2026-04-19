@@ -3,8 +3,10 @@
 tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 ```
 
-# 実装のためのオブジェクト指向設計
+# 実装のためのオブジェクト指向設計（Object-Oriented Design）とは
 :label:`sec_oo-design`
+
+**オブジェクト指向設計（Object-Oriented Design）とは**、深層学習モデルの実装において、データ、モデル、損失関数、最適化アルゴリズムなどの構成要素を独立した「オブジェクト」として定義し、再利用性や拡張性を高めるプログラミング設計手法である。
 
 線形回帰の導入では、
 データ、モデル、損失関数、

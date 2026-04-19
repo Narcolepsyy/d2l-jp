@@ -1,5 +1,7 @@
-# ソフトマックス回帰
+# ソフトマックス回帰（Softmax Regression）とは
 :label:`sec_softmax`
+
+**ソフトマックス回帰（多項ロジスティック回帰）とは**、画像分類など3つ以上の複数のクラスに分類する問題（多クラス分類）において、入力データが各クラスに属する確率を予測する機械学習アルゴリズムである。
 
 :numref:`sec_linear_regression` では、線形回帰を導入し、
 :numref:`sec_linear_scratch` でスクラッチから実装し、

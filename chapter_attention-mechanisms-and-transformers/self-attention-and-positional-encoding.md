@@ -3,8 +3,10 @@
 tab.interact_select('mxnet', 'pytorch', 'tensorflow', 'jax')
 ```
 
-# 自己注意機構と位置エンコーディング
+# 自己注意機構（Self-Attention）と位置エンコーディングとは
 :label:`sec_self-attention-and-positional-encoding`
+
+自然言語処理において、Transformerモデルなどの**自己注意機構（Self-Attention）**は入力系列の順番情報をそのままでは扱えないため、**位置エンコーディング（Positional Encoding）**と呼ばれる手法を用いて、単語の相対的あるいは絶対的な位置情報をデータに追加する。
 
 深層学習では、系列をエンコードするためにCNNやRNNをよく用いる。
 ここで注意機構を念頭に置くと、

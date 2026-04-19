@@ -3,8 +3,10 @@
 tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 ```
 
-# 線形回帰
+# 線形回帰（Linear Regression）とは
 :label:`sec_linear_regression`
+
+**線形回帰（Linear Regression）とは**、説明変数（特徴量）と目的変数（ターゲット）との間に線形な関係を仮定し、データから最もよく適合する直線を求めることで、未知のデータに対する数値を予測する機械学習の基本的なアルゴリズムである。
 
 *回帰* 問題は、数値を予測したいときに現れる。
 代表的な例としては、価格（住宅、株式など）の予測、
