@@ -493,6 +493,33 @@ def remove_mathjax_if_unused(html):
     return html
 
 
+def inject_google_analytics(html):
+    """Inject Google Analytics (gtag.js) into the <head> section.
+
+    Previously done via sed in deploy.yml, but the sed command silently
+    failed due to special characters in the URL.  Python string handling
+    is more robust.
+    """
+    GA_ID = 'G-X354G2ERZT'
+
+    # Skip if already injected
+    if GA_ID in html:
+        return html
+
+    ga_snippet = f"""<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+  gtag('config', '{GA_ID}');
+</script>"""
+
+    # Insert just before the first </head>
+    html = html.replace('</head>', ga_snippet + '\n</head>', 1)
+    return html
+
+
 def preload_lcp_image(html):
     """Add <link rel="preload"> for the homepage LCP image.
 
@@ -549,6 +576,7 @@ def process_file(filepath):
     content = add_fetchpriority_lcp(content)
     content = remove_mathjax_if_unused(content)
     content = preload_lcp_image(content)
+    content = inject_google_analytics(content)
 
     if content != original:
         with open(filepath, "w", encoding="utf-8") as f:
