@@ -64,16 +64,31 @@ span.math.notranslate:has(mjx-container){display:inline;min-height:0}
 .authors.mdl-grid,.features.mdl-grid,.features-2.mdl-grid{content-visibility:auto;contain-intrinsic-size:auto 600px}
 .logoimg{content-visibility:auto;contain-intrinsic-size:auto 200px}
 #mapimg{content-visibility:auto;contain-intrinsic-size:auto 400px}
+/* Sphinx theme essentials (allows deferring ALL external CSS) */
+.document .page-content{max-width:960px;padding:20px 44px;box-sizing:border-box}
+.globaltoc{padding:0}.globaltoc ul{list-style:none;padding:0;margin:0}
+.globaltoc a{display:block;padding:8px 16px;color:rgba(0,0,0,.87);text-decoration:none;font-size:14px;border-bottom:1px solid #eee}
+.globaltoc a:hover{background:rgba(0,0,0,.05)}
+.mdl-layout__header-row .header-links{background:rgba(0,0,0,.1);height:48px;padding:0 16px}
+.mdl-layout__header-row .header-links a{color:#fff;text-decoration:none;padding:0 12px;font-size:13px}
+.breadcrumb a{color:#fff;text-decoration:none}
+.pagenation{display:flex;justify-content:space-between;padding:20px 0}
+a{color:#1976d2;text-decoration:none}
+img{max-width:100%;height:auto}
+pre{overflow-x:auto;background:#f5f5f5;padding:12px;border-radius:4px}
+code{font-family:monospace;font-size:87.5%}
 </style>
 """.strip()
 
 # CSS files that are non-critical and can be loaded asynchronously.
 # Pattern fragments matched against the href attribute.
 NON_CRITICAL_CSS = [
-    "fontawesome/all.css",   # Icons – tolerable FOUT
-    "pygments.css",          # Syntax highlighting – below fold
-    "material-design-lite",  # MDL framework – 20KB, 92% unused;
-                             # critical CSS covers grid/layout skeleton
+    "fontawesome/all.css",            # Icons – tolerable FOUT
+    "pygments.css",                   # Syntax highlighting – below fold
+    "material-design-lite",           # MDL framework – 20KB, 92% unused
+    "sphinx_materialdesign_theme.css", # Theme – critical CSS covers essentials
+    "basic.css",                       # Sphinx base – small
+    "d2l.css",                         # Our custom styles – small
 ]
 
 # CSS files to strip entirely from HTML (truly unused on this site).
@@ -83,12 +98,9 @@ REMOVE_CSS = [
                   # is the primary font and covers all needed characters.
 ]
 
-# CSS files that are critical and should keep blocking but get fetchpriority.
-CRITICAL_CSS_FILES = [
-    "sphinx_materialdesign_theme.css", # Theme layout
-    "basic.css",                       # Sphinx base
-    "d2l.css",                         # Our custom styles
-]
+# No CSS files are left as blocking – all are deferred.
+# Critical CSS is inlined above.
+CRITICAL_CSS_FILES = []
 
 
 def add_lazy_loading(html):
