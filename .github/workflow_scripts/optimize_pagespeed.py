@@ -42,6 +42,16 @@ body{margin:0;font-family:Roboto,'Noto Sans JP',sans-serif;font-size:17px;color:
 .mdl-layout__content{display:inline-block;flex-grow:1;overflow:auto;order:1}
 .mdl-layout--fixed-drawer>.mdl-layout__content{margin-left:250px}
 @media(max-width:1024px){.mdl-layout--fixed-drawer>.mdl-layout__content{margin-left:0}.mdl-layout--fixed-drawer>.mdl-layout__drawer{transform:translateX(-250px)}}
+/* MDL grid basics (allows deferring full MDL CSS) */
+.mdl-grid{display:flex;flex-flow:row wrap;margin:0 auto;align-items:stretch;padding:8px}
+.mdl-cell{box-sizing:border-box;margin:8px}
+.mdl-cell--3-col{width:calc(25% - 16px)}.mdl-cell--4-col{width:calc(33.333% - 16px)}
+.mdl-cell--5-col{width:calc(41.667% - 16px)}.mdl-cell--7-col{width:calc(58.333% - 16px)}
+.mdl-cell--12-col{width:calc(100% - 16px)}
+.mdl-cell--middle{align-self:center}.mdl-cell--top{align-self:flex-start}
+.mdl-navigation{display:flex;flex-wrap:nowrap}
+.mdl-navigation__link{color:#fff;text-decoration:none;font-weight:500;font-size:13px;margin:0;padding:0 5px}
+.mdl-layout-spacer{flex-grow:1}
 /* Frontpage Header Stacking (Mobile/Tablet) */
 @media(max-width:1024px){.header.mdl-grid{flex-direction:column;text-align:center}.header.mdl-grid .mdl-cell{width:100%!important;margin:15px 0}}
 /* CLS prevention: reserve space for MathJax before render */
@@ -50,14 +60,20 @@ div.math.notranslate[id*="equation"]{min-height:4.5em}
 div.math.notranslate:has(mjx-container){min-height:0;contain:none}
 span.math.notranslate{display:inline-block;vertical-align:middle;min-height:1.2em}
 span.math.notranslate:has(mjx-container){display:inline;min-height:0}
+/* Performance: skip layout for off-screen content */
+.authors.mdl-grid,.features.mdl-grid,.features-2.mdl-grid{content-visibility:auto;contain-intrinsic-size:auto 600px}
+.logoimg{content-visibility:auto;contain-intrinsic-size:auto 200px}
+#mapimg{content-visibility:auto;contain-intrinsic-size:auto 400px}
 </style>
 """.strip()
 
 # CSS files that are non-critical and can be loaded asynchronously.
 # Pattern fragments matched against the href attribute.
 NON_CRITICAL_CSS = [
-    "fontawesome/all.css", # Icons – tolerable FOUT
-    "pygments.css",       # Syntax highlighting – below fold
+    "fontawesome/all.css",   # Icons – tolerable FOUT
+    "pygments.css",          # Syntax highlighting – below fold
+    "material-design-lite",  # MDL framework – 20KB, 92% unused;
+                             # critical CSS covers grid/layout skeleton
 ]
 
 # CSS files to strip entirely from HTML (truly unused on this site).
@@ -69,7 +85,6 @@ REMOVE_CSS = [
 
 # CSS files that are critical and should keep blocking but get fetchpriority.
 CRITICAL_CSS_FILES = [
-    "material-design-lite",           # MDL layout framework
     "sphinx_materialdesign_theme.css", # Theme layout
     "basic.css",                       # Sphinx base
     "d2l.css",                         # Our custom styles
@@ -307,6 +322,9 @@ def fix_font_display(html):
     Only load weights 400 (body) and 700 (headings). The CSS2 API
     automatically uses unicode-range splitting for CJK fonts, so no
     &subset= parameter is needed (it's not a valid CSS2 API param).
+
+    Material Icons CSS is also loaded asynchronously to avoid blocking
+    render on an external stylesheet.
     """
     if "d2l.css" in html:
         gf_url = (
@@ -314,12 +332,15 @@ def fix_font_display(html):
             "?family=Noto+Sans+JP:wght@400;700"
             "&display=swap"
         )
+        mi_url = "https://fonts.googleapis.com/icon?family=Material+Icons"
         font_link = (
             f'<link rel="preload" as="style" href="{gf_url}" />\n'
             f'<link rel="stylesheet" href="{gf_url}"'
             ' media="print" onload="this.media=\'all\'" />\n'
             f'<noscript><link rel="stylesheet" href="{gf_url}" /></noscript>\n'
-            '<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />'
+            f'<link rel="stylesheet" href="{mi_url}"'
+            ' media="print" onload="this.media=\'all\'" />\n'
+            f'<noscript><link rel="stylesheet" href="{mi_url}" /></noscript>'
         )
         html = html.replace("</head>", font_link + "\n</head>")
 
@@ -436,6 +457,67 @@ def add_fetchpriority_lcp(html):
     return html
 
 
+def remove_mathjax_if_unused(html):
+    """Remove MathJax from pages that have no math content.
+
+    MathJax tex-chtml.js is 229 KB with 111 KB unused even on math pages.
+    Loading it on math-free pages (homepage, chapter indices) wastes
+    600+ ms of JS evaluation on mobile.
+    """
+    # Sphinx marks math with class="math" — this is the reliable indicator
+    if re.search(r'class="math\b', html):
+        return html
+
+    # Remove MathJax script tag
+    html = re.sub(
+        r'\s*<script[^>]*mathjax[^>]*>\s*</script>',
+        '',
+        html,
+        flags=re.IGNORECASE,
+    )
+    # Also remove the preconnect hint for jsdelivr (only needed for MathJax)
+    html = re.sub(
+        r'\s*<link[^>]*preconnect[^>]*cdn\.jsdelivr\.net[^>]*/?>',
+        '',
+        html,
+        flags=re.IGNORECASE,
+    )
+    return html
+
+
+def preload_lcp_image(html):
+    """Add <link rel="preload"> for the homepage LCP image.
+
+    This lets the browser discover the hero image during <head> parsing,
+    before it reaches the <img> tag deep in the body.
+    """
+    if 'front-cup' not in html:
+        return html
+
+    # Find the actual src (could be .webp or .jpg after conversion)
+    match = re.search(r'src="([^"]*front-cup\.[^"]+)"', html)
+    if not match:
+        return html
+
+    img_url = match.group(1)
+    # Determine MIME type
+    if img_url.endswith('.webp'):
+        img_type = ' type="image/webp"'
+    elif img_url.endswith('.jpg') or img_url.endswith('.jpeg'):
+        img_type = ' type="image/jpeg"'
+    else:
+        img_type = ''
+
+    preload = (
+        f'<link rel="preload" as="image" href="{img_url}"'
+        f' fetchpriority="high"{img_type} />'
+    )
+
+    # Insert before </head>
+    html = html.replace('</head>', preload + '\n</head>')
+    return html
+
+
 def process_file(filepath):
     """Apply all page speed optimizations to a single HTML file."""
     with open(filepath, "r", encoding="utf-8") as f:
@@ -457,6 +539,8 @@ def process_file(filepath):
     content = reformat_bibliography(content)
     content = fix_mobile_drawer_close(content)
     content = add_fetchpriority_lcp(content)
+    content = remove_mathjax_if_unused(content)
+    content = preload_lcp_image(content)
 
     if content != original:
         with open(filepath, "w", encoding="utf-8") as f:

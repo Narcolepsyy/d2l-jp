@@ -200,6 +200,18 @@ span.math.notranslate:has(mjx-container) {
 }
 
 /* ==========================================================================
+   Performance: content-visibility for below-fold sections
+   Reduces main-thread Style & Layout work by letting the browser skip
+   rendering for off-screen content until it scrolls into view.
+   ========================================================================== */
+
+/* Chapter page: defer layout for sections below the first one */
+.page-content .section ~ .section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 800px;
+}
+
+/* ==========================================================================
    Bibliography (References Page) — match d2l.ai professional style
    ========================================================================== */
 

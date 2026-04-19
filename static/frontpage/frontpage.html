@@ -128,6 +128,24 @@ a {
   font-size: normal;
 }
 
+/* Performance: skip rendering for below-fold sections */
+.authors.mdl-grid {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 800px;
+}
+.features.mdl-grid, .features-2.mdl-grid {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 600px;
+}
+.logoimg {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 200px;
+}
+#mapimg {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 400px;
+}
+
 @media (max-width: 1000px) {
     .mdl-grid, h2.toc {
         padding: 50px 0 0 0;
