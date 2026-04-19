@@ -295,10 +295,6 @@ def add_resource_hints(html):
         hints.append(
             '<link rel="dns-prefetch" href="https://buttons.github.io" />'
         )
-    if "platform.twitter.com" in html:
-        hints.append(
-            '<link rel="dns-prefetch" href="https://platform.twitter.com" />'
-        )
 
     if hints:
         hint_block = "\n".join(hints) + "\n"
