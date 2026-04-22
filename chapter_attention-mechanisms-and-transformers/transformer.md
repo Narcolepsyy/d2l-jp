@@ -3,9 +3,10 @@
 tab.interact_select('mxnet', 'pytorch', 'tensorflow', 'jax')
 ```
 
-# Transformerアーキテクチャ
+# Transformer（トランスフォーマー）とは：アーキテクチャの解説
 :label:`sec_transformer`
 
+**Transformer（トランスフォーマー）とは**、Attention（注意機構）のみを用いて構築されたニューラルネットワークアーキテクチャであり、並列計算が可能なためRNNよりも高速に学習でき、自然言語処理のみならず画像認識などの幅広い分野で革新をもたらしたモデルである。
 
 :numref:`subsec_cnn-rnn-self-attention` では、CNN、RNN、自己注意を比較した。
 特に、自己注意は並列計算と

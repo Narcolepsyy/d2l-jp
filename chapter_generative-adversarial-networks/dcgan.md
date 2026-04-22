@@ -1,5 +1,7 @@
-# Deep Convolutional Generative Adversarial Networks
+# DCGAN（Deep Convolutional GAN）とは：画像生成の実践
 :label:`sec_dcgan`
+
+**DCGAN（Deep Convolutional Generative Adversarial Network）とは**、GANのアーキテクチャに畳み込みニューラルネットワーク（CNN）を組み込み、安定した学習を可能にすることで、高品質で写実的な画像を生成できるようにした画期的なモデルである。
 
 :numref:`sec_basic_gan` では、GAN がどのように動作するかの基本的な考え方を紹介した。GAN は、一様分布や正規分布のような、単純でサンプリングしやすい分布からサンプルを取り出し、それをデータセットの分布に一致しているように見えるサンプルへと変換できることを示した。2 次元ガウス分布を一致させる例でも要点は伝わるが、特に刺激的というわけではない。
 

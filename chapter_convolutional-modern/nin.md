@@ -3,8 +3,10 @@
 tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 ```
 
-# Network in Network（NiN）
+# Network in Network（NiN）とは
 :label:`sec_nin`
+
+**Network in Network（NiN）とは**、従来の畳み込み層の代わりに、小さな多層パーセプトロン（MLP）を畳み込み演算として組み込み、さらに全結合層の代わりに「グローバル平均プーリング」を用いることで、パラメータ数を劇的に削減しつつ表現力を高めたCNNモデルである。
 
 LeNet、AlexNet、VGG はいずれも共通の設計パターンを共有している。
 すなわち、畳み込み層とプーリング層の系列を通じて *空間的* 構造を利用して特徴を抽出し、

@@ -3,8 +3,10 @@
 tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 ```
 
-# マルチブランチネットワーク（GoogLeNet）
+# GoogLeNet（マルチブランチネットワーク）とは
 :label:`sec_googlenet`
+
+**GoogLeNet（グーグルネット）とは**、2014年のImageNet Challengeで優勝した深層学習モデルであり、サイズが異なる複数の畳み込みカーネルを並列に組み合わせる「Inceptionモジュール」を導入することで、ネットワークの深さと幅を効率的に拡大した革新的なCNNアーキテクチャである。
 
 2014年、*GoogLeNet* は ImageNet Challenge :cite:`Szegedy.Liu.Jia.ea.2015` で優勝し、NiN :cite:`Lin.Chen.Yan.2013`、反復ブロック :cite:`Simonyan.Zisserman.2014`、そしてさまざまな畳み込みカーネルを組み合わせた構造を用いた。おそらく、CNN において stem（データ取り込み）、body（データ処理）、head（予測）を明確に区別した最初のネットワークでもあった。この設計パターンは、それ以来ディープネットワークの設計において定着している。*stem* は画像に対して作用する最初の2つまたは3つの畳み込み層で構成され、元の画像から低レベル特徴を抽出する。これに続くのが畳み込みブロックからなる *body* である。最後に *head* が、これまでに得られた特徴を、現在扱っている分類・セグメンテーション・検出・追跡の問題に応じた出力へ写像する。
 

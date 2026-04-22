@@ -3,8 +3,10 @@
 tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 ```
 
-# 多層パーセプトロン
+# 多層パーセプトロン（MLP）とは
 :label:`sec_mlp`
+
+**多層パーセプトロン（MLP: Multi-Layer Perceptron）とは**、入力層と出力層の間に1つ以上の隠れ層を持つ順伝播型ニューラルネットワークであり、活性化関数を用いることで非線形な問題を解決できる、ディープラーニングの最も基本的なアーキテクチャである。
 
 :numref:`sec_softmax` では、ソフトマックス回帰を導入し、
 アルゴリズムをスクラッチから実装し（:numref:`sec_softmax_scratch`）、

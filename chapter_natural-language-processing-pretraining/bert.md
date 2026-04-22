@@ -1,5 +1,7 @@
-# Transformerによる双方向エンコーダ表現（BERT）
+# BERT（Bidirectional Encoder Representations from Transformers）とは
 :label:`sec_bert`
+
+**BERT（バート）とは**、Googleによって開発された自然言語処理モデルであり、Transformerのエンコーダを用い、文脈を双方向から学習することで、多様なNLPタスクにおいて劇的な精度向上をもたらした画期的な事前学習済みモデルである。
 
 これまでに、自然言語理解のためのいくつかの単語埋め込みモデルを紹介してきた。
 事前学習後、その出力は行ごとに所定の語彙の単語を表すベクトルが並んだ行列とみなせる。

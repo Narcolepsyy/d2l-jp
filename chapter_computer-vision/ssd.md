@@ -1,5 +1,7 @@
-# シングルショット・マルチボックス検出
+# SSD（Single Shot MultiBox Detector）とは：物体検出の基礎
 :label:`sec_ssd`
+
+**SSD（Single Shot MultiBox Detector）とは**、画像を1回スキャンするだけで複数の物体の位置（バウンディングボックス）とクラスを同時に予測する、高速かつ高精度なリアルタイム物体検出アルゴリズムである。
 
 :numref:`sec_bbox`-- :numref:`sec_object-detection-dataset` では、
 バウンディングボックス、アンカーボックス、
