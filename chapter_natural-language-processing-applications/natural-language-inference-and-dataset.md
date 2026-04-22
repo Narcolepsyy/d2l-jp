@@ -43,7 +43,7 @@
 
 ## Stanford Natural Language Inference (SNLI) データセット
 
-[**Stanford Natural Language Inference (SNLI) Corpus**] は、500000件を超えるラベル付き英語文ペアの集合です :cite:`Bowman.Angeli.Potts.ea.2015`。
+[**Stanford Natural Language Inference (SNLI) Corpus**] は、500000件を超えるラベル付き英語文ペアの集合である :cite:`Bowman.Angeli.Potts.ea.2015`。
 抽出した SNLI データセットを `../data/snli_1.0` にダウンロードして保存する。
 
 ```{.python .input}

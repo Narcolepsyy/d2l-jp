@@ -85,7 +85,7 @@ $m+1$ 個のベクトル列となり、
 多層Transformerエンコーダは
 $m+1$ 個の入力ベクトルを
 同じ長さの $m+1$ 個の出力ベクトル表現へ変換する。
-これは :numref:`fig_transformer` における元のTransformerエンコーダと
+ :numref:`fig_transformer` における元のTransformerエンコーダと
 まったく同じように動作し、
 正規化の位置だけが異なる。
 “&lt;cls&gt;” トークンは自己注意を通じて
@@ -148,7 +148,7 @@ class PatchEmbedding(nn.Module):
 
 次の例では、高さと幅が `img_size` の画像を入力として、
 パッチ埋め込みは `(img_size//patch_size)**2` 個のパッチを出力し、
-それらは長さ `num_hiddens` のベクトルへ線形射影される。
+長さ `num_hiddens` のベクトルへ線形射影される。
 
 ```{.python .input}
 %%tab pytorch
@@ -174,7 +174,7 @@ d2l.check_shape(output, (batch_size, (img_size//patch_size)**2, num_hiddens))
 vision TransformerエンコーダのMLPは、
 元のTransformerエンコーダの位置ごとのFFNとは少し異なる（:numref:`subsec_positionwise-ffn` を参照）。
 第一に、ここでは活性化関数としてガウス誤差線形ユニット（GELU）を用いる。
-これはReLUのより滑らかな版とみなせる :cite:`Hendrycks.Gimpel.2016`。
+ReLUのより滑らかな版とみなせる :cite:`Hendrycks.Gimpel.2016`。
 第二に、正則化のために、MLP内の各全結合層の出力にドロップアウトを適用する。
 
 ```{.python .input}
@@ -278,7 +278,7 @@ d2l.check_shape(encoder_blk.init_with_output(d2l.get_key(), X)[0], X.shape)
 以下のvision Transformerの順伝播は単純である。
 まず、入力画像は `PatchEmbedding` インスタンスに与えられ、
 その出力は “&lt;cls&gt;” トークン埋め込みと連結される。
-それらはドロップアウトの前に、学習可能な位置埋め込みと加算される。
+ドロップアウトの前に、学習可能な位置埋め込みと加算される。
 次に、その出力は `ViTBlock` クラスのインスタンスを `num_blks` 個積み重ねたTransformerエンコーダに入力される。
 最後に、“&lt;cls&gt;” トークンの表現がネットワークのheadによって射影される。
 
@@ -381,7 +381,7 @@ Fashion-MNISTのような小規模データセットでは、
 :numref:`sec_resnet` のResNetを上回らないことに
 気づいたかもしれない。
 同様の観察は、ImageNetデータセット（120万枚の画像）でも成り立つ。
-これは、Transformerには
+、Transformerには
 畳み込みにおける有用な帰納バイアス、
 たとえば平行移動不変性や局所性（:numref:`sec_why-conv`）が
 *欠けている* ためである。

@@ -283,7 +283,7 @@ test_iter = torch.utils.data.DataLoader(test_set, batch_size,
 
 :numref:`fig_bert-two-seqs` が示すように、
 自然言語推論のためにBERTをファインチューニングするには、
-2つの全結合層からなる追加のMLPだけで十分です
+2つの全結合層からなる追加のMLPだけで十分である
 （以下の `BERTClassifier` クラスの `self.hidden` と `self.output` を参照）。
 [**このMLPは、前提と仮説の両方の情報を符号化した特別な “&lt;cls&gt;” トークンのBERT表現を**]
 [**自然言語推論の3つの出力**]、
@@ -380,5 +380,5 @@ d2l.train_ch13(net, train_iter, test_iter, loss, trainer, num_epochs, devices)
 
 ## 演習
 
-1. 計算資源が許すなら、元のBERT baseモデルとほぼ同じ大きさの、はるかに大きい事前学習済みBERTモデルをファインチューニングしよ。`load_pretrained_model` 関数の引数は、`'bert.small'` を `'bert.base'` に置き換え、`num_hiddens=256`、`ffn_num_hiddens=512`、`num_heads=4`、`num_blks=2` の値をそれぞれ768、3072、12、12に増やしよ。ファインチューニングのエポック数を増やし（必要なら他のハイパーパラメータも調整し）、テスト精度を0.86より高くできるか？
-1. 長さの比率に応じて2つの系列をどのように切り詰めるべきだろうか？このペア切り詰め方法と `SNLIBERTDataset` クラスで使われている方法を比較しよ。それぞれの長所と短所は何だろうか？
+1. 計算資源が許すなら、元のBERT baseモデルとほぼ同じ大きさの、はるかに大きい事前学習済みBERTモデルをファインチューニングしよう。`load_pretrained_model` 関数の引数は、`'bert.small'` を `'bert.base'` に置き換え、`num_hiddens=256`、`ffn_num_hiddens=512`、`num_heads=4`、`num_blks=2` の値をそれぞれ768、3072、12、12に増やしよう。ファインチューニングのエポック数を増やし（必要なら他のハイパーパラメータも調整し）、テスト精度を0.86より高くできるか？
+1. 長さの比率に応じて2つの系列をどのように切り詰めるべきだろうか？このペア切り詰め方法と `SNLIBERTDataset` クラスで使われている方法を比較しよう。それぞれの長所と短所は何だろうか？

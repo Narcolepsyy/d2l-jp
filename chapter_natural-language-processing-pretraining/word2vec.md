@@ -44,7 +44,7 @@ $$\frac{\mathbf{x}^\top \mathbf{y}}{\|\mathbf{x}\| \|\mathbf{y}\|} \in [-1, 1].$
 ## 自己教師あり word2vec
 
 上記の問題に対処するために [word2vec](https://code.google.com/archive/p/word2vec/) ツールが提案された。
-これは各単語を固定長ベクトルに写像し、これらのベクトルは異なる単語間の類似性や類推関係をよりよく表現できる。
+各単語を固定長ベクトルに写像し、これらのベクトルは異なる単語間の類似性や類推関係をよりよく表現できる。
 word2vec ツールには2つのモデル、すなわち *skip-gram* :cite:`Mikolov.Sutskever.Chen.ea.2013` と *continuous bag of words*（CBOW） :cite:`Mikolov.Chen.Corrado.ea.2013` がある。
 意味的に有意味な表現を得るために、
 その学習は
@@ -112,7 +112,7 @@ $$ \prod_{t=1}^{T} \prod_{-m \leq j \leq m,\ j \neq 0} P(w^{(t+j)} \mid w^{(t)})
 ### 学習
 
 skip-gram モデルのパラメータは、語彙中の各単語に対する中心単語ベクトルと文脈単語ベクトルである。
-学習では、尤度関数を最大化する（すなわち最尤推定を行う）ことでモデルパラメータを学習する。これは次の損失関数を最小化することと等価である。
+学習では、尤度関数を最大化する（すなわち最尤推定を行う）ことでモデルパラメータを学習する。次の損失関数を最小化することと等価である。
 
 $$ - \sum_{t=1}^{T} \sum_{-m \leq j \leq m,\ j \neq 0} \textrm{log}\, P(w^{(t+j)} \mid w^{(t)}).$$
 
@@ -157,7 +157,7 @@ continuous bag of words モデルが
 たとえば、
 同じテキスト系列 "the", "man", "loves", "his", "son" で、"loves" を中心単語とし、コンテキストウィンドウサイズを 2 とすると、
 continuous bag of words モデルは
-文脈単語 "the", "man", "his", "son" に基づいて中心単語 "loves" を生成する条件付き確率を考えます（:numref:`fig_cbow` を参照）。これは
+文脈単語 "the", "man", "his", "son" に基づいて中心単語 "loves" を生成する条件付き確率を考えます（:numref:`fig_cbow` を参照）。
 
 
 $$P(\textrm{"loves"}\mid\textrm{"the"},\textrm{"man"},\textrm{"his"},\textrm{"son"}).$$
@@ -207,7 +207,7 @@ continuous bag of words モデルの
 
 $$  -\sum_{t=1}^T  \textrm{log}\, P(w^{(t)} \mid  w^{(t-m)}, \ldots, w^{(t-1)}, w^{(t+1)}, \ldots, w^{(t+m)}).$$
 
-次に注意しよ。
+次に注意しよう。
 
 $$\log\,P(w_c \mid \mathcal{W}_o) = \mathbf{u}_c^\top \bar{\mathbf{v}}_o - \log\,\left(\sum_{i \in \mathcal{V}} \exp\left(\mathbf{u}_i^\top \bar{\mathbf{v}}_o\right)\right).$$
 
@@ -236,6 +236,6 @@ continuous bag of words モデルでは通常
 
 ## 演習
 
-1. 各勾配を計算する計算量はどれくらいですか？ 辞書サイズが非常に大きい場合、どのような問題が生じますか？
+1. 各勾配を計算する計算量はどれくらいであるか？ 辞書サイズが非常に大きい場合、どのような問題が生じますか？
 1. 英語のいくつかの定型句は "new york" のように複数の単語から構成される。これらの単語ベクトルをどのように学習するか？ ヒント：word2vec 論文の Section 4 を参照されたい :cite:`Mikolov.Sutskever.Chen.ea.2013`。
 1. skip-gram モデルを例に、word2vec の設計について考えてみよう。skip-gram モデルにおける2つの単語ベクトルの内積とコサイン類似度の関係は何だろうか？ 意味的に似た単語の組に対して、なぜ skip-gram モデルで学習した単語ベクトルのコサイン類似度が高くなりうるのだろうか？

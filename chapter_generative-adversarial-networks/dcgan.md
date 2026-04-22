@@ -316,7 +316,7 @@ net_G(x).shape
 
 $$\textrm{leaky ReLU}(x) = \begin{cases}x & \textrm{if}\ x > 0\\ \alpha x &\textrm{otherwise}\end{cases}.$$
 
-見てのとおり、$\alpha=0$ なら通常の ReLU、$\alpha=1$ なら恒等関数である。$\alpha \in (0, 1)$ では、leaky ReLU は負の入力に対しても 0 でない出力を返す非線形関数である。これは、ニューロンが常に負の値を出力してしまい、ReLU の勾配が 0 であるために学習が進まなくなる「dying ReLU」問題を解決することを目的としている。
+見てのとおり、$\alpha=0$ なら通常の ReLU、$\alpha=1$ なら恒等関数である。$\alpha \in (0, 1)$ では、leaky ReLU は負の入力に対しても 0 でない出力を返す非線形関数である。、ニューロンが常に負の値を出力してしまい、ReLU の勾配が 0 であるために学習が進まなくなる「dying ReLU」問題を解決することを目的としている。
 
 ```{.python .input}
 #@tab mxnet,pytorch

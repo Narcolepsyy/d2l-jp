@@ -69,7 +69,7 @@ class MF(nn.Block):
 
 ## 評価指標
 
-次に、RMSE（root-mean-square error、二乗平均平方根誤差）を実装する。これは、モデルが予測した評価値と実際に観測された評価値（ground truth）との差を測るために一般的に用いられます :cite:`Gunawardana.Shani.2015`。RMSE は次のように定義される。
+次に、RMSE（root-mean-square error、二乗平均平方根誤差）を実装する。、モデルが予測した評価値と実際に観測された評価値（ground truth）との差を測るために一般的に用いられます :cite:`Gunawardana.Shani.2015`。RMSE は次のように定義される。
 
 $$
 \textrm{RMSE} = \sqrt{\frac{1}{|\mathcal{T}|}\sum_{(u, i) \in \mathcal{T}}(\mathbf{R}_{ui} -\hat{\mathbf{R}}_{ui})^2}

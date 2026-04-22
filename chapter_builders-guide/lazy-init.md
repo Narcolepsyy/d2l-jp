@@ -183,7 +183,7 @@ jax.tree_util.tree_map(lambda x: x.shape, params).tree_flatten_with_keys()
 予備実行を行い、
 すべてのパラメータ形状を推論したうえで
 パラメータを初期化する。
-これは、デフォルトのランダム初期化を望まない場合に後で使われる。
+、デフォルトのランダム初期化を望まない場合に後で使われる。
 :end_tab:
 
 :begin_tab:`jax`

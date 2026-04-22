@@ -6,7 +6,7 @@ skip-gram モデルの主な考え方は、softmax 演算を用いて、与え�
 
 
 
-softmax 演算の性質上、文脈語は辞書 $\mathcal{V}$ のどれでもあり得るため、:eqref:`eq_skip-gram-log` の符号を反転した式には、語彙全体の大きさに等しい数の項の総和が含まれる。したがって、:eqref:`eq_skip-gram-grad` における skip-gram モデルの勾配計算と、:eqref:`eq_cbow-gradient` における continuous bag-of-words モデルの勾配計算の両方に、この総和が含まれる。残念ながら、このように大きな辞書（しばしば数十万語から数百万語）にわたって和を取る勾配の計算コストは非常に大きいのです！
+softmax 演算の性質上、文脈語は辞書 $\mathcal{V}$ のどれでもあり得るため、:eqref:`eq_skip-gram-log` の符号を反転した式には、語彙全体の大きさに等しい数の項の総和が含まれる。したがって、:eqref:`eq_skip-gram-grad` における skip-gram モデルの勾配計算と、:eqref:`eq_cbow-gradient` における continuous bag-of-words モデルの勾配計算の両方に、この総和が含まれる。残念ながら、このように大きな辞書（しばしば数十万語から数百万語）にわたって和を取る勾配の計算コストは非常に大きいのである！
 
 前述の計算複雑性を削減するために、この節では 2 つの近似学習法、*negative sampling* と *hierarchical softmax* を紹介する。skip-gram モデルと continuous bag of words モデルの類似性のため、ここでは skip-gram モデルを例として、これら 2 つの近似学習法を説明する。
 
@@ -61,7 +61,7 @@ $$
 
 ## Hierarchical Softmax
 
-別の近似学習法として、*hierarchical softmax* は二分木を用いる。これは :numref:`fig_hi_softmax` に示すデータ構造で、木の各葉ノードが辞書 $\mathcal{V}$ の単語を表す。
+別の近似学習法として、*hierarchical softmax* は二分木を用いる。 :numref:`fig_hi_softmax` に示すデータ構造で、木の各葉ノードが辞書 $\mathcal{V}$ の単語を表す。
 
 ![近似学習のための hierarchical softmax。各葉ノードは辞書中の単語を表す。](../img/hi-softmax.svg)
 :label:`fig_hi_softmax`

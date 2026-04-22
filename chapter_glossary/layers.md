@@ -9,5 +9,5 @@
 
 ## 参照 (Reference)
 
-この用語の詳細な文脈については Dive into Deep Learning の対応する章を参照してください:
+この用語の詳細な文脈については Dive into Deep Learning の対応する章を参照してほしい:
 - [元章で読む](../chapter_introduction/index.md)

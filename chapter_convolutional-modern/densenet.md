@@ -43,7 +43,7 @@ import jax
 
 ## ResNet から DenseNet へ
 
-関数のテイラー展開を思い出しよ。点 $x = 0$ においては、次のように書ける。
+関数のテイラー展開を思い出そう。点 $x = 0$ においては、次のように書ける。
 
 $$f(x) = f(0) + x \cdot \left[f'(0) + x \cdot \left[\frac{f''(0)}{2!}  + x \cdot \left[\frac{f'''(0)}{3!}  + \cdots \right]\right]\right].$$
 
@@ -67,7 +67,7 @@ $$\mathbf{x} \to \left[
 f_1(\mathbf{x}),
 f_2\left(\left[\mathbf{x}, f_1\left(\mathbf{x}\right)\right]\right), f_3\left(\left[\mathbf{x}, f_1\left(\mathbf{x}\right), f_2\left(\left[\mathbf{x}, f_1\left(\mathbf{x}\right)\right]\right)\right]\right), \ldots\right].$$
 
-最終的には、これらすべての関数を MLP でまとめて、特徴数を再び減らする。実装の観点では、これは非常に単純である。
+最終的には、これらすべての関数を MLP でまとめて、特徴数を再び減らする。実装の観点では、非常に単純である。
 項を加算する代わりに、それらを連結するだけである。DenseNet という名前は、変数間の依存グラフが非常に密になることに由来する。このような連鎖の最終層は、すべての前の層と密に接続されている。密な接続は :numref:`fig_densenet` に示されている。
 
 ![DenseNet における密な接続。深くなるにつれて次元が増加することに注意。](../img/densenet.svg)
@@ -204,7 +204,7 @@ class DenseBlock(nn.Module):
 ```
 
 次の例では、出力チャネル数が 10 の畳み込みブロックを 2 つ持つ `DenseBlock` インスタンスを[**定義**]する。
-3 チャネルの入力を使うと、出力は $3 + 10 + 10=23$ チャネルになる。畳み込みブロックのチャネル数は、入力チャネル数に対する出力チャネル数の増加量を制御する。これは *growth rate* とも呼ばれる。
+3 チャネルの入力を使うと、出力は $3 + 10 + 10=23$ チャネルになる。畳み込みブロックのチャネル数は、入力チャネル数に対する出力チャネル数の増加量を制御する。 *growth rate* とも呼ばれる。
 
 ```{.python .input}
 %%tab pytorch, mxnet, tensorflow
@@ -230,7 +230,7 @@ Y.shape
 
 ## [**Transition Layer**]
 
-各 dense block はチャネル数を増やすため、それをあまり多く重ねると、モデルが過度に複雑になる。*transition layer* はモデルの複雑さを制御するために使われる。これは $1\times 1$ 畳み込みを用いてチャネル数を減らする。さらに、ストライド 2 の平均プーリングによって高さと幅を半分にする。
+各 dense block はチャネル数を増やすため、それをあまり多く重ねると、モデルが過度に複雑になる。*transition layer* はモデルの複雑さを制御するために使われる。 $1\times 1$ 畳み込みを用いてチャネル数を減らする。さらに、ストライド 2 の平均プーリングによって高さと幅を半分にする。
 
 ```{.python .input}
 %%tab mxnet
@@ -487,7 +487,7 @@ DenseNet を構成する主な要素は dense block と transition layer であ�
 1. なぜ transition layer では max-pooling ではなく average pooling を使うのだろうか？
 1. DenseNet の論文で挙げられている利点の一つは、モデルパラメータが ResNet より小さいことである。なぜそうなるのだろうか？
 1. DenseNet が批判される問題の一つに、高いメモリ消費がある。
-    1. これは本当にそうだろうか？入力形状を $224\times 224$ に変更して、実際の GPU メモリ消費を経験的に比較してみよ。
+    1. 本当にそうだろうか？入力形状を $224\times 224$ に変更して、実際の GPU メモリ消費を経験的に比較してみよ。
     1. メモリ消費を減らす別の方法を考えられるか。その場合、フレームワークをどのように変更する必要があるだろうか？
-1. DenseNet 論文 :cite:`Huang.Liu.Van-Der-Maaten.ea.2017` の Table 1 に示されているさまざまな DenseNet 版を実装しよ。
-1. DenseNet の考え方を適用して、MLP ベースのモデルを設計しよ。それを :numref:`sec_kaggle_house` の住宅価格予測タスクに適用しよ。
+1. DenseNet 論文 :cite:`Huang.Liu.Van-Der-Maaten.ea.2017` の Table 1 に示されているさまざまな DenseNet 版を実装しよう。
+1. DenseNet の考え方を適用して、MLP ベースのモデルを設計しよう。それを :numref:`sec_kaggle_house` の住宅価格予測タスクに適用しよう。

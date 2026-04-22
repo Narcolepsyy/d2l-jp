@@ -175,7 +175,7 @@ loss = SigmoidBCELoss()
 ```
 
 :numref:`subsec_word2vec-minibatch-loading` で説明した
-mask 変数と label 変数を思い出しよ。
+mask 変数と label 変数を思い出そう。
 以下では、
 与えられた変数に対する
 バイナリ交差エントロピー損失を計算する。

@@ -178,7 +178,7 @@ $\mathsf{X}$ を畳み込み層 $f$ に入力して $\mathsf{Y}=f(\mathsf{X})$ �
 $g$ を $f$ と同じハイパーパラメータを持つ転置畳み込み層として、
 ただし出力チャネル数だけは $\mathsf{X}$ のチャネル数と同じにすると、
 $g(Y)$ は $\mathsf{X}$ と同じ形状になる。
-これは次の例で示せる。
+次の例で示せる。
 
 ```{.python .input}
 #@tab mxnet
@@ -284,5 +284,5 @@ $\mathbf{W}^\top$ と $\mathbf{W}$ を掛ける。
 
 ## 演習
 
-1. :numref:`subsec-connection-to-mat-transposition` では、畳み込みの入力 `X` と転置畳み込みの出力 `Z` は同じ形状を持つ。では、それらは同じ値だろうか。なぜか。
+1. :numref:`subsec-connection-to-mat-transposition` では、畳み込みの入力 `X` と転置畳み込みの出力 `Z` は同じ形状を持つ。では、同じ値だろうか。なぜか。
 1. 畳み込みを実装するのに行列積を使うのは効率的だろうか。なぜか。

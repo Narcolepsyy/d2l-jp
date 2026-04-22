@@ -86,7 +86,7 @@ GPU にアクセスできるようにしておきたいことを覚えておい�
 
 GPU 対応版の MXNet をインストールするには、
 インストール済みの CUDA のバージョンを確認する必要がある。
-これは `nvcc --version`
+ `nvcc --version`
 または `cat /usr/local/cuda/version.txt` を実行して確認できる。
 CUDA 11.2 がインストールされていると仮定すると、
 次のコマンドを実行する：

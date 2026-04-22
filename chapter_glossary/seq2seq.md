@@ -4,15 +4,15 @@
 ## 定義 (Definition)
 
 このような、2つの「整列していない」系列の間の写像という性質をもつ問題は
-他にも多くあります。
+他にも多くある。
 例としては、対話のプロンプトから応答への写像や、
-質問から答えへの写像が挙げられます。
+質問から答えへの写像が挙げられる。
 広く言えば、このような問題は
 *sequence-to-sequence*（seq2seq）問題と呼ばれ、
 本章の残りと :numref:`chap_attention-and-transformers` の大部分で
-私たちが扱うテーマです。
+私たちが扱うテーマである。
 
 ## 参照 (Reference)
 
-この用語の詳細な文脈については Dive into Deep Learning の対応する章を参照してください:
+この用語の詳細な文脈については Dive into Deep Learning の対応する章を参照してほしい:
 - [元章で読む](../chapter_recurrent-modern/machine-translation-and-dataset.md)

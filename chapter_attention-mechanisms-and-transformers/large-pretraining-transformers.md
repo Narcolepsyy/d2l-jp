@@ -23,7 +23,7 @@ Transformer のスケーラビリティは、
 より大きなデータで学習されたより大規模な Vision Transformer による
 大幅な性能向上からも裏付けられている
 (:numref:`sec_vision-transformer` で議論)。
-より最近の成功例には Gato があり、これは Atari をプレイし、画像にキャプションを付け、会話し、ロボットとして行動できる *汎用* モデルである :cite:`reed2022generalist`。Gato は、テキスト、画像、関節トルク、ボタン押下など多様なモダリティで事前学習されたときにうまくスケールする単一の Transformer である。
+より最近の成功例には Gato があり、 Atari をプレイし、画像にキャプションを付け、会話し、ロボットとして行動できる *汎用* モデルである :cite:`reed2022generalist`。Gato は、テキスト、画像、関節トルク、ボタン押下など多様なモダリティで事前学習されたときにうまくスケールする単一の Transformer である。
 特筆すべきことに、このようなマルチモーダルデータはすべて、平坦なトークン列として直列化され、
 Transformer によってテキストトークン (:numref:`sec_transformer`) や画像パッチ (:numref:`sec_vision-transformer`) と同様に処理できる。
 
@@ -42,7 +42,7 @@ Transformer の事前学習におけるスケーラビリティを説明する�
 
 Transformer エンコーダのみを使用する場合、
 入力トークン列は同じ数の表現に変換され、
-それらはさらに出力（たとえば分類）へ射影できる。
+さらに出力（たとえば分類）へ射影できる。
 Transformer エンコーダは自己注意層から構成され、
 すべての入力トークンが互いに注意を向ける。
 たとえば、 :numref:`fig_vit` に示した Vision Transformer はエンコーダのみであり、
@@ -277,8 +277,8 @@ GPT の元の Transformer デコーダと比べて、事前正規化
 ### GPT-3 とその先
 
 GPT-2 は、モデルを更新せずに同じ言語モデルを複数のタスクに使う可能性を示した。
-これは、勾配計算によるモデル更新を必要とするファインチューニングよりも、
-計算効率が高いである。
+、勾配計算によるモデル更新を必要とするファインチューニングよりも、
+計算効率が高い。
 
 
 ![言語モデル（Transformer デコーダ）を用いたゼロショット、ワンショット、フューショットの in-context learning。パラメータ更新は不要である。](../img/gpt-3-xshot.svg)
@@ -311,7 +311,7 @@ GPT-3 は GPT-2 の直接の後継である GPT-2 と同じ Transformer デコ�
 フューショット性能が最も急速に向上する
 (:numref:`fig_gpt3-xshot-scaling`)。
 
-その後の GPT-4 モデルは、報告書で技術的詳細を完全には公開しませんでした :cite:`openai2023gpt4`。
+その後の GPT-4 モデルは、報告書で技術的詳細を完全には公開しなかった :cite:`openai2023gpt4`。
 先行モデルとは対照的に、GPT-4 は大規模なマルチモーダルモデルであり、
 テキストと画像の両方を入力として受け取り、
 テキスト出力を生成できる。
@@ -411,7 +411,7 @@ chain-of-thought 推論さえ実行できる :cite:`kojima2022large`。
 Transformer は、エンコーダのみ（たとえば BERT）、エンコーダ--デコーダ（たとえば T5）、およびデコーダのみ（たとえば GPT 系列）として事前学習されてきた。事前学習済みモデルは、モデル更新あり（たとえばファインチューニング）またはなし（たとえばフューショット）で、さまざまなタスクに適応できる。Transformer のスケーラビリティは、より大きなモデル、より多くの学習データ、より多くの学習計算量がより良い性能につながることを示唆している。Transformer はもともとテキストデータ向けに設計・事前学習されたため、この節はやや自然言語処理に寄っている。それでも、上で議論したこれらのモデルは、より最近の複数モダリティにまたがるモデルでもしばしば見られる。たとえば、
 (i) Chinchilla :cite:`hoffmann2022training` はさらに Flamingo :cite:`alayrac2022flamingo` に拡張され、フューショット学習のための視覚言語モデルとなった;
 (ii) GPT-2 :cite:`Radford.Wu.Child.ea.2019` と Vision Transformer は、CLIP (Contrastive Language-Image Pre-training) :cite:`radford2021learning` においてテキストと画像をエンコードし、その画像埋め込みとテキスト埋め込みは後に DALL-E 2 の text-to-image システム :cite:`ramesh2022hierarchical` に採用された。マルチモーダル事前学習における Transformer のスケーラビリティについてはまだ体系的研究がないが、Parti :cite:`yu2022scaling` と呼ばれる全 Transformer の text-to-image モデルは、モダリティをまたいだスケーラビリティの可能性を示している:
-より大きな Parti は、より高忠実度な画像生成と、内容豊かなテキスト理解が可能です (:numref:`fig_parti`)。
+より大きな Parti は、より高忠実度な画像生成と、内容豊かなテキスト理解が可能である (:numref:`fig_parti`)。
 
 
 ![同じテキストから生成された、サイズが増加する Parti モデル（350M、750M、3B、20B）による画像例（例は :citet:`yu2022scaling` より）。](../img/parti.png)

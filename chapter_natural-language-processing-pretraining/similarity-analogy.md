@@ -225,7 +225,7 @@ get_analogy('man', 'woman', 'son', glove_6b50d)
 以下は  
 “capital-country” のアナロジーを完成させる。  
 “beijing”:“china”::“tokyo”:“japan”。  
-これは、  
+、  
 事前学習済み単語ベクトルに意味情報が含まれていることを示している。
 
 ```{.python .input}
@@ -262,5 +262,5 @@ get_analogy('do', 'did', 'go', glove_6b50d)
 
 ## 演習
 
-1. `TokenEmbedding('wiki.en')` を使って fastText の結果を試しよ。
+1. `TokenEmbedding('wiki.en')` を使って fastText の結果を試しよう。
 1. 語彙が非常に大きい場合、類似単語の検索や単語アナロジーの補完をより高速に行うにはどうすればよいだろうか？

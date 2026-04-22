@@ -48,7 +48,7 @@ import tensorflow as tf
 
 $$\lambda  a + (1-\lambda)  b \in \mathcal{X} \textrm{ whenever } a, b \in \mathcal{X}.$$
 
-これは少し抽象的に聞こえるかもしれない。 :numref:`fig_pacman` を考えてみよう。最初の集合は、含まれない線分が存在するので凸ではない。
+少し抽象的に聞こえるかもしれない。 :numref:`fig_pacman` を考えてみよう。最初の集合は、含まれない線分が存在するので凸ではない。
 他の2つの集合にはそのような問題はない。
 
 ![最初の集合は非凸で、他の2つは凸である。](../img/pacman.svg)
@@ -56,7 +56,7 @@ $$\lambda  a + (1-\lambda)  b \in \mathcal{X} \textrm{ whenever } a, b \in \math
 
 定義は、それを何かに使えない限り、単独ではあまり有用ではない。
 この場合、 :numref:`fig_convex_intersect` に示すように交差を考えることができる。
-$\mathcal{X}$ と $\mathcal{Y}$ が凸集合だと仮定する。このとき $\mathcal{X} \cap \mathcal{Y}$ も凸である。これを見るには、任意の $a, b \in \mathcal{X} \cap \mathcal{Y}$ を考える。$\mathcal{X}$ と $\mathcal{Y}$ は凸なので、$a$ と $b$ を結ぶ線分は $\mathcal{X}$ と $\mathcal{Y}$ の両方に含まれる。したがって、それらは $\mathcal{X} \cap \mathcal{Y}$ にも含まれなければならず、これで定理が示される。
+$\mathcal{X}$ と $\mathcal{Y}$ が凸集合だと仮定する。このとき $\mathcal{X} \cap \mathcal{Y}$ も凸である。これを見るには、任意の $a, b \in \mathcal{X} \cap \mathcal{Y}$ を考える。$\mathcal{X}$ と $\mathcal{Y}$ は凸なので、$a$ と $b$ を結ぶ線分は $\mathcal{X}$ と $\mathcal{Y}$ の両方に含まれる。したがって、 $\mathcal{X} \cap \mathcal{Y}$ にも含まれなければならず、これで定理が示される。
 
 ![2つの凸集合の交差は凸である。](../img/convex-intersect.svg)
 :label:`fig_convex_intersect`
@@ -102,7 +102,7 @@ for ax, func in zip(axes, [f, g, h]):
 
 凸関数 $f$ が与えられたとき、
 最も有用な数学的道具の1つが *ジェンセンの不等式* である。
-これは凸性の定義の一般化に相当する。
+凸性の定義の一般化に相当する。
 
 $$\sum_i \alpha_i f(x_i)  \geq f\left(\sum_i \alpha_i x_i\right)    \textrm{ and }    E_X[f(X)]  \geq f\left(E_X[X]\right),$$
 :eqlabel:`eq_jensens-inequality`
@@ -120,7 +120,7 @@ $$\sum_i \alpha_i f(x_i)  \geq f\left(\sum_i \alpha_i x_i\right)    \textrm{ and
 $$E_{Y \sim P(Y)}[-\log P(X \mid Y)] \geq -\log P(X),$$
 
 なぜなら $\int P(Y) P(X \mid Y) dY = P(X)$ だからである。
-これは変分法で利用できる。ここで $Y$ は通常、観測されていない確率変数であり、$P(Y)$ はその分布に関する最良の推定であり、$P(X)$ は $Y$ を積分消去した分布である。たとえば、クラスタリングでは $Y$ はクラスタラベルであり、$P(X \mid Y)$ はクラスタラベルを適用したときの生成モデルである。
+変分法で利用できる。ここで $Y$ は通常、観測されていない確率変数であり、$P(Y)$ はその分布に関する最良の推定であり、$P(X)$ は $Y$ を積分消去した分布である。たとえば、クラスタリングでは $Y$ はクラスタラベルであり、$P(X \mid Y)$ はクラスタラベルを適用したときの生成モデルである。
 
 
 
@@ -132,7 +132,7 @@ $$E_{Y \sim P(Y)}[-\log P(X \mid Y)] \geq -\log P(X),$$
 ### 局所最小値は大域最小値
 
 まず何よりも重要なのは、凸関数の局所最小値は大域最小値でもあることである。 
-これは背理法で次のように証明できる。
+背理法で次のように証明できる。
 
 凸集合 $\mathcal{X}$ 上で定義された凸関数 $f$ を考える。
 $x^{\ast} \in \mathcal{X}$ が局所最小値だと仮定する。
@@ -153,7 +153,7 @@ $$\begin{aligned}
     &= f(x^{\ast}),
 \end{aligned}$$
 
-これは $x^{\ast}$ が局所最小値であるという仮定に矛盾する。
+ $x^{\ast}$ が局所最小値であるという仮定に矛盾する。
 したがって、$f(x') < f(x^{\ast})$ を満たす $x' \in \mathcal{X}$ は存在しない。局所最小値 $x^{\ast}$ は大域最小値でもある。
 
 たとえば、凸関数 $f(x) = (x-1)^2$ は $x=1$ に局所最小値を持ち、それは同時に大域最小値でもある。
@@ -166,8 +166,8 @@ d2l.plot([x, segment], [f(x), f(segment)], 'x', 'f(x)')
 ```
 
 凸関数の局所最小値が大域最小値でもあるという事実は非常に便利である。 
-これは、関数を最小化するときに「行き詰まる」ことがないことを意味する。 
-ただし、これは大域最小値が複数存在しないという意味でも、そもそも存在しないという意味でもないことに注意されたい。たとえば、関数 $f(x) = \mathrm{max}(|x|-1, 0)$ は区間 $[-1, 1]$ 上で最小値を取る。逆に、関数 $f(x) = \exp(x)$ は $\mathbb{R}$ 上で最小値を取らない。$x \to -\infty$ で $0$ に漸近するが、$f(x) = 0$ となる $x$ は存在しない。
+、関数を最小化するときに「行き詰まる」ことがないことを意味する。 
+ただし、大域最小値が複数存在しないという意味でも、そもそも存在しないという意味でもないことに注意されたい。たとえば、関数 $f(x) = \mathrm{max}(|x|-1, 0)$ は区間 $[-1, 1]$ 上で最小値を取る。逆に、関数 $f(x) = \exp(x)$ は $\mathbb{R}$ 上で最小値を取らない。$x \to -\infty$ で $0$ に漸近するが、$f(x) = 0$ となる $x$ は存在しない。
 
 ### 凸関数の下位集合は凸
 
@@ -261,10 +261,10 @@ $$\begin{aligned} &f(\lambda \mathbf{x} + (1-\lambda) \mathbf{y})\\
 多変数関数 $f: \mathbb{R}^n \rightarrow \mathbb{R}$ が凸であることと、すべての $\mathbf{x}, \mathbf{y} \in \mathbb{R}^n$ に対して $g(z) \stackrel{\textrm{def}}{=} f(z \mathbf{x} + (1-z)  \mathbf{y})$、ただし $z \in [0,1]$、
 が凸であることは同値である。
 1変数の場合によれば、
-これは
+
 $g'' = (\mathbf{x} - \mathbf{y})^\top \mathbf{H}(\mathbf{x} - \mathbf{y}) \geq 0$（$\mathbf{H} \stackrel{\textrm{def}}{=} \nabla^2f$）
 がすべての $\mathbf{x}, \mathbf{y} \in \mathbb{R}^n$ について成り立つことと同値であり、
-これは半正定値行列の定義により $\mathbf{H} \succeq 0$
+半正定値行列の定義により $\mathbf{H} \succeq 0$
 と同値である。
 
 
@@ -276,7 +276,7 @@ $$\begin{aligned} \mathop{\textrm{minimize~}}_{\mathbf{x}} & f(\mathbf{x}) \\
     \textrm{ subject to } & c_i(\mathbf{x}) \leq 0 \textrm{ for all } i \in \{1, \ldots, n\},
 \end{aligned}$$
 
-ここで $f$ は目的関数、$c_i$ は制約関数である。これが何を意味するかを見るために、$c_1(\mathbf{x}) = \|\mathbf{x}\|_2 - 1$ の場合を考える。このとき、パラメータ $\mathbf{x}$ は単位球に制約される。第2の制約が $c_2(\mathbf{x}) = \mathbf{v}^\top \mathbf{x} + b$ なら、これはすべての $\mathbf{x}$ が半空間上にあることに対応する。両方の制約を同時に満たすことは、球の一部を切り取ることに相当する。
+ここで $f$ は目的関数、$c_i$ は制約関数である。これが何を意味するかを見るために、$c_1(\mathbf{x}) = \|\mathbf{x}\|_2 - 1$ の場合を考える。このとき、パラメータ $\mathbf{x}$ は単位球に制約される。第2の制約が $c_2(\mathbf{x}) = \mathbf{v}^\top \mathbf{x} + b$ なら、すべての $\mathbf{x}$ が半空間上にあることに対応する。両方の制約を同時に満たすことは、球の一部を切り取ることに相当する。
 
 ### ラグランジアン
 
@@ -291,16 +291,16 @@ $$\begin{aligned} \mathop{\textrm{minimize~}}_{\mathbf{x}} & f(\mathbf{x}) \\
 
 $$L(\mathbf{x}, \alpha_1, \ldots, \alpha_n) = f(\mathbf{x}) + \sum_{i=1}^n \alpha_i c_i(\mathbf{x}) \textrm{ where } \alpha_i \geq 0.$$
 
-ここで変数 $\alpha_i$（$i=1,\ldots,n$）は、制約が適切に課されることを保証するいわゆる *ラグランジュ乗数* である。これらは、すべての $i$ について $c_i(\mathbf{x}) \leq 0$ が成り立つのに十分な大きさに選ばれる。たとえば、自然に $c_i(\mathbf{x}) < 0$ となる任意の $\mathbf{x}$ に対しては、結局 $\alpha_i = 0$ を選ぶことになる。さらに、これは鞍点最適化問題であり、すべての $\alpha_i$ に関しては *最大化* し、同時に $\mathbf{x}$ に関しては *最小化* する。$L(\mathbf{x}, \alpha_1, \ldots, \alpha_n)$ という関数に至るまでの説明は豊富にある。ここでは、$L$ の鞍点が元の制約付き最適化問題の最適解に対応することを知っていれば十分である。
+ここで変数 $\alpha_i$（$i=1,\ldots,n$）は、制約が適切に課されることを保証するいわゆる *ラグランジュ乗数* である。これらは、すべての $i$ について $c_i(\mathbf{x}) \leq 0$ が成り立つのに十分な大きさに選ばれる。たとえば、自然に $c_i(\mathbf{x}) < 0$ となる任意の $\mathbf{x}$ に対しては、結局 $\alpha_i = 0$ を選ぶことになる。さらに、鞍点最適化問題であり、すべての $\alpha_i$ に関しては *最大化* し、同時に $\mathbf{x}$ に関しては *最小化* する。$L(\mathbf{x}, \alpha_1, \ldots, \alpha_n)$ という関数に至るまでの説明は豊富にある。ここでは、$L$ の鞍点が元の制約付き最適化問題の最適解に対応することを知っていれば十分である。
 
 ### ペナルティ
 
 制約付き最適化問題を少なくとも *近似的に* 満たす1つの方法は、ラグランジアン $L$ を修正することである。 
 $c_i(\mathbf{x}) \leq 0$ を厳密に満たす代わりに、単に $\alpha_i c_i(\mathbf{x})$ を目的関数 $f(x)$ に加える。これにより、制約違反がひどくなりすぎることを防げる。
 
-実際、私たちはずっとこの手法を使ってきた。 :numref:`sec_weight_decay` の重み減衰を考えてみよう。そこでは、$\mathbf{w}$ が大きくなりすぎないように、目的関数に $\frac{\lambda}{2} \|\mathbf{w}\|^2$ を加えている。制約付き最適化の観点からは、これはある半径 $r$ に対して $\|\mathbf{w}\|^2 - r^2 \leq 0$ を保証するものと見なせる。$\lambda$ の値を調整することで、$\mathbf{w}$ の大きさを変えられる。
+実際、ずっとこの手法を使ってきた。 :numref:`sec_weight_decay` の重み減衰を考えてみよう。そこでは、$\mathbf{w}$ が大きくなりすぎないように、目的関数に $\frac{\lambda}{2} \|\mathbf{w}\|^2$ を加えている。制約付き最適化の観点からは、ある半径 $r$ に対して $\|\mathbf{w}\|^2 - r^2 \leq 0$ を保証するものと見なせる。$\lambda$ の値を調整することで、$\mathbf{w}$ の大きさを変えられる。
 
-一般に、ペナルティを加えることは、制約を近似的に満たすための良い方法である。実際には、これは厳密に満たす方法よりもはるかに頑健であることがわかる。さらに、非凸問題では、凸の場合に厳密な方法を魅力的にしていた多くの性質（たとえば最適性）はもはや成り立たない。
+一般に、ペナルティを加えることは、制約を近似的に満たすための良い方法である。実際には、厳密に満たす方法よりもはるかに頑健であることがわかる。さらに、非凸問題では、凸の場合に厳密な方法を魅力的にしていた多くの性質（たとえば最適性）はもはや成り立たない。
 
 ### 射影
 
@@ -308,11 +308,11 @@ $c_i(\mathbf{x}) \leq 0$ を厳密に満たす代わりに、単に $\alpha_i c_
 
 $$\mathbf{g} \leftarrow \mathbf{g} \cdot \mathrm{min}(1, \theta/\|\mathbf{g}\|).$$
 
-これは $\mathbf{g}$ を半径 $\theta$ の球へ *射影* したものである。より一般に、凸集合 $\mathcal{X}$ への射影は次で定義される。
+ $\mathbf{g}$ を半径 $\theta$ の球へ *射影* したものである。より一般に、凸集合 $\mathcal{X}$ への射影は次で定義される。
 
 $$\textrm{Proj}_\mathcal{X}(\mathbf{x}) = \mathop{\mathrm{argmin}}_{\mathbf{x}' \in \mathcal{X}} \|\mathbf{x} - \mathbf{x}'\|,$$
 
-これは $\mathbf{x}$ に最も近い $\mathcal{X}$ 内の点である。 
+ $\mathbf{x}$ に最も近い $\mathcal{X}$ 内の点である。 
 
 ![凸射影。](../img/projections.svg)
 :label:`fig_projections`
@@ -325,7 +325,7 @@ $\ell_2$ 球では方向は変わらないが、ひし形の例からわかる�
 
 
 凸射影の用途の1つは、疎な重みベクトルを計算することである。この場合、重みベクトルを $\ell_1$ 球へ射影する。
-これは :numref:`fig_projections` のひし形の場合を一般化したものである。
+ :numref:`fig_projections` のひし形の場合を一般化したものである。
 
 
 ## まとめ

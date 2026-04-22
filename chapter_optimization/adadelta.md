@@ -106,7 +106,7 @@ def adadelta(params, grads, states, hyperparams):
         delta[:].assign(rho * delta + (1 - rho) * g * g)
 ```
 
-$\rho = 0.9$ を選ぶと、各パラメータ更新の半減期は 10 になる。これはかなりうまく機能する傾向がある。結果は次のようになる。
+$\rho = 0.9$ を選ぶと、各パラメータ更新の半減期は 10 になる。かなりうまく機能する傾向がある。結果は次のようになる。
 
 ```{.python .input}
 #@tab all

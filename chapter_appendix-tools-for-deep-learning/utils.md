@@ -306,7 +306,7 @@ def load_array(data_arrays, batch_size, is_train=True):  #@save
     return gluon.data.DataLoader(dataset, batch_size, shuffle=is_train)
 
 def synthetic_data(w, b, num_examples):  #@save
-    """y = Xw + b + ノイズ を生成する。"""
+    """y = Xw + b + ノイズを生成する。"""
     X = d2l.normal(0, 1, (num_examples, len(w)))
     y = d2l.matmul(X, w) + b
     y += d2l.normal(0, 0.01, y.shape)
@@ -403,7 +403,7 @@ def load_array(data_arrays, batch_size, is_train=True):  #@save
     return torch.utils.data.DataLoader(dataset, batch_size, shuffle=is_train)
 
 def synthetic_data(w, b, num_examples):  #@save
-    """y = Xw + b + ノイズ を生成する。"""
+    """y = Xw + b + ノイズを生成する。"""
     X = d2l.normal(0, 1, (num_examples, len(w)))
     y = d2l.matmul(X, w) + b
     y += d2l.normal(0, 0.01, y.shape)
@@ -510,7 +510,7 @@ def load_array(data_arrays, batch_size, is_train=True):  #@save
     return dataset
 
 def synthetic_data(w, b, num_examples):  #@save
-    """y = Xw + b + ノイズ を生成する。"""
+    """y = Xw + b + ノイズを生成する。"""
     X = tf.zeros((num_examples, w.shape[0]))
     X += tf.random.normal(shape=X.shape)
     y = tf.matmul(X, tf.reshape(w, (-1, 1))) + b

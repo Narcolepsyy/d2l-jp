@@ -6,9 +6,9 @@
 
 ## Bayesian Personalized Ranking Loss とその実装
 
-Bayesian personalized ranking (BPR) :cite:`Rendle.Freudenthaler.Gantner.ea.2009` は、最大事後推定量から導かれる pairwise の個人化ランキング損失である。これは既存の多くの推薦モデルで広く用いられている。BPR の学習データは、正例と負例（欠損値）の両方のペアから構成される。これは、ユーザーが正例アイテムを他のすべての未観測アイテムより好むと仮定する。
+Bayesian personalized ranking (BPR) :cite:`Rendle.Freudenthaler.Gantner.ea.2009` は、最大事後推定量から導かれる pairwise の個人化ランキング損失である。既存の多くの推薦モデルで広く用いられている。BPR の学習データは、正例と負例（欠損値）の両方のペアから構成される。、ユーザーが正例アイテムを他のすべての未観測アイテムより好むと仮定する。
 
-形式的には、学習データは $(u, i, j)$ の形のタプルで構成され、これはユーザー $u$ がアイテム $i$ をアイテム $j$ より好むことを表す。事後確率を最大化することを目的とする BPR のベイズ的定式化は次のように与えられる。
+形式的には、学習データは $(u, i, j)$ の形のタプルで構成され、ユーザー $u$ がアイテム $i$ をアイテム $j$ より好むことを表す。事後確率を最大化することを目的とする BPR のベイズ的定式化は次のように与えられる。
 
 $$
 p(\Theta \mid >_u )  \propto  p(>_u \mid \Theta) p(\Theta)
@@ -55,13 +55,13 @@ class BPRLoss(gluon.loss.Loss):
 
 ## Hinge Loss とその実装
 
-ランキングのための Hinge loss は、SVM などの分類器でよく使われる gluon ライブラリ提供の [hinge loss](https://mxnet.incubator.apache.org/api/python/gluon/loss.html#mxnet.gluon.loss.HingeLoss) とは異なる形をしている。レコメンダシステムにおけるランキング用の損失は、次の形をとりる。
+ランキングのための Hinge loss は、SVM などの分類器でよく使われる gluon ライブラリ提供の [hinge loss](https://mxnet.incubator.apache.org/api/python/gluon/loss.html#mxnet.gluon.loss.HingeLoss) とは異なる形をしている。レコメンダシステムにおけるランキング用の損失は、次の形をとる。
 
 $$
  \sum_{(u, i, j \in D)} \max( m - \hat{y}_{ui} + \hat{y}_{uj}, 0)
 $$
 
-ここで $m$ は安全マージンの大きさである。これは、負のアイテムを正のアイテムから遠ざけることを目的としている。BPR と同様に、絶対的な出力ではなく正例と負例の相対的な距離を最適化しようとするため、レコメンダシステムに非常に適している。
+ここで $m$ は安全マージンの大きさである。、負のアイテムを正のアイテムから遠ざけることを目的としている。BPR と同様に、絶対的な出力ではなく正例と負例の相対的な距離を最適化しようとするため、レコメンダシステムに非常に適している。
 
 ```{.python .input  n=3}
 #@tab mxnet

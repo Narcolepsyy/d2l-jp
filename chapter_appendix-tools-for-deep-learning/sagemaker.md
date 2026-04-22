@@ -72,7 +72,7 @@ SageMaker で実行するための ipynb 形式の本書全体は https://github
 このインスタンス上で
 本書のすべての Jupyter ノートブックを
 編集・実行できるようにする
-（:numref:`sec_jupyter` の手順と同様です）。
+（:numref:`sec_jupyter` の手順と同様である）。
 
 ![Open Jupyter on the created SageMaker instance.](../img/sagemaker-open.png)
 :width:`400px`

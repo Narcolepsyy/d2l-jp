@@ -129,7 +129,7 @@ class Encoder(nn.Module):  #@save
 このステップでは、
 入力の有効長など、
 追加の入力が必要になる場合があることに注意されたい。
-これは
+
 :numref:`sec_machine_translation`
 で説明した。
 可変長系列をトークンごとに生成するために、

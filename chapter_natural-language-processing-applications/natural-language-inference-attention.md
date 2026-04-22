@@ -21,7 +21,7 @@
 :label:`fig_nli_attention`
 
 :numref:`fig_nli_attention` は、attention 機構を用いた自然言語推論の手法を示している。
-高レベルでは、これは attending、comparing、aggregating の 3 つのステップを共同で学習する構成である。
+高レベルでは、 attending、comparing、aggregating の 3 つのステップを共同で学習する構成である。
 以下で、それらを順に説明する。
 
 ```{.python .input}
@@ -441,5 +441,5 @@ predict_snli(net, vocab, ['he', 'is', 'good', '.'], ['he', 'is', 'bad', '.'])
 ## 演習
 
 1. 他のハイパーパラメータの組み合わせでモデルを学習してみよう。テストセットでより高い精度を得られるか？
-1. 自然言語推論における decomposable attention model の主な欠点は何ですか？
+1. 自然言語推論における decomposable attention model の主な欠点は何であるか？
 1. 任意の文のペアについて、意味的類似度の程度（たとえば 0 から 1 の連続値）を得たいとする。データセットをどのように収集し、ラベル付けすればよいだろうか？ attention 機構を用いたモデルを設計できるか？

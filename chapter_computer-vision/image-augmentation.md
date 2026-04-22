@@ -59,14 +59,14 @@ def apply(img, aug, num_rows=2, num_cols=4, scale=1.5):
 
 :begin_tab:`mxnet`
 [**画像を左右反転する**] ことは、通常、対象のカテゴリを変えない。  
-これは、最も早くから使われ、かつ最も広く用いられている画像拡張手法の一つである。  
-次に、`transforms` モジュールを使って `RandomFlipLeftRight` のインスタンスを作成する。これは、50% の確率で画像を左右反転する。
+、最も早くから使われ、かつ最も広く用いられている画像拡張手法の一つである。  
+次に、`transforms` モジュールを使って `RandomFlipLeftRight` のインスタンスを作成する。、50% の確率で画像を左右反転する。
 :end_tab:
 
 :begin_tab:`pytorch`
 [**画像を左右反転する**] ことは、通常、対象のカテゴリを変えない。  
-これは、最も早くから使われ、かつ最も広く用いられている画像拡張手法の一つである。  
-次に、`transforms` モジュールを使って `RandomHorizontalFlip` のインスタンスを作成する。これは、50% の確率で画像を左右反転する。
+、最も早くから使われ、かつ最も広く用いられている画像拡張手法の一つである。  
+次に、`transforms` モジュールを使って `RandomHorizontalFlip` のインスタンスを作成する。、50% の確率で画像を左右反転する。
 :end_tab:
 
 ```{.python .input}
@@ -187,7 +187,7 @@ apply(img, augs)
 
 画像拡張を用いてモデルを学習してみよう。  
 ここでは、以前使った Fashion-MNIST データセットの代わりに CIFAR-10 データセットを使う。  
-これは、Fashion-MNIST データセットでは対象の位置とサイズが正規化されている一方、CIFAR-10 データセットでは対象の色とサイズにより大きな違いがあるためである。  
+、Fashion-MNIST データセットでは対象の位置とサイズが正規化されている一方、CIFAR-10 データセットでは対象の色とサイズにより大きな違いがあるためである。  
 CIFAR-10 データセットの最初の 32 個の訓練画像を以下に示す。
 
 ```{.python .input}
@@ -230,13 +230,13 @@ test_augs = torchvision.transforms.Compose([
 :begin_tab:`mxnet`
 次に、画像の読み込みと画像拡張の適用を容易にする補助関数を定義する。  
 Gluon のデータセットが提供する `transform_first` 関数は、各訓練例（画像とラベル）の最初の要素、すなわち画像に画像拡張を適用する。  
-`DataLoader` の詳細な説明については、 :numref:`sec_fashion_mnist` を参照しよ。
+`DataLoader` の詳細な説明については、 :numref:`sec_fashion_mnist` を参照しよう。
 :end_tab:
 
 :begin_tab:`pytorch`
 次に、画像の読み込みと画像拡張の適用を容易にする [**補助関数を定義する**]。  
 PyTorch のデータセットが提供する `transform` 引数は、画像を変換する際に拡張を適用する。  
-`DataLoader` の詳細な説明については、 :numref:`sec_fashion_mnist` を参照しよ。
+`DataLoader` の詳細な説明については、 :numref:`sec_fashion_mnist` を参照しよう。
 :end_tab:
 
 ```{.python .input}
@@ -418,6 +418,6 @@ train_with_data_aug(train_augs, test_augs, net)
 
 ## 演習
 
-1. 画像拡張を使わずにモデルを学習せよ: `train_with_data_aug(test_augs, test_augs)`. 画像拡張を使う場合と使わない場合の訓練精度とテスト精度を比較しよ。この比較実験は、画像拡張が過学習を緩和できるという主張を支持できるか。なぜか。
+1. 画像拡張を使わずにモデルを学習せよ: `train_with_data_aug(test_augs, test_augs)`. 画像拡張を使う場合と使わない場合の訓練精度とテスト精度を比較しよう。この比較実験は、画像拡張が過学習を緩和できるという主張を支持できるか。なぜか。
 1. CIFAR-10 データセットでのモデル学習に、複数の異なる画像拡張手法を組み合わせよ。テスト精度は向上するか。 
-1. 深層学習フレームワークのオンラインドキュメントを参照しよ。ほかにどのような画像拡張手法が提供されているか。
+1. 深層学習フレームワークのオンラインドキュメントを参照しよう。ほかにどのような画像拡張手法が提供されているか。

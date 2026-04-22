@@ -9,13 +9,13 @@
 それらを整理し、読み込み、
 さらに段階的にテンソル形式へ変換していきる。
 
-私たちは :numref:`sec_image_augmentation` で CIFAR-10 データセットを扱った。
-これはコンピュータビジョンにおける重要なデータセットである。
+ :numref:`sec_image_augmentation` で CIFAR-10 データセットを扱った。
+コンピュータビジョンにおける重要なデータセットである。
 この節では、
 これまでの節で学んだ知識を
 CIFAR-10 画像分類の Kaggle コンペティションで
 実践する。
-[**コンペティションの Web アドレスは https://www.kaggle.com/c/cifar-10 です**]
+[**コンペティションの Web アドレスは https://www.kaggle.com/c/cifar-10 である**]
 
 :numref:`fig_kaggle_cifar10` はコンペティションの Web ページにある情報を示している。
 結果を提出するには、
@@ -82,7 +82,7 @@ Kaggle にログインした後、 :numref:`fig_kaggle_cifar10` に示した CIF
 
 ここで `train` と `test` ディレクトリにはそれぞれ訓練画像とテスト画像が含まれ、`trainLabels.csv` は訓練画像のラベルを提供し、`sample_submission.csv` は提出用のサンプルファイルである。
 
-始めやすくするために、[**データセットの小規模サンプルを提供する。これは最初の 1000 枚の訓練画像と、ランダムに選んだ 5 枚のテスト画像を含む。**]
+始めやすくするために、[**データセットの小規模サンプルを提供する。最初の 1000 枚の訓練画像と、ランダムに選んだ 5 枚のテスト画像を含む。**]
 Kaggle コンペティションの完全なデータセットを使うには、次の `demo` 変数を `False` に設定する必要がある。
 
 ```{.python .input}
@@ -325,9 +325,9 @@ test_iter = torch.utils.data.DataLoader(test_ds, batch_size, shuffle=False,
 ## [**モデル**]の定義
 
 :begin_tab:`mxnet`
-ここでは、`HybridBlock` クラスに基づいて残差ブロックを構築する。これは
+ここでは、`HybridBlock` クラスに基づいて残差ブロックを構築する。
 :numref:`sec_resnet` で説明した実装とは少し異なる。
-これは計算効率を改善するためである。
+計算効率を改善するためである。
 :end_tab:
 
 ```{.python .input}

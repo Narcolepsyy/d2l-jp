@@ -9,7 +9,7 @@
 元の BERT モデルは BookCorpus と English Wikipedia という
 2つの巨大なコーパスの連結上で事前学習されており
 (:numref:`subsec_bert_pretraining_tasks` を参照)、
-本書の多くの読者にとっては実行が難しいである。
+本書の多くの読者にとっては実行が難しい。
 他方で、
 既製の事前学習済み BERT モデルは、
 医療のような特定分野のアプリケーションには適さない場合がある。
@@ -122,7 +122,7 @@ BERT 入力系列から
 マスク付き言語モデルタスクの学習例を生成するために、
 次の `_replace_mlm_tokens` 関数を定義する。
 入力において、`tokens` は BERT 入力系列を表すトークンのリスト、
-`candidate_pred_positions` は特殊トークンを除いた BERT 入力系列中のトークンインデックスのリストです
+`candidate_pred_positions` は特殊トークンを除いた BERT 入力系列中のトークンインデックスのリストである
 （特殊トークンはマスク付き言語モデルタスクでは予測されない）、
 `num_mlm_preds` は予測数を示す（予測対象としてランダムな15%のトークンを思い出してほしい）。
 :numref:`subsec_mlm` で定義したマスク付き言語モデルタスクに従い、
@@ -414,11 +414,11 @@ len(vocab)
 
 ## まとめ
 
-* PTB データセットと比べると、WikiText-2 データセットは元の句読点、大文字小文字、数値を保持しており、2倍以上大きいである。
+* PTB データセットと比べると、WikiText-2 データセットは元の句読点、大文字小文字、数値を保持しており、2倍以上大きい。
 * WikiText-2 コーパス中の文のペアから生成された事前学習（マスク付き言語モデルと次文予測）の例に任意にアクセスできる。
 
 
 ## 演習
 
-1. 簡単のため、文の分割にはピリオドのみを区切り文字として使った。spaCy や NLTK など、他の文分割手法も試してみよ。例として NLTK を使う。まず NLTK をインストールする必要がある: `pip install nltk`。コードでは最初に `import nltk` する。次に、Punkt 文トークナイザをダウンロードする: `nltk.download('punkt')`。`sentences = 'This is great ! Why not ?'` のような文を分割するには、`nltk.tokenize.sent_tokenize(sentences)` を呼び出すと、2つの文文字列からなるリスト `['This is great !', 'Why not ?']` が返りる。
+1. 簡単のため、文の分割にはピリオドのみを区切り文字として使った。spaCy や NLTK など、他の文分割手法も試してみよ。例として NLTK を使う。まず NLTK をインストールする必要がある: `pip install nltk`。コードでは最初に `import nltk` する。次に、Punkt 文トークナイザをダウンロードする: `nltk.download('punkt')`。`sentences = 'This is great ! Why not ?'` のような文を分割するには、`nltk.tokenize.sent_tokenize(sentences)` を呼び出すと、2つの文文字列からなるリスト `['This is great !', 'Why not ?']` が返る。
 1. 低頻度トークンを一切除外しない場合、語彙サイズはいくつになるか？

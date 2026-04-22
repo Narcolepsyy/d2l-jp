@@ -11,7 +11,7 @@ tab.interact_select(["pytorch"])
 
 一般に、同期型と非同期型の並列ハイパーパラメータ最適化を区別する（:numref:`distributed_scheduling` を参照）。同期型では、同時に実行中のすべての試行が終了するまで待ってから、次のバッチを開始する。深層ニューラルネットワークのフィルタ数や層数のようなハイパーパラメータを含む構成空間を考えてみよう。より多くのフィルタ層を含むハイパーパラメータ構成は、当然ながら完了までにより長い時間を要し、同じバッチ内の他のすべての試行は、最適化プロセスを続ける前に同期点（:numref:`distributed_scheduling` の灰色部分）で待たなければならない。
 
-非同期型では、資源が利用可能になり次第、すぐに新しい試行をスケジュールする。これにより、同期のオーバーヘッドを避けられるため、資源を最適に活用できる。ランダムサーチでは、新しいハイパーパラメータ構成はそれぞれ他のすべてから独立に選ばれ、特に過去の評価結果を利用しない。つまり、ランダムサーチは非同期に容易に並列化できる。これは、過去の観測に基づいて意思決定を行う、より高度な手法では自明ではない（:numref:`sec_sh_async` を参照）。逐次設定よりも多くの資源にアクセスできる必要はあるが、非同期ランダムサーチは線形の高速化を示し、$K$ 個の試行を並列実行できれば、ある性能に到達するまでの時間は $K$ 倍速くなる。 
+非同期型では、資源が利用可能になり次第、すぐに新しい試行をスケジュールする。これにより、同期のオーバーヘッドを避けられるため、資源を最適に活用できる。ランダムサーチでは、新しいハイパーパラメータ構成はそれぞれ他のすべてから独立に選ばれ、特に過去の評価結果を利用しない。つまり、ランダムサーチは非同期に容易に並列化できる。、過去の観測に基づいて意思決定を行う、より高度な手法では自明ではない（:numref:`sec_sh_async` を参照）。逐次設定よりも多くの資源にアクセスできる必要はあるが、非同期ランダムサーチは線形の高速化を示し、$K$ 個の試行を並列実行できれば、ある性能に到達するまでの時間は $K$ 倍速くなる。 
 
 
 ![ハイパーパラメータ最適化プロセスを同期的または非同期的に分散する。逐次設定と比べて、総計算量を一定に保ったまま、全体の壁時計時間を短縮できる。同期スケジューリングでは、遅い試行がある場合にワーカーが遊休状態になることがある。](../img/distributed_scheduling.svg)
@@ -167,5 +167,5 @@ d2l.plt.ylabel("objective function")
     3. この演習では、少なくとも4つのCPUコアを持つインスタンスで実行する必要がある。上で使った手法のうち1つ（ランダムサーチ、ベイズ最適化）について、`n_workers=1`、`n_workers=2`、`n_workers=4` で実験を行い、結果（incumbent の軌跡）を比較しなさい。少なくともランダムサーチでは、ワーカー数に対して線形スケーリングが観測されるはずである。ヒント: 安定した結果を得るには、それぞれ複数回繰り返して平均を取る必要があるかもしれない。
 2. *発展*. この演習の目標は、Syne Tune に新しいスケジューラを実装することである。
     1. [d2lbook](https://github.com/d2l-ai/d2l-en/blob/master/INFO.md#installation-for-developers) と [syne-tune](https://syne-tune.readthedocs.io/en/latest/getting_started.html) の両方のソースを含む仮想環境を作成しなさい。
-    2. :numref:`sec_api_hpo` の演習2での `LocalSearcher` を、Syne Tune の新しいサーチャーとして実装しなさい。ヒント: [このチュートリアル](https://syne-tune.readthedocs.io/en/latest/tutorials/developer/README.html) を読んでよ。あるいは、この [例](https://syne-tune.readthedocs.io/en/latest/examples.html#launch-hpo-experiment-with-home-made-scheduler) に従ってもよいである。
+    2. :numref:`sec_api_hpo` の演習2での `LocalSearcher` を、Syne Tune の新しいサーチャーとして実装しなさい。ヒント: [このチュートリアル](https://syne-tune.readthedocs.io/en/latest/tutorials/developer/README.html) を読んでみよう。あるいは、この [例](https://syne-tune.readthedocs.io/en/latest/examples.html#launch-hpo-experiment-with-home-made-scheduler) に従ってもよい。
     3. 新しく実装した `LocalSearcher` と `DropoutMLP` ベンチマーク上の `RandomSearch` を比較しなさい。

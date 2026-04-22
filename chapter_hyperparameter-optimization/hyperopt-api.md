@@ -6,7 +6,7 @@ tab.interact_select(["pytorch"])
 # ハイパーパラメータ最適化 API
 :label:`sec_api_hpo`
 
-方法論に入る前に、まずはさまざまな HPO アルゴリズムを効率よく実装できる基本的なコード構造について説明する。一般に、ここで扱うすべての HPO アルゴリズムは、*探索* と *スケジューリング* という 2 つの意思決定プリミティブを実装する必要がある。まず、新しいハイパーパラメータ構成をサンプリングする必要がある。これは多くの場合、構成空間に対する何らかの探索を伴いる。次に、各構成について、その評価をいつ行うかをスケジュールし、どれだけのリソースを割り当てるかを決める必要がある。いったん構成の評価を始めたら、それを *trial* と呼ぶ。これらの決定を `HPOSearcher` と `HPOScheduler` の 2 つのクラスに対応付ける。さらに、最適化プロセスを実行する `HPOTuner` クラスも提供する。
+方法論に入る前に、まずはさまざまな HPO アルゴリズムを効率よく実装できる基本的なコード構造について説明する。一般に、ここで扱うすべての HPO アルゴリズムは、*探索* と *スケジューリング* という 2 つの意思決定プリミティブを実装する必要がある。まず、新しいハイパーパラメータ構成をサンプリングする必要がある。多くの場合、構成空間に対する何らかの探索を伴いる。次に、各構成について、その評価をいつ行うかをスケジュールし、どれだけのリソースを割り当てるかを決める必要がある。いったん構成の評価を始めたら、それを *trial* と呼ぶ。これらの決定を `HPOSearcher` と `HPOScheduler` の 2 つのクラスに対応付ける。さらに、最適化プロセスを実行する `HPOTuner` クラスも提供する。
 
 この scheduler と searcher の概念は、Syne Tune :cite:`salinas-automl22`、Ray Tune :cite:`liaw-arxiv18`、Optuna :cite:`akiba-sigkdd19` などの一般的な HPO ライブラリにも実装されている。
 
@@ -19,7 +19,7 @@ from scipy import stats
 
 ## Searcher
 
-以下では searcher の基底クラスを定義する。これは `sample_configuration` 関数を通じて新しい候補構成を提供する。この関数を実装する簡単な方法は、 :numref:`sec_what_is_hpo` でランダムサーチを行ったときのように、構成を一様ランダムにサンプリングすることである。ベイズ最適化のようなより高度なアルゴリズムでは、過去の trial の性能に基づいてこれらの決定を行う。その結果、時間とともにより有望な候補をサンプリングできるようになる。過去の trial の履歴を更新するために `update` 関数を追加し、これをサンプリング分布の改善に利用できるようにする。
+以下では searcher の基底クラスを定義する。 `sample_configuration` 関数を通じて新しい候補構成を提供する。この関数を実装する簡単な方法は、 :numref:`sec_what_is_hpo` でランダムサーチを行ったときのように、構成を一様ランダムにサンプリングすることである。ベイズ最適化のようなより高度なアルゴリズムでは、過去の trial の性能に基づいてこれらの決定を行う。その結果、時間とともにより有望な候補をサンプリングできるようになる。過去の trial の履歴を更新するために `update` 関数を追加し、これをサンプリング分布の改善に利用できるようにする。
 
 ```{.python .input  n=3}
 %%tab pytorch
@@ -196,9 +196,9 @@ for time_stamp, error in zip(
 ## 演習
 
 1. この演習の目的は、少し難しめの HPO 問題の目的関数を実装し、より現実的な実験を行うことである。 :numref:`sec_dropout` で実装した 2 層隠れ層 MLP `DropoutMLP` を使う。
-    1. 目的関数をコード化せよ。これはモデルのすべてのハイパーパラメータと `batch_size` に依存する必要がある。`max_epochs=50` を使用せよ。ここでは GPU は役に立たないため、`num_gpus=0` とする。ヒント: `hpo_objective_lenet` を修正せよ。
+    1. 目的関数をコード化せよ。モデルのすべてのハイパーパラメータと `batch_size` に依存する必要がある。`max_epochs=50` を使用せよ。ここでは GPU は役に立たないため、`num_gpus=0` とする。ヒント: `hpo_objective_lenet` を修正せよ。
     2. 妥当な探索空間を選べ。`num_hiddens_1`、`num_hiddens_2` は $[8, 1024]$ の整数、dropout 値は $[0, 0.95]$、`batch_size` は $[16, 384]$ とする。`scipy.stats` の適切な分布を使って `config_space` のコードを示せ。
     3. この例で `number_of_trials=20` としてランダムサーチを実行し、結果をプロットせよ。まず :numref:`sec_dropout` のデフォルト構成、すなわち `initial_config = {'num_hiddens_1': 256, 'num_hiddens_2': 256, 'dropout_1': 0.5, 'dropout_2': 0.5, 'lr': 0.1, 'batch_size': 256}` を最初に評価することを忘れないこと。
-2. この演習では、過去のデータに基づいて意思決定を行う新しい searcher（`HPOSearcher` のサブクラス）を実装する。これは `probab_local`、`num_init_random` というパラメータに依存する。`sample_configuration` メソッドは次のように動作する。最初の `num_init_random` 回の呼び出しでは、`RandomSearcher.sample_configuration` と同じことを行う。それ以外では、確率 `1 - probab_local` で `RandomSearcher.sample_configuration` と同じことを行う。それ以外では、これまでで最小の検証誤差を達成した構成を選び、そのハイパーパラメータの 1 つをランダムに選んで、その値を `RandomSearcher.sample_configuration` と同様にランダムにサンプリングするが、他の値はそのままにする。この 1 つのハイパーパラメータだけが異なり、それ以外はこれまでの最良構成と同一である構成を返せ。
+2. この演習では、過去のデータに基づいて意思決定を行う新しい searcher（`HPOSearcher` のサブクラス）を実装する。 `probab_local`、`num_init_random` というパラメータに依存する。`sample_configuration` メソッドは次のように動作する。最初の `num_init_random` 回の呼び出しでは、`RandomSearcher.sample_configuration` と同じことを行う。それ以外では、確率 `1 - probab_local` で `RandomSearcher.sample_configuration` と同じことを行う。それ以外では、これまでで最小の検証誤差を達成した構成を選び、そのハイパーパラメータの 1 つをランダムに選んで、その値を `RandomSearcher.sample_configuration` と同様にランダムにサンプリングするが、他の値はそのままにする。この 1 つのハイパーパラメータだけが異なり、それ以外はこれまでの最良構成と同一である構成を返せ。
     1. この新しい `LocalSearcher` をコード化せよ。ヒント: searcher の構築時には引数として `config_space` が必要である。`RandomSearcher` 型のメンバーを使っても構わない。また、`update` メソッドも実装する必要がある。
     2. 前の演習の実験を、`RandomSearcher` の代わりにこの新しい searcher を使って再実行せよ。`probab_local`、`num_init_random` のさまざまな値を試せ。ただし、異なる HPO 手法を適切に比較するには、実験を複数回繰り返し、できれば複数のベンチマークタスクを考慮する必要があることに注意せよ。
