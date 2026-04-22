@@ -73,7 +73,7 @@ class Classifier(d2l.Module):  #@save
         return value, grads
 
     def validation_step(self, params, batch, state):
-        # 2つ目の戻り値は破棄する。これは BatchNorm 層を持つモデルの
+        # 2つ目の戻り値は破棄する。 BatchNorm 層を持つモデルの
         # 学習に使われる。損失も補助データを返すためである
         l, _ = self.loss(params, batch[:-1], batch[-1], state)
         self.plot('loss', l, train=False)

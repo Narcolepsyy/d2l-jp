@@ -31,7 +31,7 @@ import os
 ## 事前学習済み単語ベクトルの読み込み
 
 以下に、次元 50、100、300 の事前学習済み GloVe 埋め込みを示す。  
-これらは [GloVe website](https://nlp.stanford.edu/projects/glove/) からダウンロードできる。  
+ [GloVe website](https://nlp.stanford.edu/projects/glove/) からダウンロードできる。  
 事前学習済み fastText 埋め込みは複数の言語で利用できる。  
 ここでは英語版の 1 つ（300 次元の "wiki.en"）を扱い、  
 [fastText website](https://fasttext.cc/) からダウンロードできる。

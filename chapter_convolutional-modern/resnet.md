@@ -508,7 +508,7 @@ $c_\textrm{i}$ チャネルから $c_\textrm{o}$ チャネルへの畳み込み�
 
 この設計における唯一の課題は、$g$ 個のグループ間で情報が交換されないことである。 :numref:`fig_resnext_block` の ResNeXt ブロックは、これを 2 つの方法で補っている。すなわち、$3 \times 3$ カーネルを持つ grouped convolution を 2 つの $1 \times 1$ 畳み込みの間に挟んでいる。2 つ目の $1 \times 1$ 畳み込みは、チャネル数を元に戻す役割も兼ねる。利点は、$1 \times 1$ カーネルについては $\mathcal{O}(c \cdot b)$ のコストしか払わず、$3 \times 3$ カーネルについては $\mathcal{O}(b^2 / g)$ のコストで済むことである。 :numref:`subsec_residual-blks` の残差ブロック実装と同様に、残差接続は $1 \times 1$ 畳み込みに置き換えられる（したがって一般化される）。
 
-:numref:`fig_resnext_block` の右図は、得られるネットワークブロックをより簡潔にまとめている。これは、 :numref:`sec_cnn-design` における汎用的な現代 CNN の設計でも重要な役割を果たす。grouped convolution の考え方は AlexNet の実装にまでさかのぼることに注意しようう :cite:`Krizhevsky.Sutskever.Hinton.2012`。メモリに制約のある 2 台の GPU にネットワークを分散させる際、実装では各 GPU を独立したチャネルとして扱っていたが、それで悪影響はなかった。
+:numref:`fig_resnext_block` の右図は、得られるネットワークブロックをより簡潔にまとめている。 :numref:`sec_cnn-design` における汎用的な現代 CNN の設計でも重要な役割を果たす。grouped convolution の考え方は AlexNet の実装にまでさかのぼることに注意しようう :cite:`Krizhevsky.Sutskever.Hinton.2012`。メモリに制約のある 2 台の GPU にネットワークを分散させる際、実装では各 GPU を独立したチャネルとして扱っていたが、それで悪影響はなかった。
 
 以下の `ResNeXtBlock` クラスの実装では、引数として `groups`（$g$）と、
 中間（ボトルネック）チャネル数 `bot_channels`（$b$）を取る。最後に、表現の高さと幅を減らす必要があるときは、`use_1x1conv=True, strides=2` としてストライド 2 を追加する。

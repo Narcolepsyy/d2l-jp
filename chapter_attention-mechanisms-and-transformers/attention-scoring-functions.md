@@ -7,7 +7,7 @@ tab.interact_select('mxnet', 'pytorch', 'tensorflow', 'jax')
 :label:`sec_attention-scoring-functions`
 
 
-:numref:`sec_attention-pooling` では、クエリとキーの相互作用をモデル化するために、ガウスカーネルを含むいくつかの距離ベースのカーネルを用いた。ところが、距離関数は内積よりも計算コストがやや高いことがわかっている。そのため、非負のアテンション重みを保証するソフトマックス演算と組み合わせる場合、計算がより簡単な *アテンションのスコアリング関数* $a$ に多くの工夫が注がれてきた。これは :eqref:`eq_softmax_attention` と :numref:`fig_attention_output` に現れる。
+:numref:`sec_attention-pooling` では、クエリとキーの相互作用をモデル化するために、ガウスカーネルを含むいくつかの距離ベースのカーネルを用いた。ところが、距離関数は内積よりも計算コストがやや高いことがわかっている。そのため、非負のアテンション重みを保証するソフトマックス演算と組み合わせる場合、計算がより簡単な *アテンションのスコアリング関数* $a$ に多くの工夫が注がれてきた。 :eqref:`eq_softmax_attention` と :numref:`fig_attention_output` に現れる。
 
 ![アテンションプーリングの出力を値の重み付き平均として計算する。重みはアテンションのスコアリング関数 $\mathit{a}$ とソフトマックス演算で求める。](../img/attention-output.svg)
 :label:`fig_attention_output`
@@ -623,7 +623,7 @@ d2l.show_heatmaps(d2l.reshape(attention_weights, (1, 1, 2, 10)),
 
 ## まとめ
 
-この節では、2つの主要なアテンションのスコアリング関数、すなわち内積アテンションと加法アテンションを導入した。これらは、長さが可変な系列全体を集約するための有効な手段である。特に、内積アテンションは現代のTransformerアーキテクチャの中核をなしている。クエリとキーが異なる長さのベクトルである場合には、代わりに加法アテンションのスコアリング関数を使うことができる。これらの層を最適化することは、近年の進歩の重要な分野の1つである。たとえば、[NVIDIA の Transformer Library](https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/index.html) や Megatron :cite:`shoeybi2019megatron` は、効率的なアテンション機構の変種に大きく依存している。後の節でTransformerを学ぶ際に、これについてさらに詳しく見ていく。 
+この節では、2つの主要なアテンションのスコアリング関数、すなわち内積アテンションと加法アテンションを導入した。長さが可変な系列全体を集約するための有効な手段である。特に、内積アテンションは現代のTransformerアーキテクチャの中核をなしている。クエリとキーが異なる長さのベクトルである場合には、代わりに加法アテンションのスコアリング関数を使うことができる。これらの層を最適化することは、近年の進歩の重要な分野の1つである。たとえば、[NVIDIA の Transformer Library](https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/index.html) や Megatron :cite:`shoeybi2019megatron` は、効率的なアテンション機構の変種に大きく依存している。後の節でTransformerを学ぶ際に、これについてさらに詳しく見ていく。 
 
 ## 演習
 

@@ -116,7 +116,7 @@ LSTM のゲートに入力されるデータは、
 入力ゲートは $\mathbf{I}_t \in \mathbb{R}^{n \times h}$、
 忘却ゲートは $\mathbf{F}_t \in \mathbb{R}^{n \times h}$、
 出力ゲートは $\mathbf{O}_t \in \mathbb{R}^{n \times h}$ である。
-これらは次のように計算される。
+次のように計算される。
 
 $$
 \begin{aligned}

@@ -61,7 +61,7 @@ git clone https://github.com/<UserName>/d2l-en.git
 （書籍の [Miniconda Installation](https://d2l.ai/chapter_installation/index.html#installing-miniconda) の節を参照してください）。
 
 * 環境を有効化した後、必要なパッケージをインストールします。
-必要なパッケージは何か？ それは編集したいフレームワークによって異なります。master ブランチと release ブランチでは、フレームワークのバージョンが異なる場合があることに注意してください。詳細は [installation section](https://d2l.ai/chapter_installation/index.html) を参照してください。以下にインストール例を示します。
+必要なパッケージは何か？ 編集したいフレームワークによって異なります。master ブランチと release ブランチでは、フレームワークのバージョンが異なる場合があることに注意してください。詳細は [installation section](https://d2l.ai/chapter_installation/index.html) を参照してください。以下にインストール例を示します。
 
 ```bash
 conda activate d2l

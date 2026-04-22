@@ -43,7 +43,7 @@ from functools import partial
 ## ソフトマックス
 
 まず最も重要な部分から始めよう。
-それは、スカラーを確率へ写像することである。
+スカラーを確率へ写像することである。
 復習として、 :numref:`subsec_lin-alg-reduction`
 および :numref:`subsec_lin-alg-non-reduction`
 で説明したように、テンソルの特定の次元に沿った和演算を思い出そう。

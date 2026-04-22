@@ -405,7 +405,7 @@ for (tokens_X, segments_X, valid_lens_x, pred_positions_X, mlm_weights_X,
 
 最後に、語彙サイズを見てみよう。
 低頻度トークンを除外した後でも、
-それは依然として PTB データセットの2倍以上の大きさである。
+依然として PTB データセットの2倍以上の大きさである。
 
 ```{.python .input}
 #@tab all

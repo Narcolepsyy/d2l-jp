@@ -22,7 +22,7 @@ GoogLeNet (:numref:`sec_googlenet`) は、異なる畳み込み幅を持つ複�
 Inception ブロックの中で VGG と NiN の利点を組み合わせた。 
 ResNet (:numref:`sec_resnet`) 
 は帰納バイアスを恒等写像（$f(x) = 0$ から）へと変えた。これにより非常に深いネットワークが可能になった。ほぼ10年後の今でも、ResNet の設計は依然として人気があり、その設計の優秀さを物語っている。最後に、ResNeXt (:numref:`subsec_resnext`) はグループ畳み込みを追加し、パラメータ数と計算量の間でより良いトレードオフを提供した。Vision Transformer の先駆けともいえる Squeeze-and-Excitation Networks（SENets）は、位置間で効率的に情報を伝達できるようにする
-:cite:`Hu.Shen.Sun.2018`。これは、チャネルごとのグローバルな注意関数を計算することで実現された。 
+:cite:`Hu.Shen.Sun.2018`。チャネルごとのグローバルな注意関数を計算することで実現された。 
 
 これまでのところ、*ニューラルアーキテクチャ探索*（NAS）によって得られるネットワークは扱ってこなかった :cite:`zoph2016neural,liu2018darts`。その理由は、通常そのコストが非常に大きく、総当たり探索、遺伝的アルゴリズム、強化学習、あるいは他の何らかのハイパーパラメータ最適化に依存するからである。固定された探索空間が与えられたとき、
 NAS は探索戦略を用いて、
@@ -261,7 +261,7 @@ $$F(e, p) \stackrel{\textrm{def}}{=} P_{\textrm{net} \sim p} \{e(\textrm{net}) \
 
 $$\hat{F}(e, \mathcal{Z}) = \frac{1}{n}\sum_{i=1}^n \mathbf{1}(e_i \leq e).$$
 
-:citet:`Radosavovic.Kosaraju.Girshick.ea.2020` は、ネットワークのすべての stage に対してボトルネック比を共有する $k_i = k$ を試した。これにより、ボトルネック比を支配する4つのパラメータのうち3つが不要になる。これが性能に悪影響を与えるかどうかを評価するには、制約付き分布と非制約分布からネットワークをサンプリングし、対応する CDF を比較すればよい。すると、この制約はネットワーク分布の精度にまったく影響しないことがわかる。これは :numref:`fig_regnet-fig` の最初のパネルに示されている。 
+:citet:`Radosavovic.Kosaraju.Girshick.ea.2020` は、ネットワークのすべての stage に対してボトルネック比を共有する $k_i = k$ を試した。これにより、ボトルネック比を支配する4つのパラメータのうち3つが不要になる。これが性能に悪影響を与えるかどうかを評価するには、制約付き分布と非制約分布からネットワークをサンプリングし、対応する CDF を比較すればよい。すると、この制約はネットワーク分布の精度にまったく影響しないことがわかる。 :numref:`fig_regnet-fig` の最初のパネルに示されている。 
 同様に、ネットワークのさまざまな stage に現れるグループ幅を同じ $g_i = g$ にすることもできる。これもまた性能に影響しない。 :numref:`fig_regnet-fig` の2番目のパネルに示されている。
 この2つを合わせると、自由パラメータの数は6つ減る。
 
@@ -345,7 +345,7 @@ with d2l.try_gpu():
 
 ## 議論
 
-局所性や平行移動不変性（:numref:`sec_why-conv`）のような、視覚に対する望ましい帰納バイアス（仮定や好み）を持つため、CNN はこの分野で支配的なアーキテクチャでした。 LeNet から、Transformers (:numref:`sec_transformer`) :cite:`Dosovitskiy.Beyer.Kolesnikov.ea.2021,touvron2021training` が精度の面で CNN を上回り始めるまで続きた。最近の vision Transformer の進歩の多くは CNN に *移植可能* であるが :cite:`liu2022convnet`、それはより高い計算コストを伴う場合に限られる。同様に重要なのは、NVIDIA Ampere や Hopper といった最近のハードウェア最適化が、Transformer に有利な差をさらに広げていることである。 
+局所性や平行移動不変性（:numref:`sec_why-conv`）のような、視覚に対する望ましい帰納バイアス（仮定や好み）を持つため、CNN はこの分野で支配的なアーキテクチャでした。 LeNet から、Transformers (:numref:`sec_transformer`) :cite:`Dosovitskiy.Beyer.Kolesnikov.ea.2021,touvron2021training` が精度の面で CNN を上回り始めるまで続きた。最近の vision Transformer の進歩の多くは CNN に *移植可能* であるが :cite:`liu2022convnet`、より高い計算コストを伴う場合に限られる。同様に重要なのは、NVIDIA Ampere や Hopper といった最近のハードウェア最適化が、Transformer に有利な差をさらに広げていることである。 
 
 Transformer は、CNN に比べて局所性や平行移動不変性に対する帰納バイアスの度合いがかなり低いことに注意する価値がある。学習された構造が優勢になったのは、最大50億枚の画像を含む LAION-400m や LAION-5B :cite:`schuhmann2022laion` のような大規模画像コレクションが利用可能になったことも大きな要因である。驚くべきことに、この文脈でより重要な研究の中には MLP さえ含まれている :cite:`tolstikhin2021mlp`。 
 

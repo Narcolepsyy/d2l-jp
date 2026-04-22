@@ -65,7 +65,7 @@ from torch.nn import functional as F
 このモデルの最後の数層には
 グローバル平均プーリング層と
 全結合層が含まれているが、
-これらは完全畳み込みネットワークでは不要である。
+完全畳み込みネットワークでは不要である。
 
 ```{.python .input}
 #@tab mxnet

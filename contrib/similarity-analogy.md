@@ -17,7 +17,7 @@ npx.set_np()
 
 ## 事前学習済み単語ベクトルの使用
 
-以下に、50次元、100次元、300次元の事前学習済み GloVe 埋め込みを示します。これらは [GloVe website](https://nlp.stanford.edu/projects/glove/) からダウンロードできます。事前学習済み fastText 埋め込みは複数の言語で利用できます。ここでは英語版の 1 つ（300次元の "wiki.en"）を扱います。これは [fastText website](https://fasttext.cc/) からダウンロードできます。
+以下に、50次元、100次元、300次元の事前学習済み GloVe 埋め込みを示します。 [GloVe website](https://nlp.stanford.edu/projects/glove/) からダウンロードできます。事前学習済み fastText 埋め込みは複数の言語で利用できます。ここでは英語版の 1 つ（300次元の "wiki.en"）を扱います。 [fastText website](https://fasttext.cc/) からダウンロードできます。
 
 ```{.python .input  n=2}
 #@tab mxnet
