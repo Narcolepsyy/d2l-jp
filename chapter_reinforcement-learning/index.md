@@ -1,6 +1,7 @@
-# 強化学習
+# 強化学習（Reinforcement Learning）とは：基礎理論と実装
 :label:`chap_reinforcement_learning`
 
+**強化学習（Reinforcement Learning）とは**、エージェントが環境との相互作用を通じて、報酬を最大化するための行動を試行錯誤しながら学習する機械学習の一分野であり、MDP（マルコフ決定過程）などの数学的枠組みに基づいている。
 
 **Pratik Chaudhari** (*University of Pennsylvania and Amazon*), **Rasool Fakoor** (*Amazon*), and **Kavosh Asadi** (*Amazon*)
 

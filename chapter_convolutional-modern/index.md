@@ -1,5 +1,7 @@
-# 現代的な畳み込みニューラルネットワーク
+# 現代的な畳み込みニューラルネットワーク（Modern CNN）とは
 :label:`chap_modern_cnn`
+
+**現代的な畳み込みニューラルネットワーク（Modern CNN）とは**、AlexNet以降に提案されたVGG、ResNet、GoogLeNetなどの高度なアーキテクチャの総称であり、ネットワークの深層化や構造の洗練によって、極めて高い画像認識性能を達成している。
 
 CNN を組み立てる基本を理解した今、現代的な CNN アーキテクチャを見ていこう。この巡回は、次々と登場する刺激的な新設計があまりにも多いため、必然的に不完全なものになる。これらが重要なのは、画像認識タスクに直接使えるだけでなく、追跡 :cite:`Zhang.Sun.Jiang.ea.2021`、セグメンテーション :cite:`Long.Shelhamer.Darrell.2015`、物体検出 :cite:`Redmon.Farhadi.2018`、スタイル変換 :cite:`Gatys.Ecker.Bethge.2016` といったより高度なタスクのための基本的な特徴生成器としても機能するからである。本章の多くの節は、ある時点で（あるいは現在も）多くの研究プロジェクトや実運用システムの基盤モデルとなった、重要な CNN アーキテクチャに対応している。これらのネットワークはいずれも一時的に支配的なアーキテクチャとなり、その多くが、2010 年以来コンピュータビジョンにおける教師あり学習の進歩を測る指標となってきた [ImageNet コンペティション](https://www.image-net.org/challenges/LSVRC/) の勝者または準優勝者であった。CNN に代わって Transformer が台頭し始めたのはごく最近のことで、:citet:`Dosovitskiy.Beyer.Kolesnikov.ea.2021` に始まり、Swin Transformer :cite:`liu2021swin` がそれに続いた。この発展については、後ほど :numref:`chap_attention-and-transformers` で扱う。
 
