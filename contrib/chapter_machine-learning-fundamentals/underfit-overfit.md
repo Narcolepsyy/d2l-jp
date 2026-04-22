@@ -146,14 +146,3 @@ train(p=10)
 1. 多項式特徴量 $x^i$ の正規化（$1/i!$）を取り除くとどうなりますか？ 別の方法でこれを修正できますか？
 1. 一般化誤差が0になることを期待できる場合はありますか？
 
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/96)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/97)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/234)
-:end_tab:\n

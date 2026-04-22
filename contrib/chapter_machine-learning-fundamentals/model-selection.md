@@ -472,14 +472,3 @@ $$\Pr\left(R[p, f] - R_\mathrm{emp}[\mathbf{X}, \mathbf{Y}, f] < \epsilon\right)
 1. VC 次元は、ある関数クラスの関数によって任意のラベル $\{\pm 1\}$ で分類できる点の最大数として定義されます。なぜこれは関数クラスの複雑さを測る良い方法ではないのでしょうか？ ヒント: 関数の大きさはどうでしょうか？
 1. 上司から、現在のアルゴリズムではあまりうまく動かない難しいデータセットを渡されました。もっとデータが必要だと、どうやって上司を納得させますか？ ヒント: データを増やすことはできませんが、減らすことはできます。
 
-:begin_tab:`mxnet`
-[Discussions](https://discuss.d2l.ai/t/96)
-:end_tab:
-
-:begin_tab:`pytorch`
-[Discussions](https://discuss.d2l.ai/t/97)
-:end_tab:
-
-:begin_tab:`tensorflow`
-[Discussions](https://discuss.d2l.ai/t/234)
-:end_tab:\n
