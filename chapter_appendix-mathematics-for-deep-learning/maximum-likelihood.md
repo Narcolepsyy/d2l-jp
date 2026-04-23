@@ -128,15 +128,15 @@ $$
 
 ```{.python .input}
 #@tab mxnet
-# Set up our data
+# データを準備する
 n_H = 8675309
 n_T = 256245
 
-# Initialize our paramteres
+# パラメータを初期化する
 theta = np.array(0.5)
 theta.attach_grad()
 
-# Perform gradient descent
+# 勾配降下法を実行する
 lr = 1e-9
 for iter in range(100):
     with autograd.record():
@@ -144,20 +144,20 @@ for iter in range(100):
     loss.backward()
     theta -= lr * theta.grad
 
-# Check output
+# 出力を確認する
 theta, n_H / (n_H + n_T)
 ```
 
 ```{.python .input}
 #@tab pytorch
-# Set up our data
+# データを準備する
 n_H = 8675309
 n_T = 256245
 
-# Initialize our paramteres
+# パラメータを初期化する
 theta = torch.tensor(0.5, requires_grad=True)
 
-# Perform gradient descent
+# 勾配降下法を実行する
 lr = 1e-9
 for iter in range(100):
     loss = -(n_H * torch.log(theta) + n_T * torch.log(1 - theta))
@@ -166,27 +166,27 @@ for iter in range(100):
         theta -= lr * theta.grad
     theta.grad.zero_()
 
-# Check output
+# 出力を確認する
 theta, n_H / (n_H + n_T)
 ```
 
 ```{.python .input}
 #@tab tensorflow
-# Set up our data
+# データを準備する
 n_H = 8675309
 n_T = 256245
 
-# Initialize our paramteres
+# パラメータを初期化する
 theta = tf.Variable(tf.constant(0.5))
 
-# Perform gradient descent
+# 勾配降下法を実行する
 lr = 1e-9
 for iter in range(100):
     with tf.GradientTape() as t:
         loss = -(n_H * tf.math.log(theta) + n_T * tf.math.log(1 - theta))
     theta.assign_sub(lr * t.gradient(loss, theta))
 
-# Check output
+# 出力を確認する
 theta, n_H / (n_H + n_T)
 ```
 

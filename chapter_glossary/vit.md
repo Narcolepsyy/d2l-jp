@@ -1,4 +1,4 @@
-# vision Transformers (ViT)
+# Vision Transformer（ViT）
 :label:`sec_glossary_vit`
 
 ## 定義 (Definition)

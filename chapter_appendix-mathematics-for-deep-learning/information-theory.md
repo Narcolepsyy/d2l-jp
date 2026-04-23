@@ -60,7 +60,7 @@ import torch
 from torch.nn import NLLLoss
 
 def nansum(x):
-    # Define nansum, as pytorch does not offer it inbuilt.
+    # PyTorch には組み込みの nansum がないため、nansum を定義する。
     return x[~torch.isnan(x)].sum()
 
 def self_information(p):
@@ -120,7 +120,7 @@ $$H(X) = - \int_x p(x) \log p(x) \; dx.$$
 #@tab mxnet
 def entropy(p):
     entropy = - p * np.log2(p)
-    # Operator `nansum` will sum up the non-nan number
+    # 演算子`nansum`はNaNでない数値の和を求める
     out = nansum(entropy.as_nd_ndarray())
     return out
 
@@ -131,7 +131,7 @@ entropy(np.array([0.1, 0.5, 0.1, 0.3]))
 #@tab pytorch
 def entropy(p):
     entropy = - p * torch.log2(p)
-    # Operator `nansum` will sum up the non-nan number
+    # 演算子`nansum`はNaNでない数値の和を求める
     out = nansum(entropy)
     return out
 
@@ -207,7 +207,7 @@ $$
 #@tab mxnet
 def joint_entropy(p_xy):
     joint_ent = -p_xy * np.log2(p_xy)
-    # Operator `nansum` will sum up the non-nan number
+    # 演算子`nansum`はNaNでない数値の和を求める
     out = nansum(joint_ent.as_nd_ndarray())
     return out
 
@@ -218,7 +218,7 @@ joint_entropy(np.array([[0.1, 0.5], [0.1, 0.3]]))
 #@tab pytorch
 def joint_entropy(p_xy):
     joint_ent = -p_xy * torch.log2(p_xy)
-    # Operator `nansum` will sum up the non-nan number
+    # 演算子`nansum`はNaNでない数値の和を求める
     out = nansum(joint_ent)
     return out
 
@@ -229,7 +229,7 @@ joint_entropy(torch.tensor([[0.1, 0.5], [0.1, 0.3]]))
 #@tab tensorflow
 def joint_entropy(p_xy):
     joint_ent = -p_xy * log2(p_xy)
-    # Operator `nansum` will sum up the non-nan number
+    # 演算子`nansum`はNaNでない数値の和を求める
     out = nansum(joint_ent)
     return out
 
@@ -272,7 +272,7 @@ $$H(Y \mid X) = H(X, Y) - H(X).$$
 def conditional_entropy(p_xy, p_x):
     p_y_given_x = p_xy/p_x
     cond_ent = -p_xy * np.log2(p_y_given_x)
-    # Operator `nansum` will sum up the non-nan number
+    # 演算子`nansum`はNaNでない数値の和を求める
     out = nansum(cond_ent.as_nd_ndarray())
     return out
 
@@ -284,7 +284,7 @@ conditional_entropy(np.array([[0.1, 0.5], [0.2, 0.3]]), np.array([0.2, 0.8]))
 def conditional_entropy(p_xy, p_x):
     p_y_given_x = p_xy/p_x
     cond_ent = -p_xy * torch.log2(p_y_given_x)
-    # Operator `nansum` will sum up the non-nan number
+    # 演算子`nansum`はNaNでない数値の和を求める
     out = nansum(cond_ent)
     return out
 
@@ -297,7 +297,7 @@ conditional_entropy(torch.tensor([[0.1, 0.5], [0.2, 0.3]]),
 def conditional_entropy(p_xy, p_x):
     p_y_given_x = p_xy/p_x
     cond_ent = -p_xy * log2(p_y_given_x)
-    # Operator `nansum` will sum up the non-nan number
+    # 演算子`nansum`はNaNでない数値の和を求める
     out = nansum(cond_ent)
     return out
 
@@ -340,7 +340,7 @@ $$I(X, Y) = E_{x} E_{y} \left\{ p_{X, Y}(x, y) \log\frac{p_{X, Y}(x, y)}{p_X(x) 
 def mutual_information(p_xy, p_x, p_y):
     p = p_xy / (p_x * p_y)
     mutual = p_xy * np.log2(p)
-    # Operator `nansum` will sum up the non-nan number
+    # 演算子`nansum`はNaNでない数値の和を求める
     out = nansum(mutual.as_nd_ndarray())
     return out
 
@@ -353,7 +353,7 @@ mutual_information(np.array([[0.1, 0.5], [0.1, 0.3]]),
 def mutual_information(p_xy, p_x, p_y):
     p = p_xy / (p_x * p_y)
     mutual = p_xy * torch.log2(p)
-    # Operator `nansum` will sum up the non-nan number
+    # 演算子`nansum`はNaNでない数値の和を求める
     out = nansum(mutual)
     return out
 
@@ -366,7 +366,7 @@ mutual_information(torch.tensor([[0.1, 0.5], [0.1, 0.3]]),
 def mutual_information(p_xy, p_x, p_y):
     p = p_xy / (p_x * p_y)
     mutual = p_xy * log2(p)
-    # Operator `nansum` will sum up the non-nan number
+    # 演算子`nansum`はNaNでない数値の和を求める
     out = nansum(mutual)
     return out
 
@@ -668,8 +668,8 @@ nll_loss.get()
 
 ```{.python .input}
 #@tab pytorch
-# Implementation of cross-entropy loss in PyTorch combines `nn.LogSoftmax()`
-# and `nn.NLLLoss()`
+# PyTorchにおけるクロスエントロピー損失の実装は`nn.LogSoftmax()`を組み合わせる
+# および `nn.NLLLoss()`
 nll_loss = NLLLoss()
 loss = nll_loss(torch.log(preds), labels)
 loss
@@ -678,10 +678,10 @@ loss
 ```{.python .input}
 #@tab tensorflow
 def nll_loss(y_hat, y):
-    # Convert labels to one-hot vectors.
+    # ラベルをone-hotベクトルに変換する。
     y = tf.keras.utils.to_categorical(y, num_classes= y_hat.shape[1])
-    # We will not calculate negative log-likelihood from the definition.
-    # Rather, we will follow a circular argument. Because NLL is same as
+    # 負の対数尤度は定義からは計算しない。
+    # むしろ、循環論法に従う。NLL は同じであるため
     # `cross_entropy`, if we calculate cross_entropy that would give us NLL
     cross_entropy = tf.keras.losses.CategoricalCrossentropy(
         from_logits = True, reduction = tf.keras.losses.Reduction.NONE)

@@ -48,7 +48,7 @@ from IPython import display
 from mxnet import np, npx
 npx.set_np()
 
-# Plot the probability density function for some random variable
+# ある確率変数の確率密度関数をプロットする
 x = np.arange(-5, 5, 0.01)
 p = 0.2*np.exp(-(x - 3)**2 / 2)/np.sqrt(2 * np.pi) + \
     0.8*np.exp(-(x + 1)**2 / 2)/np.sqrt(2 * np.pi)
@@ -62,9 +62,9 @@ d2l.plot(x, p, 'x', 'Density')
 from d2l import torch as d2l
 from IPython import display
 import torch
-torch.pi = torch.acos(torch.zeros(1)).item() * 2  # Define pi in torch
+torch.pi = torch.acos(torch.zeros(1)).item() * 2  # torchでpiを定義する
 
-# Plot the probability density function for some random variable
+# ある確率変数の確率密度関数をプロットする
 x = torch.arange(-5, 5, 0.01)
 p = 0.2*torch.exp(-(x - 3)**2 / 2)/torch.sqrt(2 * torch.tensor(torch.pi)) + \
     0.8*torch.exp(-(x + 1)**2 / 2)/torch.sqrt(2 * torch.tensor(torch.pi))
@@ -78,9 +78,9 @@ d2l.plot(x, p, 'x', 'Density')
 from d2l import tensorflow as d2l
 from IPython import display
 import tensorflow as tf
-tf.pi = tf.acos(tf.zeros(1)).numpy() * 2  # Define pi in TensorFlow
+tf.pi = tf.acos(tf.zeros(1)).numpy() * 2  # TensorFlowでpiを定義する
 
-# Plot the probability density function for some random variable
+# ある確率変数の確率密度関数をプロットする
 x = tf.range(-5, 5, 0.01)
 p = 0.2*tf.exp(-(x - 3)**2 / 2)/tf.sqrt(2 * tf.constant(tf.pi)) + \
     0.8*tf.exp(-(x + 1)**2 / 2)/tf.sqrt(2 * tf.constant(tf.pi))
@@ -139,7 +139,7 @@ $$
 
 ```{.python .input}
 #@tab mxnet
-# Approximate probability using numerical integration
+# 数値積分を用いて確率を近似する
 epsilon = 0.01
 x = np.arange(-5, 5, 0.01)
 p = 0.2*np.exp(-(x - 3)**2 / 2) / np.sqrt(2 * np.pi) + \
@@ -155,7 +155,7 @@ f'approximate Probability: {np.sum(epsilon*p[300:800])}'
 
 ```{.python .input}
 #@tab pytorch
-# Approximate probability using numerical integration
+# 数値積分を用いて確率を近似する
 epsilon = 0.01
 x = torch.arange(-5, 5, 0.01)
 p = 0.2*torch.exp(-(x - 3)**2 / 2) / torch.sqrt(2 * torch.tensor(torch.pi)) +\
@@ -171,7 +171,7 @@ f'approximate Probability: {torch.sum(epsilon*p[300:800])}'
 
 ```{.python .input}
 #@tab tensorflow
-# Approximate probability using numerical integration
+# 数値積分を用いて確率を近似する
 epsilon = 0.01
 x = tf.range(-5, 5, 0.01)
 p = 0.2*tf.exp(-(x - 3)**2 / 2) / tf.sqrt(2 * tf.constant(tf.pi)) +\
@@ -328,7 +328,7 @@ $$
 
 ```{.python .input}
 #@tab mxnet
-# Define a helper to plot these figures
+# これらの図を描画するヘルパーを定義する
 def plot_chebyshev(a, p):
     d2l.set_figsize()
     d2l.plt.stem([a-2, a, a+2], [p, 1-2*p, p], use_line_collection=True)
@@ -344,13 +344,13 @@ def plot_chebyshev(a, p):
 
     d2l.plt.show()
 
-# Plot interval when p > 1/8
+# p > 1/8 の区間をプロットする
 plot_chebyshev(0.0, 0.2)
 ```
 
 ```{.python .input}
 #@tab pytorch
-# Define a helper to plot these figures
+# これらの図を描画するヘルパーを定義する
 def plot_chebyshev(a, p):
     d2l.set_figsize()
     d2l.plt.stem([a-2, a, a+2], [p, 1-2*p, p], use_line_collection=True)
@@ -366,13 +366,13 @@ def plot_chebyshev(a, p):
 
     d2l.plt.show()
 
-# Plot interval when p > 1/8
+# p > 1/8 の区間をプロットする
 plot_chebyshev(0.0, torch.tensor(0.2))
 ```
 
 ```{.python .input}
 #@tab tensorflow
-# Define a helper to plot these figures
+# これらの図を描画するヘルパーを定義する
 def plot_chebyshev(a, p):
     d2l.set_figsize()
     d2l.plt.stem([a-2, a, a+2], [p, 1-2*p, p], use_line_collection=True)
@@ -388,7 +388,7 @@ def plot_chebyshev(a, p):
 
     d2l.plt.show()
 
-# Plot interval when p > 1/8
+# p > 1/8 の区間をプロットする
 plot_chebyshev(0.0, tf.constant(0.2))
 ```
 
@@ -396,19 +396,19 @@ plot_chebyshev(0.0, tf.constant(0.2))
 
 ```{.python .input}
 #@tab mxnet
-# Plot interval when p = 1/8
+# p = 1/8 のときの区間を描画する
 plot_chebyshev(0.0, 0.125)
 ```
 
 ```{.python .input}
 #@tab pytorch
-# Plot interval when p = 1/8
+# p = 1/8 のときの区間を描画する
 plot_chebyshev(0.0, torch.tensor(0.125))
 ```
 
 ```{.python .input}
 #@tab tensorflow
-# Plot interval when p = 1/8
+# p = 1/8 のときの区間を描画する
 plot_chebyshev(0.0, tf.constant(0.125))
 ```
 
@@ -416,19 +416,19 @@ plot_chebyshev(0.0, tf.constant(0.125))
 
 ```{.python .input}
 #@tab mxnet
-# Plot interval when p < 1/8
+# p < 1/8 の区間をプロットする
 plot_chebyshev(0.0, 0.05)
 ```
 
 ```{.python .input}
 #@tab pytorch
-# Plot interval when p < 1/8
+# p < 1/8 の区間をプロットする
 plot_chebyshev(0.0, torch.tensor(0.05))
 ```
 
 ```{.python .input}
 #@tab tensorflow
-# Plot interval when p < 1/8
+# p < 1/8 の区間をプロットする
 plot_chebyshev(0.0, tf.constant(0.05))
 ```
 
@@ -490,7 +490,7 @@ $$
 
 ```{.python .input}
 #@tab mxnet
-# Plot the Cauchy distribution p.d.f.
+# コーシー分布の確率密度関数をプロットする
 x = np.arange(-5, 5, 0.01)
 p = 1 / (1 + x**2)
 
@@ -499,7 +499,7 @@ d2l.plot(x, p, 'x', 'p.d.f.')
 
 ```{.python .input}
 #@tab pytorch
-# Plot the Cauchy distribution p.d.f.
+# コーシー分布の確率密度関数をプロットする
 x = torch.arange(-5, 5, 0.01)
 p = 1 / (1 + x**2)
 
@@ -508,7 +508,7 @@ d2l.plot(x, p, 'x', 'p.d.f.')
 
 ```{.python .input}
 #@tab tensorflow
-# Plot the Cauchy distribution p.d.f.
+# コーシー分布の確率密度関数をプロットする
 x = tf.range(-5, 5, 0.01)
 p = 1 / (1 + x**2)
 
@@ -529,7 +529,7 @@ $$
 
 ```{.python .input}
 #@tab mxnet
-# Plot the integrand needed to compute the variance
+# 分散を計算するために必要な被積分関数をプロットする
 x = np.arange(-20, 20, 0.01)
 p = x**2 / (1 + x**2)
 
@@ -538,7 +538,7 @@ d2l.plot(x, p, 'x', 'integrand')
 
 ```{.python .input}
 #@tab pytorch
-# Plot the integrand needed to compute the variance
+# 分散を計算するために必要な被積分関数をプロットする
 x = torch.arange(-20, 20, 0.01)
 p = x**2 / (1 + x**2)
 
@@ -547,7 +547,7 @@ d2l.plot(x, p, 'x', 'integrand')
 
 ```{.python .input}
 #@tab tensorflow
-# Plot the integrand needed to compute the variance
+# 分散を計算するために必要な被積分関数をプロットする
 x = tf.range(-20, 20, 0.01)
 p = x**2 / (1 + x**2)
 
@@ -692,7 +692,7 @@ $$
 
 ```{.python .input}
 #@tab mxnet
-# Plot a few random variables adjustable covariance
+# 調整可能な共分散をもついくつかのランダム変数をプロットする
 covs = [-0.9, 0.0, 1.2]
 d2l.plt.figure(figsize=(12, 3))
 for i in range(3):
@@ -709,7 +709,7 @@ d2l.plt.show()
 
 ```{.python .input}
 #@tab pytorch
-# Plot a few random variables adjustable covariance
+# 調整可能な共分散をもついくつかのランダム変数をプロットする
 covs = [-0.9, 0.0, 1.2]
 d2l.plt.figure(figsize=(12, 3))
 for i in range(3):
@@ -726,7 +726,7 @@ d2l.plt.show()
 
 ```{.python .input}
 #@tab tensorflow
-# Plot a few random variables adjustable covariance
+# 調整可能な共分散をもついくつかのランダム変数をプロットする
 covs = [-0.9, 0.0, 1.2]
 d2l.plt.figure(figsize=(12, 3))
 for i in range(3):
@@ -798,7 +798,7 @@ $$
 
 ```{.python .input}
 #@tab mxnet
-# Plot a few random variables adjustable correlations
+# 相関を調整可能な乱数変数をいくつかプロットする
 cors = [-0.9, 0.0, 1.0]
 d2l.plt.figure(figsize=(12, 3))
 for i in range(3):
@@ -815,7 +815,7 @@ d2l.plt.show()
 
 ```{.python .input}
 #@tab pytorch
-# Plot a few random variables adjustable correlations
+# 相関を調整可能な乱数変数をいくつかプロットする
 cors = [-0.9, 0.0, 1.0]
 d2l.plt.figure(figsize=(12, 3))
 for i in range(3):
@@ -833,7 +833,7 @@ d2l.plt.show()
 
 ```{.python .input}
 #@tab tensorflow
-# Plot a few random variables adjustable correlations
+# 相関を調整可能な乱数変数をいくつかプロットする
 cors = [-0.9, 0.0, 1.0]
 d2l.plt.figure(figsize=(12, 3))
 for i in range(3):

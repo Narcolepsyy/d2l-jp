@@ -103,7 +103,7 @@ vocab = d2l.Vocab(train_tokens, min_freq=5, reserved_tokens=['<pad>'])
 ```{.python .input}
 #@tab all
 d2l.set_figsize()
-d2l.plt.xlabel('# tokens per review')
+d2l.plt.xlabel('# レビューあたりのトークン数）
 d2l.plt.ylabel('count')
 d2l.plt.hist([len(line) for line in train_tokens], bins=range(0, 1000, 50));
 ```
@@ -118,7 +118,7 @@ d2l.plt.hist([len(line) for line in train_tokens], bins=range(0, 1000, 50));
 
 ```{.python .input}
 #@tab all
-num_steps = 500  # sequence length
+num_steps = 500  # 系列長
 train_features = d2l.tensor([d2l.truncate_pad(
     vocab[line], num_steps, vocab['<pad>']) for line in train_tokens])
 print(train_features.shape)
@@ -136,7 +136,7 @@ train_iter = d2l.load_array((train_features, train_data[1]), 64)
 for X, y in train_iter:
     print('X:', X.shape, ', y:', y.shape)
     break
-print('# batches:', len(train_iter))
+print('# バッチ数:', len(train_iter))
 ```
 
 ```{.python .input}
@@ -146,7 +146,7 @@ train_iter = d2l.load_array((train_features, torch.tensor(train_data[1])), 64)
 for X, y in train_iter:
     print('X:', X.shape, ', y:', y.shape)
     break
-print('# batches:', len(train_iter))
+print('# バッチ数:', len(train_iter))
 ```
 
 ## まとめて実行する

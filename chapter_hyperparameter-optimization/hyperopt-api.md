@@ -89,7 +89,7 @@ class BasicScheduler(HPOScheduler):  #@save
 class HPOTuner(d2l.HyperParameters):  #@save
     def __init__(self, scheduler: HPOScheduler, objective: callable):
         self.save_hyperparameters()
-        # Bookeeping results for plotting
+        # プロット用の結果を記録する
         self.incumbent = None
         self.incumbent_error = None
         self.incumbent_trajectory = []
@@ -120,13 +120,13 @@ class HPOTuner(d2l.HyperParameters):  #@save
 def bookkeeping(self, config: dict, error: float, runtime: float):
     self.records.append({"config": config, "error": error, "runtime": runtime})
     # Check if the last hyperparameter configuration performs better 
-    # than the incumbent
+    # 既存のものよりも
     if self.incumbent is None or self.incumbent_error > error:
         self.incumbent = config
         self.incumbent_error = error
-    # Add current best observed performance to the optimization trajectory
+    # 最良の観測性能を最適化軌跡に追加する
     self.incumbent_trajectory.append(self.incumbent_error)
-    # Update runtime
+    # 実行時に更新する
     self.current_runtime += runtime
     self.cumulative_runtime.append(self.current_runtime)
 ```

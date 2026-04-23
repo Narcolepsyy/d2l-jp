@@ -401,13 +401,13 @@ class DropoutMLP(d2l.Classifier):
 @partial(jax.jit, static_argnums=(0, 5))
 def loss(self, params, X, Y, state, averaged=True):
     Y_hat = state.apply_fn({'params': params}, *X,
-                           mutable=False,  # To be used later (e.g., batch norm)
+                           mutable=False,  # 後で使用する（例: バッチ正規化）
                            rngs={'dropout': state.dropout_rng})
     Y_hat = d2l.reshape(Y_hat, (-1, Y_hat.shape[-1]))
     Y = d2l.reshape(Y, (-1,))
     fn = optax.softmax_cross_entropy_with_integer_labels
-    # The returned empty dictionary is a placeholder for auxiliary data,
-    # which will be used later (e.g., for batch norm)
+    # 返される空の辞書は補助データのプレースホルダである。
+    # 後で使用される（例: バッチ正規化用）
     return (fn(Y_hat, Y).mean(), {}) if averaged else (fn(Y_hat, Y), {})
 ```
 

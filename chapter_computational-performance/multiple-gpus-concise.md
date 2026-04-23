@@ -42,8 +42,8 @@ def resnet18(num_classes):
         return blk
 
     net = nn.Sequential()
-    # This model uses a smaller convolution kernel, stride, and padding and
-    # removes the max-pooling layer
+    # このモデルは、より小さい畳み込みカーネル、ストライド、パディングを使用し、
+    # 最大プーリング層を除去する
     net.add(nn.Conv2D(64, kernel_size=3, strides=1, padding=1),
             nn.BatchNorm(), nn.Activation('relu'))
     net.add(resnet_block(64, 2, first_block=True),
@@ -70,8 +70,8 @@ def resnet18(num_classes, in_channels=1):
                 blk.append(d2l.Residual(out_channels))
         return nn.Sequential(*blk)
 
-    # This model uses a smaller convolution kernel, stride, and padding and
-    # removes the max-pooling layer
+    # このモデルは、より小さい畳み込みカーネル、ストライド、パディングを使用し、
+    # 最大プーリング層を除去する
     net = nn.Sequential(
         nn.Conv2d(in_channels, 64, kernel_size=3, stride=1, padding=1),
         nn.BatchNorm2d(64),
@@ -101,18 +101,18 @@ def resnet18(num_classes, in_channels=1):
 ```{.python .input}
 #@tab mxnet
 net = resnet18(10)
-# Get a list of GPUs
+# GPUの一覧を取得する
 devices = d2l.try_all_gpus()
-# Initialize all the parameters of the network
+# ネットワークのすべてのパラメータを初期化する
 net.initialize(init=init.Normal(sigma=0.01), ctx=devices)
 ```
 
 ```{.python .input}
 #@tab pytorch
 net = resnet18(10)
-# Get a list of GPUs
+# GPUの一覧を取得する
 devices = d2l.try_all_gpus()
-# We will initialize the network inside the training loop
+# ネットワークを訓練ループ内で初期化する
 ```
 
 :begin_tab:`mxnet`
@@ -151,13 +151,13 @@ weight.data(devices[0])[0], weight.data(devices[1])[0]
 #@save
 def evaluate_accuracy_gpus(net, data_iter, split_f=d2l.split_batch):
     """Compute the accuracy for a model on a dataset using multiple GPUs."""
-    # Query the list of devices
+    # デバイス一覧を問い合わせる
     devices = list(net.collect_params().values())[0].list_ctx()
-    # No. of correct predictions, no. of predictions
+    # 正解予測数、予測数
     metric = d2l.Accumulator(2)
     for features, labels in data_iter:
         X_shards, y_shards = split_f(features, labels, devices)
-        # Run in parallel
+        # 並列で実行する
         pred_shards = [net(X_shard) for X_shard in X_shards]
         metric.add(sum(float(d2l.accuracy(pred_shard, y_shard)) for
                        pred_shard, y_shard in zip(
@@ -213,7 +213,7 @@ def train(net, num_gpus, batch_size, lr):
         if type(module) in [nn.Linear, nn.Conv2d]:
             nn.init.normal_(module.weight, std=0.01)
     net.apply(init_weights)
-    # Set the model on multiple GPUs
+    # モデルを複数GPUに設定する
     net = nn.DataParallel(net, device_ids=devices)
     trainer = torch.optim.SGD(net.parameters(), lr)
     loss = nn.CrossEntropyLoss()

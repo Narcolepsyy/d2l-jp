@@ -1,4 +1,4 @@
-# Region-based CNNs (R-CNNs)
+# 領域ベースのCNN（R-CNN）
 :label:`sec_rcnn`
 
 単発マルチボックス検出

@@ -1,7 +1,7 @@
 {.python .input}
 %load_ext d2lbook.tab
 tab.interact_select(["pytorch"])
-#required_libs("syne-tune[gpsearchers]==0.3.2")
+#必要なライブラリを`syne-tune[gpsearchers]==0.3.2`にする
 ```
 
 # 非同期逐次半減法
@@ -53,7 +53,7 @@ def hpo_objective_lenet_synetune(learning_rate, batch_size, max_epochs):
     report = Reporter()
     for epoch in range(1, max_epochs + 1):
         if epoch == 1:
-            # Initialize the state of Trainer
+            # Trainerの状態を初期化する
             trainer.fit(model=model, data=data)
         else:
             trainer.fit_epoch()
@@ -84,7 +84,7 @@ initial_config = {
 まず、trial を並列に評価するワーカー数を定義する。また、総 wall-clock 時間の上限を定めて、ランダムサーチをどれだけ実行するかを指定する必要がある。
 
 ```{.python .input  n=56}
-n_workers = 2  # Needs to be <= the number of available GPUs
+n_workers = 2  # 利用可能なGPU数以下でなければならない
 max_wallclock_time = 12 * 60  # 12 minutes
 ```
 

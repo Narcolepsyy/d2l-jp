@@ -259,7 +259,7 @@ class PositionalEncoding(nn.Block):  #@save
     def __init__(self, num_hiddens, dropout, max_len=1000):
         super().__init__()
         self.dropout = nn.Dropout(dropout)
-        # Create a long enough P
+        # 十分長い P を作成する
         self.P = d2l.zeros((1, max_len, num_hiddens))
         X = d2l.arange(max_len).reshape(-1, 1) / np.power(
             10000, np.arange(0, num_hiddens, 2) / num_hiddens)
@@ -278,7 +278,7 @@ class PositionalEncoding(nn.Module):  #@save
     def __init__(self, num_hiddens, dropout, max_len=1000):
         super().__init__()
         self.dropout = nn.Dropout(dropout)
-        # Create a long enough P
+        # 十分長い P を作成する
         self.P = d2l.zeros((1, max_len, num_hiddens))
         X = d2l.arange(max_len, dtype=torch.float32).reshape(
             -1, 1) / torch.pow(10000, torch.arange(
@@ -298,7 +298,7 @@ class PositionalEncoding(tf.keras.layers.Layer):  #@save
     def __init__(self, num_hiddens, dropout, max_len=1000):
         super().__init__()
         self.dropout = tf.keras.layers.Dropout(dropout)
-        # Create a long enough P
+        # 十分長い P を作成する
         self.P = np.zeros((1, max_len, num_hiddens))
         X = np.arange(max_len, dtype=np.float32).reshape(
             -1,1)/np.power(10000, np.arange(
@@ -320,7 +320,7 @@ class PositionalEncoding(nn.Module):  #@save
     max_len: int = 1000
 
     def setup(self):
-        # Create a long enough P
+        # 十分長い P を作成する
         self.P = d2l.zeros((1, self.max_len, self.num_hiddens))
         X = d2l.arange(self.max_len, dtype=jnp.float32).reshape(
             -1, 1) / jnp.power(10000, jnp.arange(
@@ -330,7 +330,7 @@ class PositionalEncoding(nn.Module):  #@save
 
     @nn.compact
     def __call__(self, X, training=False):
-        # Flax sow API is used to capture intermediate variables
+        # Flax sow APIは中間変数を捕捉するために用いられる
         self.sow('intermediates', 'P', self.P)
         X = X + self.P[:, :X.shape[1], :]
         return nn.Dropout(self.dropout)(X, deterministic=not training)
@@ -386,7 +386,7 @@ pos_encoding = PositionalEncoding(encoding_dim, 0)
 params = pos_encoding.init(d2l.get_key(), d2l.zeros((1, num_steps, encoding_dim)))
 X, inter_vars = pos_encoding.apply(params, d2l.zeros((1, num_steps, encoding_dim)),
                                    mutable='intermediates')
-P = inter_vars['intermediates']['P'][0]  # retrieve intermediate value P
+P = inter_vars['intermediates']['P'][0]  # 中間値Pを取得する
 P = P[:, :X.shape[1], :]
 d2l.plot(d2l.arange(num_steps), P[0, :, 6:10].T, xlabel='Row (position)',
          figsize=(6, 2.5), legend=["Col %d" % d for d in d2l.arange(6, 10)])

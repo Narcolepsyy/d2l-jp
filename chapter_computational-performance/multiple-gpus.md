@@ -94,7 +94,7 @@ from torch.nn import functional as F
 
 ```{.python .input}
 #@tab mxnet
-# Initialize model parameters
+# モデルパラメータを初期化する
 scale = 0.01
 W1 = np.random.normal(scale=scale, size=(20, 1, 3, 3))
 b1 = np.zeros(20)
@@ -106,7 +106,7 @@ W4 = np.random.normal(scale=scale, size=(128, 10))
 b4 = np.zeros(10)
 params = [W1, b1, W2, b2, W3, b3, W4, b4]
 
-# Define the model
+# モデルを定義する
 def lenet(X, params):
     h1_conv = npx.convolution(data=X, weight=params[0], bias=params[1],
                               kernel=(3, 3), num_filter=20)
@@ -124,13 +124,13 @@ def lenet(X, params):
     y_hat = np.dot(h3, params[6]) + params[7]
     return y_hat
 
-# Cross-entropy loss function
+# クロスエントロピー損失関数
 loss = gluon.loss.SoftmaxCrossEntropyLoss()
 ```
 
 ```{.python .input}
 #@tab pytorch
-# Initialize model parameters
+# モデルパラメータを初期化する
 scale = 0.01
 W1 = torch.randn(size=(20, 1, 3, 3)) * scale
 b1 = torch.zeros(20)
@@ -142,7 +142,7 @@ W4 = torch.randn(size=(128, 10)) * scale
 b4 = torch.zeros(10)
 params = [W1, b1, W2, b2, W3, b3, W4, b4]
 
-# Define the model
+# モデルを定義する
 def lenet(X, params):
     h1_conv = F.conv2d(input=X, weight=params[0], bias=params[1])
     h1_activation = F.relu(h1_conv)
@@ -156,7 +156,7 @@ def lenet(X, params):
     y_hat = torch.mm(h3, params[6]) + params[7]
     return y_hat
 
-# Cross-entropy loss function
+# クロスエントロピー損失関数
 loss = nn.CrossEntropyLoss(reduction='none')
 ```
 
@@ -287,37 +287,37 @@ def split_batch(X, y, devices):
 #@tab mxnet
 def train_batch(X, y, device_params, devices, lr):
     X_shards, y_shards = split_batch(X, y, devices)
-    with autograd.record():  # Loss is calculated separately on each GPU
+    with autograd.record():  # 損失は各GPUで個別に計算される
         ls = [loss(lenet(X_shard, device_W), y_shard)
               for X_shard, y_shard, device_W in zip(
                   X_shards, y_shards, device_params)]
-    for l in ls:  # Backpropagation is performed separately on each GPU
+    for l in ls:  # バックプロパゲーションは各GPUで別々に実行される
         l.backward()
-    # Sum all gradients from each GPU and broadcast them to all GPUs
+    # 各GPUからの勾配をすべて集約し、全GPUにブロードキャストする
     for i in range(len(device_params[0])):
         allreduce([device_params[c][i].grad for c in range(len(devices))])
-    # The model parameters are updated separately on each GPU
+    # モデルのパラメータは各GPUで個別に更新される
     for param in device_params:
-        d2l.sgd(param, lr, X.shape[0])  # Here, we use a full-size batch
+        d2l.sgd(param, lr, X.shape[0])  # ここではフルサイズのバッチを用いる
 ```
 
 ```{.python .input}
 #@tab pytorch
 def train_batch(X, y, device_params, devices, lr):
     X_shards, y_shards = split_batch(X, y, devices)
-    # Loss is calculated separately on each GPU
+    # 損失は各GPUで個別に計算される
     ls = [loss(lenet(X_shard, device_W), y_shard).sum()
           for X_shard, y_shard, device_W in zip(
               X_shards, y_shards, device_params)]
-    for l in ls:  # Backpropagation is performed separately on each GPU
+    for l in ls:  # バックプロパゲーションは各GPUで別々に実行される
         l.backward()
-    # Sum all gradients from each GPU and broadcast them to all GPUs
+    # 各GPUからの勾配をすべて集約し、全GPUにブロードキャストする
     with torch.no_grad():
         for i in range(len(device_params[0])):
             allreduce([device_params[c][i].grad for c in range(len(devices))])
-    # The model parameters are updated separately on each GPU
+    # モデルのパラメータは各GPUで個別に更新される
     for param in device_params:
-        d2l.sgd(param, lr, X.shape[0]) # Here, we use a full-size batch
+        d2l.sgd(param, lr, X.shape[0]) # ここではフルサイズのバッチを用いる
 ```
 
 次に、[**学習関数**] を定義できる。前の章で使ったものとは少し異なる。GPUを割り当て、すべてのモデルパラメータをすべてのデバイスにコピーする必要があるからである。  
@@ -328,7 +328,7 @@ def train_batch(X, y, device_params, devices, lr):
 def train(num_gpus, batch_size, lr):
     train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size)
     devices = [d2l.try_gpu(i) for i in range(num_gpus)]
-    # Copy model parameters to `num_gpus` GPUs
+    # モデルのパラメータを`num_gpus`個のGPUにコピーする
     device_params = [get_params(params, d) for d in devices]
     num_epochs = 10
     animator = d2l.Animator('epoch', 'test acc', xlim=[1, num_epochs])
@@ -336,11 +336,11 @@ def train(num_gpus, batch_size, lr):
     for epoch in range(num_epochs):
         timer.start()
         for X, y in train_iter:
-            # Perform multi-GPU training for a single minibatch
+            # 単一ミニバッチに対してマルチGPU学習を行う
             train_batch(X, y, device_params, devices, lr)
             npx.waitall()
         timer.stop()
-        # Evaluate the model on GPU 0
+        # GPU 0上でモデルを評価する
         animator.add(epoch + 1, (d2l.evaluate_accuracy_gpu(
             lambda x: lenet(x, device_params[0]), test_iter, devices[0]),))
     print(f'test acc: {animator.Y[0][-1]:.2f}, {timer.avg():.1f} sec/epoch '
@@ -352,7 +352,7 @@ def train(num_gpus, batch_size, lr):
 def train(num_gpus, batch_size, lr):
     train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size)
     devices = [d2l.try_gpu(i) for i in range(num_gpus)]
-    # Copy model parameters to `num_gpus` GPUs
+    # モデルのパラメータを`num_gpus`個のGPUにコピーする
     device_params = [get_params(params, d) for d in devices]
     num_epochs = 10
     animator = d2l.Animator('epoch', 'test acc', xlim=[1, num_epochs])
@@ -360,11 +360,11 @@ def train(num_gpus, batch_size, lr):
     for epoch in range(num_epochs):
         timer.start()
         for X, y in train_iter:
-            # Perform multi-GPU training for a single minibatch
+            # 単一ミニバッチに対してマルチGPU学習を行う
             train_batch(X, y, device_params, devices, lr)
             torch.cuda.synchronize()
         timer.stop()
-        # Evaluate the model on GPU 0
+        # GPU 0上でモデルを評価する
         animator.add(epoch + 1, (d2l.evaluate_accuracy_gpu(
             lambda x: lenet(x, device_params[0]), test_iter, devices[0]),))
     print(f'test acc: {animator.Y[0][-1]:.2f}, {timer.avg():.1f} sec/epoch '

@@ -91,7 +91,7 @@ Kaggle コンペティションの完全なデータセットを使うには、�
 d2l.DATA_HUB['cifar10_tiny'] = (d2l.DATA_URL + 'kaggle_cifar10_tiny.zip',
                                 '2068874e4b9a9f0fb07ebe0ad2b29754449ccacd')
 
-# If you use the full dataset downloaded for the Kaggle competition, set
+# Kaggleコンペティション用にダウンロードした全データセットを用いるなら，設定する
 # `demo` to False
 demo = True
 
@@ -113,14 +113,14 @@ else:
 def read_csv_labels(fname):
     """Read `fname` to return a filename to label dictionary."""
     with open(fname, 'r') as f:
-        # Skip the file header line (column name)
+        # ファイル先頭行（列名）をスキップする
         lines = f.readlines()[1:]
     tokens = [l.rstrip().split(',') for l in lines]
     return dict(((name, label) for name, label in tokens))
 
 labels = read_csv_labels(os.path.join(data_dir, 'trainLabels.csv'))
-print('# training examples:', len(labels))
-print('# classes:', len(set(labels.values())))
+print('# 訓練例の数:', len(labels))
+print('# クラス数:', len(set(labels.values())))
 ```
 
 次に、`reorg_train_valid` 関数を定義して、[**元の訓練セットから検証セットを分割して取り出す。**]
@@ -144,10 +144,10 @@ def copyfile(filename, target_dir):
 #@save
 def reorg_train_valid(data_dir, labels, valid_ratio):
     """Split the validation set out of the original training set."""
-    # The number of examples of the class that has the fewest examples in the
-    # training dataset
+    # 最も少ない例を持つクラスの例数
+    # 訓練データセット
     n = collections.Counter(labels.values()).most_common()[-1][1]
-    # The number of examples per class for the validation set
+    # 検証セットの各クラスのサンプル数
     n_valid_per_label = max(1, math.floor(n * valid_ratio))
     label_count = {}
     for train_file in os.listdir(os.path.join(data_dir, 'train')):
@@ -209,17 +209,17 @@ reorg_cifar10_data(data_dir, valid_ratio)
 ```{.python .input}
 #@tab mxnet
 transform_train = gluon.data.vision.transforms.Compose([
-    # Scale the image up to a square of 40 pixels in both height and width
+    # 画像を高さ・幅ともに40ピクセルの正方形に拡大する
     gluon.data.vision.transforms.Resize(40),
-    # Randomly crop a square image of 40 pixels in both height and width to
-    # produce a small square of 0.64 to 1 times the area of the original
-    # image, and then scale it to a square of 32 pixels in both height and
+    # 高さと幅がともに40ピクセルの正方形画像をランダムに切り抜く
+    # 元の面積の0.64倍から1倍の小さな正方形を生成する
+    # 画像を32ピクセル四方にリサイズし，さらにスケールする
     # width
     gluon.data.vision.transforms.RandomResizedCrop(32, scale=(0.64, 1.0),
                                                    ratio=(1.0, 1.0)),
     gluon.data.vision.transforms.RandomFlipLeftRight(),
     gluon.data.vision.transforms.ToTensor(),
-    # Standardize each channel of the image
+    # 画像の各チャネルを標準化する
     gluon.data.vision.transforms.Normalize([0.4914, 0.4822, 0.4465],
                                            [0.2023, 0.1994, 0.2010])])
 ```
@@ -227,17 +227,17 @@ transform_train = gluon.data.vision.transforms.Compose([
 ```{.python .input}
 #@tab pytorch
 transform_train = torchvision.transforms.Compose([
-    # Scale the image up to a square of 40 pixels in both height and width
+    # 画像を高さ・幅ともに40ピクセルの正方形に拡大する
     torchvision.transforms.Resize(40),
-    # Randomly crop a square image of 40 pixels in both height and width to
-    # produce a small square of 0.64 to 1 times the area of the original
-    # image, and then scale it to a square of 32 pixels in both height and
+    # 高さと幅がともに40ピクセルの正方形画像をランダムに切り抜く
+    # 元の面積の0.64倍から1倍の小さな正方形を生成する
+    # 画像を32ピクセル四方にリサイズし，さらにスケールする
     # width
     torchvision.transforms.RandomResizedCrop(32, scale=(0.64, 1.0),
                                                    ratio=(1.0, 1.0)),
     torchvision.transforms.RandomHorizontalFlip(),
     torchvision.transforms.ToTensor(),
-    # Standardize each channel of the image
+    # 画像の各チャネルを標準化する
     torchvision.transforms.Normalize([0.4914, 0.4822, 0.4465],
                                      [0.2023, 0.1994, 0.2010])])
 ```

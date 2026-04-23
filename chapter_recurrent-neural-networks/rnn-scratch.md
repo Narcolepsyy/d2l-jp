@@ -113,7 +113,7 @@ RNNモデルは `inputs` の最外側の次元に沿ってループし、
 @d2l.add_to_class(RNNScratch)  #@save
 def forward(self, inputs, state=None):
     if state is None:
-        # Initial state with shape: (batch_size, num_hiddens)
+        # 初期状態の形状: (batch_size, num_hiddens)
         if tab.selected('mxnet'):
             state = d2l.zeros((inputs.shape[1], self.num_hiddens),
                               ctx=inputs.ctx)
@@ -594,9 +594,9 @@ def predict(self, prefix, num_preds, vocab, device=None):
             X = d2l.tensor([[outputs[-1]]])
         embs = self.one_hot(X)
         rnn_outputs, state = self.rnn(embs, state)
-        if i < len(prefix) - 1:  # Warm-up period
+        if i < len(prefix) - 1:  # ウォームアップ期間
             outputs.append(vocab[prefix[i + 1]])
-        else:  # Predict num_preds steps
+        else:  # num_predsステップを予測する
             Y = self.output_layer(rnn_outputs)
             outputs.append(int(d2l.reshape(d2l.argmax(Y, axis=2), 1)))
     return ''.join([vocab.idx_to_token[i] for i in outputs])
@@ -612,9 +612,9 @@ def predict(self, prefix, num_preds, vocab, params):
         embs = self.one_hot(X)
         rnn_outputs, state = self.rnn.apply({'params': params['rnn']},
                                             embs, state)
-        if i < len(prefix) - 1:  # Warm-up period
+        if i < len(prefix) - 1:  # ウォームアップ期間
             outputs.append(vocab[prefix[i + 1]])
-        else:  # Predict num_preds steps
+        else:  # num_predsステップを予測する
             Y = self.apply({'params': params}, rnn_outputs,
                            method=self.output_layer)
             outputs.append(int(d2l.reshape(d2l.argmax(Y, axis=2), 1)))

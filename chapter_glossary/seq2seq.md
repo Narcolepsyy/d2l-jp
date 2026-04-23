@@ -1,4 +1,4 @@
-# sequence-to-sequence (seq2seq)
+# シーケンス・ツー・シーケンス（seq2seq）
 :label:`sec_glossary_seq2seq`
 
 ## 定義 (Definition)

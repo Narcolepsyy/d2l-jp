@@ -1,4 +1,4 @@
-# general-purpose GPUs (GPGPUs)
+# 汎用GPU（GPGPU）
 :label:`sec_glossary_gpgpus`
 
 ## 定義 (Definition)

@@ -118,7 +118,7 @@ class PatchEmbedding(nn.Module):
                                   stride=patch_size)
 
     def forward(self, X):
-        # Output shape: (batch size, no. of patches, no. of channels)
+        # 出力形状: (バッチサイズ, パッチ数, チャネル数)
         return self.conv(X).flatten(2).transpose(1, 2)
 ```
 
@@ -141,7 +141,7 @@ class PatchEmbedding(nn.Module):
                             strides=patch_size, padding='SAME')
 
     def __call__(self, X):
-        # Output shape: (batch size, no. of patches, no. of channels)
+        # 出力形状: (バッチサイズ, パッチ数, チャネル数)
         X = self.conv(X)
         return X.reshape((X.shape[0], -1, X.shape[3]))
 ```
@@ -294,8 +294,8 @@ class ViT(d2l.Classifier):
         self.patch_embedding = PatchEmbedding(
             img_size, patch_size, num_hiddens)
         self.cls_token = nn.Parameter(d2l.zeros(1, 1, num_hiddens))
-        num_steps = self.patch_embedding.num_patches + 1  # Add the cls token
-        # Positional embeddings are learnable
+        num_steps = self.patch_embedding.num_patches + 1  # clsトークンを追加する
+        # 位置埋め込みは学習可能である
         self.pos_embedding = nn.Parameter(
             torch.randn(1, num_steps, num_hiddens))
         self.dropout = nn.Dropout(emb_dropout)
@@ -338,8 +338,8 @@ class ViT(d2l.Classifier):
                                               self.num_hiddens)
         self.cls_token = self.param('cls_token', nn.initializers.zeros,
                                     (1, 1, self.num_hiddens))
-        num_steps = self.patch_embedding.num_patches + 1  # Add the cls token
-        # Positional embeddings are learnable
+        num_steps = self.patch_embedding.num_patches + 1  # clsトークンを追加する
+        # 位置埋め込みは学習可能である
         self.pos_embedding = self.param('pos_embed', nn.initializers.normal(),
                                         (1, num_steps, self.num_hiddens))
         self.blks = [ViTBlock(self.num_hiddens, self.mlp_num_hiddens,

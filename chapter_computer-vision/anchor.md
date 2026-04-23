@@ -71,31 +71,31 @@ def multibox_prior(data, sizes, ratios):
     boxes_per_pixel = (num_sizes + num_ratios - 1)
     size_tensor = d2l.tensor(sizes, ctx=device)
     ratio_tensor = d2l.tensor(ratios, ctx=device)
-    # Offsets are required to move the anchor to the center of a pixel. Since
-    # a pixel has height=1 and width=1, we choose to offset our centers by 0.5
+    # オフセットはアンカーをピクセルの中心へ移動させるために必要である。なお
+    # 1ピクセルは高さ=1、幅=1であり、中心を0.5だけずらすことにする
     offset_h, offset_w = 0.5, 0.5
-    steps_h = 1.0 / in_height  # Scaled steps in y-axis
-    steps_w = 1.0 / in_width  # Scaled steps in x-axis
+    steps_h = 1.0 / in_height  # y軸のスケール付きステップ
+    steps_w = 1.0 / in_width  # x軸方向にスケーリングされたステップ
 
-    # Generate all center points for the anchor boxes
+    # アンカーボックスのすべての中心点を生成する
     center_h = (d2l.arange(in_height, ctx=device) + offset_h) * steps_h
     center_w = (d2l.arange(in_width, ctx=device) + offset_w) * steps_w
     shift_x, shift_y = d2l.meshgrid(center_w, center_h)
     shift_x, shift_y = shift_x.reshape(-1), shift_y.reshape(-1)
 
-    # Generate `boxes_per_pixel` number of heights and widths that are later
-    # used to create anchor box corner coordinates (xmin, xmax, ymin, ymax)
+    # 後で使用する `boxes_per_pixel` 個の高さと幅を生成する
+    # アンカーボックスの角座標（xmin, xmax, ymin, ymax）を作成するために用いる
     w = np.concatenate((size_tensor * np.sqrt(ratio_tensor[0]),
                         sizes[0] * np.sqrt(ratio_tensor[1:]))) \
-                        * in_height / in_width  # Handle rectangular inputs
+                        * in_height / in_width  # 長方形の入力を処理する
     h = np.concatenate((size_tensor / np.sqrt(ratio_tensor[0]),
                         sizes[0] / np.sqrt(ratio_tensor[1:])))
-    # Divide by 2 to get half height and half width
+    # 2で割って高さと幅を半分にする
     anchor_manipulations = np.tile(np.stack((-w, -h, w, h)).T,
                                    (in_height * in_width, 1)) / 2
 
-    # Each center point will have `boxes_per_pixel` number of anchor boxes, so
-    # generate a grid of all anchor box centers with `boxes_per_pixel` repeats
+    # 各中心点には `boxes_per_pixel` 個のアンカーボックスが対応するので
+    # `boxes_per_pixel`回繰り返したすべてのアンカーボックス中心のグリッドを生成する
     out_grid = d2l.stack([shift_x, shift_y, shift_x, shift_y],
                          axis=1).repeat(boxes_per_pixel, axis=0)
     output = out_grid + anchor_manipulations
@@ -112,31 +112,31 @@ def multibox_prior(data, sizes, ratios):
     boxes_per_pixel = (num_sizes + num_ratios - 1)
     size_tensor = d2l.tensor(sizes, device=device)
     ratio_tensor = d2l.tensor(ratios, device=device)
-    # Offsets are required to move the anchor to the center of a pixel. Since
-    # a pixel has height=1 and width=1, we choose to offset our centers by 0.5
+    # オフセットはアンカーをピクセルの中心へ移動させるために必要である。なお
+    # 1ピクセルは高さ=1、幅=1であり、中心を0.5だけずらすことにする
     offset_h, offset_w = 0.5, 0.5
-    steps_h = 1.0 / in_height  # Scaled steps in y axis
-    steps_w = 1.0 / in_width  # Scaled steps in x axis
+    steps_h = 1.0 / in_height  # y軸のスケール付き目盛り
+    steps_w = 1.0 / in_width  # x軸のスケールを調整したステップ数
 
-    # Generate all center points for the anchor boxes
+    # アンカーボックスのすべての中心点を生成する
     center_h = (torch.arange(in_height, device=device) + offset_h) * steps_h
     center_w = (torch.arange(in_width, device=device) + offset_w) * steps_w
     shift_y, shift_x = torch.meshgrid(center_h, center_w, indexing='ij')
     shift_y, shift_x = shift_y.reshape(-1), shift_x.reshape(-1)
 
-    # Generate `boxes_per_pixel` number of heights and widths that are later
-    # used to create anchor box corner coordinates (xmin, xmax, ymin, ymax)
+    # 後で使用する `boxes_per_pixel` 個の高さと幅を生成する
+    # アンカーボックスの角座標（xmin, xmax, ymin, ymax）を作成するために用いる
     w = torch.cat((size_tensor * torch.sqrt(ratio_tensor[0]),
                    sizes[0] * torch.sqrt(ratio_tensor[1:])))\
-                   * in_height / in_width  # Handle rectangular inputs
+                   * in_height / in_width  # 長方形の入力を処理する
     h = torch.cat((size_tensor / torch.sqrt(ratio_tensor[0]),
                    sizes[0] / torch.sqrt(ratio_tensor[1:])))
-    # Divide by 2 to get half height and half width
+    # 2で割って高さと幅を半分にする
     anchor_manipulations = torch.stack((-w, -h, w, h)).T.repeat(
                                         in_height * in_width, 1) / 2
 
-    # Each center point will have `boxes_per_pixel` number of anchor boxes, so
-    # generate a grid of all anchor box centers with `boxes_per_pixel` repeats
+    # 各中心点には `boxes_per_pixel` 個のアンカーボックスが対応するので
+    # `boxes_per_pixel`回繰り返したすべてのアンカーボックス中心のグリッドを生成する
     out_grid = torch.stack([shift_x, shift_y, shift_x, shift_y],
                 dim=1).repeat_interleave(boxes_per_pixel, dim=0)
     output = out_grid + anchor_manipulations
@@ -152,7 +152,7 @@ img = image.imread('../img/catdog.jpg').asnumpy()
 h, w = img.shape[:2]
 
 print(h, w)
-X = np.random.uniform(size=(1, 3, h, w))  # Construct input data
+X = np.random.uniform(size=(1, 3, h, w))  # 入力データを構成する
 Y = multibox_prior(X, sizes=[0.75, 0.5, 0.25], ratios=[1, 2, 0.5])
 Y.shape
 ```
@@ -163,7 +163,7 @@ img = d2l.plt.imread('../img/catdog.jpg')
 h, w = img.shape[:2]
 
 print(h, w)
-X = torch.rand(size=(1, 3, h, w))  # Construct input data
+X = torch.rand(size=(1, 3, h, w))  # 入力データを構成する
 Y = multibox_prior(X, sizes=[0.75, 0.5, 0.25], ratios=[1, 2, 0.5])
 Y.shape
 ```
@@ -259,16 +259,16 @@ def box_iou(boxes1, boxes2):
     """Compute pairwise IoU across two lists of anchor or bounding boxes."""
     box_area = lambda boxes: ((boxes[:, 2] - boxes[:, 0]) *
                               (boxes[:, 3] - boxes[:, 1]))
-    # Shape of `boxes1`, `boxes2`, `areas1`, `areas2`: (no. of boxes1, 4),
+    # `boxes1`, `boxes2`, `areas1`, `areas2` の形状: (boxes1の個数, 4)
     # (no. of boxes2, 4), (no. of boxes1,), (no. of boxes2,)
     areas1 = box_area(boxes1)
     areas2 = box_area(boxes2)
-    # Shape of `inter_upperlefts`, `inter_lowerrights`, `inters`: (no. of
-    # boxes1, no. of boxes2, 2)
+    # `inter_upperlefts`、`inter_lowerrights`、`inters`の形状:（数）
+    # ボックス1、ボックス2の数、2)
     inter_upperlefts = np.maximum(boxes1[:, None, :2], boxes2[:, :2])
     inter_lowerrights = np.minimum(boxes1[:, None, 2:], boxes2[:, 2:])
     inters = (inter_lowerrights - inter_upperlefts).clip(min=0)
-    # Shape of `inter_areas` and `union_areas`: (no. of boxes1, no. of boxes2)
+    # `inter_areas` と `union_areas` の形状: (boxes1の数, boxes2の数)
     inter_areas = inters[:, :, 0] * inters[:, :, 1]
     union_areas = areas1[:, None] + areas2 - inter_areas
     return inter_areas / union_areas
@@ -281,16 +281,16 @@ def box_iou(boxes1, boxes2):
     """Compute pairwise IoU across two lists of anchor or bounding boxes."""
     box_area = lambda boxes: ((boxes[:, 2] - boxes[:, 0]) *
                               (boxes[:, 3] - boxes[:, 1]))
-    # Shape of `boxes1`, `boxes2`, `areas1`, `areas2`: (no. of boxes1, 4),
+    # `boxes1`, `boxes2`, `areas1`, `areas2` の形状: (boxes1の個数, 4)
     # (no. of boxes2, 4), (no. of boxes1,), (no. of boxes2,)
     areas1 = box_area(boxes1)
     areas2 = box_area(boxes2)
-    # Shape of `inter_upperlefts`, `inter_lowerrights`, `inters`: (no. of
-    # boxes1, no. of boxes2, 2)
+    # `inter_upperlefts`、`inter_lowerrights`、`inters`の形状:（数）
+    # ボックス1、ボックス2の数、2)
     inter_upperlefts = torch.max(boxes1[:, None, :2], boxes2[:, :2])
     inter_lowerrights = torch.min(boxes1[:, None, 2:], boxes2[:, 2:])
     inters = (inter_lowerrights - inter_upperlefts).clamp(min=0)
-    # Shape of `inter_areas` and `union_areas`: (no. of boxes1, no. of boxes2)
+    # `inter_areas` と `union_areas` の形状: (boxes1の数, boxes2の数)
     inter_areas = inters[:, :, 0] * inters[:, :, 1]
     union_areas = areas1[:, None] + areas2 - inter_areas
     return inter_areas / union_areas
@@ -351,13 +351,13 @@ def box_iou(boxes1, boxes2):
 def assign_anchor_to_bbox(ground_truth, anchors, device, iou_threshold=0.5):
     """Assign closest ground-truth bounding boxes to anchor boxes."""
     num_anchors, num_gt_boxes = anchors.shape[0], ground_truth.shape[0]
-    # Element x_ij in the i-th row and j-th column is the IoU of the anchor
-    # box i and the ground-truth bounding box j
+    # i行j列の要素x_ijはアンカーのIoUである
+    # ボックスiと正解バウンディングボックスj
     jaccard = box_iou(anchors, ground_truth)
-    # Initialize the tensor to hold the assigned ground-truth bounding box for
-    # each anchor
+    # 割り当てられた正解バウンディングボックスを保持するテンソルを初期化する
+    # 各アンカー
     anchors_bbox_map = np.full((num_anchors,), -1, dtype=np.int32, ctx=device)
-    # Assign ground-truth bounding boxes according to the threshold
+    # しきい値に従って正解バウンディングボックスを割り当てる
     max_ious, indices = np.max(jaccard, axis=1), np.argmax(jaccard, axis=1)
     anc_i = np.nonzero(max_ious >= iou_threshold)[0]
     box_j = indices[max_ious >= iou_threshold]
@@ -365,7 +365,7 @@ def assign_anchor_to_bbox(ground_truth, anchors, device, iou_threshold=0.5):
     col_discard = np.full((num_anchors,), -1)
     row_discard = np.full((num_gt_boxes,), -1)
     for _ in range(num_gt_boxes):
-        max_idx = np.argmax(jaccard)  # Find the largest IoU
+        max_idx = np.argmax(jaccard)  # 最大のIoUを求める
         box_idx = (max_idx % num_gt_boxes).astype('int32')
         anc_idx = (max_idx / num_gt_boxes).astype('int32')
         anchors_bbox_map[anc_idx] = box_idx
@@ -380,14 +380,14 @@ def assign_anchor_to_bbox(ground_truth, anchors, device, iou_threshold=0.5):
 def assign_anchor_to_bbox(ground_truth, anchors, device, iou_threshold=0.5):
     """Assign closest ground-truth bounding boxes to anchor boxes."""
     num_anchors, num_gt_boxes = anchors.shape[0], ground_truth.shape[0]
-    # Element x_ij in the i-th row and j-th column is the IoU of the anchor
-    # box i and the ground-truth bounding box j
+    # i行j列の要素x_ijはアンカーのIoUである
+    # ボックスiと正解バウンディングボックスj
     jaccard = box_iou(anchors, ground_truth)
-    # Initialize the tensor to hold the assigned ground-truth bounding box for
-    # each anchor
+    # 割り当てられた正解バウンディングボックスを保持するテンソルを初期化する
+    # 各アンカー
     anchors_bbox_map = torch.full((num_anchors,), -1, dtype=torch.long,
                                   device=device)
-    # Assign ground-truth bounding boxes according to the threshold
+    # しきい値に従って正解バウンディングボックスを割り当てる
     max_ious, indices = torch.max(jaccard, dim=1)
     anc_i = torch.nonzero(max_ious >= iou_threshold).reshape(-1)
     box_j = indices[max_ious >= iou_threshold]
@@ -395,7 +395,7 @@ def assign_anchor_to_bbox(ground_truth, anchors, device, iou_threshold=0.5):
     col_discard = torch.full((num_anchors,), -1)
     row_discard = torch.full((num_gt_boxes,), -1)
     for _ in range(num_gt_boxes):
-        max_idx = torch.argmax(jaccard)  # Find the largest IoU
+        max_idx = torch.argmax(jaccard)  # 最大のIoUを求める
         box_idx = (max_idx % num_gt_boxes).long()
         anc_idx = (max_idx / num_gt_boxes).long()
         anchors_bbox_map[anc_idx] = box_idx
@@ -467,19 +467,19 @@ def multibox_target(anchors, labels):
             label[:, 1:], anchors, device)
         bbox_mask = np.tile((np.expand_dims((anchors_bbox_map >= 0),
                                             axis=-1)), (1, 4)).astype('int32')
-        # Initialize class labels and assigned bounding box coordinates with
+        # クラスラベルと割り当て済みのバウンディングボックス座標を初期化する
         # zeros
         class_labels = d2l.zeros(num_anchors, dtype=np.int32, ctx=device)
         assigned_bb = d2l.zeros((num_anchors, 4), dtype=np.float32,
                                 ctx=device)
-        # Label classes of anchor boxes using their assigned ground-truth
-        # bounding boxes. If an anchor box is not assigned any, we label its
-        # class as background (the value remains zero)
+        # 割り当てられた真値でアンカーボックスのラベルクラスを付与する
+        # バウンディングボックス。アンカー・ボックスに割り当てられない場合は、そのラベルを付ける
+        # 背景としてのクラス（値は0のまま）
         indices_true = np.nonzero(anchors_bbox_map >= 0)[0]
         bb_idx = anchors_bbox_map[indices_true]
         class_labels[indices_true] = label[bb_idx, 0].astype('int32') + 1
         assigned_bb[indices_true] = label[bb_idx, 1:]
-        # Offset transformation
+        # オフセット変換
         offset = offset_boxes(anchors, assigned_bb) * bbox_mask
         batch_offset.append(offset.reshape(-1))
         batch_mask.append(bbox_mask.reshape(-1))
@@ -504,20 +504,20 @@ def multibox_target(anchors, labels):
             label[:, 1:], anchors, device)
         bbox_mask = ((anchors_bbox_map >= 0).float().unsqueeze(-1)).repeat(
             1, 4)
-        # Initialize class labels and assigned bounding box coordinates with
+        # クラスラベルと割り当て済みのバウンディングボックス座標を初期化する
         # zeros
         class_labels = torch.zeros(num_anchors, dtype=torch.long,
                                    device=device)
         assigned_bb = torch.zeros((num_anchors, 4), dtype=torch.float32,
                                   device=device)
-        # Label classes of anchor boxes using their assigned ground-truth
-        # bounding boxes. If an anchor box is not assigned any, we label its
-        # class as background (the value remains zero)
+        # 割り当てられた真値でアンカーボックスのラベルクラスを付与する
+        # バウンディングボックス。アンカー・ボックスに割り当てられない場合は、そのラベルを付ける
+        # 背景としてのクラス（値は0のまま）
         indices_true = torch.nonzero(anchors_bbox_map >= 0)
         bb_idx = anchors_bbox_map[indices_true]
         class_labels[indices_true] = label[bb_idx, 0].long() + 1
         assigned_bb[indices_true] = label[bb_idx, 1:]
-        # Offset transformation
+        # オフセット変換
         offset = offset_boxes(anchors, assigned_bb) * bbox_mask
         batch_offset.append(offset.reshape(-1))
         batch_mask.append(bbox_mask.reshape(-1))
@@ -664,7 +664,7 @@ def offset_inverse(anchors, offset_preds):
 def nms(boxes, scores, iou_threshold):
     """Sort confidence scores of predicted bounding boxes."""
     B = scores.argsort()[::-1]
-    keep = []  # Indices of predicted bounding boxes that will be kept
+    keep = []  # 保持される予測バウンディングボックスのインデックス
     while B.size > 0:
         i = B[0]
         keep.append(i)
@@ -682,7 +682,7 @@ def nms(boxes, scores, iou_threshold):
 def nms(boxes, scores, iou_threshold):
     """Sort confidence scores of predicted bounding boxes."""
     B = torch.argsort(scores, dim=-1, descending=True)
-    keep = []  # Indices of predicted bounding boxes that will be kept
+    keep = []  # 保持される予測バウンディングボックスのインデックス
     while B.numel() > 0:
         i = B[0]
         keep.append(i)
@@ -712,7 +712,7 @@ def multibox_detection(cls_probs, offset_preds, anchors, nms_threshold=0.5,
         conf, class_id = np.max(cls_prob[1:], 0), np.argmax(cls_prob[1:], 0)
         predicted_bb = offset_inverse(anchors, offset_pred)
         keep = nms(predicted_bb, conf, nms_threshold)
-        # Find all non-`keep` indices and set the class to background
+        # すべての`keep`でないインデックスを見つけ、クラスを背景に設定する
         all_idx = np.arange(num_anchors, dtype=np.int32, ctx=device)
         combined = d2l.concat((keep, all_idx))
         unique, counts = np.unique(combined, return_counts=True)
@@ -721,8 +721,8 @@ def multibox_detection(cls_probs, offset_preds, anchors, nms_threshold=0.5,
         class_id[non_keep] = -1
         class_id = class_id[all_id_sorted].astype('float32')
         conf, predicted_bb = conf[all_id_sorted], predicted_bb[all_id_sorted]
-        # Here `pos_threshold` is a threshold for positive (non-background)
-        # predictions
+        # ここで `pos_threshold` は正例（背景以外）の閾値である
+        # 予測値
         below_min_idx = (conf < pos_threshold)
         class_id[below_min_idx] = -1
         conf[below_min_idx] = 1 - conf[below_min_idx]
@@ -748,7 +748,7 @@ def multibox_detection(cls_probs, offset_preds, anchors, nms_threshold=0.5,
         conf, class_id = torch.max(cls_prob[1:], 0)
         predicted_bb = offset_inverse(anchors, offset_pred)
         keep = nms(predicted_bb, conf, nms_threshold)
-        # Find all non-`keep` indices and set the class to background
+        # すべての`keep`でないインデックスを見つけ、クラスを背景に設定する
         all_idx = torch.arange(num_anchors, dtype=torch.long, device=device)
         combined = torch.cat((keep, all_idx))
         uniques, counts = combined.unique(return_counts=True)
@@ -757,8 +757,8 @@ def multibox_detection(cls_probs, offset_preds, anchors, nms_threshold=0.5,
         class_id[non_keep] = -1
         class_id = class_id[all_id_sorted]
         conf, predicted_bb = conf[all_id_sorted], predicted_bb[all_id_sorted]
-        # Here `pos_threshold` is a threshold for positive (non-background)
-        # predictions
+        # ここで `pos_threshold` は正例（背景以外）の閾値である
+        # 予測値
         below_min_idx = (conf < pos_threshold)
         class_id[below_min_idx] = -1
         conf[below_min_idx] = 1 - conf[below_min_idx]
@@ -782,7 +782,7 @@ anchors = d2l.tensor([[0.1, 0.08, 0.52, 0.92], [0.08, 0.2, 0.56, 0.95],
 offset_preds = d2l.tensor([0] * d2l.size(anchors))
 cls_probs = d2l.tensor([[0] * 4,  # Predicted background likelihood 
                       [0.9, 0.8, 0.7, 0.1],  # Predicted dog likelihood 
-                      [0.1, 0.2, 0.3, 0.9]])  # Predicted cat likelihood
+                      [0.1, 0.2, 0.3, 0.9]])  # 予測された猫の確率
 ```
 
 これらの予測バウンディングボックスとその confidence を画像上に[**描画できる。**]

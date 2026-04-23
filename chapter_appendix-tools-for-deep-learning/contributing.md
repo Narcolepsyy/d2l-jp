@@ -60,7 +60,7 @@ Git のオープンソース書籍には、[Git のインストール方法](htt
 :label:`fig_git_clone`
 
 ```
-# Replace your_github_username with your GitHub username
+# your_github_usernameを自分のGitHubユーザ名に置き換える
 git clone https://github.com/your_github_username/d2l-en.git
 ```
 

@@ -1,7 +1,7 @@
 {.python .input}
 %load_ext d2lbook.tab
 tab.interact_select(["pytorch"])
-#required_libs("setuptools==66", "wheel==0.38.4", "gym==0.21.0")
+#必要なライブラリを指定する("setuptools==66", "wheel==0.38.4", "gym==0.21.0")
 ```
 
 # Q学習
@@ -81,15 +81,15 @@ import numpy as np
 import random
 from d2l import torch as d2l
 
-seed = 0  # Random number generator seed
-gamma = 0.95  # Discount factor
-num_iters = 256  # Number of iterations
-alpha   = 0.9  # Learing rate
-epsilon = 0.9  # Epsilon in epsilion gready algorithm
-random.seed(seed)  # Set the random seed
+seed = 0  # 乱数生成器のシード
+gamma = 0.95  # 割引率
+num_iters = 256  # 反復回数
+alpha   = 0.9  # 学習率
+epsilon = 0.9  # ε-greedy法におけるε
+random.seed(seed)  # 乱数シードを設定する
 np.random.seed(seed)
 
-# Now set up the environment
+# 環境を設定する。
 env_info = d2l.make_env('FrozenLake-v1', seed=seed)
 ```
 
@@ -125,10 +125,10 @@ def q_learning(env_info, gamma, num_iters, alpha, epsilon):
     pi = np.zeros((num_iters + 1, num_states))
 
     for k in range(1, num_iters + 1):
-        # Reset environment
+        # 環境をリセットする
         state, done = env.reset(), False
         while not done:
-            # Select an action for a given state and acts in env based on selected action
+            # 与えられた状態に対して行動を選択し，選択した行動に基づいて環境で行動する
             action = e_greedy(env, Q, state, epsilon)
             next_state, reward, done, _ = env.step(action)
 
@@ -136,9 +136,9 @@ def q_learning(env_info, gamma, num_iters, alpha, epsilon):
             y = reward + gamma * np.max(Q[next_state,:])
             Q[state, action] = Q[state, action] + alpha * (y - Q[state, action])
 
-            # Move to the next state
+            # 次の状態へ遷移する
             state = next_state
-        # Record max value and max action for visualization purpose only
+        # 可視化のためにのみ最大値と最大行動を記録する
         for s in range(num_states):
             V[k,s]  = np.max(Q[s,:])
             pi[k,s] = np.argmax(Q[s,:])

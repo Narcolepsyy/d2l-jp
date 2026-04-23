@@ -162,7 +162,7 @@ loss = gluon.loss.SigmoidBCELoss()
 ```{.python .input}
 #@tab pytorch
 class SigmoidBCELoss(nn.Module):
-    # Binary cross-entropy loss with masking
+    # マスク付きバイナリ交差エントロピー損失
     def __init__(self):
         super().__init__()
 
@@ -245,7 +245,7 @@ def train(net, data_iter, lr, num_epochs, device=d2l.try_gpu()):
                             {'learning_rate': lr})
     animator = d2l.Animator(xlabel='epoch', ylabel='loss',
                             xlim=[1, num_epochs])
-    # Sum of normalized losses, no. of normalized losses
+    # 正規化損失の合計、正規化損失の数
     metric = d2l.Accumulator(2)
     for epoch in range(num_epochs):
         timer, num_batches = d2l.Timer(), len(data_iter)
@@ -277,7 +277,7 @@ def train(net, data_iter, lr, num_epochs, device=d2l.try_gpu()):
     optimizer = torch.optim.Adam(net.parameters(), lr=lr)
     animator = d2l.Animator(xlabel='epoch', ylabel='loss',
                             xlim=[1, num_epochs])
-    # Sum of normalized losses, no. of normalized losses
+    # 正規化損失の合計、正規化損失の数
     metric = d2l.Accumulator(2)
     for epoch in range(num_epochs):
         timer, num_batches = d2l.Timer(), len(data_iter)
@@ -322,10 +322,10 @@ word2vec モデルを学習した後は、
 def get_similar_tokens(query_token, k, embed):
     W = embed.weight.data()
     x = W[vocab[query_token]]
-    # Compute the cosine similarity. Add 1e-9 for numerical stability
+    # コサイン類似度を計算する。数値安定性のために1e-9を加える
     cos = np.dot(W, x) / np.sqrt(np.sum(W * W, axis=1) * np.sum(x * x) + 1e-9)
     topk = npx.topk(cos, k=k+1, ret_typ='indices').asnumpy().astype('int32')
-    for i in topk[1:]:  # Remove the input words
+    for i in topk[1:]:  # 入力単語を削除する
         print(f'cosine sim={float(cos[i]):.3f}: {vocab.to_tokens(i)}')
 
 get_similar_tokens('chip', 3, net[0])
@@ -336,11 +336,11 @@ get_similar_tokens('chip', 3, net[0])
 def get_similar_tokens(query_token, k, embed):
     W = embed.weight.data
     x = W[vocab[query_token]]
-    # Compute the cosine similarity. Add 1e-9 for numerical stability
+    # コサイン類似度を計算する。数値安定性のために1e-9を加える
     cos = torch.mv(W, x) / torch.sqrt(torch.sum(W * W, dim=1) *
                                       torch.sum(x * x) + 1e-9)
     topk = torch.topk(cos, k=k+1)[1].cpu().numpy().astype('int32')
-    for i in topk[1:]:  # Remove the input words
+    for i in topk[1:]:  # 入力単語を削除する
         print(f'cosine sim={float(cos[i]):.3f}: {vocab.to_tokens(i)}')
 
 get_similar_tokens('chip', 3, net[0])

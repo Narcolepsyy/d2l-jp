@@ -32,7 +32,7 @@ from mxnet import np, npx
 import random
 npx.set_np()
 
-# Sample datapoints and create y coordinate
+# サンプルデータ点を取得し、y座標を作成する
 epsilon = 0.1
 random.seed(8675309)
 xs = np.random.normal(loc=0, scale=1, size=(300,))
@@ -40,11 +40,11 @@ xs = np.random.normal(loc=0, scale=1, size=(300,))
 ys = [np.sum(np.exp(-(xs[:i] - xs[i])**2 / (2 * epsilon**2))
              / np.sqrt(2*np.pi*epsilon**2)) / len(xs) for i in range(len(xs))]
 
-# Compute true density
+# 真の密度を計算する
 xd = np.arange(np.min(xs), np.max(xs), 0.01)
 yd = np.exp(-xd**2/2) / np.sqrt(2 * np.pi)
 
-# Plot the results
+# 結果をプロットする
 d2l.plot(xd, yd, 'x', 'density')
 d2l.plt.scatter(xs, ys)
 d2l.plt.axvline(x=0)
@@ -58,9 +58,9 @@ d2l.plt.show()
 from d2l import torch as d2l
 import torch
 
-torch.pi = torch.acos(torch.zeros(1)) * 2  #define pi in torch
+torch.pi = torch.acos(torch.zeros(1)) * 2  #torchでπを定義する
 
-# Sample datapoints and create y coordinate
+# サンプルデータ点を取得し、y座標を作成する
 epsilon = 0.1
 torch.manual_seed(8675309)
 xs = torch.randn(size=(300,))
@@ -70,11 +70,11 @@ ys = torch.tensor(
                / torch.sqrt(2*torch.pi*epsilon**2)) / len(xs)\
      for i in range(len(xs))])
 
-# Compute true density
+# 真の密度を計算する
 xd = torch.arange(torch.min(xs), torch.max(xs), 0.01)
 yd = torch.exp(-xd**2/2) / torch.sqrt(2 * torch.pi)
 
-# Plot the results
+# 結果をプロットする
 d2l.plot(xd, yd, 'x', 'density')
 d2l.plt.scatter(xs, ys)
 d2l.plt.axvline(x=0)
@@ -88,9 +88,9 @@ d2l.plt.show()
 from d2l import tensorflow as d2l
 import tensorflow as tf
 
-tf.pi = tf.acos(tf.zeros(1)) * 2  # define pi in TensorFlow
+tf.pi = tf.acos(tf.zeros(1)) * 2  # TensorFlowで円周率を定義する
 
-# Sample datapoints and create y coordinate
+# サンプルデータ点を取得し、y座標を作成する
 epsilon = 0.1
 xs = tf.random.normal((300,))
 
@@ -100,11 +100,11 @@ ys = tf.constant(
         tf.size(xs), dtype=tf.float32)).numpy() \
      for i in range(tf.size(xs))])
 
-# Compute true density
+# 真の密度を計算する
 xd = tf.range(tf.reduce_min(xs), tf.reduce_max(xs), 0.01)
 yd = tf.exp(-xd**2/2) / tf.sqrt(2 * tf.pi)
 
-# Plot the results
+# 結果をプロットする
 d2l.plot(xd, yd, 'x', 'density')
 d2l.plt.scatter(xs, ys)
 d2l.plt.axvline(x=0)
@@ -175,33 +175,33 @@ $$
 
 ```{.python .input}
 #@tab mxnet
-# Statistical bias
+# 統計的バイアス
 def stat_bias(true_theta, est_theta):
     return(np.mean(est_theta) - true_theta)
 
-# Mean squared error
+# 平均二乗誤差
 def mse(data, true_theta):
     return(np.mean(np.square(data - true_theta)))
 ```
 
 ```{.python .input}
 #@tab pytorch
-# Statistical bias
+# 統計的バイアス
 def stat_bias(true_theta, est_theta):
     return(torch.mean(est_theta) - true_theta)
 
-# Mean squared error
+# 平均二乗誤差
 def mse(data, true_theta):
     return(torch.mean(torch.square(data - true_theta)))
 ```
 
 ```{.python .input}
 #@tab tensorflow
-# Statistical bias
+# 統計的バイアス
 def stat_bias(true_theta, est_theta):
     return(tf.reduce_mean(est_theta) - true_theta)
 
-# Mean squared error
+# 平均二乗誤差
 def mse(data, true_theta):
     return(tf.reduce_mean(tf.square(data - true_theta)))
 ```
@@ -418,16 +418,16 @@ $$\left[\hat\mu_n - 1.96\frac{\hat\sigma_n}{\sqrt{n}}, \hat\mu_n + 1.96\frac{\ha
 
 ```{.python .input}
 #@tab mxnet
-# Number of samples
+# サンプル数
 N = 1000
 
-# Sample dataset
+# サンプルデータセット
 samples = np.random.normal(loc=0, scale=1, size=(N,))
 
-# Lookup Students's t-distribution c.d.f.
+# スチューデントの t 分布の累積分布関数を参照する
 t_star = 1.96
 
-# Construct interval
+# 区間を構築する
 mu_hat = np.mean(samples)
 sigma_hat = samples.std(ddof=1)
 (mu_hat - t_star*sigma_hat/np.sqrt(N), mu_hat + t_star*sigma_hat/np.sqrt(N))
@@ -435,20 +435,20 @@ sigma_hat = samples.std(ddof=1)
 
 ```{.python .input}
 #@tab pytorch
-# PyTorch uses Bessel's correction by default, which means the use of ddof=1
-# instead of default ddof=0 in numpy. We can use unbiased=False to imitate
+# PyTorchはデフォルトでベッセル補正を用いる。これはddof=1を使うことを意味する
+# NumPy のデフォルトの ddof=0 の代わりに、unbiased=False を用いて模倣できる。
 # ddof=0.
 
-# Number of samples
+# サンプル数
 N = 1000
 
-# Sample dataset
+# サンプルデータセット
 samples = torch.normal(0, 1, size=(N,))
 
-# Lookup Students's t-distribution c.d.f.
+# スチューデントの t 分布の累積分布関数を参照する
 t_star = 1.96
 
-# Construct interval
+# 区間を構築する
 mu_hat = torch.mean(samples)
 sigma_hat = samples.std(unbiased=True)
 (mu_hat - t_star*sigma_hat/torch.sqrt(torch.tensor(N, dtype=torch.float32)),\
@@ -457,16 +457,16 @@ sigma_hat = samples.std(unbiased=True)
 
 ```{.python .input}
 #@tab tensorflow
-# Number of samples
+# サンプル数
 N = 1000
 
-# Sample dataset
+# サンプルデータセット
 samples = tf.random.normal((N,), 0, 1)
 
-# Lookup Students's t-distribution c.d.f.
+# スチューデントの t 分布の累積分布関数を参照する
 t_star = 1.96
 
-# Construct interval
+# 区間を構築する
 mu_hat = tf.reduce_mean(samples)
 sigma_hat = tf.math.reduce_std(samples)
 (mu_hat - t_star*sigma_hat/tf.sqrt(tf.constant(N, dtype=tf.float32)), \

@@ -67,9 +67,9 @@ def read_data_bananas(is_train=True):
         images.append(image.imread(
             os.path.join(data_dir, 'bananas_train' if is_train else
                          'bananas_val', 'images', f'{img_name}')))
-        # Here `target` contains (class, upper-left x, upper-left y,
-        # lower-right x, lower-right y), where all the images have the same
-        # banana class (index 0)
+        # ここでは `target` は（クラス、左上の x、左上の y、
+        # 右下の x, 右下の y)、ここで全ての画像は同じ
+        # バナナクラス（インデックス0）
         targets.append(list(target))
     return images, np.expand_dims(np.array(targets), 1) / 256
 ```
@@ -89,9 +89,9 @@ def read_data_bananas(is_train=True):
         images.append(torchvision.io.read_image(
             os.path.join(data_dir, 'bananas_train' if is_train else
                          'bananas_val', 'images', f'{img_name}')))
-        # Here `target` contains (class, upper-left x, upper-left y,
-        # lower-right x, lower-right y), where all the images have the same
-        # banana class (index 0)
+        # ここでは `target` は（クラス、左上の x、左上の y、
+        # 右下の x, 右下の y)、ここで全ての画像は同じ
+        # バナナクラス（インデックス0）
         targets.append(list(target))
     return images, torch.tensor(targets).unsqueeze(1) / 256
 ```

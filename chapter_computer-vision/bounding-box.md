@@ -110,7 +110,7 @@ def box_center_to_corner(boxes):
 
 ```{.python .input}
 #@tab all
-# Here `bbox` is the abbreviation for bounding box
+# ここで `bbox` はバウンディングボックスの略である
 dog_bbox, cat_bbox = [60.0, 45.0, 378.0, 516.0], [400.0, 112.0, 655.0, 493.0]
 ```
 
@@ -130,9 +130,9 @@ box_center_to_corner(box_corner_to_center(boxes)) == boxes
 #@save
 def bbox_to_rect(bbox, color):
     """Convert bounding box to matplotlib format."""
-    # Convert the bounding box (upper-left x, upper-left y, lower-right x,
-    # lower-right y) format to the matplotlib format: ((upper-left x,
-    # upper-left y), width, height)
+    # バウンディングボックス（左上の x、左上の y、右下の x、
+    # 左上x、右下y）の形式をmatplotlibの形式に変換する: ((upper-left x,
+    # 左上の y), 幅, 高さ)
     return d2l.plt.Rectangle(
         xy=(bbox[0], bbox[1]), width=bbox[2]-bbox[0], height=bbox[3]-bbox[1],
         fill=False, edgecolor=color, linewidth=2)

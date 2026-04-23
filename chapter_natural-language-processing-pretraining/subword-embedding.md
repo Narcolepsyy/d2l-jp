@@ -127,9 +127,9 @@ def get_max_freq_pair(token_freqs):
     for token, freq in token_freqs.items():
         symbols = token.split()
         for i in range(len(symbols) - 1):
-            # Key of `pairs` is a tuple of two consecutive symbols
+            # `pairs` のキーは連続する2つのシンボルからなるタプルである
             pairs[symbols[i], symbols[i + 1]] += freq
-    return max(pairs, key=pairs.get)  # Key of `pairs` with the max value
+    return max(pairs, key=pairs.get)  # `pairs` の最大値を持つキー
 ```
 
 連続シンボルの頻度に基づく貪欲法として、
@@ -188,7 +188,7 @@ def segment_BPE(tokens, symbols):
     for token in tokens:
         start, end = 0, len(token)
         cur_output = []
-        # Segment token with the longest possible subwords from symbols
+        # 記号から最長の部分語でトークンを分割する
         while start < len(token) and start < end:
             if token[start: end] in symbols:
                 cur_output.append(token[start: end])

@@ -69,7 +69,7 @@ markdown セルをダブルクリックして編集モードに入る。 :numref
 まず、notedown プラグインをインストールし、Jupyter Notebook を起動して、プラグインを読み込みる。
 
 ```
-pip install d2l-notedown  # You may need to uninstall the original notedown.
+pip install d2l-notedown  # 元の notedown をアンインストールする必要があるかもしれない。
 jupyter notebook --NotebookApp.contents_manager_class='notedown.NotedownContentsManager'
 ```
 

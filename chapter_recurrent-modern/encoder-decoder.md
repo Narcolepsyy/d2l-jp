@@ -79,7 +79,7 @@ class Encoder(nn.Block):  #@save
     def __init__(self):
         super().__init__()
 
-    # Later there can be additional arguments (e.g., length excluding padding)
+    # 後で追加の引数（例: パディングを除いた長さ）があり得る
     def forward(self, X, *args):
         raise NotImplementedError
 ```
@@ -91,7 +91,7 @@ class Encoder(nn.Module):  #@save
     def __init__(self):
         super().__init__()
 
-    # Later there can be additional arguments (e.g., length excluding padding)
+    # 後で追加の引数（例: パディングを除いた長さ）があり得る
     def forward(self, X, *args):
         raise NotImplementedError
 ```
@@ -103,7 +103,7 @@ class Encoder(tf.keras.layers.Layer):  #@save
     def __init__(self):
         super().__init__()
 
-    # Later there can be additional arguments (e.g., length excluding padding)
+    # 後で追加の引数（例: パディングを除いた長さ）があり得る
     def call(self, X, *args):
         raise NotImplementedError
 ```
@@ -115,7 +115,7 @@ class Encoder(nn.Module):  #@save
     def setup(self):
         raise NotImplementedError
 
-    # Later there can be additional arguments (e.g., length excluding padding)
+    # 後で追加の引数（例: パディングを除いた長さ）があり得る
     def __call__(self, X, *args):
         raise NotImplementedError
 ```
@@ -147,7 +147,7 @@ class Decoder(nn.Block):  #@save
     def __init__(self):
         super().__init__()
 
-    # Later there can be additional arguments (e.g., length excluding padding)
+    # 後で追加の引数（例: パディングを除いた長さ）があり得る
     def init_state(self, enc_all_outputs, *args):
         raise NotImplementedError
 
@@ -162,7 +162,7 @@ class Decoder(nn.Module):  #@save
     def __init__(self):
         super().__init__()
 
-    # Later there can be additional arguments (e.g., length excluding padding)
+    # 後で追加の引数（例: パディングを除いた長さ）があり得る
     def init_state(self, enc_all_outputs, *args):
         raise NotImplementedError
 
@@ -177,7 +177,7 @@ class Decoder(tf.keras.layers.Layer):  #@save
     def __init__(self):
         super().__init__()
 
-    # Later there can be additional arguments (e.g., length excluding padding)
+    # 後で追加の引数（例: パディングを除いた長さ）があり得る
     def init_state(self, enc_all_outputs, *args):
         raise NotImplementedError
 
@@ -192,7 +192,7 @@ class Decoder(nn.Module):  #@save
     def setup(self):
         raise NotImplementedError
 
-    # Later there can be additional arguments (e.g., length excluding padding)
+    # 後で追加の引数（例: パディングを除いた長さ）があり得る
     def init_state(self, enc_all_outputs, *args):
         raise NotImplementedError
 
@@ -221,7 +221,7 @@ class EncoderDecoder(d2l.Classifier):  #@save
     def forward(self, enc_X, dec_X, *args):
         enc_all_outputs = self.encoder(enc_X, *args)
         dec_state = self.decoder.init_state(enc_all_outputs, *args)
-        # Return decoder output only
+        # デコーダの出力のみを返す
         return self.decoder(dec_X, dec_state)[0]
 ```
 
@@ -237,7 +237,7 @@ class EncoderDecoder(d2l.Classifier):  #@save
     def call(self, enc_X, dec_X, *args):
         enc_all_outputs = self.encoder(enc_X, *args, training=True)
         dec_state = self.decoder.init_state(enc_all_outputs, *args)
-        # Return decoder output only
+        # デコーダの出力のみを返す
         return self.decoder(dec_X, dec_state, training=True)[0]
 ```
 
@@ -252,7 +252,7 @@ class EncoderDecoder(d2l.Classifier):  #@save
     def __call__(self, enc_X, dec_X, *args):
         enc_all_outputs = self.encoder(enc_X, *args, training=self.training)
         dec_state = self.decoder.init_state(enc_all_outputs, *args)
-        # Return decoder output only
+        # デコーダの出力のみを返す
         return self.decoder(dec_X, dec_state, training=self.training)[0]
 ```
 

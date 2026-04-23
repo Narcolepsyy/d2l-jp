@@ -70,8 +70,8 @@ Kaggle コンペティション用に完全なデータセットを使う場合�
 d2l.DATA_HUB['dog_tiny'] = (d2l.DATA_URL + 'kaggle_dog_tiny.zip',
                             '0cb91d09b814ecdc07b50f31f8dcad3e81d6a86d')
 
-# If you use the full dataset downloaded for the Kaggle competition, change
-# the variable below to `False`
+# Kaggleコンペ用にダウンロードした完全なデータセットを使うなら、変更する
+# 以下の変数を`False`にする
 demo = True
 if demo:
     data_dir = d2l.download_extract('dog_tiny')
@@ -114,20 +114,20 @@ ImageNet データセットのサブセットであり、
 ```{.python .input}
 #@tab mxnet
 transform_train = gluon.data.vision.transforms.Compose([
-    # Randomly crop the image to obtain an image with an area of 0.08 to 1 of
-    # the original area and height-to-width ratio between 3/4 and 4/3. Then,
-    # scale the image to create a new 224 x 224 image
+    # 画像をランダムに切り出して、面積が0.08から1の範囲の画像を得る
+    # 元の面積と高さ/幅比を3/4から4/3の間に保つ。 তারপর
+    # 画像を拡大縮小して新しい224×224の画像を作成する
     gluon.data.vision.transforms.RandomResizedCrop(224, scale=(0.08, 1.0),
                                                    ratio=(3.0/4.0, 4.0/3.0)),
     gluon.data.vision.transforms.RandomFlipLeftRight(),
-    # Randomly change the brightness, contrast, and saturation
+    # 明るさ、コントラスト、彩度をランダムに変える
     gluon.data.vision.transforms.RandomColorJitter(brightness=0.4,
                                                    contrast=0.4,
                                                    saturation=0.4),
-    # Add random noise
+    # ランダムノイズを追加する
     gluon.data.vision.transforms.RandomLighting(0.1),
     gluon.data.vision.transforms.ToTensor(),
-    # Standardize each channel of the image
+    # 画像の各チャネルを標準化する
     gluon.data.vision.transforms.Normalize([0.485, 0.456, 0.406],
                                            [0.229, 0.224, 0.225])])
 ```
@@ -135,19 +135,19 @@ transform_train = gluon.data.vision.transforms.Compose([
 ```{.python .input}
 #@tab pytorch
 transform_train = torchvision.transforms.Compose([
-    # Randomly crop the image to obtain an image with an area of 0.08 to 1 of
-    # the original area and height-to-width ratio between 3/4 and 4/3. Then,
-    # scale the image to create a new 224 x 224 image
+    # 画像をランダムに切り出して、面積が0.08から1の範囲の画像を得る
+    # 元の面積と高さ/幅比を3/4から4/3の間に保つ。 তারপর
+    # 画像を拡大縮小して新しい224×224の画像を作成する
     torchvision.transforms.RandomResizedCrop(224, scale=(0.08, 1.0),
                                              ratio=(3.0/4.0, 4.0/3.0)),
     torchvision.transforms.RandomHorizontalFlip(),
-    # Randomly change the brightness, contrast, and saturation
+    # 明るさ、コントラスト、彩度をランダムに変える
     torchvision.transforms.ColorJitter(brightness=0.4,
                                        contrast=0.4,
                                        saturation=0.4),
-    # Add random noise
+    # ランダムノイズを追加する
     torchvision.transforms.ToTensor(),
-    # Standardize each channel of the image
+    # 画像の各チャネルを標準化する
     torchvision.transforms.Normalize([0.485, 0.456, 0.406],
                                      [0.229, 0.224, 0.225])])
 ```
@@ -159,7 +159,7 @@ transform_train = torchvision.transforms.Compose([
 #@tab mxnet
 transform_test = gluon.data.vision.transforms.Compose([
     gluon.data.vision.transforms.Resize(256),
-    # Crop a 224 x 224 square area from the center of the image
+    # 画像の中心から224×224の正方形領域を切り出す
     gluon.data.vision.transforms.CenterCrop(224),
     gluon.data.vision.transforms.ToTensor(),
     gluon.data.vision.transforms.Normalize([0.485, 0.456, 0.406],
@@ -170,7 +170,7 @@ transform_test = gluon.data.vision.transforms.Compose([
 #@tab pytorch
 transform_test = torchvision.transforms.Compose([
     torchvision.transforms.Resize(256),
-    # Crop a 224 x 224 square area from the center of the image
+    # 画像の中心から224×224の正方形領域を切り出す
     torchvision.transforms.CenterCrop(224),
     torchvision.transforms.ToTensor(),
     torchvision.transforms.Normalize([0.485, 0.456, 0.406],
@@ -266,14 +266,14 @@ ImageNet データセットで事前学習された多様なモデルが用意�
 #@tab mxnet
 def get_net(devices):
     finetune_net = gluon.model_zoo.vision.resnet34_v2(pretrained=True)
-    # Define a new output network
+    # 新しい出力ネットワークを定義する
     finetune_net.output_new = nn.HybridSequential(prefix='')
     finetune_net.output_new.add(nn.Dense(256, activation='relu'))
-    # There are 120 output categories
+    # 出力カテゴリは120ある
     finetune_net.output_new.add(nn.Dense(120))
-    # Initialize the output network
+    # 出力ネットワークを初期化する
     finetune_net.output_new.initialize(init.Xavier(), ctx=devices)
-    # Distribute the model parameters to the CPUs or GPUs used for computation
+    # モデルパラメータを計算に用いるCPUまたはGPUに分配する
     finetune_net.collect_params().reset_ctx(devices)
     return finetune_net
 ```
@@ -283,13 +283,13 @@ def get_net(devices):
 def get_net(devices):
     finetune_net = nn.Sequential()
     finetune_net.features = torchvision.models.resnet34(pretrained=True)
-    # Define a new output network (there are 120 output categories)
+    # 新しい出力ネットワークを定義する（出力カテゴリは120個）
     finetune_net.output_new = nn.Sequential(nn.Linear(1000, 256),
                                             nn.ReLU(),
                                             nn.Linear(256, 120))
-    # Move the model to devices
+    # モデルをデバイスに移動する
     finetune_net = finetune_net.to(devices[0])
-    # Freeze parameters of feature layers
+    # 特徴層のパラメータを凍結する
     for param in finetune_net.features.parameters():
         param.requires_grad = False
     return finetune_net
@@ -340,7 +340,7 @@ def evaluate_loss(data_iter, net, devices):
 #@tab mxnet
 def train(net, train_iter, valid_iter, num_epochs, lr, wd, devices, lr_period,
           lr_decay):
-    # Only train the small custom output network
+    # 小さなカスタム出力ネットワークのみを学習する
     trainer = gluon.Trainer(net.output_new.collect_params(), 'sgd',
                             {'learning_rate': lr, 'momentum': 0.9, 'wd': wd})
     num_batches, timer = len(train_iter), d2l.Timer()
@@ -384,7 +384,7 @@ def train(net, train_iter, valid_iter, num_epochs, lr, wd, devices, lr_period,
 #@tab pytorch
 def train(net, train_iter, valid_iter, num_epochs, lr, wd, devices, lr_period,
           lr_decay):
-    # Only train the small custom output network
+    # 小さなカスタム出力ネットワークのみを学習する
     net = nn.DataParallel(net, device_ids=devices).to(devices[0])
     trainer = torch.optim.SGD((param for param in net.parameters()
                                if param.requires_grad), lr=lr,

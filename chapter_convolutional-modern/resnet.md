@@ -421,7 +421,7 @@ def create_net(self):
     for i, b in enumerate(self.arch):
         net.layers.extend([self.block(*b, first_block=(i==0))])
     net.layers.extend([nn.Sequential([
-        # Flax does not provide a GlobalAvg2D layer
+        # FlaxにはGlobalAvg2D層はない
         lambda x: nn.avg_pool(x, window_shape=x.shape[1:3],
                               strides=x.shape[1:3], padding='valid'),
         lambda x: x.reshape((x.shape[0], -1)),

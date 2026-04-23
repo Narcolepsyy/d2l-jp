@@ -54,7 +54,7 @@ GoogLeNet の基本的な畳み込みブロックは *Inception block* と呼ば
 ```{.python .input}
 %%tab mxnet
 class Inception(nn.Block):
-    # c1--c4 are the number of output channels for each branch
+    # c1--c4は各分岐の出力チャネル数である
     def __init__(self, c1, c2, c3, c4, **kwargs):
         super(Inception, self).__init__(**kwargs)
         # Branch 1
@@ -82,7 +82,7 @@ class Inception(nn.Block):
 ```{.python .input}
 %%tab pytorch
 class Inception(nn.Module):
-    # c1--c4 are the number of output channels for each branch
+    # c1--c4は各分岐の出力チャネル数である
     def __init__(self, c1, c2, c3, c4, **kwargs):
         super(Inception, self).__init__(**kwargs)
         # Branch 1
@@ -108,7 +108,7 @@ class Inception(nn.Module):
 ```{.python .input}
 %%tab tensorflow
 class Inception(tf.keras.Model):
-    # c1--c4 are the number of output channels for each branch
+    # c1--c4は各分岐の出力チャネル数である
     def __init__(self, c1, c2, c3, c4):
         super().__init__()
         self.b1_1 = tf.keras.layers.Conv2D(c1, 1, activation='relu')
@@ -341,7 +341,7 @@ def b5(self):
     if tab.selected('jax'):
         return nn.Sequential([Inception(256, (160, 320), (32, 128), 128),
                               Inception(384, (192, 384), (48, 128), 128),
-                              # Flax does not provide a GlobalAvgPool2D layer
+                              # FlaxにはGlobalAvgPool2D層がない
                               lambda x: nn.avg_pool(x,
                                                     window_shape=x.shape[1:3],
                                                     strides=x.shape[1:3],

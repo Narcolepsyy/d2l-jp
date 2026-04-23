@@ -51,13 +51,13 @@ d2l.DATA_HUB['ptb'] = (d2l.DATA_URL + 'ptb.zip',
 def read_ptb():
     """Load the PTB dataset into a list of text lines."""
     data_dir = d2l.download_extract('ptb')
-    # Read the training set
+    # 訓練データセットを読み込む
     with open(os.path.join(data_dir, 'ptb.train.txt')) as f:
         raw_text = f.read()
     return [line.split() for line in raw_text.split('\n')]
 
 sentences = read_ptb()
-f'# sentences: {len(sentences)}'
+f'# 文数: {len(sentences)}'
 ```
 
 訓練セットを読み込んだ後、
@@ -114,14 +114,14 @@ $$ P(w_i) = \max\left(1 - \sqrt{\frac{t}{f(w_i)}}, 0\right),$$
 #@save
 def subsample(sentences, vocab):
     """Subsample high-frequency words."""
-    # Exclude unknown tokens ('<unk>')
+    # 未知のトークン（'<unk>'）を除外する
     sentences = [[token for token in line if vocab[token] != vocab.unk]
                  for line in sentences]
     counter = collections.Counter([
         token for line in sentences for token in line])
     num_tokens = sum(counter.values())
 
-    # Return True if `token` is kept during subsampling
+    # サブサンプリング中に `token` が保持される場合は True を返す
     def keep(token):
         return(random.uniform(0, 1) <
                math.sqrt(1e-4 / counter[token] * num_tokens))
@@ -142,7 +142,7 @@ subsampled, counter = subsample(sentences, vocab)
 
 ```{.python .input}
 #@tab all
-d2l.show_list_len_pair_hist(['origin', 'subsampled'], '# tokens per sentence',
+d2l.show_list_len_pair_hist(['origin', 'subsampled'], '# 文ごとのトークン数'
                             'count', sentences, subsampled);
 ```
 
@@ -151,7 +151,7 @@ d2l.show_list_len_pair_hist(['origin', 'subsampled'], '# tokens per sentence',
 ```{.python .input}
 #@tab all
 def compare_counts(token):
-    return (f'# of "{token}": '
+    return (f'# の「{token}」:
             f'before={sum([l.count(token) for l in sentences])}, '
             f'after={sum([l.count(token) for l in subsampled])}')
 
@@ -196,16 +196,16 @@ def get_centers_and_contexts(corpus, max_window_size):
     """Return center words and context words in skip-gram."""
     centers, contexts = [], []
     for line in corpus:
-        # To form a "center word--context word" pair, each sentence needs to
-        # have at least 2 words
+        # 「中心語--文脈語」のペアを形成するには，各文はそれぞれ必要である
+        # 少なくとも2語を持つ
         if len(line) < 2:
             continue
         centers += line
-        for i in range(len(line)):  # Context window centered at `i`
+        for i in range(len(line)):  # `i`を中心とした文脈ウィンドウ
             window_size = random.randint(1, max_window_size)
             indices = list(range(max(0, i - window_size),
                                  min(len(line), i + 1 + window_size)))
-            # Exclude the center word from the context words
+            # 中心語をコンテキスト語から除外する
             indices.remove(i)
             contexts.append([line[idx] for idx in indices])
     return centers, contexts
@@ -230,7 +230,7 @@ PTB データセットで学習する際には、
 ```{.python .input}
 #@tab all
 all_centers, all_contexts = get_centers_and_contexts(corpus, 5)
-f'# center-context pairs: {sum([len(contexts) for contexts in all_contexts])}'
+f'# 中心語-文脈語ペア: {sum([len(contexts) for contexts in all_contexts])}'
 ```
 
 ## 負例サンプリング
@@ -255,7 +255,7 @@ class RandomGenerator:
 
     def draw(self):
         if self.i == len(self.candidates):
-            # Cache `k` random sampling results
+            # `k`個のランダムサンプリング結果をキャッシュする
             self.candidates = random.choices(
                 self.population, self.sampling_weights, k=10000)
             self.i = 0
@@ -286,8 +286,8 @@ word2vec 論文の提案に従い、
 #@save
 def get_negatives(all_contexts, vocab, counter, K):
     """Return noise words in negative sampling."""
-    # Sampling weights for words with indices 1, 2, ... (index 0 is the
-    # excluded unknown token) in the vocabulary
+    # インデックス1, 2, ...の単語のサンプリング重み（インデックス0は）
+    # 語彙から未知トークンを除外したもの
     sampling_weights = [counter[vocab.to_tokens(i)]**0.75
                         for i in range(1, len(vocab))]
     all_negatives, generator = [], RandomGenerator(sampling_weights)
@@ -295,7 +295,7 @@ def get_negatives(all_contexts, vocab, counter, K):
         negatives = []
         while len(negatives) < len(contexts) * K:
             neg = generator.draw()
-            # Noise words cannot be context words
+            # ノイズ語は文脈語にはなり得ない
             if neg not in contexts:
                 negatives.append(neg)
         all_negatives.append(negatives)

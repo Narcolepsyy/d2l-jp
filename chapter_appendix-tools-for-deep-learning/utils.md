@@ -135,11 +135,11 @@ def frozen_lake(seed): #@save
     env_info['env'] = env
 
     for (s, others) in env.P.items():
-        # others(s) = {a0: [ (p(s'|s,a0), s', reward, done),...], a1:[...], ...}
+        # others(s) = {a0: [ (p(s'|s,a0), s', 報酬, 終了),...], a1:[...], ...}
 
         for (a, pxrds) in others.items():
-            # pxrds is [(p1,next1,r1,d1),(p2,next2,r2,d2),..].
-            # e.g. [(0.3, 0, 0, False), (0.3, 0, 0, False), (0.3, 4, 1, False)]
+            # pxrdsは[(p1,next1,r1,d1),(p2,next2,r2,d2),..]である。
+            # 例えば、[(0.3, 0, 0, False), (0.3, 0, 0, False), (0.3, 4, 1, False)]
             env_info['mdp'][(s,a)] = pxrds
 
     return env_info
@@ -187,8 +187,8 @@ def show_value_function_progress(env_desc, V, pi): #@save
         ax.set_xticks([])
         ax.set_yticks([])
 
-        # LEFT action: 0, DOWN action: 1
-        # RIGHT action: 2, UP action: 3
+        # 左の行動: 0、下の行動: 1
+        # 右の行動: 2、上の行動: 3
         action2dxdy = {0:(-.25, 0),1: (0, .25),
                        2:(0.25, 0),3: (-.25, 0)}
 
@@ -258,8 +258,8 @@ def show_Q_function_progress(env_desc, V_all, pi_all): #@save
         ax.set_xticks([])
         ax.set_yticks([])
 
-        # LEFT action: 0, DOWN action: 1
-        # RIGHT action: 2, UP action: 3
+        # 左の行動: 0、下の行動: 1
+        # 右の行動: 2、上の行動: 3
         action2dxdy = {0:(-.25, 0),1:(0, .25),
                        2:(0.25, 0),3:(-.25, 0)}
 
@@ -941,7 +941,7 @@ def train_seq2seq(net, data_iter, lr, num_epochs, tgt_vocab, device):
                 x.as_in_ctx(device) for x in batch]
             bos = np.array(
                 [tgt_vocab['<bos>']] * Y.shape[0], ctx=device).reshape(-1, 1)
-            dec_input = d2l.concat([bos, Y[:, :-1]], 1)  # Teacher forcing
+            dec_input = d2l.concat([bos, Y[:, :-1]], 1)  # ティーチャーフォーシング
             with autograd.record():
                 Y_hat, _ = net(X, dec_input, X_valid_len)
                 l = loss(Y_hat, Y, Y_valid_len)
@@ -1037,7 +1037,7 @@ def train_seq2seq(net, data_iter, lr, num_epochs, tgt_vocab, device):
             X, X_valid_len, Y, Y_valid_len = [x.to(device) for x in batch]
             bos = torch.tensor([tgt_vocab['<bos>']] * Y.shape[0],
                                device=device).reshape(-1, 1)
-            dec_input = d2l.concat([bos, Y[:, :-1]], 1)  # Teacher forcing
+            dec_input = d2l.concat([bos, Y[:, :-1]], 1)  # ティーチャーフォーシング
             Y_hat, _ = net(X, dec_input, X_valid_len)
             l = loss(Y_hat, Y, Y_valid_len)
             l.sum().backward()  # `backward` のために損失をスカラーにする
@@ -1133,7 +1133,7 @@ def train_seq2seq(net, data_iter, lr, num_epochs, tgt_vocab, device):
             X, X_valid_len, Y, Y_valid_len = [x for x in batch]
             bos = tf.reshape(tf.constant([tgt_vocab['<bos>']] * Y.shape[0]),
                              shape=(-1, 1))
-            dec_input = tf.concat([bos, Y[:, :-1]], 1)  # Teacher forcing
+            dec_input = tf.concat([bos, Y[:, :-1]], 1)  # ティーチャーフォーシング
             with tf.GradientTape() as tape:
                 Y_hat, _ = net(X, dec_input, X_valid_len, training=True)
                 l = MaskedSoftmaxCELoss(Y_valid_len)(Y, Y_hat)

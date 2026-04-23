@@ -37,14 +37,14 @@ device = d2l.try_gpu()
 batch_size = 256
 train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size=batch_size)
 
-# The code is almost identical to `d2l.train_ch6` defined in the
-# lenet section of chapter convolutional neural networks
+# 定義された `d2l.train_ch6` とほぼ同一である
+# 畳み込みニューラルネットワークの章のLeNet節
 def train(net, train_iter, test_iter, num_epochs, loss, trainer, device):
     net.initialize(force_reinit=True, ctx=device, init=init.Xavier())
     animator = d2l.Animator(xlabel='epoch', xlim=[0, num_epochs],
                             legend=['train loss', 'train acc', 'test acc'])
     for epoch in range(num_epochs):
-        metric = d2l.Accumulator(3)  # train_loss, train_acc, num_examples
+        metric = d2l.Accumulator(3)  # 訓練損失、訓練精度、サンプル数
         for i, (X, y) in enumerate(train_iter):
             X, y = X.as_in_ctx(device), y.as_in_ctx(device)
             with autograd.record():
@@ -92,8 +92,8 @@ device = d2l.try_gpu()
 batch_size = 256
 train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size=batch_size)
 
-# The code is almost identical to `d2l.train_ch6` defined in the
-# lenet section of chapter convolutional neural networks
+# 定義された `d2l.train_ch6` とほぼ同一である
+# 畳み込みニューラルネットワークの章のLeNet節
 def train(net, train_iter, test_iter, num_epochs, loss, trainer, device,
           scheduler=None):
     net.to(device)
@@ -101,7 +101,7 @@ def train(net, train_iter, test_iter, num_epochs, loss, trainer, device,
                             legend=['train loss', 'train acc', 'test acc'])
 
     for epoch in range(num_epochs):
-        metric = d2l.Accumulator(3)  # train_loss, train_acc, num_examples
+        metric = d2l.Accumulator(3)  # 訓練損失、訓練精度、サンプル数
         for i, (X, y) in enumerate(train_iter):
             net.train()
             trainer.zero_grad()
@@ -123,10 +123,10 @@ def train(net, train_iter, test_iter, num_epochs, loss, trainer, device,
 
         if scheduler:
             if scheduler.__module__ == lr_scheduler.__name__:
-                # Using PyTorch In-Built scheduler
+                # PyTorch内蔵のスケジューラを使用する
                 scheduler.step()
             else:
-                # Using custom defined scheduler
+                # カスタム定義したスケジューラを使用する
                 for param_group in trainer.param_groups:
                     param_group['lr'] = scheduler(epoch)
 
@@ -159,8 +159,8 @@ def net():
 batch_size = 256
 train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size=batch_size)
 
-# The code is almost identical to `d2l.train_ch6` defined in the
-# lenet section of chapter convolutional neural networks
+# 定義された `d2l.train_ch6` とほぼ同一である
+# 畳み込みニューラルネットワークの章のLeNet節
 def train(net_fn, train_iter, test_iter, num_epochs, lr,
               device=d2l.try_gpu(), custom_callback = False):
     device_name = device._device_name
@@ -279,7 +279,7 @@ train(net, train_iter, test_iter, num_epochs, lr,
 
 学習率スケジューラのあらゆる種類を網羅することはできないが、以下ではよく使われるポリシーを簡単に概観する。一般的な選択肢としては、多項式減衰と区分定数スケジュールがある。それに加えて、コサイン学習率スケジュールは、いくつかの問題で経験的によく機能することが分かっている。最後に、問題によっては、大きな学習率を使う前に最適化器をウォームアップすることが有益である。
 
-### Factor Scheduler
+### 係数スケジューラ
 
 多項式減衰の代わりに、乗法的な減衰、すなわち $\alpha \in (0, 1)$ に対して $\eta_{t+1} \leftarrow \eta_t \cdot \alpha$ を用いる方法がある。学習率が妥当な下限を超えて減衰しないようにするため、更新式はしばしば $\eta_{t+1} \leftarrow \mathop{\mathrm{max}}(\eta_{\mathrm{min}}, \eta_t \cdot \alpha)$ に修正される。
 
@@ -301,7 +301,7 @@ d2l.plot(d2l.arange(50), [scheduler(t) for t in range(50)])
 
  MXNet では `lr_scheduler.FactorScheduler` オブジェクトという組み込みスケジューラでも実現できる。これには、ウォームアップ期間、ウォームアップのモード（線形または定数）、望ましい更新回数の上限など、いくつか追加のパラメータがある。今後は、適宜組み込みスケジューラを使い、その機能についてここで説明することにする。図に示したように、必要なら自分でスケジューラを作るのはかなり簡単である。
 
-### Multi Factor Scheduler
+### マルチファクタースケジューラ
 
 深層ネットワークの学習でよくある戦略は、学習率を区分的に一定に保ち、一定間隔で所定の量だけ下げることである。つまり、たとえば $s = \{5, 10, 20\}$ のように学習率を下げる時刻の集合が与えられたとき、$t \in s$ ならば $\eta_{t+1} \leftarrow \eta_t \cdot \alpha$ とする。各段階で半分にする場合は、次のように実装できる。
 
@@ -368,7 +368,7 @@ train(net, train_iter, test_iter, num_epochs, lr,
       custom_callback=LearningRateScheduler(scheduler))
 ```
 
-### Cosine Scheduler
+### コサインスケジューラ
 
 :citet:`Loshchilov.Hutter.2016` によって、やや意外なヒューリスティックが提案された。最初に学習率をあまり急激に下げたくないこと、さらに最後には非常に小さな学習率を使って解を「洗練」したいこと、という観察に基づいている。その結果、$t \in [0, T]$ の範囲で学習率が次のようなコサイン状のスケジュールになる。
 

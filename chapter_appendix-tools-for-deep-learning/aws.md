@@ -140,7 +140,7 @@ sudo apt-get update && sudo apt-get install -y build-essential git libgfortran3
 指示をコピーして端末に貼り付け、CUDA 12.1 をインストールする。
 
 ```bash
-# The link and file name are subject to changes
+# リンクとファイル名は変更される場合がある
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
 sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
 wget https://developer.download.nvidia.com/compute/cuda/12.1.0/local_installers/cuda-repo-ubuntu2204-12-1-local_12.1.0-530.30.02-1_amd64.deb
@@ -179,7 +179,7 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/cuda-12.1/lib64
 Jupyter Notebook をリモートで実行するには、SSH のポートフォワーディングを使う必要がある。そもそも、クラウド上のサーバーにはモニターもキーボードもない。そのため、次のようにデスクトップ（またはノートパソコン）からサーバーにログインする。
 
 ```
-# This command must be run in the local command line
+# このコマンドはローカルのコマンドラインで実行しなければならない
 ssh -i "/path/to/key.pem" ubuntu@ec2-xx-xxx-xxx-xxx.y.compute.amazonaws.com -L 8889:localhost:8888
 ```
 

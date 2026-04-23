@@ -230,69 +230,69 @@ $$\hat{\mu} \stackrel{\textrm{def}}{=} \frac{1}{n} \sum_{i=1}^n x_i \textrm{ and
 ```{.python .input}
 %%tab mxnet
 def batch_norm(X, gamma, beta, moving_mean, moving_var, eps, momentum):
-    # Use autograd to determine whether we are in training mode
+    # autogradを用いて、訓練モードかどうかを判定する
     if not autograd.is_training():
-        # In prediction mode, use mean and variance obtained by moving average
+        # 予測モードでは、移動平均によって得られた平均と分散を用いる
         X_hat = (X - moving_mean) / np.sqrt(moving_var + eps)
     else:
         assert len(X.shape) in (2, 4)
         if len(X.shape) == 2:
-            # When using a fully connected layer, calculate the mean and
-            # variance on the feature dimension
+            # 全結合層を用いる場合、平均と…
+            # 特徴次元における分散
             mean = X.mean(axis=0)
             var = ((X - mean) ** 2).mean(axis=0)
         else:
-            # When using a two-dimensional convolutional layer, calculate the
-            # mean and variance on the channel dimension (axis=1). Here we
-            # need to maintain the shape of X, so that the broadcasting
-            # operation can be carried out later
+            # 2次元畳み込み層を用いる場合、計算する
+            # チャネル次元（axis=1）上の平均と分散。ここでは
+            # Xの形状を保つ必要があるため、ブロードキャスティングが可能になる
+            # 操作は後で実行できる
             mean = X.mean(axis=(0, 2, 3), keepdims=True)
             var = ((X - mean) ** 2).mean(axis=(0, 2, 3), keepdims=True)
         # In training mode, the current mean and variance are used 
         X_hat = (X - mean) / np.sqrt(var + eps)
-        # Update the mean and variance using moving average
+        # 移動平均を用いて平均と分散を更新する
         moving_mean = (1.0 - momentum) * moving_mean + momentum * mean
         moving_var = (1.0 - momentum) * moving_var + momentum * var
-    Y = gamma * X_hat + beta  # Scale and shift
+    Y = gamma * X_hat + beta  # スケーリングとシフト
     return Y, moving_mean, moving_var
 ```
 
 ```{.python .input}
 %%tab pytorch
 def batch_norm(X, gamma, beta, moving_mean, moving_var, eps, momentum):
-    # Use is_grad_enabled to determine whether we are in training mode
+    # 学習モードかどうかを判定するために is_grad_enabled を用いる
     if not torch.is_grad_enabled():
-        # In prediction mode, use mean and variance obtained by moving average
+        # 予測モードでは、移動平均によって得られた平均と分散を用いる
         X_hat = (X - moving_mean) / torch.sqrt(moving_var + eps)
     else:
         assert len(X.shape) in (2, 4)
         if len(X.shape) == 2:
-            # When using a fully connected layer, calculate the mean and
-            # variance on the feature dimension
+            # 全結合層を用いる場合、平均と…
+            # 特徴次元における分散
             mean = X.mean(dim=0)
             var = ((X - mean) ** 2).mean(dim=0)
         else:
-            # When using a two-dimensional convolutional layer, calculate the
-            # mean and variance on the channel dimension (axis=1). Here we
-            # need to maintain the shape of X, so that the broadcasting
-            # operation can be carried out later
+            # 2次元畳み込み層を用いる場合、計算する
+            # チャネル次元（axis=1）上の平均と分散。ここでは
+            # Xの形状を保つ必要があるため、ブロードキャスティングが可能になる
+            # 操作は後で実行できる
             mean = X.mean(dim=(0, 2, 3), keepdim=True)
             var = ((X - mean) ** 2).mean(dim=(0, 2, 3), keepdim=True)
         # In training mode, the current mean and variance are used 
         X_hat = (X - mean) / torch.sqrt(var + eps)
-        # Update the mean and variance using moving average
+        # 移動平均を用いて平均と分散を更新する
         moving_mean = (1.0 - momentum) * moving_mean + momentum * mean
         moving_var = (1.0 - momentum) * moving_var + momentum * var
-    Y = gamma * X_hat + beta  # Scale and shift
+    Y = gamma * X_hat + beta  # スケーリングとシフト
     return Y, moving_mean.data, moving_var.data
 ```
 
 ```{.python .input}
 %%tab tensorflow
 def batch_norm(X, gamma, beta, moving_mean, moving_var, eps):
-    # Compute reciprocal of square root of the moving variance elementwise
+    # 移動分散の各要素の平方根の逆数を計算する
     inv = tf.cast(tf.math.rsqrt(moving_var + eps), X.dtype)
-    # Scale and shift
+    # スケーリングとシフト
     inv *= gamma
     Y = X * inv + (beta - moving_mean * inv)
     return Y
@@ -302,32 +302,32 @@ def batch_norm(X, gamma, beta, moving_mean, moving_var, eps):
 %%tab jax
 def batch_norm(X, deterministic, gamma, beta, moving_mean, moving_var, eps,
                momentum):
-    # Use `deterministic` to determine whether the current mode is training
-    # mode or prediction mode
+    # `deterministic` を用いて、現在のモードが学習中かどうかを判定する
+    # 学習モードまたは予測モード
     if deterministic:
-        # In prediction mode, use mean and variance obtained by moving average
+        # 予測モードでは、移動平均によって得られた平均と分散を用いる
         # `linen.Module.variables` have a `value` attribute containing the array
         X_hat = (X - moving_mean.value) / jnp.sqrt(moving_var.value + eps)
     else:
         assert len(X.shape) in (2, 4)
         if len(X.shape) == 2:
-            # When using a fully connected layer, calculate the mean and
-            # variance on the feature dimension
+            # 全結合層を用いる場合、平均と…
+            # 特徴次元における分散
             mean = X.mean(axis=0)
             var = ((X - mean) ** 2).mean(axis=0)
         else:
-            # When using a two-dimensional convolutional layer, calculate the
-            # mean and variance on the channel dimension (axis=1). Here we
-            # need to maintain the shape of X, so that the broadcasting
-            # operation can be carried out later
+            # 2次元畳み込み層を用いる場合、計算する
+            # チャネル次元（axis=1）上の平均と分散。ここでは
+            # Xの形状を保つ必要があるため、ブロードキャスティングが可能になる
+            # 操作は後で実行できる
             mean = X.mean(axis=(0, 2, 3), keepdims=True)
             var = ((X - mean) ** 2).mean(axis=(0, 2, 3), keepdims=True)
-        # In training mode, the current mean and variance are used
+        # 学習モードでは、現在の平均と分散が使用される
         X_hat = (X - mean) / jnp.sqrt(var + eps)
-        # Update the mean and variance using moving average
+        # 移動平均を用いて平均と分散を更新する
         moving_mean.value = momentum * moving_mean.value + (1.0 - momentum) * mean
         moving_var.value = momentum * moving_var.value + (1.0 - momentum) * var
-    Y = gamma * X_hat + beta  # Scale and shift
+    Y = gamma * X_hat + beta  # スケーリングとシフト
     return Y
 ```
 
@@ -352,7 +352,7 @@ def batch_norm(X, deterministic, gamma, beta, moving_mean, moving_var, eps,
 %%tab mxnet
 class BatchNorm(nn.Block):
     # `num_features`: the number of outputs for a fully connected layer
-    # or the number of output channels for a convolutional layer. `num_dims`:
+    # あるいは畳み込み層の出力チャネル数。`num_dims`:
     # 2 for a fully connected layer and 4 for a convolutional layer
     def __init__(self, num_features, num_dims, **kwargs):
         super().__init__(**kwargs)
@@ -360,22 +360,22 @@ class BatchNorm(nn.Block):
             shape = (1, num_features)
         else:
             shape = (1, num_features, 1, 1)
-        # The scale parameter and the shift parameter (model parameters) are
-        # initialized to 1 and 0, respectively
+        # スケールパラメータとシフトパラメータ（モデルパラメータ）は
+        # それぞれ1と0に初期化される
         self.gamma = self.params.get('gamma', shape=shape, init=init.One())
         self.beta = self.params.get('beta', shape=shape, init=init.Zero())
-        # The variables that are not model parameters are initialized to 0 and
+        # モデルパラメータでない変数は0に初期化され、
         # 1
         self.moving_mean = np.zeros(shape)
         self.moving_var = np.ones(shape)
 
     def forward(self, X):
-        # If `X` is not on the main memory, copy `moving_mean` and
+        # `X` が主記憶上にない場合、`moving_mean` をコピーし、
         # `moving_var` to the device where `X` is located
         if self.moving_mean.ctx != X.ctx:
             self.moving_mean = self.moving_mean.copyto(X.ctx)
             self.moving_var = self.moving_var.copyto(X.ctx)
-        # Save the updated `moving_mean` and `moving_var`
+        # 更新した`moving_mean`と`moving_var`を保存する
         Y, self.moving_mean, self.moving_var = batch_norm(
             X, self.gamma.data(), self.beta.data(), self.moving_mean,
             self.moving_var, eps=1e-12, momentum=0.1)
@@ -385,31 +385,31 @@ class BatchNorm(nn.Block):
 ```{.python .input}
 %%tab pytorch
 class BatchNorm(nn.Module):
-    # num_features: the number of outputs for a fully connected layer or the
-    # number of output channels for a convolutional layer. num_dims: 2 for a
-    # fully connected layer and 4 for a convolutional layer
+    # num_features: 全結合層の出力数、または
+    # 畳み込み層の出力チャネル数。num_dims: 2 ならば
+    # 全結合層では1、畳み込み層では4
     def __init__(self, num_features, num_dims):
         super().__init__()
         if num_dims == 2:
             shape = (1, num_features)
         else:
             shape = (1, num_features, 1, 1)
-        # The scale parameter and the shift parameter (model parameters) are
-        # initialized to 1 and 0, respectively
+        # スケールパラメータとシフトパラメータ（モデルパラメータ）は
+        # それぞれ1と0に初期化される
         self.gamma = nn.Parameter(torch.ones(shape))
         self.beta = nn.Parameter(torch.zeros(shape))
-        # The variables that are not model parameters are initialized to 0 and
+        # モデルパラメータでない変数は0に初期化され、
         # 1
         self.moving_mean = torch.zeros(shape)
         self.moving_var = torch.ones(shape)
 
     def forward(self, X):
-        # If X is not on the main memory, copy moving_mean and moving_var to
-        # the device where X is located
+        # Xが主記憶上にない場合は、moving_meanとmoving_varをXにコピーする
+        # Xが配置されているデバイス
         if self.moving_mean.device != X.device:
             self.moving_mean = self.moving_mean.to(X.device)
             self.moving_var = self.moving_var.to(X.device)
-        # Save the updated moving_mean and moving_var
+        # 更新されたmoving_meanとmoving_varを保存する
         Y, self.moving_mean, self.moving_var = batch_norm(
             X, self.gamma, self.beta, self.moving_mean,
             self.moving_var, eps=1e-5, momentum=0.1)
@@ -424,13 +424,13 @@ class BatchNorm(tf.keras.layers.Layer):
 
     def build(self, input_shape):
         weight_shape = [input_shape[-1], ]
-        # The scale parameter and the shift parameter (model parameters) are
-        # initialized to 1 and 0, respectively
+        # スケールパラメータとシフトパラメータ（モデルパラメータ）は
+        # それぞれ1と0に初期化される
         self.gamma = self.add_weight(name='gamma', shape=weight_shape,
             initializer=tf.initializers.ones, trainable=True)
         self.beta = self.add_weight(name='beta', shape=weight_shape,
             initializer=tf.initializers.zeros, trainable=True)
-        # The variables that are not model parameters are initialized to 0
+        # モデルパラメータでない変数は0に初期化する
         self.moving_mean = self.add_weight(name='moving_mean',
             shape=weight_shape, initializer=tf.initializers.zeros,
             trainable=False)
@@ -471,10 +471,10 @@ class BatchNorm(tf.keras.layers.Layer):
 %%tab jax
 class BatchNorm(nn.Module):
     # `num_features`: the number of outputs for a fully connected layer
-    # or the number of output channels for a convolutional layer.
+    # あるいは畳み込み層の出力チャネル数。
     # `num_dims`: 2 for a fully connected layer and 4 for a convolutional layer
-    # Use `deterministic` to determine whether the current mode is training
-    # mode or prediction mode
+    # `deterministic` を用いて、現在のモードが学習中かどうかを判定する
+    # 学習モードまたは予測モード
     num_features: int
     num_dims: int
     deterministic: bool = False
@@ -486,12 +486,12 @@ class BatchNorm(nn.Module):
         else:
             shape = (1, 1, 1, self.num_features)
 
-        # The scale parameter and the shift parameter (model parameters) are
-        # initialized to 1 and 0, respectively
+        # スケールパラメータとシフトパラメータ（モデルパラメータ）は
+        # それぞれ1と0に初期化される
         gamma = self.param('gamma', jax.nn.initializers.ones, shape)
         beta = self.param('beta', jax.nn.initializers.zeros, shape)
 
-        # The variables that are not model parameters are initialized to 0 and
+        # モデルパラメータでない変数は0に初期化され、
         # 1. Save them to the 'batch_stats' collection
         moving_mean = self.variable('batch_stats', 'moving_mean', jnp.zeros, shape)
         moving_var = self.variable('batch_stats', 'moving_var', jnp.ones, shape)

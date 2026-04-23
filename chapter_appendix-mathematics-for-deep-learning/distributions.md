@@ -20,7 +20,7 @@ from IPython import display
 from math import erf, factorial
 import torch
 
-torch.pi = torch.acos(torch.zeros(1)) * 2  # Define pi in torch
+torch.pi = torch.acos(torch.zeros(1)) * 2  # torchでpiを定義する
 ```
 
 ```{.python .input}
@@ -32,7 +32,7 @@ from math import erf, factorial
 import tensorflow as tf
 import tensorflow_probability as tfp
 
-tf.pi = tf.acos(tf.zeros(1)) * 2  # Define pi in TensorFlow
+tf.pi = tf.acos(tf.zeros(1)) * 2  # TensorFlowでpiを定義する
 ```
 
 ## ベルヌーイ分布
@@ -337,7 +337,7 @@ $$F(x) = \begin{cases} 0 & x < 0, \\ \sum_{m \le k} \binom{n}{m} p^m(1-p)^{n-m} 
 #@tab mxnet
 n, p = 10, 0.2
 
-# Compute binomial coefficient
+# 二項係数を計算する
 def binom(n, k):
     comb = 1
     for i in range(min(k, n - k)):
@@ -356,7 +356,7 @@ d2l.plt.show()
 #@tab pytorch
 n, p = 10, 0.2
 
-# Compute binomial coefficient
+# 二項係数を計算する
 def binom(n, k):
     comb = 1
     for i in range(min(k, n - k)):
@@ -375,7 +375,7 @@ d2l.plt.show()
 #@tab tensorflow
 n, p = 10, 0.2
 
-# Compute binomial coefficient
+# 二項係数を計算する
 def binom(n, k):
     comb = 1
     for i in range(min(k, n - k)):

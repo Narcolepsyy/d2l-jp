@@ -73,13 +73,13 @@ class TokenEmbedding:
     def _load_embedding(self, embedding_name):
         idx_to_token, idx_to_vec = ['<unk>'], []
         data_dir = d2l.download_extract(embedding_name)
-        # GloVe website: https://nlp.stanford.edu/projects/glove/
-        # fastText website: https://fasttext.cc/
+        # GloVeのウェブサイト: https://nlp.stanford.edu/projects/glove/
+        # fastTextのウェブサイト: https://fasttext.cc/
         with open(os.path.join(data_dir, 'vec.txt'), 'r') as f:
             for line in f:
                 elems = line.rstrip().split(' ')
                 token, elems = elems[0], [float(elem) for elem in elems[1:]]
-                # Skip header information, such as the top row in fastText
+                # fastTextの先頭行などのヘッダー情報をスキップする
                 if len(elems) > 1:
                     idx_to_token.append(token)
                     idx_to_vec.append(elems)
@@ -138,7 +138,7 @@ glove_6b50d.token_to_idx['beautiful'], glove_6b50d.idx_to_token[3367]
 ```{.python .input}
 #@tab mxnet
 def knn(W, x, k):
-    # Add 1e-9 for numerical stability
+    # 数値安定性のために1e-9を加える
     cos = np.dot(W, x.reshape(-1,)) / (
         np.sqrt(np.sum(W * W, axis=1) + 1e-9) * np.sqrt((x * x).sum()))
     topk = npx.topk(cos, k=k, ret_typ='indices')
@@ -148,7 +148,7 @@ def knn(W, x, k):
 ```{.python .input}
 #@tab pytorch
 def knn(W, x, k):
-    # Add 1e-9 for numerical stability
+    # 数値安定性のために1e-9を加える
     cos = torch.mv(W, x.reshape(-1,)) / (
         torch.sqrt(torch.sum(W * W, axis=1) + 1e-9) *
         torch.sqrt((x * x).sum()))
@@ -163,7 +163,7 @@ def knn(W, x, k):
 #@tab all
 def get_similar_tokens(query_token, k, embed):
     topk, cos = knn(embed.idx_to_vec, embed[[query_token]], k + 1)
-    for i, c in zip(topk[1:], cos[1:]):  # Exclude the input word
+    for i, c in zip(topk[1:], cos[1:]):  # 入力単語を除外する
         print(f'cosine sim={float(c):.3f}: {embed.idx_to_token[int(i)]}')
 ```
 
@@ -212,7 +212,7 @@ def get_analogy(token_a, token_b, token_c, embed):
     vecs = embed[[token_a, token_b, token_c]]
     x = vecs[1] - vecs[0] + vecs[2]
     topk, cos = knn(embed.idx_to_vec, x, 1)
-    return embed.idx_to_token[int(topk[0])]  # Remove unknown words
+    return embed.idx_to_token[int(topk[0])]  # 未知の語を除去する
 ```
 
 読み込んだ単語ベクトルを使って、"male-female" のアナロジーを確認してみよう。

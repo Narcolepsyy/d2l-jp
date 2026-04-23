@@ -125,7 +125,7 @@ print('features:', data.X[0],'\nlabel:', data.y[0])
 def get_dataloader(self, train):
     if train:
         indices = list(range(0, self.num_train))
-        # The examples are read in random order
+        # 例はランダムな順序で読み込まれる
         random.shuffle(indices)
     else:
         indices = list(range(self.num_train, self.num_train+self.num_val))
@@ -191,8 +191,8 @@ def get_tensorloader(self, tensors, train, indices=slice(0, None)):
         return torch.utils.data.DataLoader(dataset, self.batch_size,
                                            shuffle=train)
     if tab.selected('jax'):
-        # Use Tensorflow Datasets & Dataloader. JAX or Flax do not provide
-        # any dataloading functionality
+        # Tensorflow DatasetsとDataloaderを使用する。JAXやFlaxは提供しない
+        # データ読み込み機能はあるか
         shuffle_buffer = tensors[0].shape[0] if train else 1
         return tfds.as_numpy(
             tf.data.Dataset.from_tensor_slices(tensors).shuffle(

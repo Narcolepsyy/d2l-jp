@@ -110,9 +110,9 @@ print(raw_text[:75])
 %%tab all
 @d2l.add_to_class(MTFraEng)  #@save
 def _preprocess(self, text):
-    # Replace non-breaking space with space
+    # ノーブレークスペースをスペースに置換する
     text = text.replace('\u202f', ' ').replace('\xa0', ' ')
-    # Insert space between words and punctuation marks
+    # 単語と句読点の間にスペースを挿入する
     no_space = lambda char, prev_char: char in ',.!?' and prev_char != ' '
     out = [' ' + char if i > 0 and no_space(char, text[i - 1]) else char
            for i, char in enumerate(text.lower())]
@@ -151,7 +151,7 @@ def _tokenize(self, text, max_examples=None):
         if max_examples and i > max_examples: break
         parts = line.split('\t')
         if len(parts) == 2:
-            # Skip empty tokens
+            # 空トークンをスキップする
             src.append([t for t in f'{parts[0]} <eos>'.split(' ') if t])
             tgt.append([t for t in f'{parts[1]} <eos>'.split(' ') if t])
     return src, tgt
@@ -184,7 +184,7 @@ def show_list_len_pair_hist(legend, xlabel, ylabel, xlist, ylist):
 
 ```{.python .input}
 %%tab all
-show_list_len_pair_hist(['source', 'target'], '# tokens per sequence',
+show_list_len_pair_hist(['source', 'target'], '# シーケンスごとのトークン数'
                         'count', src, tgt);
 ```
 

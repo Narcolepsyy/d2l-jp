@@ -1,4 +1,4 @@
-# continuous bag of words (CBOW)
+# 連続的なBag of Words（CBOW）
 :label:`sec_glossary_cbow`
 
 ## 定義 (Definition)

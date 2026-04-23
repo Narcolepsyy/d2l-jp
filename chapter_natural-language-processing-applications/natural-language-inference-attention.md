@@ -123,20 +123,20 @@ class Attend(nn.Block):
         self.f = mlp(num_hiddens=num_hiddens, flatten=False)
 
     def forward(self, A, B):
-        # Shape of `A`/`B`: (b`atch_size`, no. of tokens in sequence A/B,
+        # `A`/`B`の形状: (batch_size, 系列A/Bのトークン数,
         # `embed_size`)
-        # Shape of `f_A`/`f_B`: (`batch_size`, no. of tokens in sequence A/B,
+        # `f_A`/`f_B`の形状: (`batch_size`, 系列A/B中のトークン数,
         # `num_hiddens`)
         f_A = self.f(A)
         f_B = self.f(B)
-        # Shape of `e`: (`batch_size`, no. of tokens in sequence A,
-        # no. of tokens in sequence B)
+        # `e`の形状: (`batch_size`, シーケンスAのトークン数,
+        # 系列Bのトークン数）
         e = npx.batch_dot(f_A, f_B, transpose_b=True)
-        # Shape of `beta`: (`batch_size`, no. of tokens in sequence A,
+        # `beta`の形状: (`batch_size`, シーケンスAのトークン数,
         # `embed_size`), where sequence B is softly aligned with each token
         # (axis 1 of `beta`) in sequence A
         beta = npx.batch_dot(npx.softmax(e), B)
-        # Shape of `alpha`: (`batch_size`, no. of tokens in sequence B,
+        # `alpha`の形状: (`batch_size`, シーケンスBにおけるトークン数,
         # `embed_size`), where sequence A is softly aligned with each token
         # (axis 1 of `alpha`) in sequence B
         alpha = npx.batch_dot(npx.softmax(e.transpose(0, 2, 1)), A)
@@ -151,20 +151,20 @@ class Attend(nn.Module):
         self.f = mlp(num_inputs, num_hiddens, flatten=False)
 
     def forward(self, A, B):
-        # Shape of `A`/`B`: (`batch_size`, no. of tokens in sequence A/B,
+        # `A`/`B`の形状: (`batch_size`, シーケンスA/B内のトークン数,
         # `embed_size`)
-        # Shape of `f_A`/`f_B`: (`batch_size`, no. of tokens in sequence A/B,
+        # `f_A`/`f_B`の形状: (`batch_size`, 系列A/B中のトークン数,
         # `num_hiddens`)
         f_A = self.f(A)
         f_B = self.f(B)
-        # Shape of `e`: (`batch_size`, no. of tokens in sequence A,
-        # no. of tokens in sequence B)
+        # `e`の形状: (`batch_size`, シーケンスAのトークン数,
+        # 系列Bのトークン数）
         e = torch.bmm(f_A, f_B.permute(0, 2, 1))
-        # Shape of `beta`: (`batch_size`, no. of tokens in sequence A,
+        # `beta`の形状: (`batch_size`, シーケンスAのトークン数,
         # `embed_size`), where sequence B is softly aligned with each token
         # (axis 1 of `beta`) in sequence A
         beta = torch.bmm(F.softmax(e, dim=-1), B)
-        # Shape of `alpha`: (`batch_size`, no. of tokens in sequence B,
+        # `alpha`の形状: (`batch_size`, シーケンスBにおけるトークン数,
         # `embed_size`), where sequence A is softly aligned with each token
         # (axis 1 of `alpha`) in sequence B
         alpha = torch.bmm(F.softmax(e.permute(0, 2, 1), dim=-1), A)
@@ -215,7 +215,7 @@ class Compare(nn.Module):
         return V_A, V_B
 ```
 
-### Aggregating
+### 集約する
 
 2 つの比較ベクトル集合 $\mathbf{v}_{A,i}$ ($i = 1, \ldots, m$) と $\mathbf{v}_{B,j}$ ($j = 1, \ldots, n$) が得られたら、
 最後のステップでは、それらの情報を集約して論理関係を推論する。
@@ -242,10 +242,10 @@ class Aggregate(nn.Block):
         self.h.add(nn.Dense(num_outputs))
 
     def forward(self, V_A, V_B):
-        # Sum up both sets of comparison vectors
+        # 両方の比較ベクトルを合計する
         V_A = V_A.sum(axis=1)
         V_B = V_B.sum(axis=1)
-        # Feed the concatenation of both summarization results into an MLP
+        # 両方の要約結果の連結を MLP に入力する
         Y_hat = self.h(np.concatenate([V_A, V_B], axis=1))
         return Y_hat
 ```
@@ -259,10 +259,10 @@ class Aggregate(nn.Module):
         self.linear = nn.Linear(num_hiddens, num_outputs)
 
     def forward(self, V_A, V_B):
-        # Sum up both sets of comparison vectors
+        # 両方の比較ベクトルを合計する
         V_A = V_A.sum(dim=1)
         V_B = V_B.sum(dim=1)
-        # Feed the concatenation of both summarization results into an MLP
+        # 両方の要約結果の連結を MLP に入力する
         Y_hat = self.linear(self.h(torch.cat([V_A, V_B], dim=1)))
         return Y_hat
 ```
@@ -280,7 +280,7 @@ class DecomposableAttention(nn.Block):
         self.embedding = nn.Embedding(len(vocab), embed_size)
         self.attend = Attend(num_hiddens)
         self.compare = Compare(num_hiddens)
-        # There are 3 possible outputs: entailment, contradiction, and neutral
+        # 出力は3通りある: entailment, contradiction, neutral
         self.aggregate = Aggregate(num_hiddens, 3)
 
     def forward(self, X):
@@ -302,7 +302,7 @@ class DecomposableAttention(nn.Module):
         self.embedding = nn.Embedding(len(vocab), embed_size)
         self.attend = Attend(num_inputs_attend, num_hiddens)
         self.compare = Compare(num_inputs_compare, num_hiddens)
-        # There are 3 possible outputs: entailment, contradiction, and neutral
+        # 出力は3通りある: entailment, contradiction, neutral
         self.aggregate = Aggregate(num_inputs_agg, num_hiddens, num_outputs=3)
 
     def forward(self, X):

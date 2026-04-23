@@ -101,32 +101,32 @@ class Seq2SeqAttentionDecoder(AttentionDecoder):
         self.initialize(init.Xavier())
 
     def init_state(self, enc_outputs, enc_valid_lens):
-        # Shape of outputs: (num_steps, batch_size, num_hiddens).
-        # Shape of hidden_state: (num_layers, batch_size, num_hiddens)
+        # 出力の形状: (num_steps, batch_size, num_hiddens)
+        # 隠れ状態の形状: (num_layers, batch_size, num_hiddens)
         outputs, hidden_state = enc_outputs
         return (outputs.swapaxes(0, 1), hidden_state, enc_valid_lens)
 
     def forward(self, X, state):
-        # Shape of enc_outputs: (batch_size, num_steps, num_hiddens).
-        # Shape of hidden_state: (num_layers, batch_size, num_hiddens)
+        # enc_outputsの形状: (batch_size, num_steps, num_hiddens)。
+        # 隠れ状態の形状: (num_layers, batch_size, num_hiddens)
         enc_outputs, hidden_state, enc_valid_lens = state
-        # Shape of the output X: (num_steps, batch_size, embed_size)
+        # 出力Xの形状: (num_steps, batch_size, embed_size)
         X = self.embedding(X).swapaxes(0, 1)
         outputs, self._attention_weights = [], []
         for x in X:
-            # Shape of query: (batch_size, 1, num_hiddens)
+            # クエリの形状: (batch_size, 1, num_hiddens)
             query = np.expand_dims(hidden_state[-1], axis=1)
-            # Shape of context: (batch_size, 1, num_hiddens)
+            # コンテキストの形状: (batch_size, 1, num_hiddens)
             context = self.attention(
                 query, enc_outputs, enc_outputs, enc_valid_lens)
-            # Concatenate on the feature dimension
+            # 特徴次元で連結する
             x = np.concatenate((context, np.expand_dims(x, axis=1)), axis=-1)
-            # Reshape x as (1, batch_size, embed_size + num_hiddens)
+            # x を (1, batch_size, embed_size + num_hiddens) に reshape する
             out, hidden_state = self.rnn(x.swapaxes(0, 1), hidden_state)
             hidden_state = hidden_state[0]
             outputs.append(out)
             self._attention_weights.append(self.attention.attention_weights)
-        # After fully connected layer transformation, shape of outputs:
+        # 全結合層による変換後の出力の形状:
         # (num_steps, batch_size, vocab_size)
         outputs = self.dense(np.concatenate(outputs, axis=0))
         return outputs.swapaxes(0, 1), [enc_outputs, hidden_state,
@@ -152,31 +152,31 @@ class Seq2SeqAttentionDecoder(AttentionDecoder):
         self.apply(d2l.init_seq2seq)
 
     def init_state(self, enc_outputs, enc_valid_lens):
-        # Shape of outputs: (num_steps, batch_size, num_hiddens).
-        # Shape of hidden_state: (num_layers, batch_size, num_hiddens)
+        # 出力の形状: (num_steps, batch_size, num_hiddens)
+        # 隠れ状態の形状: (num_layers, batch_size, num_hiddens)
         outputs, hidden_state = enc_outputs
         return (outputs.permute(1, 0, 2), hidden_state, enc_valid_lens)
 
     def forward(self, X, state):
-        # Shape of enc_outputs: (batch_size, num_steps, num_hiddens).
-        # Shape of hidden_state: (num_layers, batch_size, num_hiddens)
+        # enc_outputsの形状: (batch_size, num_steps, num_hiddens)。
+        # 隠れ状態の形状: (num_layers, batch_size, num_hiddens)
         enc_outputs, hidden_state, enc_valid_lens = state
-        # Shape of the output X: (num_steps, batch_size, embed_size)
+        # 出力Xの形状: (num_steps, batch_size, embed_size)
         X = self.embedding(X).permute(1, 0, 2)
         outputs, self._attention_weights = [], []
         for x in X:
-            # Shape of query: (batch_size, 1, num_hiddens)
+            # クエリの形状: (batch_size, 1, num_hiddens)
             query = torch.unsqueeze(hidden_state[-1], dim=1)
-            # Shape of context: (batch_size, 1, num_hiddens)
+            # コンテキストの形状: (batch_size, 1, num_hiddens)
             context = self.attention(
                 query, enc_outputs, enc_outputs, enc_valid_lens)
-            # Concatenate on the feature dimension
+            # 特徴次元で連結する
             x = torch.cat((context, torch.unsqueeze(x, dim=1)), dim=-1)
-            # Reshape x as (1, batch_size, embed_size + num_hiddens)
+            # x を (1, batch_size, embed_size + num_hiddens) に reshape する
             out, hidden_state = self.rnn(x.permute(1, 0, 2), hidden_state)
             outputs.append(out)
             self._attention_weights.append(self.attention.attention_weights)
-        # After fully connected layer transformation, shape of outputs:
+        # 全結合層による変換後の出力の形状:
         # (num_steps, batch_size, vocab_size)
         outputs = self.dense(torch.cat(outputs, dim=0))
         return outputs.permute(1, 0, 2), [enc_outputs, hidden_state,
@@ -203,35 +203,35 @@ class Seq2SeqAttentionDecoder(AttentionDecoder):
         self.dense = tf.keras.layers.Dense(vocab_size)
 
     def init_state(self, enc_outputs, enc_valid_lens):
-        # Shape of outputs: (batch_size, num_steps, num_hiddens)
-        # Length of list hidden_state is num_layers, where the shape of its
-        # element is (batch_size, num_hiddens)
+        # 出力の形状: (batch_size, num_steps, num_hiddens)
+        # hidden_stateの長さはnum_layersであり、その形状は
+        # 要素の形状は (batch_size, num_hiddens) である
         outputs, hidden_state = enc_outputs
         return (tf.transpose(outputs, (1, 0, 2)), hidden_state,
                 enc_valid_lens)
 
     def call(self, X, state, **kwargs):
-        # Shape of output enc_outputs: # (batch_size, num_steps, num_hiddens)
-        # Length of list hidden_state is num_layers, where the shape of its
-        # element is (batch_size, num_hiddens)
+        # 出力 enc_outputs の形状: # (batch_size, num_steps, num_hiddens)
+        # hidden_stateの長さはnum_layersであり、その形状は
+        # 要素の形状は (batch_size, num_hiddens) である
         enc_outputs, hidden_state, enc_valid_lens = state
-        # Shape of the output X: (num_steps, batch_size, embed_size)
-        X = self.embedding(X)  # Input X has shape: (batch_size, num_steps)
+        # 出力Xの形状: (num_steps, batch_size, embed_size)
+        X = self.embedding(X)  # 入力Xの形状は(batch_size, num_steps)である
         X = tf.transpose(X, perm=(1, 0, 2))
         outputs, self._attention_weights = [], []
         for x in X:
-            # Shape of query: (batch_size, 1, num_hiddens)
+            # クエリの形状: (batch_size, 1, num_hiddens)
             query = tf.expand_dims(hidden_state[-1], axis=1)
-            # Shape of context: (batch_size, 1, num_hiddens)
+            # コンテキストの形状: (batch_size, 1, num_hiddens)
             context = self.attention(query, enc_outputs, enc_outputs,
                                      enc_valid_lens, **kwargs)
-            # Concatenate on the feature dimension
+            # 特徴次元で連結する
             x = tf.concat((context, tf.expand_dims(x, axis=1)), axis=-1)
             out = self.rnn(x, hidden_state, **kwargs)
             hidden_state = out[1:]
             outputs.append(out[0])
             self._attention_weights.append(self.attention.attention_weights)
-        # After fully connected layer transformation, shape of outputs:
+        # 全結合層による変換後の出力の形状:
         # (batch_size, num_steps, vocab_size)
         outputs = self.dense(tf.concat(outputs, axis=1))
         return outputs, [enc_outputs, hidden_state, enc_valid_lens]
@@ -257,40 +257,40 @@ class Seq2SeqAttentionDecoder(nn.Module):
         self.rnn = d2l.GRU(num_hiddens, num_layers, dropout=self.dropout)
 
     def init_state(self, enc_outputs, enc_valid_lens, *args):
-        # Shape of outputs: (num_steps, batch_size, num_hiddens).
-        # Shape of hidden_state: (num_layers, batch_size, num_hiddens)
+        # 出力の形状: (num_steps, batch_size, num_hiddens)
+        # 隠れ状態の形状: (num_layers, batch_size, num_hiddens)
         outputs, hidden_state = enc_outputs
-        # Attention Weights are returned as part of state; init with None
+        # 注意: Attention weights は state の一部として返される; 初期値は None
         return (outputs.transpose(1, 0, 2), hidden_state, enc_valid_lens)
 
     @nn.compact
     def __call__(self, X, state, training=False):
-        # Shape of enc_outputs: (batch_size, num_steps, num_hiddens).
-        # Shape of hidden_state: (num_layers, batch_size, num_hiddens)
-        # Ignore Attention value in state
+        # enc_outputsの形状: (batch_size, num_steps, num_hiddens)。
+        # 隠れ状態の形状: (num_layers, batch_size, num_hiddens)
+        # 状態内の Attention 値を無視する
         enc_outputs, hidden_state, enc_valid_lens = state
-        # Shape of the output X: (num_steps, batch_size, embed_size)
+        # 出力Xの形状: (num_steps, batch_size, embed_size)
         X = self.embedding(X).transpose(1, 0, 2)
         outputs, attention_weights = [], []
         for x in X:
-            # Shape of query: (batch_size, 1, num_hiddens)
+            # クエリの形状: (batch_size, 1, num_hiddens)
             query = jnp.expand_dims(hidden_state[-1], axis=1)
-            # Shape of context: (batch_size, 1, num_hiddens)
+            # コンテキストの形状: (batch_size, 1, num_hiddens)
             context, attention_w = self.attention(query, enc_outputs,
                                                   enc_outputs, enc_valid_lens,
                                                   training=training)
-            # Concatenate on the feature dimension
+            # 特徴次元で連結する
             x = jnp.concatenate((context, jnp.expand_dims(x, axis=1)), axis=-1)
-            # Reshape x as (1, batch_size, embed_size + num_hiddens)
+            # x を (1, batch_size, embed_size + num_hiddens) に reshape する
             out, hidden_state = self.rnn(x.transpose(1, 0, 2), hidden_state,
                                          training=training)
             outputs.append(out)
             attention_weights.append(attention_w)
 
-        # Flax sow API is used to capture intermediate variables
+        # Flax sow APIは中間変数を捕捉するために用いられる
         self.sow('intermediates', 'dec_attention_weights', attention_weights)
 
-        # After fully connected layer transformation, shape of outputs:
+        # 全結合層による変換後の出力の形状:
         # (num_steps, batch_size, vocab_size)
         outputs = self.dense(jnp.concatenate(outputs, axis=0))
         return outputs.transpose(1, 0, 2), [enc_outputs, hidden_state,
@@ -408,7 +408,7 @@ attention_weights = d2l.reshape(attention_weights, (1, 1, -1, data.num_steps))
 
 ```{.python .input}
 %%tab mxnet
-# Plus one to include the end-of-sequence token
+# 終端トークンを含めるために1を加える
 d2l.show_heatmaps(
     attention_weights[:, :, :, :len(engs[-1].split()) + 1],
     xlabel='Key positions', ylabel='Query positions')
@@ -416,7 +416,7 @@ d2l.show_heatmaps(
 
 ```{.python .input}
 %%tab pytorch
-# Plus one to include the end-of-sequence token
+# 終端トークンを含めるために1を加える
 d2l.show_heatmaps(
     attention_weights[:, :, :, :len(engs[-1].split()) + 1].cpu(),
     xlabel='Key positions', ylabel='Query positions')
@@ -424,14 +424,14 @@ d2l.show_heatmaps(
 
 ```{.python .input}
 %%tab tensorflow
-# Plus one to include the end-of-sequence token
+# 終端トークンを含めるために1を加える
 d2l.show_heatmaps(attention_weights[:, :, :, :len(engs[-1].split()) + 1],
                   xlabel='Key positions', ylabel='Query positions')
 ```
 
 ```{.python .input}
 %%tab jax
-# Plus one to include the end-of-sequence token
+# 終端トークンを含めるために1を加える
 d2l.show_heatmaps(attention_weights[:, :, :, :len(engs[-1].split()) + 1],
                   xlabel='Key positions', ylabel='Query positions')
 ```

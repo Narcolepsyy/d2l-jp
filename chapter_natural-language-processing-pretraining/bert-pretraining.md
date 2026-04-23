@@ -75,16 +75,16 @@ def _get_batch_loss_bert(net, loss, vocab_size, tokens_X_shards,
         tokens_X_shards, segments_X_shards, valid_lens_x_shards,
         pred_positions_X_shards, mlm_weights_X_shards, mlm_Y_shards,
         nsp_y_shards):
-        # Forward pass
+        # 順伝播
         _, mlm_Y_hat, nsp_Y_hat = net(
             tokens_X_shard, segments_X_shard, valid_lens_x_shard.reshape(-1),
             pred_positions_X_shard)
-        # Compute masked language model loss
+        # マスク付き言語モデルの損失を計算する
         mlm_l = loss(
             mlm_Y_hat.reshape((-1, vocab_size)), mlm_Y_shard.reshape(-1),
             mlm_weights_X_shard.reshape((-1, 1)))
         mlm_l = mlm_l.sum() / (mlm_weights_X_shard.sum() + 1e-8)
-        # Compute next sentence prediction loss
+        # 次文予測損失を計算する
         nsp_l = loss(nsp_Y_hat, nsp_y_shard)
         nsp_l = nsp_l.mean()
         mlm_ls.append(mlm_l)
@@ -101,15 +101,15 @@ def _get_batch_loss_bert(net, loss, vocab_size, tokens_X,
                          segments_X, valid_lens_x,
                          pred_positions_X, mlm_weights_X,
                          mlm_Y, nsp_y):
-    # Forward pass
+    # 順伝播
     _, mlm_Y_hat, nsp_Y_hat = net(tokens_X, segments_X,
                                   valid_lens_x.reshape(-1),
                                   pred_positions_X)
-    # Compute masked language model loss
+    # マスク付き言語モデルの損失を計算する
     mlm_l = loss(mlm_Y_hat.reshape(-1, vocab_size), mlm_Y.reshape(-1)) *\
     mlm_weights_X.reshape(-1, 1)
     mlm_l = mlm_l.sum() / (mlm_weights_X.sum() + 1e-8)
-    # Compute next sentence prediction loss
+    # 次文予測損失を計算する
     nsp_l = loss(nsp_Y_hat, nsp_y)
     l = mlm_l + nsp_l
     return mlm_l, nsp_l, l
@@ -129,8 +129,8 @@ def train_bert(train_iter, net, loss, vocab_size, devices, num_steps):
     step, timer = 0, d2l.Timer()
     animator = d2l.Animator(xlabel='step', ylabel='loss',
                             xlim=[1, num_steps], legend=['mlm', 'nsp'])
-    # Sum of masked language modeling losses, sum of next sentence prediction
-    # losses, no. of sentence pairs, count
+    # マスク付き言語モデル損失の総和、次文予測の総和
+    # 損失、文対の数、カウント
     metric = d2l.Accumulator(4)
     num_steps_reached = False
     while step < num_steps and not num_steps_reached:
@@ -174,8 +174,8 @@ def train_bert(train_iter, net, loss, vocab_size, devices, num_steps):
     step, timer = 0, d2l.Timer()
     animator = d2l.Animator(xlabel='step', ylabel='loss',
                             xlim=[1, num_steps], legend=['mlm', 'nsp'])
-    # Sum of masked language modeling losses, sum of next sentence prediction
-    # losses, no. of sentence pairs, count
+    # マスク付き言語モデル損失の総和、次文予測の総和
+    # 損失、文対の数、カウント
     metric = d2l.Accumulator(4)
     num_steps_reached = False
     while step < num_steps and not num_steps_reached:
@@ -257,7 +257,7 @@ BERT の入力系列の長さは 6 になる。
 #@tab all
 tokens_a = ['a', 'crane', 'is', 'flying']
 encoded_text = get_bert_encoding(net, tokens_a)
-# Tokens: '<cls>', 'a', 'crane', 'is', 'flying', '<sep>'
+# トークン: '<cls>'、'a'、'crane'、'is'、'flying'、'<sep>'
 encoded_text_cls = encoded_text[:, 0, :]
 encoded_text_crane = encoded_text[:, 2, :]
 encoded_text.shape, encoded_text_cls.shape, encoded_text_crane[0][:3]
@@ -273,7 +273,7 @@ encoded_text.shape, encoded_text_cls.shape, encoded_text_crane[0][:3]
 #@tab all
 tokens_a, tokens_b = ['a', 'crane', 'driver', 'came'], ['he', 'just', 'left']
 encoded_pair = get_bert_encoding(net, tokens_a, tokens_b)
-# Tokens: '<cls>', 'a', 'crane', 'driver', 'came', '<sep>', 'he', 'just',
+# トークン: '<cls>', 'a', 'crane', 'driver', 'came', '<sep>', 'he', 'just'
 # 'left', '<sep>'
 encoded_pair_cls = encoded_pair[:, 0, :]
 encoded_pair_crane = encoded_pair[:, 2, :]

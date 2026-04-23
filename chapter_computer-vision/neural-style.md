@@ -284,9 +284,9 @@ def content_loss(Y_hat, Y):
 ```{.python .input}
 #@tab pytorch
 def content_loss(Y_hat, Y):
-    # We detach the target content from the tree used to dynamically compute
-    # the gradient: this is a stated value, not a variable. Otherwise the loss
-    # will throw an error.
+    # 動的に計算するために用いるツリーからターゲット内容を切り離す
+    # 勾配: これは定義された値であり、変数ではない。さもなくば損失は
+    # エラーが発生する。
     return torch.square(Y_hat - Y.detach()).mean()
 ```
 
@@ -377,13 +377,13 @@ def tv_loss(Y_hat):
 content_weight, style_weight, tv_weight = 1, 1e4, 10
 
 def compute_loss(X, contents_Y_hat, styles_Y_hat, contents_Y, styles_Y_gram):
-    # Calculate the content, style, and total variance losses respectively
+    # それぞれ内容損失、スタイル損失、総変動損失を計算する
     contents_l = [content_loss(Y_hat, Y) * content_weight for Y_hat, Y in zip(
         contents_Y_hat, contents_Y)]
     styles_l = [style_loss(Y_hat, Y) * style_weight for Y_hat, Y in zip(
         styles_Y_hat, styles_Y_gram)]
     tv_l = tv_loss(X) * tv_weight
-    # Add up all the losses
+    # すべての損失を合計する
     l = sum(styles_l + contents_l + [tv_l])
     return contents_l, styles_l, tv_l, l
 ```
@@ -514,7 +514,7 @@ output = train(content_X, contents_Y, styles_Y, device, 0.9, 500, 50)
 
 ```{.python .input}
 #@tab pytorch
-device, image_shape = d2l.try_gpu(), (300, 450)  # PIL Image (h, w)
+device, image_shape = d2l.try_gpu(), (300, 450)  # PIL画像 (h, w)
 net = net.to(device)
 content_X, contents_Y = get_contents(image_shape, device)
 _, styles_Y = get_styles(image_shape, device)

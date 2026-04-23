@@ -1,7 +1,7 @@
 {.python .input}
 %load_ext d2lbook.tab
 tab.interact_select(["pytorch"])
-#required_libs("setuptools==66", "wheel==0.38.4", "gym==0.21.0")
+#必要なライブラリを指定する("setuptools==66", "wheel==0.38.4", "gym==0.21.0")
 ```
 
 # 値反復
@@ -110,13 +110,13 @@ import numpy as np
 import random
 from d2l import torch as d2l
 
-seed = 0  # Random number generator seed
-gamma = 0.95  # Discount factor
-num_iters = 10  # Number of iterations
-random.seed(seed)  # Set the random seed to ensure results can be reproduced
+seed = 0  # 乱数生成器のシード
+gamma = 0.95  # 割引率
+num_iters = 10  # 反復回数
+random.seed(seed)  # 結果を再現可能にするために乱数シードを設定する
 np.random.seed(seed)
 
-# Now set up the environment
+# 環境を設定する。
 env_info = d2l.make_env('FrozenLake-v1', seed=seed)
 ```
 
@@ -143,14 +143,14 @@ def value_iteration(env_info, gamma, num_iters):
     for k in range(1, num_iters + 1):
         for s in range(num_states):
             for a in range(num_actions):
-                # Calculate \sum_{s'} p(s'\mid s,a) [r + \gamma v_k(s')]
+                # \sum_{s'} p(s'\mid s,a) [r + \gamma v_k(s')] を計算する
                 for pxrds in mdp[(s,a)]:
-                    # mdp(s,a): [(p1,next1,r1,d1),(p2,next2,r2,d2),..]
-                    pr = pxrds[prob_idx]  # p(s'\mid s,a)
+                    # mdp(s,a): [(p1,次状態1,r1,d1),(p2,次状態2,r2,d2),..]
+                    pr = pxrds[prob_idx]  # 状態 s と行動 a に対する次状態 s' の遷移確率 p(s'\mid s,a)
                     nextstate = pxrds[nextstate_idx]  # Next state
                     reward = pxrds[reward_idx]  # Reward
                     Q[k,s,a] += pr * (reward + gamma * V[k - 1, nextstate])
-            # Record max value and max action
+            # 最大値と最大行動を記録する
             V[k,s] = np.max(Q[k,s,:])
             pi[k,s] = np.argmax(Q[k,s,:])
     d2l.show_value_function_progress(env_desc, V[:-1], pi[:-1])

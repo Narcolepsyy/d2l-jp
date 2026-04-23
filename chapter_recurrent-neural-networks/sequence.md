@@ -252,7 +252,7 @@ def k_step_pred(k):
     features = []
     for i in range(data.tau):
         features.append(data.x[i : i+data.T-data.tau-k+1])
-    # The (i+tau)-th element stores the (i+1)-step-ahead predictions
+    # (i+tau)番目の要素は(i+1)ステップ先の予測を格納する
     for i in range(k):
         preds = model(d2l.stack(features[i : i+data.tau], 1))
         features.append(d2l.reshape(preds, -1))
@@ -265,7 +265,7 @@ def k_step_pred(k):
     features = []
     for i in range(data.tau):
         features.append(data.x[i : i+data.T-data.tau-k+1])
-    # The (i+tau)-th element stores the (i+1)-step-ahead predictions
+    # (i+tau)番目の要素は(i+1)ステップ先の予測を格納する
     for i in range(k):
         preds = model.apply({'params': trainer.state.params},
                             d2l.stack(features[i : i+data.tau], 1))

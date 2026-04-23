@@ -198,9 +198,9 @@ tf.random.normal(shape=[3, 4])
 
 ```{.python .input}
 %%tab jax
-# Any call of a random function in JAX requires a key to be
-# specified, feeding the same key to a random function will
-# always result in the same sample being generated
+# JAXにおける乱数関数の呼び出しには、キーが必要である
+# 指定された場合、同じキーをランダム関数に渡すと
+# 常に同じサンプルが生成される
 jax.random.normal(jax.random.PRNGKey(0), (3, 4))
 ```
 
@@ -260,9 +260,9 @@ X_var
 
 ```{.python .input}
 %%tab jax
-# JAX arrays are immutable. jax.numpy.ndarray.at index
-# update operators create a new array with the corresponding
-# modifications made
+# JAX配列は不変である。jax.numpy.ndarray.atでインデックス指定する
+# 更新演算子は対応する新しい配列を作成する
+# 加えられた変更
 X_new_1 = X.at[1, 2].set(17)
 X_new_1
 ```
@@ -488,7 +488,7 @@ print('id(Z):', id(Z))
 
 ```{.python .input}
 %%tab jax
-# JAX arrays do not allow in-place operations
+# JAX配列はインプレース操作を許可しない
 ```
 
 :begin_tab:`mxnet, pytorch`
@@ -512,8 +512,8 @@ id(X) == before
 %%tab tensorflow
 @tf.function
 def computation(X, Y):
-    Z = tf.zeros_like(Y)  # This unused value will be pruned out
-    A = X + Y  # Allocations will be reused when no longer needed
+    Z = tf.zeros_like(Y)  # この未使用の値は刈り込まれる
+    A = X + Y  # 不要になった割り当ては再利用される
     B = A + Y
     C = B + Y
     return C + Y

@@ -10,7 +10,7 @@ softmax 演算の性質上、文脈語は辞書 $\mathcal{V}$ のどれでもあ
 
 前述の計算複雑性を削減するために、この節では 2 つの近似学習法、*negative sampling* と *hierarchical softmax* を紹介する。skip-gram モデルと continuous bag of words モデルの類似性のため、ここでは skip-gram モデルを例として、これら 2 つの近似学習法を説明する。
 
-## Negative Sampling
+## 負例サンプリング
 :label:`subsec_negative-sampling`
 
 
@@ -59,7 +59,7 @@ $$
 
 
 
-## Hierarchical Softmax
+## 階層的ソフトマックス
 
 別の近似学習法として、*hierarchical softmax* は二分木を用いる。 :numref:`fig_hi_softmax` に示すデータ構造で、木の各葉ノードが辞書 $\mathcal{V}$ の単語を表す。
 

@@ -143,13 +143,13 @@ class BERTEncoder(nn.Block):
         for _ in range(num_blks):
             self.blks.add(d2l.TransformerEncoderBlock(
                 num_hiddens, ffn_num_hiddens, num_heads, dropout, True))
-        # In BERT, positional embeddings are learnable, thus we create a
-        # parameter of positional embeddings that are long enough
+        # BERTでは位置埋め込みは学習可能であるため、a を作成する
+        # 十分に長い位置埋め込みのパラメータ
         self.pos_embedding = self.params.get('pos_embedding',
                                              shape=(1, max_len, num_hiddens))
 
     def forward(self, tokens, segments, valid_lens):
-        # Shape of `X` remains unchanged in the following code snippet:
+        # 次のコード片では `X` の形状は変わらない。
         # (batch size, max sequence length, `num_hiddens`)
         X = self.token_embedding(tokens) + self.segment_embedding(segments)
         X = X + self.pos_embedding.data(ctx=X.ctx)[:, :X.shape[1], :]
@@ -172,13 +172,13 @@ class BERTEncoder(nn.Module):
         for i in range(num_blks):
             self.blks.add_module(f"{i}", d2l.TransformerEncoderBlock(
                 num_hiddens, ffn_num_hiddens, num_heads, dropout, True))
-        # In BERT, positional embeddings are learnable, thus we create a
-        # parameter of positional embeddings that are long enough
+        # BERTでは位置埋め込みは学習可能であるため、a を作成する
+        # 十分に長い位置埋め込みのパラメータ
         self.pos_embedding = nn.Parameter(torch.randn(1, max_len,
                                                       num_hiddens))
 
     def forward(self, tokens, segments, valid_lens):
-        # Shape of `X` remains unchanged in the following code snippet:
+        # 次のコード片では `X` の形状は変わらない。
         # (batch size, max sequence length, `num_hiddens`)
         X = self.token_embedding(tokens) + self.segment_embedding(segments)
         X = X + self.pos_embedding[:, :X.shape[1], :]
@@ -280,7 +280,7 @@ class MaskLM(nn.Block):
         pred_positions = pred_positions.reshape(-1)
         batch_size = X.shape[0]
         batch_idx = np.arange(0, batch_size)
-        # Suppose that `batch_size` = 2, `num_pred_positions` = 3, then
+        # たとえば`batch_size` = 2、`num_pred_positions` = 3ならば
         # `batch_idx` is `np.array([0, 0, 0, 1, 1, 1])`
         batch_idx = np.repeat(batch_idx, num_pred_positions)
         masked_X = X[batch_idx, pred_positions]
@@ -306,7 +306,7 @@ class MaskLM(nn.Module):
         pred_positions = pred_positions.reshape(-1)
         batch_size = X.shape[0]
         batch_idx = torch.arange(0, batch_size)
-        # Suppose that `batch_size` = 2, `num_pred_positions` = 3, then
+        # たとえば`batch_size` = 2、`num_pred_positions` = 3ならば
         # `batch_idx` is `torch.tensor([0, 0, 0, 1, 1, 1])`
         batch_idx = torch.repeat_interleave(batch_idx, num_pred_positions)
         masked_X = X[batch_idx, pred_positions]
@@ -408,10 +408,10 @@ nsp_Y_hat.shape
 
 ```{.python .input}
 #@tab pytorch
-# PyTorch by default will not flatten the tensor as seen in mxnet where, if
-# flatten=True, all but the first axis of input data are collapsed together
+# PyTorchでは、mxnetで見られるようにテンソルをデフォルトでは平坦化しない。
+# flatten=True、入力データの第1軸を除くすべての軸を1つに畳み込む
 encoded_X = torch.flatten(encoded_X, start_dim=1)
-# input_shape for NSP: (batch size, `num_hiddens`)
+# NSP用の入力形状: (バッチサイズ, `num_hiddens`)
 nsp = NextSentencePred()
 nsp_Y_hat = nsp(encoded_X)
 nsp_Y_hat.shape
@@ -463,7 +463,7 @@ class BERTModel(nn.Block):
             mlm_Y_hat = self.mlm(encoded_X, pred_positions)
         else:
             mlm_Y_hat = None
-        # The hidden layer of the MLP classifier for next sentence prediction.
+        # 次文予測用MLP分類器の隠れ層
         # 0 is the index of the '<cls>' token
         nsp_Y_hat = self.nsp(self.hidden(encoded_X[:, 0, :]))
         return encoded_X, mlm_Y_hat, nsp_Y_hat
@@ -491,7 +491,7 @@ class BERTModel(nn.Module):
             mlm_Y_hat = self.mlm(encoded_X, pred_positions)
         else:
             mlm_Y_hat = None
-        # The hidden layer of the MLP classifier for next sentence prediction.
+        # 次文予測用MLP分類器の隠れ層
         # 0 is the index of the '<cls>' token
         nsp_Y_hat = self.nsp(self.hidden(encoded_X[:, 0, :]))
         return encoded_X, mlm_Y_hat, nsp_Y_hat

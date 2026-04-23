@@ -148,7 +148,7 @@ class DenseBlock(nn.Block):
     def forward(self, X):
         for blk in self.net:
             Y = blk(X)
-            # Concatenate input and output of each block along the channels
+            # 各ブロックの入力と出力をチャネル方向に連結する
             X = np.concatenate((X, Y), axis=1)
         return X
 ```
@@ -166,7 +166,7 @@ class DenseBlock(nn.Module):
     def forward(self, X):
         for blk in self.net:
             Y = blk(X)
-            # Concatenate input and output of each block along the channels
+            # 各ブロックの入力と出力をチャネル方向に連結する
             X = torch.cat((X, Y), dim=1)
         return X
 ```
@@ -379,10 +379,10 @@ def __init__(self, num_channels=64, growth_rate=32, arch=(4, 4, 4, 4),
         self.net.add(self.b1())
         for i, num_convs in enumerate(arch):
             self.net.add(DenseBlock(num_convs, growth_rate))
-            # The number of output channels in the previous dense block
+            # 前のDenseブロックの出力チャネル数
             num_channels += num_convs * growth_rate
-            # A transition layer that halves the number of channels is added
-            # between the dense blocks
+            # チャネル数を半減する遷移層が追加される
+            # 密なブロック間
             if i != len(arch) - 1:
                 num_channels //= 2
                 self.net.add(transition_block(num_channels))
@@ -394,10 +394,10 @@ def __init__(self, num_channels=64, growth_rate=32, arch=(4, 4, 4, 4),
         for i, num_convs in enumerate(arch):
             self.net.add_module(f'dense_blk{i+1}', DenseBlock(num_convs,
                                                               growth_rate))
-            # The number of output channels in the previous dense block
+            # 前のDenseブロックの出力チャネル数
             num_channels += num_convs * growth_rate
-            # A transition layer that halves the number of channels is added
-            # between the dense blocks
+            # チャネル数を半減する遷移層が追加される
+            # 密なブロック間
             if i != len(arch) - 1:
                 num_channels //= 2
                 self.net.add_module(f'tran_blk{i+1}', transition_block(
@@ -411,10 +411,10 @@ def __init__(self, num_channels=64, growth_rate=32, arch=(4, 4, 4, 4),
         self.net = tf.keras.models.Sequential(self.b1())
         for i, num_convs in enumerate(arch):
             self.net.add(DenseBlock(num_convs, growth_rate))
-            # The number of output channels in the previous dense block
+            # 前のDenseブロックの出力チャネル数
             num_channels += num_convs * growth_rate
-            # A transition layer that halves the number of channels is added
-            # between the dense blocks
+            # チャネル数を半減する遷移層が追加される
+            # 密なブロック間
             if i != len(arch) - 1:
                 num_channels //= 2
                 self.net.add(TransitionBlock(num_channels))
@@ -434,10 +434,10 @@ def create_net(self):
     for i, num_convs in enumerate(self.arch):
         net.layers.extend([DenseBlock(num_convs, self.growth_rate,
                                       training=self.training)])
-        # The number of output channels in the previous dense block
+        # 前のDenseブロックの出力チャネル数
         num_channels = self.num_channels + (num_convs * self.growth_rate)
-        # A transition layer that halves the number of channels is added
-        # between the dense blocks
+        # チャネル数を半減する遷移層が追加される
+        # 密なブロック間
         if i != len(self.arch) - 1:
             num_channels //= 2
             net.layers.extend([TransitionBlock(num_channels,

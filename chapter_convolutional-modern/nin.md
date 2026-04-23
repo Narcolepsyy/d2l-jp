@@ -188,7 +188,7 @@ class NiN(d2l.Classifier):
             lambda x: nn.max_pool(x, (3, 3), strides=(2, 2)),
             nn.Dropout(0.5, deterministic=not self.training),
             nin_block(self.num_classes, kernel_size=(3, 3), strides=1, padding=(1, 1)),
-            lambda x: nn.avg_pool(x, (5, 5)),  # global avg pooling
+            lambda x: nn.avg_pool(x, (5, 5)),  # グローバル平均プーリング
             lambda x: x.reshape((x.shape[0], -1))  # flatten
         ])
 ```

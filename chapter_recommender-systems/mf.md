@@ -80,7 +80,7 @@ $$
 ```{.python .input  n=3}
 #@tab mxnet
 def evaluator(net, test_iter, devices):
-    rmse = mx.metric.RMSE()  # Get the RMSE
+    rmse = mx.metric.RMSE()  # RMSEを求める
     rmse_list = []
     for idx, (users, items, ratings) in enumerate(test_iter):
         u = gluon.utils.split_and_load(users, devices, even_split=False)
@@ -124,7 +124,7 @@ def train_recsys_rating(net, train_iter, test_iter, loss, trainer, num_epochs,
             trainer.step(values[0].shape[0])
             metric.add(l, values[0].shape[0], values[0].size)
             timer.stop()
-        if len(kwargs) > 0:  # It will be used in section AutoRec
+        if len(kwargs) > 0:  # AutoRec節で使用される
             test_rmse = evaluator(net, test_iter, kwargs['inter_mat'],
                                   devices)
         else:

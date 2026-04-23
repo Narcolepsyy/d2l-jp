@@ -71,10 +71,10 @@ mnist_test = torchvision.datasets.MNIST(
 ((train_images, train_labels), (
     test_images, test_labels)) = tf.keras.datasets.mnist.load_data()
 
-# Original pixel values of MNIST range from 0-255 (as the digits are stored as
-# uint8). For this section, pixel values that are greater than 128 (in the
-# original image) are converted to 1 and values that are less than 128 are
-# converted to 0. See section 18.9.2 and 18.9.3 for why
+# MNISTの元の画素値の範囲は0〜255である（各数字が保存されているため）
+# uint8)。この節では、128を超える画素値は（uint8の）
+# 元の画像) は1に変換され、128未満の値は
+# 0に変換された。理由は18.9.2節および18.9.3節を参照せよ
 train_images = tf.floor(tf.constant(train_images / 128, dtype = tf.float32))
 test_images = tf.floor(tf.constant(test_images / 128, dtype = tf.float32))
 
@@ -209,7 +209,7 @@ $$\begin{aligned}\hat{y} &= \mathrm{argmax}_ y \ p(y)\prod_{i=1}^d   p(x_t = t_i
 
 ```{.python .input}
 #@tab mxnet
-X, Y = mnist_train[:]  # All training examples
+X, Y = mnist_train[:]  # すべての訓練例
 
 n_y = np.zeros((10))
 for y in range(10):
@@ -399,8 +399,8 @@ py
 
 ```{.python .input}
 #@tab mxnet
-# Convert label which is a scalar tensor of int32 dtype to a Python scalar
-# integer for comparison
+# int32型のスカラーTensorであるラベルをPythonスカラーに変換する
+# 比較用の整数
 py.argmax(axis=0) == int(label)
 ```
 
@@ -457,7 +457,7 @@ d2l.show_images(X, 2, 9, titles=[str(d) for d in preds]);
 #@tab mxnet
 X, y = mnist_test[:]
 preds = np.array(predict(X), dtype=np.int32)
-float((preds == y).sum()) / len(y)  # Validation accuracy
+float((preds == y).sum()) / len(y)  # 検証精度
 ```
 
 ```{.python .input}
@@ -465,7 +465,7 @@ float((preds == y).sum()) / len(y)  # Validation accuracy
 X = torch.stack([mnist_test[i][0] for i in range(len(mnist_test))], dim=0)
 y = torch.tensor([mnist_test[i][1] for i in range(len(mnist_test))])
 preds = torch.tensor(predict(X), dtype=torch.int32)
-float((preds == y).sum()) / len(y)  # Validation accuracy
+float((preds == y).sum()) / len(y)  # 検証精度
 ```
 
 ```{.python .input}
@@ -473,7 +473,7 @@ float((preds == y).sum()) / len(y)  # Validation accuracy
 X = test_images
 y = test_labels
 preds = tf.constant(predict(X), dtype=tf.int32)
-# Validation accuracy
+# 検証精度
 tf.reduce_sum(tf.cast(preds == y, tf.float32)).numpy() / len(y)
 ```
 

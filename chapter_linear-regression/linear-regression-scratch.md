@@ -123,7 +123,7 @@ def loss(self, y_hat, y):
 %%tab jax
 @d2l.add_to_class(LinearRegressionScratch)  #@save
 def loss(self, params, X, y, state):
-    y_hat = state.apply_fn({'params': params}, *X)  # X unpacked from a tuple
+    y_hat = state.apply_fn({'params': params}, *X)  # タプルから展開されたX
     l = (y_hat - d2l.reshape(y, y_hat.shape)) ** 2 / 2
     return d2l.reduce_mean(l)
 ```
@@ -198,23 +198,23 @@ class SGD(d2l.HyperParameters):  #@save
 %%tab jax
 class SGD(d2l.HyperParameters):  #@save
     """Minibatch stochastic gradient descent."""
-    # The key transformation of Optax is the GradientTransformation
-    # defined by two methods, the init and the update.
-    # The init initializes the state and the update transforms the gradients.
-    # https://github.com/deepmind/optax/blob/master/optax/_src/transform.py
+    # Optaxの主要な変換はGradientTransformationである
+    # initとupdateという2つのメソッドで定義される。
+    # initは状態を初期化し、updateは勾配を変換する。
+    # URL先の内容を取得できないため、翻訳対象のコメント文をそのまま貼り付けてほしい。
     def __init__(self, lr):
         self.save_hyperparameters()
 
     def init(self, params):
-        # Delete unused params
+        # 未使用のパラメータを削除する
         del params
         return optax.EmptyState
 
     def update(self, updates, state, params=None):
         del params
-        # When state.apply_gradients method is called to update flax's
-        # train_state object, it internally calls optax.apply_updates method
-        # adding the params to the update equation defined below.
+        # state.apply_gradientsメソッドが呼び出されてFlaxのを更新する際に
+        # train_stateオブジェクト。内部でoptax.apply_updatesメソッドを呼び出す
+        # 以下で定義する更新式にパラメータを加える。
         updates = jax.tree_util.tree_map(lambda g: -self.lr * g, updates)
         return updates, state
 
@@ -271,7 +271,7 @@ def fit_epoch(self):
         self.optim.zero_grad()
         with torch.no_grad():
             loss.backward()
-            if self.gradient_clip_val > 0:  # To be discussed later
+            if self.gradient_clip_val > 0:  # 後で議論する
                 self.clip_gradients(self.gradient_clip_val, self.model)
             self.optim.step()
         self.train_batch_idx += 1
@@ -330,13 +330,13 @@ def fit_epoch(self):
 def fit_epoch(self):
     self.model.training = True
     if self.state.batch_stats:
-        # Mutable states will be used later (e.g., for batch norm)
+        # 可変状態は後で使用される（例: バッチ正規化）
         for batch in self.train_dataloader:
             (_, mutated_vars), grads = self.model.training_step(self.state.params,
                                                            self.prepare_batch(batch),
                                                            self.state)
             self.state = self.state.apply_gradients(grads=grads)
-            # Can be ignored for models without Dropout Layers
+            # Dropout層を持たないモデルでは無視できる
             self.state = self.state.replace(
                 dropout_rng=jax.random.split(self.state.dropout_rng)[0])
             self.state = self.state.replace(batch_stats=mutated_vars['batch_stats'])
@@ -347,7 +347,7 @@ def fit_epoch(self):
                                                 self.prepare_batch(batch),
                                                 self.state)
             self.state = self.state.apply_gradients(grads=grads)
-            # Can be ignored for models without Dropout Layers
+            # Dropout層を持たないモデルでは無視できる
             self.state = self.state.replace(
                 dropout_rng=jax.random.split(self.state.dropout_rng)[0])
             self.train_batch_idx += 1

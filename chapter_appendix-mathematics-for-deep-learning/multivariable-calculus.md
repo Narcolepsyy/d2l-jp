@@ -323,19 +323,19 @@ $$
 
 ```{.python .input}
 #@tab all
-# Compute the value of the function from inputs to outputs
+# 入力から出力への関数値を計算する
 w, x, y, z = -1, 0, -2, 1
 a, b = (w + x + y + z)**2, (w + x - y - z)**2
 u, v = (a + b)**2, (a - b)**2
 f = (u + v)**2
 print(f'    f at {w}, {x}, {y}, {z} is {f}')
 
-# Compute the single step partials
+# 単一ステップの偏微分を計算する
 df_du, df_dv = 2*(u + v), 2*(u + v)
 du_da, du_db, dv_da, dv_db = 2*(a + b), 2*(a + b), 2*(a - b), -2*(a - b)
 da_dw, db_dw = 2*(w + x + y + z), 2*(w + x - y - z)
 
-# Compute the final result from inputs to outputs
+# 入力から出力までの最終結果を計算する
 du_dw, dv_dw = du_da*da_dw + du_db*db_dw, dv_da*da_dw + dv_db*db_dw
 df_dw = df_du*du_dw + df_dv*dv_dw
 print(f'df/dw at {w}, {x}, {y}, {z} is {df_dw}')
@@ -367,15 +367,15 @@ $$
 
 ```{.python .input}
 #@tab all
-# Compute the value of the function from inputs to outputs
+# 入力から出力への関数値を計算する
 w, x, y, z = -1, 0, -2, 1
 a, b = (w + x + y + z)**2, (w + x - y - z)**2
 u, v = (a + b)**2, (a - b)**2
 f = (u + v)**2
 print(f'f at {w}, {x}, {y}, {z} is {f}')
 
-# Compute the derivative using the decomposition above
-# First compute the single step partials
+# 上の分解を用いて微分を求める
+# まず単一ステップの偏微分を計算する
 df_du, df_dv = 2*(u + v), 2*(u + v)
 du_da, du_db, dv_da, dv_db = 2*(a + b), 2*(a + b), 2*(a - b), -2*(a - b)
 da_dw, db_dw = 2*(w + x + y + z), 2*(w + x - y - z)
@@ -383,7 +383,7 @@ da_dx, db_dx = 2*(w + x + y + z), 2*(w + x - y - z)
 da_dy, db_dy = 2*(w + x + y + z), -2*(w + x - y - z)
 da_dz, db_dz = 2*(w + x + y + z), -2*(w + x - y - z)
 
-# Now compute how f changes when we change any value from output to input
+# 出力から入力へ任意の値を変更したときの f の変化を計算する
 df_da, df_db = df_du*du_da + df_dv*dv_da, df_du*du_db + df_dv*dv_db
 df_dw, df_dx = df_da*da_dw + df_db*db_dw, df_da*da_dx + df_db*db_dx
 df_dy, df_dz = df_da*da_dy + df_db*db_dy, df_da*da_dz + df_db*db_dz
@@ -404,7 +404,7 @@ print(f'df/dz at {w}, {x}, {y}, {z} is {df_dz}')
 
 ```{.python .input}
 #@tab mxnet
-# Initialize as ndarrays, then attach gradients
+# ndarrayとして初期化し、その後で勾配を付加する
 w, x, y, z = np.array(-1), np.array(0), np.array(-2), np.array(1)
 
 w.attach_grad()
@@ -412,13 +412,13 @@ x.attach_grad()
 y.attach_grad()
 z.attach_grad()
 
-# Do the computation like usual, tracking gradients
+# 通常どおり計算し、勾配を追跡する
 with autograd.record():
     a, b = (w + x + y + z)**2, (w + x - y - z)**2
     u, v = (a + b)**2, (a - b)**2
     f = (u + v)**2
 
-# Execute backward pass
+# 逆伝播を実行する
 f.backward()
 
 print(f'df/dw at {w}, {x}, {y}, {z} is {w.grad}')
@@ -429,17 +429,17 @@ print(f'df/dz at {w}, {x}, {y}, {z} is {z.grad}')
 
 ```{.python .input}
 #@tab pytorch
-# Initialize as ndarrays, then attach gradients
+# ndarrayとして初期化し、その後で勾配を付加する
 w = torch.tensor([-1.], requires_grad=True)
 x = torch.tensor([0.], requires_grad=True)
 y = torch.tensor([-2.], requires_grad=True)
 z = torch.tensor([1.], requires_grad=True)
-# Do the computation like usual, tracking gradients
+# 通常どおり計算し、勾配を追跡する
 a, b = (w + x + y + z)**2, (w + x - y - z)**2
 u, v = (a + b)**2, (a - b)**2
 f = (u + v)**2
 
-# Execute backward pass
+# 逆伝播を実行する
 f.backward()
 
 print(f'df/dw at {w.data.item()}, {x.data.item()}, {y.data.item()}, '
@@ -454,18 +454,18 @@ print(f'df/dz at {w.data.item()}, {x.data.item()}, {y.data.item()}, '
 
 ```{.python .input}
 #@tab tensorflow
-# Initialize as ndarrays, then attach gradients
+# ndarrayとして初期化し、その後で勾配を付加する
 w = tf.Variable(tf.constant([-1.]))
 x = tf.Variable(tf.constant([0.]))
 y = tf.Variable(tf.constant([-2.]))
 z = tf.Variable(tf.constant([1.]))
-# Do the computation like usual, tracking gradients
+# 通常どおり計算し、勾配を追跡する
 with tf.GradientTape(persistent=True) as t:
     a, b = (w + x + y + z)**2, (w + x - y - z)**2
     u, v = (a + b)**2, (a - b)**2
     f = (u + v)**2
 
-# Execute backward pass
+# 逆伝播を実行する
 w_grad = t.gradient(f, w).numpy()
 x_grad = t.gradient(f, x).numpy()
 y_grad = t.gradient(f, y).numpy()
@@ -549,15 +549,15 @@ $$
 
 ```{.python .input}
 #@tab mxnet
-# Construct grid and compute function
+# グリッドを構築し、関数を計算する
 x, y = np.meshgrid(np.linspace(-2, 2, 101),
                    np.linspace(-2, 2, 101), indexing='ij')
 z = x*np.exp(- x**2 - y**2)
 
-# Compute approximating quadratic with gradient and Hessian at (1, 0)
+# (1, 0)における勾配とヘッセ行列を用いて二次近似を計算する
 w = np.exp(-1)*(-1 - (x + 1) + (x + 1)**2 + y**2)
 
-# Plot function
+# 関数をプロットする
 ax = d2l.plt.figure().add_subplot(111, projection='3d')
 ax.plot_wireframe(x.asnumpy(), y.asnumpy(), z.asnumpy(),
                   **{'rstride': 10, 'cstride': 10})
@@ -574,16 +574,16 @@ ax.dist = 12
 
 ```{.python .input}
 #@tab pytorch
-# Construct grid and compute function
+# グリッドを構築し、関数を計算する
 x, y = torch.meshgrid(torch.linspace(-2, 2, 101),
                    torch.linspace(-2, 2, 101))
 
 z = x*torch.exp(- x**2 - y**2)
 
-# Compute approximating quadratic with gradient and Hessian at (1, 0)
+# (1, 0)における勾配とヘッセ行列を用いて二次近似を計算する
 w = torch.exp(torch.tensor([-1.]))*(-1 - (x + 1) + 2 * (x + 1)**2 + 2 * y**2)
 
-# Plot function
+# 関数をプロットする
 ax = d2l.plt.figure().add_subplot(111, projection='3d')
 ax.plot_wireframe(x.numpy(), y.numpy(), z.numpy(),
                   **{'rstride': 10, 'cstride': 10})
@@ -600,16 +600,16 @@ ax.dist = 12
 
 ```{.python .input}
 #@tab tensorflow
-# Construct grid and compute function
+# グリッドを構築し、関数を計算する
 x, y = tf.meshgrid(tf.linspace(-2., 2., 101),
                    tf.linspace(-2., 2., 101))
 
 z = x*tf.exp(- x**2 - y**2)
 
-# Compute approximating quadratic with gradient and Hessian at (1, 0)
+# (1, 0)における勾配とヘッセ行列を用いて二次近似を計算する
 w = tf.exp(tf.constant([-1.]))*(-1 - (x + 1) + 2 * (x + 1)**2 + 2 * y**2)
 
-# Plot function
+# 関数をプロットする
 ax = d2l.plt.figure().add_subplot(111, projection='3d')
 ax.plot_wireframe(x.numpy(), y.numpy(), z.numpy(),
                   **{'rstride': 10, 'cstride': 10})

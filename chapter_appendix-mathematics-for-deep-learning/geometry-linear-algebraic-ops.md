@@ -290,7 +290,7 @@ $2x + y = 1$、あるいは同値に $y = 1 - 2x$ であることを確認でき
 
 ```{.python .input}
 #@tab mxnet
-# Load in the dataset
+# データセットを読み込む
 train = gluon.data.vision.FashionMNIST(train=True)
 test = gluon.data.vision.FashionMNIST(train=False)
 
@@ -301,14 +301,14 @@ X_test = np.stack(
 y_test = np.stack(
     [x[1] for x in test if x[1] == 0 or x[1] == 1]).astype(float)
 
-# Compute averages
+# 平均を計算する
 ave_0 = np.mean(X_train_0, axis=0)
 ave_1 = np.mean(X_train_1, axis=0)
 ```
 
 ```{.python .input}
 #@tab pytorch
-# Load in the dataset
+# データセットを読み込む
 trans = []
 trans.append(transforms.ToTensor())
 trans = transforms.Compose(trans)
@@ -326,14 +326,14 @@ X_test = torch.stack(
 y_test = torch.stack([torch.tensor(x[1]) for x in test
                       if x[1] == 0 or x[1] == 1]).type(torch.float32)
 
-# Compute averages
+# 平均を計算する
 ave_0 = torch.mean(X_train_0, axis=0)
 ave_1 = torch.mean(X_train_1, axis=0)
 ```
 
 ```{.python .input}
 #@tab tensorflow
-# Load in the dataset
+# データセットを読み込む
 ((train_images, train_labels), (
     test_images, test_labels)) = tf.keras.datasets.fashion_mnist.load_data()
 
@@ -347,7 +347,7 @@ X_test = tf.cast(tf.stack(test_images[[i for i, label in enumerate(
 y_test = tf.cast(tf.stack(test_images[[i for i, label in enumerate(
     test_labels) if label == 1]] * 256), dtype=tf.float32)
 
-# Compute averages
+# 平均を計算する
 ave_0 = tf.reduce_mean(X_train_0, axis=0)
 ave_1 = tf.reduce_mean(X_train_1, axis=0)
 ```
@@ -356,7 +356,7 @@ ave_1 = tf.reduce_mean(X_train_1, axis=0)
 
 ```{.python .input}
 #@tab mxnet, pytorch
-# Plot average t-shirt
+# 平均Tシャツを描画する
 d2l.set_figsize()
 d2l.plt.imshow(ave_0.reshape(28, 28).tolist(), cmap='Greys')
 d2l.plt.show()
@@ -364,7 +364,7 @@ d2l.plt.show()
 
 ```{.python .input}
 #@tab tensorflow
-# Plot average t-shirt
+# 平均Tシャツを描画する
 d2l.set_figsize()
 d2l.plt.imshow(tf.reshape(ave_0, (28, 28)), cmap='Greys')
 d2l.plt.show()
@@ -374,14 +374,14 @@ d2l.plt.show()
 
 ```{.python .input}
 #@tab mxnet, pytorch
-# Plot average trousers
+# ズボンの平均をプロットする
 d2l.plt.imshow(ave_1.reshape(28, 28).tolist(), cmap='Greys')
 d2l.plt.show()
 ```
 
 ```{.python .input}
 #@tab tensorflow
-# Plot average trousers
+# ズボンの平均をプロットする
 d2l.plt.imshow(tf.reshape(ave_1, (28, 28)), cmap='Greys')
 d2l.plt.show()
 ```
@@ -390,7 +390,7 @@ d2l.plt.show()
 
 ```{.python .input}
 #@tab mxnet
-# Print test set accuracy with eyeballed threshold
+# 目視で決めた閾値でテストセット精度を表示する
 w = (ave_1 - ave_0).T
 predictions = X_test.reshape(2000, -1).dot(w.flatten()) > -1500000
 
@@ -400,7 +400,7 @@ np.mean(predictions.astype(y_test.dtype) == y_test, dtype=np.float64)
 
 ```{.python .input}
 #@tab pytorch
-# Print test set accuracy with eyeballed threshold
+# 目視で決めた閾値でテストセット精度を表示する
 w = (ave_1 - ave_0).T
 # '@' is Matrix Multiplication operator in pytorch.
 predictions = X_test.reshape(2000, -1) @ (w.flatten()) > -1500000
@@ -411,7 +411,7 @@ torch.mean((predictions.type(y_test.dtype) == y_test).float(), dtype=torch.float
 
 ```{.python .input}
 #@tab tensorflow
-# Print test set accuracy with eyeballed threshold
+# 目視で決めた閾値でテストセット精度を表示する
 w = tf.transpose(ave_1 - ave_0)
 predictions = tf.reduce_sum(X_test * tf.nest.flatten(w), axis=0) > -1500000
 
@@ -888,34 +888,34 @@ $$
 
 ```{.python .input}
 #@tab mxnet
-# Define tensors
+# テンソルを定義する
 B = np.array([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]])
 A = np.array([[1, 2], [3, 4]])
 v = np.array([1, 2])
 
-# Print out the shapes
+# 形状を出力する
 A.shape, B.shape, v.shape
 ```
 
 ```{.python .input}
 #@tab pytorch
-# Define tensors
+# テンソルを定義する
 B = torch.tensor([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]])
 A = torch.tensor([[1, 2], [3, 4]])
 v = torch.tensor([1, 2])
 
-# Print out the shapes
+# 形状を出力する
 A.shape, B.shape, v.shape
 ```
 
 ```{.python .input}
 #@tab tensorflow
-# Define tensors
+# テンソルを定義する
 B = tf.constant([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]])
 A = tf.constant([[1, 2], [3, 4]])
 v = tf.constant([1, 2])
 
-# Print out the shapes
+# 形状を出力する
 A.shape, B.shape, v.shape
 ```
 
@@ -929,19 +929,19 @@ A.shape, B.shape, v.shape
 
 ```{.python .input}
 #@tab mxnet
-# Reimplement matrix multiplication
+# 行列乗算を再実装する
 np.einsum("ij, j -> i", A, v), A.dot(v)
 ```
 
 ```{.python .input}
 #@tab pytorch
-# Reimplement matrix multiplication
+# 行列乗算を再実装する
 torch.einsum("ij, j -> i", A, v), A@v
 ```
 
 ```{.python .input}
 #@tab tensorflow
-# Reimplement matrix multiplication
+# 行列乗算を再実装する
 tf.einsum("ij, j -> i", A, v), tf.matmul(A, tf.reshape(v, (2, 1)))
 ```
 
@@ -982,12 +982,12 @@ np.einsum(B, [0, 1, 2], A, [0, 3], v, [1], [2, 3])
 
 ```{.python .input}
 #@tab pytorch
-# PyTorch does not support this type of notation.
+# PyTorchはこの種の記法をサポートしていない。
 ```
 
 ```{.python .input}
 #@tab tensorflow
-# TensorFlow does not support this type of notation.
+# TensorFlowはこの種の記法をサポートしていない。
 ```
 
 どちらの記法でも、コード中でテンソル縮約を簡潔かつ効率的に表現できる。

@@ -391,7 +391,7 @@ A
 
 ```{.python .input}
 #@tab mxnet
-# Calculate the sequence of norms after repeatedly applying `A`
+# A を繰り返し適用した後のノルム列を計算する
 v_in = np.random.randn(k, 1)
 
 norm_list = [np.linalg.norm(v_in)]
@@ -404,7 +404,7 @@ d2l.plot(np.arange(0, 100), norm_list, 'Iteration', 'Value')
 
 ```{.python .input}
 #@tab pytorch
-# Calculate the sequence of norms after repeatedly applying `A`
+# A を繰り返し適用した後のノルム列を計算する
 v_in = torch.randn(k, 1, dtype=torch.float64)
 
 norm_list = [torch.norm(v_in).item()]
@@ -417,7 +417,7 @@ d2l.plot(torch.arange(0, 100), norm_list, 'Iteration', 'Value')
 
 ```{.python .input}
 #@tab tensorflow
-# Calculate the sequence of norms after repeatedly applying `A`
+# A を繰り返し適用した後のノルム列を計算する
 v_in = tf.random.normal((k, 1), dtype=tf.float64)
 
 norm_list = [tf.norm(v_in).numpy()]
@@ -433,7 +433,7 @@ d2l.plot(tf.range(0, 100), norm_list, 'Iteration', 'Value')
 
 ```{.python .input}
 #@tab mxnet
-# Compute the scaling factor of the norms
+# ノルムのスケーリング係数を計算する
 norm_ratio_list = []
 for i in range(1, 100):
     norm_ratio_list.append(norm_list[i]/norm_list[i - 1])
@@ -443,7 +443,7 @@ d2l.plot(np.arange(1, 100), norm_ratio_list, 'Iteration', 'Ratio')
 
 ```{.python .input}
 #@tab pytorch
-# Compute the scaling factor of the norms
+# ノルムのスケーリング係数を計算する
 norm_ratio_list = []
 for i in range(1, 100):
     norm_ratio_list.append(norm_list[i]/norm_list[i - 1])
@@ -453,7 +453,7 @@ d2l.plot(torch.arange(1, 100), norm_ratio_list, 'Iteration', 'Ratio')
 
 ```{.python .input}
 #@tab tensorflow
-# Compute the scaling factor of the norms
+# ノルムのスケーリング係数を計算する
 norm_ratio_list = []
 for i in range(1, 100):
     norm_ratio_list.append(norm_list[i]/norm_list[i - 1])
@@ -480,7 +480,7 @@ d2l.plot(tf.range(1, 100), norm_ratio_list, 'Iteration', 'Ratio')
 
 ```{.python .input}
 #@tab mxnet
-# Compute the eigenvalues
+# 固有値を求める
 eigs = np.linalg.eigvals(A).tolist()
 norm_eigs = [np.absolute(x) for x in eigs]
 norm_eigs.sort()
@@ -489,7 +489,7 @@ print(f'norms of eigenvalues: {norm_eigs}')
 
 ```{.python .input}
 #@tab pytorch
-# Compute the eigenvalues
+# 固有値を求める
 eigs = torch.linalg.eig(A).eigenvalues.tolist()
 norm_eigs = [torch.abs(torch.tensor(x)) for x in eigs]
 norm_eigs.sort()
@@ -498,7 +498,7 @@ print(f'norms of eigenvalues: {norm_eigs}')
 
 ```{.python .input}
 #@tab tensorflow
-# Compute the eigenvalues
+# 固有値を求める
 eigs = tf.linalg.eigh(A)[0].numpy().tolist()
 norm_eigs = [tf.abs(tf.constant(x, dtype=tf.float64)) for x in eigs]
 norm_eigs.sort()
@@ -547,10 +547,10 @@ $\mathbf{A}$ を適用すると、ランダムベクトルは
 
 ```{.python .input}
 #@tab mxnet
-# Rescale the matrix `A`
+# 行列`A`をスケーリングする
 A /= norm_eigs[-1]
 
-# Do the same experiment again
+# 同じ実験を再度行う
 v_in = np.random.randn(k, 1)
 
 norm_list = [np.linalg.norm(v_in)]
@@ -563,10 +563,10 @@ d2l.plot(np.arange(0, 100), norm_list, 'Iteration', 'Value')
 
 ```{.python .input}
 #@tab pytorch
-# Rescale the matrix `A`
+# 行列`A`をスケーリングする
 A /= norm_eigs[-1]
 
-# Do the same experiment again
+# 同じ実験を再度行う
 v_in = torch.randn(k, 1, dtype=torch.float64)
 
 norm_list = [torch.norm(v_in).item()]
@@ -579,10 +579,10 @@ d2l.plot(torch.arange(0, 100), norm_list, 'Iteration', 'Value')
 
 ```{.python .input}
 #@tab tensorflow
-# Rescale the matrix `A`
+# 行列`A`をスケーリングする
 A /= norm_eigs[-1]
 
-# Do the same experiment again
+# 同じ実験を再度行う
 v_in = tf.random.normal((k, 1), dtype=tf.float64)
 
 norm_list = [tf.norm(v_in).numpy()]
@@ -597,7 +597,7 @@ d2l.plot(tf.range(0, 100), norm_list, 'Iteration', 'Value')
 
 ```{.python .input}
 #@tab mxnet
-# Also plot the ratio
+# 比率もプロットする
 norm_ratio_list = []
 for i in range(1, 100):
     norm_ratio_list.append(norm_list[i]/norm_list[i-1])
@@ -607,7 +607,7 @@ d2l.plot(np.arange(1, 100), norm_ratio_list, 'Iteration', 'Ratio')
 
 ```{.python .input}
 #@tab pytorch
-# Also plot the ratio
+# 比率もプロットする
 norm_ratio_list = []
 for i in range(1, 100):
     norm_ratio_list.append(norm_list[i]/norm_list[i-1])
@@ -617,7 +617,7 @@ d2l.plot(torch.arange(1, 100), norm_ratio_list, 'Iteration', 'Ratio')
 
 ```{.python .input}
 #@tab tensorflow
-# Also plot the ratio
+# 比率もプロットする
 norm_ratio_list = []
 for i in range(1, 100):
     norm_ratio_list.append(norm_list[i]/norm_list[i-1])

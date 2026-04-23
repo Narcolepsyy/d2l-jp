@@ -148,14 +148,14 @@ tokens = data._tokenize(text)
 class Vocab:  #@save
     """Vocabulary for text."""
     def __init__(self, tokens=[], min_freq=0, reserved_tokens=[]):
-        # Flatten a 2D list if needed
+        # 必要なら2次元リストを平坦化する
         if tokens and isinstance(tokens[0], list):
             tokens = [token for line in tokens for token in line]
-        # Count token frequencies
+        # トークンの出現頻度を数える
         counter = collections.Counter(tokens)
         self.token_freqs = sorted(counter.items(), key=lambda x: x[1],
                                   reverse=True)
-        # The list of unique tokens
+        # 固有トークンの一覧
         self.idx_to_token = list(sorted(set(['<unk>'] + reserved_tokens + [
             token for token, freq in self.token_freqs if freq >= min_freq])))
         self.token_to_idx = {token: idx
@@ -175,7 +175,7 @@ class Vocab:  #@save
         return self.idx_to_token[indices]
 
     @property
-    def unk(self):  # Index for the unknown token
+    def unk(self):  # 未知トークンのインデックス
         return self.token_to_idx['<unk>']
 ```
 

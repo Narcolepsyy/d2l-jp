@@ -103,7 +103,7 @@ def transform_func(X):
     X = (X - 0.5) / (0.5)
     return X
 
-# For TF>=2.4 use `num_parallel_calls = tf.data.AUTOTUNE`
+# TF>=2.4 では `num_parallel_calls = tf.data.AUTOTUNE` を用いる
 data_iter = pokemon.map(lambda x, y: (transform_func(x), y),
                         num_parallel_calls=tf.data.experimental.AUTOTUNE)
 data_iter = data_iter.cache().shuffle(buffer_size=1000).prefetch(
@@ -216,7 +216,7 @@ g_blk(x).shape
 
 ```{.python .input}
 #@tab tensorflow
-x = tf.zeros((2, 16, 16, 3))  # Channel last convention
+x = tf.zeros((2, 16, 16, 3))  # チャンネル最後の規約
 g_blk = G_block(20)
 g_blk(x).shape
 ```
@@ -252,13 +252,13 @@ g_blk(x).shape
 #@tab mxnet
 n_G = 64
 net_G = nn.Sequential()
-net_G.add(G_block(n_G*8, strides=1, padding=0),  # Output: (64 * 8, 4, 4)
-          G_block(n_G*4),  # Output: (64 * 4, 8, 8)
-          G_block(n_G*2),  # Output: (64 * 2, 16, 16)
-          G_block(n_G),    # Output: (64, 32, 32)
+net_G.add(G_block(n_G*8, strides=1, padding=0),  # 出力: (64 * 8, 4, 4)
+          G_block(n_G*4),  # 出力: (64 * 4, 8, 8)
+          G_block(n_G*2),  # 出力: (64 * 2, 16, 16)
+          G_block(n_G),    # 出力: (64, 32, 32)
           nn.Conv2DTranspose(
               3, kernel_size=4, strides=2, padding=1, use_bias=False,
-              activation='tanh'))  # Output: (3, 64, 64)
+              activation='tanh'))  # 出力: (3, 64, 64)
 ```
 
 ```{.python .input}
@@ -266,25 +266,25 @@ net_G.add(G_block(n_G*8, strides=1, padding=0),  # Output: (64 * 8, 4, 4)
 n_G = 64
 net_G = nn.Sequential(
     G_block(in_channels=100, out_channels=n_G*8,
-            strides=1, padding=0),                  # Output: (64 * 8, 4, 4)
-    G_block(in_channels=n_G*8, out_channels=n_G*4), # Output: (64 * 4, 8, 8)
-    G_block(in_channels=n_G*4, out_channels=n_G*2), # Output: (64 * 2, 16, 16)
-    G_block(in_channels=n_G*2, out_channels=n_G),   # Output: (64, 32, 32)
+            strides=1, padding=0),                  # 出力: (64 * 8, 4, 4)
+    G_block(in_channels=n_G*8, out_channels=n_G*4), # 出力: (64 * 4, 8, 8)
+    G_block(in_channels=n_G*4, out_channels=n_G*2), # 出力: (64 * 2, 16, 16)
+    G_block(in_channels=n_G*2, out_channels=n_G),   # 出力: (64, 32, 32)
     nn.ConvTranspose2d(in_channels=n_G, out_channels=3,
                        kernel_size=4, stride=2, padding=1, bias=False),
-    nn.Tanh())  # Output: (3, 64, 64)
+    nn.Tanh())  # 出力: (3, 64, 64)
 ```
 
 ```{.python .input}
 #@tab tensorflow
 n_G = 64
 net_G = tf.keras.Sequential([
-    # Output: (4, 4, 64 * 8)
+    # 出力: (4, 4, 64 * 8)
     G_block(out_channels=n_G*8, strides=1, padding="valid"),
-    G_block(out_channels=n_G*4), # Output: (8, 8, 64 * 4)
-    G_block(out_channels=n_G*2), # Output: (16, 16, 64 * 2)
-    G_block(out_channels=n_G), # Output: (32, 32, 64)
-    # Output: (64, 64, 3)
+    G_block(out_channels=n_G*4), # 出力: (8, 8, 64 * 4)
+    G_block(out_channels=n_G*2), # 出力: (16, 16, 64 * 2)
+    G_block(out_channels=n_G), # 出力: (32, 32, 64)
+    # 出力: (64, 64, 3)
     tf.keras.layers.Conv2DTranspose(
         3, kernel_size=4, strides=2, padding="same", use_bias=False,
         activation="tanh")
@@ -421,34 +421,34 @@ d_blk(x).shape
 #@tab mxnet
 n_D = 64
 net_D = nn.Sequential()
-net_D.add(D_block(n_D),   # Output: (64, 32, 32)
-          D_block(n_D*2),  # Output: (64 * 2, 16, 16)
-          D_block(n_D*4),  # Output: (64 * 4, 8, 8)
-          D_block(n_D*8),  # Output: (64 * 8, 4, 4)
-          nn.Conv2D(1, kernel_size=4, use_bias=False))  # Output: (1, 1, 1)
+net_D.add(D_block(n_D),   # 出力: (64, 32, 32)
+          D_block(n_D*2),  # 出力: (64 * 2, 16, 16)
+          D_block(n_D*4),  # 出力: (64 * 4, 8, 8)
+          D_block(n_D*8),  # 出力: (64 * 8, 4, 4)
+          nn.Conv2D(1, kernel_size=4, use_bias=False))  # 出力: (1, 1, 1)
 ```
 
 ```{.python .input}
 #@tab pytorch
 n_D = 64
 net_D = nn.Sequential(
-    D_block(n_D),  # Output: (64, 32, 32)
-    D_block(in_channels=n_D, out_channels=n_D*2),  # Output: (64 * 2, 16, 16)
-    D_block(in_channels=n_D*2, out_channels=n_D*4),  # Output: (64 * 4, 8, 8)
-    D_block(in_channels=n_D*4, out_channels=n_D*8),  # Output: (64 * 8, 4, 4)
+    D_block(n_D),  # 出力: (64, 32, 32)
+    D_block(in_channels=n_D, out_channels=n_D*2),  # 出力: (64 * 2, 16, 16)
+    D_block(in_channels=n_D*2, out_channels=n_D*4),  # 出力: (64 * 4, 8, 8)
+    D_block(in_channels=n_D*4, out_channels=n_D*8),  # 出力: (64 * 8, 4, 4)
     nn.Conv2d(in_channels=n_D*8, out_channels=1,
-              kernel_size=4, bias=False))  # Output: (1, 1, 1)
+              kernel_size=4, bias=False))  # 出力: (1, 1, 1)
 ```
 
 ```{.python .input}
 #@tab tensorflow
 n_D = 64
 net_D = tf.keras.Sequential([
-    D_block(n_D), # Output: (32, 32, 64)
-    D_block(out_channels=n_D*2), # Output: (16, 16, 64 * 2)
-    D_block(out_channels=n_D*4), # Output: (8, 8, 64 * 4)
-    D_block(out_channels=n_D*8), # Outupt: (4, 4, 64 * 64)
-    # Output: (1, 1, 1)
+    D_block(n_D), # 出力: (32, 32, 64)
+    D_block(out_channels=n_D*2), # 出力: (16, 16, 64 * 2)
+    D_block(out_channels=n_D*4), # 出力: (8, 8, 64 * 4)
+    D_block(out_channels=n_D*8), # 出力: (4, 4, 64 * 64)
+    # 出力: (1, 1, 1)
     tf.keras.layers.Conv2D(1, kernel_size=4, use_bias=False)
 ])
 ```
@@ -493,9 +493,9 @@ def train(net_D, net_G, data_iter, num_epochs, lr, latent_dim,
                             legend=['discriminator', 'generator'])
     animator.fig.subplots_adjust(hspace=0.3)
     for epoch in range(1, num_epochs + 1):
-        # Train one epoch
+        # 1エポック分学習する
         timer = d2l.Timer()
-        metric = d2l.Accumulator(3)  # loss_D, loss_G, num_examples
+        metric = d2l.Accumulator(3)  # 損失D、損失G、サンプル数
         for X, _ in data_iter:
             batch_size = X.shape[0]
             Z = np.random.normal(0, 1, size=(batch_size, latent_dim, 1, 1))
@@ -503,16 +503,16 @@ def train(net_D, net_G, data_iter, num_epochs, lr, latent_dim,
             metric.add(d2l.update_D(X, Z, net_D, net_G, loss, trainer_D),
                        d2l.update_G(Z, net_D, net_G, loss, trainer_G),
                        batch_size)
-        # Show generated examples
+        # 生成された例を表示する
         Z = np.random.normal(0, 1, size=(21, latent_dim, 1, 1), ctx=device)
-        # Normalize the synthetic data to N(0, 1)
+        # 合成データを N(0, 1) に正規化する
         fake_x = net_G(Z).transpose(0, 2, 3, 1) / 2 + 0.5
         imgs = np.concatenate(
             [np.concatenate([fake_x[i * 7 + j] for j in range(7)], axis=1)
              for i in range(len(fake_x)//7)], axis=0)
         animator.axes[1].cla()
         animator.axes[1].imshow(imgs.asnumpy())
-        # Show the losses
+        # 損失を表示する
         loss_D, loss_G = metric[0] / metric[2], metric[1] / metric[2]
         animator.add(epoch, (loss_D, loss_G))
     print(f'loss_D {loss_D:.3f}, loss_G {loss_G:.3f}, '
@@ -537,9 +537,9 @@ def train(net_D, net_G, data_iter, num_epochs, lr, latent_dim,
                             legend=['discriminator', 'generator'])
     animator.fig.subplots_adjust(hspace=0.3)
     for epoch in range(1, num_epochs + 1):
-        # Train one epoch
+        # 1エポック分学習する
         timer = d2l.Timer()
-        metric = d2l.Accumulator(3)  # loss_D, loss_G, num_examples
+        metric = d2l.Accumulator(3)  # 損失D、損失G、サンプル数
         for X, _ in data_iter:
             batch_size = X.shape[0]
             Z = torch.normal(0, 1, size=(batch_size, latent_dim, 1, 1))
@@ -547,9 +547,9 @@ def train(net_D, net_G, data_iter, num_epochs, lr, latent_dim,
             metric.add(d2l.update_D(X, Z, net_D, net_G, loss, trainer_D),
                        d2l.update_G(Z, net_D, net_G, loss, trainer_G),
                        batch_size)
-        # Show generated examples
+        # 生成された例を表示する
         Z = torch.normal(0, 1, size=(21, latent_dim, 1, 1), device=device)
-        # Normalize the synthetic data to N(0, 1)
+        # 合成データを N(0, 1) に正規化する
         fake_x = net_G(Z).permute(0, 2, 3, 1) / 2 + 0.5
         imgs = torch.cat(
             [torch.cat([
@@ -557,7 +557,7 @@ def train(net_D, net_G, data_iter, num_epochs, lr, latent_dim,
              for i in range(len(fake_x)//7)], dim=0)
         animator.axes[1].cla()
         animator.axes[1].imshow(imgs)
-        # Show the losses
+        # 損失を表示する
         loss_D, loss_G = metric[0] / metric[2], metric[1] / metric[2]
         animator.add(epoch, (loss_D, loss_G))
     print(f'loss_D {loss_D:.3f}, loss_G {loss_G:.3f}, '
@@ -586,9 +586,9 @@ def train(net_D, net_G, data_iter, num_epochs, lr, latent_dim,
     animator.fig.subplots_adjust(hspace=0.3)
 
     for epoch in range(1, num_epochs + 1):
-        # Train one epoch
+        # 1エポック分学習する
         timer = d2l.Timer()
-        metric = d2l.Accumulator(3) # loss_D, loss_G, num_examples
+        metric = d2l.Accumulator(3) # 損失D、損失G、サンプル数
         for X, _ in data_iter:
             batch_size = X.shape[0]
             Z = tf.random.normal(mean=0, stddev=1,
@@ -597,16 +597,16 @@ def train(net_D, net_G, data_iter, num_epochs, lr, latent_dim,
                        d2l.update_G(Z, net_D, net_G, loss, optimizer_G),
                        batch_size)
 
-        # Show generated examples
+        # 生成された例を表示する
         Z = tf.random.normal(mean=0, stddev=1, shape=(21, 1, 1, latent_dim))
-        # Normalize the synthetic data to N(0, 1)
+        # 合成データを N(0, 1) に正規化する
         fake_x = net_G(Z) / 2 + 0.5
         imgs = tf.concat([tf.concat([fake_x[i * 7 + j] for j in range(7)],
                                     axis=1)
                           for i in range(len(fake_x) // 7)], axis=0)
         animator.axes[1].cla()
         animator.axes[1].imshow(imgs)
-        # Show the losses
+        # 損失を表示する
         loss_D, loss_G = metric[0] / metric[2], metric[1] / metric[2]
         animator.add(epoch, (loss_D, loss_G))
     print(f'loss_D {loss_D:.3f}, loss_G {loss_G:.3f}, '

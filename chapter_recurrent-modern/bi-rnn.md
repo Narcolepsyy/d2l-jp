@@ -109,7 +109,7 @@ class BiRNNScratch(d2l.Module):
         self.save_hyperparameters()
         self.f_rnn = d2l.RNNScratch(num_inputs, num_hiddens, sigma)
         self.b_rnn = d2l.RNNScratch(num_inputs, num_hiddens, sigma)
-        self.num_hiddens *= 2  # The output dimension will be doubled
+        self.num_hiddens *= 2  # 出力次元は2倍になる
 ```
 
 ```{.python .input}
@@ -122,7 +122,7 @@ class BiRNNScratch(d2l.Module):
     def setup(self):
         self.f_rnn = d2l.RNNScratch(num_inputs, num_hiddens, sigma)
         self.b_rnn = d2l.RNNScratch(num_inputs, num_hiddens, sigma)
-        self.num_hiddens *= 2  # The output dimension will be doubled
+        self.num_hiddens *= 2  # 出力次元は2倍になる
 ```
 
 順方向と逆方向の RNN の状態は別々に更新され、

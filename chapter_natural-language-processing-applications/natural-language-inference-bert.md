@@ -77,14 +77,14 @@ d2l.DATA_HUB['bert.small'] = (d2l.DATA_URL + 'bert.small.torch.zip',
 def load_pretrained_model(pretrained_model, num_hiddens, ffn_num_hiddens,
                           num_heads, num_blks, dropout, max_len, devices):
     data_dir = d2l.download_extract(pretrained_model)
-    # Define an empty vocabulary to load the predefined vocabulary
+    # 事前定義された語彙を読み込むための空の語彙を定義する
     vocab = d2l.Vocab()
     vocab.idx_to_token = json.load(open(os.path.join(data_dir, 'vocab.json')))
     vocab.token_to_idx = {token: idx for idx, token in enumerate(
         vocab.idx_to_token)}
     bert = d2l.BERTModel(len(vocab), num_hiddens, ffn_num_hiddens, num_heads, 
                          num_blks, dropout, max_len)
-    # Load pretrained BERT parameters
+    # 事前学習済みのBERTパラメータを読み込む
     bert.load_parameters(os.path.join(data_dir, 'pretrained.params'),
                          ctx=devices)
     return bert, vocab
@@ -95,7 +95,7 @@ def load_pretrained_model(pretrained_model, num_hiddens, ffn_num_hiddens,
 def load_pretrained_model(pretrained_model, num_hiddens, ffn_num_hiddens,
                           num_heads, num_blks, dropout, max_len, devices):
     data_dir = d2l.download_extract(pretrained_model)
-    # Define an empty vocabulary to load the predefined vocabulary
+    # 事前定義された語彙を読み込むための空の語彙を定義する
     vocab = d2l.Vocab()
     vocab.idx_to_token = json.load(open(os.path.join(data_dir, 'vocab.json')))
     vocab.token_to_idx = {token: idx for idx, token in enumerate(
@@ -103,7 +103,7 @@ def load_pretrained_model(pretrained_model, num_hiddens, ffn_num_hiddens,
     bert = d2l.BERTModel(
         len(vocab), num_hiddens, ffn_num_hiddens=ffn_num_hiddens, num_heads=4,
         num_blks=2, dropout=0.2, max_len=max_len)
-    # Load pretrained BERT parameters
+    # 事前学習済みのBERTパラメータを読み込む
     bert.load_state_dict(torch.load(os.path.join(data_dir,
                                                  'pretrained.params')))
     return bert, vocab
@@ -155,7 +155,7 @@ class SNLIBERTDataset(gluon.data.Dataset):
         print('read ' + str(len(self.all_token_ids)) + ' examples')
 
     def _preprocess(self, all_premise_hypothesis_tokens):
-        pool = multiprocessing.Pool(4)  # Use 4 worker processes
+        pool = multiprocessing.Pool(4)  # 4つのワーカープロセスを使用する
         out = pool.map(self._mp_worker, all_premise_hypothesis_tokens)
         all_token_ids = [
             token_ids for token_ids, segments, valid_len in out]
@@ -176,7 +176,7 @@ class SNLIBERTDataset(gluon.data.Dataset):
         return token_ids, segments, valid_len
 
     def _truncate_pair_of_tokens(self, p_tokens, h_tokens):
-        # Reserve slots for '<CLS>', '<SEP>', and '<SEP>' tokens for the BERT
+        # BERT用に「<CLS>」「<SEP>」「<SEP>」トークンの予約スロットを確保する
         # input
         while len(p_tokens) + len(h_tokens) > self.max_len - 3:
             if len(p_tokens) > len(h_tokens):
@@ -209,7 +209,7 @@ class SNLIBERTDataset(torch.utils.data.Dataset):
         print('read ' + str(len(self.all_token_ids)) + ' examples')
 
     def _preprocess(self, all_premise_hypothesis_tokens):
-        pool = multiprocessing.Pool(4)  # Use 4 worker processes
+        pool = multiprocessing.Pool(4)  # 4つのワーカープロセスを使用する
         out = pool.map(self._mp_worker, all_premise_hypothesis_tokens)
         all_token_ids = [
             token_ids for token_ids, segments, valid_len in out]
@@ -230,7 +230,7 @@ class SNLIBERTDataset(torch.utils.data.Dataset):
         return token_ids, segments, valid_len
 
     def _truncate_pair_of_tokens(self, p_tokens, h_tokens):
-        # Reserve slots for '<CLS>', '<SEP>', and '<SEP>' tokens for the BERT
+        # BERT用に「<CLS>」「<SEP>」「<SEP>」トークンの予約スロットを確保する
         # input
         while len(p_tokens) + len(h_tokens) > self.max_len - 3:
             if len(p_tokens) > len(h_tokens):
@@ -253,8 +253,8 @@ SNLIデータセットをダウンロードした後、
 
 ```{.python .input}
 #@tab mxnet
-# Reduce `batch_size` if there is an out of memory error. In the original BERT
-# model, `max_len` = 512
+# メモリ不足エラーが発生する場合は `batch_size` を減らす。元の BERT では
+# モデル、`max_len` = 512
 batch_size, max_len, num_workers = 512, 128, d2l.get_dataloader_workers()
 data_dir = d2l.download_extract('SNLI')
 train_set = SNLIBERTDataset(d2l.read_snli(data_dir, True), max_len, vocab)
@@ -267,8 +267,8 @@ test_iter = gluon.data.DataLoader(test_set, batch_size,
 
 ```{.python .input}
 #@tab pytorch
-# Reduce `batch_size` if there is an out of memory error. In the original BERT
-# model, `max_len` = 512
+# メモリ不足エラーが発生する場合は `batch_size` を減らす。元の BERT では
+# モデル、`max_len` = 512
 batch_size, max_len, num_workers = 512, 128, d2l.get_dataloader_workers()
 data_dir = d2l.download_extract('SNLI')
 train_set = SNLIBERTDataset(d2l.read_snli(data_dir, True), max_len, vocab)

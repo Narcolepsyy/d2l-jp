@@ -66,15 +66,15 @@ class Caser(nn.Block):
         self.P = nn.Embedding(num_users, num_factors)
         self.Q = nn.Embedding(num_items, num_factors)
         self.d_prime, self.d = d_prime, d
-        # Vertical convolution layer
+        # 垂直畳み込み層
         self.conv_v = nn.Conv2D(d_prime, (L, 1), in_channels=1)
-        # Horizontal convolution layer
+        # 水平畳み込み層
         h = [i + 1 for i in range(L)]
         self.conv_h, self.max_pool = nn.Sequential(), nn.Sequential()
         for i in h:
             self.conv_h.add(nn.Conv2D(d, (i, num_factors), in_channels=1))
             self.max_pool.add(nn.MaxPool1D(L - i + 1))
-        # Fully connected layer
+        # 全結合層
         self.fc1_dim_v, self.fc1_dim_h = d_prime * num_factors, d * len(h)
         self.fc = nn.Dense(in_units=d_prime * num_factors + d * L,
                            activation='relu', units=num_factors)
@@ -203,7 +203,7 @@ loss = d2l.BPRLoss()
 trainer = gluon.Trainer(net.collect_params(), optimizer,
                         {"learning_rate": lr, 'wd': wd})
 
-# Running takes > 1h (pending fix from MXNet)
+# 修正待ち（MXNet）のため、実行に1時間超要する
 # d2l.train_ranking(net, train_iter, test_iter, loss, trainer, test_seq_iter, num_users, num_items, num_epochs, devices, d2l.evaluate_ranking, candidates, eval_step=1)
 ```
 

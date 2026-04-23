@@ -425,9 +425,9 @@ f'{time.time() - t:.5f} sec'
 
 ```{.python .input}
 %%tab jax
-# JAX arrays are immutable, meaning that once created their contents
-# cannot be changed. For updating individual elements, JAX provides
-# an indexed update syntax that returns an updated copy
+# JAXの配列は不変であり，一度作成するとその内容は変更できない
+# 変更できない。個々の要素を更新するには、JAXは
+# 更新済みのコピーを返すインデックス付き更新構文
 c = d2l.zeros(n)
 t = time.time()
 for i in range(n):
@@ -487,10 +487,10 @@ def normal(x, mu, sigma):
 
 ```{.python .input}
 %%tab mxnet
-# Use NumPy again for visualization
+# 可視化に再びNumPyを用いる
 x = np.arange(-7, 7, 0.01)
 
-# Mean and standard deviation pairs
+# 平均と標準偏差の組み合わせ
 params = [(0, 1), (0, 2), (3, 1)]
 d2l.plot(x.asnumpy(), [normal(x, mu, sigma).asnumpy() for mu, sigma in params], xlabel='x',
          ylabel='p(x)', figsize=(4.5, 2.5),
@@ -501,13 +501,13 @@ d2l.plot(x.asnumpy(), [normal(x, mu, sigma).asnumpy() for mu, sigma in params], 
 
 %%tab pytorch, tensorflow, jax
 if tab.selected('jax'):
-    # Use JAX NumPy for visualization
+    # 可視化には JAX NumPy を用いる
     x = jnp.arange(-7, 7, 0.01)
 if tab.selected('pytorch', 'mxnet', 'tensorflow'):
-    # Use NumPy again for visualization
+    # 可視化に再びNumPyを用いる
     x = np.arange(-7, 7, 0.01)
 
-# Mean and standard deviation pairs
+# 平均と標準偏差の組み合わせ
 params = [(0, 1), (0, 2), (3, 1)]
 d2l.plot(x, [normal(x, mu, sigma) for mu, sigma in params], xlabel='x',
          ylabel='p(x)', figsize=(4.5, 2.5),

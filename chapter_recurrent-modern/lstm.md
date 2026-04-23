@@ -249,8 +249,8 @@ class LSTMScratch(d2l.Module):
                               tf.Variable(d2l.zeros(num_hiddens)))
 
         self.W_xi, self.W_hi, self.b_i = triple()  # Input gate
-        self.W_xf, self.W_hf, self.b_f = triple()  # Forget gate
-        self.W_xo, self.W_ho, self.b_o = triple()  # Output gate
+        self.W_xf, self.W_hf, self.b_f = triple()  # 忘却ゲート
+        self.W_xo, self.W_ho, self.b_o = triple()  # 出力ゲート
         self.W_xc, self.W_hc, self.b_c = triple()  # Input node
 ```
 
@@ -271,8 +271,8 @@ class LSTMScratch(d2l.Module):
             self.param(f'b_{name}', nn.initializers.zeros, (self.num_hiddens)))
 
         self.W_xi, self.W_hi, self.b_i = triple('i')  # Input gate
-        self.W_xf, self.W_hf, self.b_f = triple('f')  # Forget gate
-        self.W_xo, self.W_ho, self.b_o = triple('o')  # Output gate
+        self.W_xf, self.W_hf, self.b_f = triple('f')  # 忘却ゲート
+        self.W_xo, self.W_ho, self.b_o = triple('o')  # 出力ゲート
         self.W_xc, self.W_hc, self.b_c = triple('c')  # Input node
 ```
 
@@ -299,7 +299,7 @@ JAX では `jax.lax.scan` ユーティリティ変換を用いて同じ動作を
 @d2l.add_to_class(LSTMScratch)
 def forward(self, inputs, H_C=None):
     if H_C is None:
-        # Initial state with shape: (batch_size, num_hiddens)
+        # 初期状態の形状: (batch_size, num_hiddens)
         if tab.selected('mxnet'):
             H = d2l.zeros((inputs.shape[1], self.num_hiddens),
                           ctx=inputs.ctx)
@@ -335,8 +335,8 @@ def forward(self, inputs, H_C=None):
 %%tab jax
 @d2l.add_to_class(LSTMScratch)
 def forward(self, inputs, H_C=None):
-    # Use lax.scan primitive instead of looping over the
-    # inputs, since scan saves time in jit compilation.
+    # ループの代わりに lax.scan プリミティブを使用する
+    # 入力であり、scanはjitコンパイル時の時間を節約するためである。
     def scan_fn(carry, X):
         H, C = carry
         I = d2l.sigmoid(d2l.matmul(X, self.W_xi) + (
@@ -349,7 +349,7 @@ def forward(self, inputs, H_C=None):
                            d2l.matmul(H, self.W_hc) + self.b_c)
         C = F * C + I * C_tilde
         H = O * d2l.tanh(C)
-        return (H, C), H  # return carry, y
+        return (H, C), H  # キャリーと y を返す
 
     if H_C is None:
         batch_size = inputs.shape[1]
@@ -358,7 +358,7 @@ def forward(self, inputs, H_C=None):
     else:
         carry = H_C
 
-    # scan takes the scan_fn, initial carry state, xs with leading axis to be scanned
+    # scanはscan_fn、初期carry状態、および先頭軸で走査されるxsを取る
     carry, outputs = jax.lax.scan(scan_fn, carry, inputs)
     return outputs, carry
 ```

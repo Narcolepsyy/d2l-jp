@@ -72,24 +72,24 @@ class BiRNN(nn.Block):
                  num_layers, **kwargs):
         super(BiRNN, self).__init__(**kwargs)
         self.embedding = nn.Embedding(vocab_size, embed_size)
-        # Set `bidirectional` to True to get a bidirectional RNN
+        # `bidirectional` を True に設定すると双方向 RNN になる
         self.encoder = rnn.LSTM(num_hiddens, num_layers=num_layers,
                                 bidirectional=True, input_size=embed_size)
         self.decoder = nn.Dense(2)
 
     def forward(self, inputs):
-        # The shape of `inputs` is (batch size, no. of time steps). Because
-        # LSTM requires its input's first dimension to be the temporal
-        # dimension, the input is transposed before obtaining token
-        # representations. The output shape is (no. of time steps, batch size,
-        # word vector dimension)
+        # `inputs` の形状は（バッチサイズ、時系列のステップ数）である。なぜなら
+        # LSTMは入力の第1次元を時間軸とすることを要する
+        # 次元であり、トークンを取得する前に入力を転置する
+        # 表現。出力の形状は（時間ステップ数，バッチサイズ，
+        # 単語ベクトルの次元）
         embeddings = self.embedding(inputs.T)
-        # Returns hidden states of the last hidden layer at different time
-        # steps. The shape of `outputs` is (no. of time steps, batch size,
+        # 最後の隠れ層の各時刻における隠れ状態を返す
+        # 時系列ステップ数。`outputs` の形状は（時系列ステップ数，バッチサイズ，）である
         # 2 * no. of hidden units)
         outputs = self.encoder(embeddings)
-        # Concatenate the hidden states at the initial and final time steps as
-        # the input of the fully connected layer. Its shape is (batch size,
+        # 初期時刻と最終時刻の隠れ状態を連結する。
+        # 全結合層の入力。その形状は (バッチサイズ,
         # 4 * no. of hidden units)
         encoding = np.concatenate((outputs[0], outputs[-1]), axis=1)
         outs = self.decoder(encoding)
@@ -103,25 +103,25 @@ class BiRNN(nn.Module):
                  num_layers, **kwargs):
         super(BiRNN, self).__init__(**kwargs)
         self.embedding = nn.Embedding(vocab_size, embed_size)
-        # Set `bidirectional` to True to get a bidirectional RNN
+        # `bidirectional` を True に設定すると双方向 RNN になる
         self.encoder = nn.LSTM(embed_size, num_hiddens, num_layers=num_layers,
                                 bidirectional=True)
         self.decoder = nn.Linear(4 * num_hiddens, 2)
 
     def forward(self, inputs):
-        # The shape of `inputs` is (batch size, no. of time steps). Because
-        # LSTM requires its input's first dimension to be the temporal
-        # dimension, the input is transposed before obtaining token
-        # representations. The output shape is (no. of time steps, batch size,
-        # word vector dimension)
+        # `inputs` の形状は（バッチサイズ、時系列のステップ数）である。なぜなら
+        # LSTMは入力の第1次元を時間軸とすることを要する
+        # 次元であり、トークンを取得する前に入力を転置する
+        # 表現。出力の形状は（時間ステップ数，バッチサイズ，
+        # 単語ベクトルの次元）
         embeddings = self.embedding(inputs.T)
         self.encoder.flatten_parameters()
-        # Returns hidden states of the last hidden layer at different time
-        # steps. The shape of `outputs` is (no. of time steps, batch size,
+        # 最後の隠れ層の各時刻における隠れ状態を返す
+        # 時系列ステップ数。`outputs` の形状は（時系列ステップ数，バッチサイズ，）である
         # 2 * no. of hidden units)
         outputs, _ = self.encoder(embeddings)
-        # Concatenate the hidden states at the initial and final time steps as
-        # the input of the fully connected layer. Its shape is (batch size,
+        # 初期時刻と最終時刻の隠れ状態を連結する。
+        # 全結合層の入力。その形状は (バッチサイズ,
         # 4 * no. of hidden units)
         encoding = torch.cat((outputs[0], outputs[-1]), dim=1) 
         outs = self.decoder(encoding)

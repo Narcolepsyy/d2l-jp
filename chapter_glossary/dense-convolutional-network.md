@@ -1,4 +1,4 @@
-# DenseNet (dense convolutional network)
+# DenseNet（密結合畳み込みネットワーク）
 :label:`sec_glossary_dense-convolutional-network`
 
 ## 定義 (Definition)

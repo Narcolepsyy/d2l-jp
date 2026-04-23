@@ -1,7 +1,7 @@
 {.python .input}
 %load_ext d2lbook.tab
 tab.interact_select(["pytorch"])
-#required_libs("gpytorch")
+#gpytorchが必要である
 ```
 
 # ガウス過程推論
@@ -247,12 +247,12 @@ d2l.plt.show()
 このような場合、_GPyTorch_ ライブラリは大いに役立ちる。GPyTorch については、ガウス過程の数値計算や高度な手法に関する今後のノートブックでさらに詳しく扱う。GPyTorch ライブラリには [多くの例](https://github.com/cornellius-gp/gpytorch/tree/master/examples) がある。パッケージの雰囲気をつかむために、[単純な回帰の例](https://github.com/cornellius-gp/gpytorch/blob/master/examples/01_Exact_GPs/Simple_GP_Regression.ipynb) を見て、上の結果を GPyTorch で再現するようにどう適応できるかを示す。、上の基本的な回帰を再現するだけにしてはコードが多く見えるかもしれないし、ある意味ではその通りである。しかし、数千行の新しいコードを書く代わりに、下の数行を変えるだけで、さまざまなカーネル、スケーラブルな推論手法、近似推論をすぐに使えるようになる。
 
 ```{.python .input}
-# First let's convert our data into tensors for use with PyTorch
+# まず、PyTorchで使用するためにデータをテンソルに変換する。
 train_x = torch.tensor(train_x)
 train_y = torch.tensor(train_y)
 test_y = torch.tensor(test_y)
 
-# We are using exact GP inference with a zero mean and RBF kernel
+# ゼロ平均とRBFカーネルを用いた厳密なGP推論を行っている
 class ExactGPModel(gpytorch.models.ExactGP):
     def __init__(self, train_x, train_y, likelihood):
         super(ExactGPModel, self).__init__(train_x, train_y, likelihood)
@@ -269,16 +269,16 @@ class ExactGPModel(gpytorch.models.ExactGP):
 このコードブロックでは、データを GPyTorch で使える形式に変換し、厳密推論を使うこと、そして使いたい平均関数（ゼロ）とカーネル関数（RBF）を指定している。例えば gpytorch.kernels.matern_kernel() や gpyotrch.kernels.spectral_mixture_kernel() を呼び出すだけで、他のカーネルも簡単に使える。ここまでで扱ってきたのは厳密推論だけであり、近似を行わずに予測分布を推定できる場合である。ガウス過程では、ガウス尤度がある場合にのみ厳密推論が可能である。より具体的には、観測がガウス過程で表されるノイズのない関数にガウス雑音が加わって生成されると仮定する場合である。今後のノートブックでは、これらの仮定が成り立たない分類などの他の設定を扱う。
 
 ```{.python .input}
-# Initialize Gaussian likelihood
+# ガウス尤度を初期化する
 likelihood = gpytorch.likelihoods.GaussianLikelihood()
 model = ExactGPModel(train_x, train_y, likelihood)
 training_iter = 50
-# Find optimal model hyperparameters
+# 最適なモデルハイパーパラメータを見つける
 model.train()
 likelihood.train()
-# Use the adam optimizer, includes GaussianLikelihood parameters
+# Adamオプティマイザを使用する。GaussianLikelihoodのパラメータを含む
 optimizer = torch.optim.Adam(model.parameters(), lr=0.1)  
-# Set our loss as the negative log GP marginal likelihood
+# 損失を負のGP周辺尤度対数とする
 mll = gpytorch.mlls.ExactMarginalLogLikelihood(likelihood, model)
 ```
 
@@ -286,11 +286,11 @@ mll = gpytorch.mlls.ExactMarginalLogLikelihood(likelihood, model)
 
 ```{.python .input}
 for i in range(training_iter):
-    # Zero gradients from previous iteration
+    # 前回の反復からの勾配をゼロ化する
     optimizer.zero_grad()
-    # Output from model
+    # モデルからの出力
     output = model(train_x)
-    # Calc loss and backprop gradients
+    # 損失を計算し、逆伝播で勾配を求める
     loss = -mll(output, train_y)
     loss.backward()
     if i % 10 == 0:
@@ -304,7 +304,7 @@ for i in range(training_iter):
 ここで実際に最適化手順を実行し、10 イテレーションごとに損失の値を出力している。
 
 ```{.python .input}
-# Get into evaluation (predictive posterior) mode
+# 評価（予測後部分布）モードに入る
 test_x = torch.tensor(test_x)
 model.eval()
 likelihood.eval()
@@ -315,10 +315,10 @@ observed_pred = likelihood(model(test_x))
 
 ```{.python .input}
 with torch.no_grad():
-    # Initialize plot
+    # プロットを初期化する
     f, ax = d2l.plt.subplots(1, 1, figsize=(4, 3))
-    # Get upper and lower bounds for 95\% credible set (in this case, in
-    # observation space)
+    # 95\%信頼集合の上限と下限を求める（この場合、）
+    # 観測空間）
     lower, upper = observed_pred.confidence_region()
     ax.scatter(train_x.numpy(), train_y.numpy())
     ax.plot(test_x.numpy(), test_y.numpy(), linewidth=2.)

@@ -98,7 +98,7 @@ from mxnet import np, npx
 from mxnet.gluon import nn
 npx.set_np()
 
-# Factory for networks
+# ネットワークのファクトリ
 def get_net():
     net = nn.HybridSequential()  
     net.add(nn.Dense(256, activation='relu'),
@@ -118,7 +118,7 @@ from d2l import torch as d2l
 import torch
 from torch import nn
 
-# Factory for networks
+# ネットワークのファクトリ
 def get_net():
     net = nn.Sequential(nn.Linear(512, 256),
             nn.ReLU(),
@@ -138,7 +138,7 @@ from d2l import tensorflow as d2l
 import tensorflow as tf
 from tensorflow.keras.layers import Dense
 
-# Factory for networks
+# ネットワークのファクトリ
 def get_net():
     net = tf.keras.Sequential()
     net.add(Dense(256, input_shape = (512,), activation = "relu"))

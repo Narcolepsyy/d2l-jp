@@ -60,7 +60,7 @@ def _read_wiki(data_dir):
     file_name = os.path.join(data_dir, 'wiki.train.tokens')
     with open(file_name, 'r') as f:
         lines = f.readlines()
-    # Uppercase letters are converted to lowercase ones
+    # 大文字は小文字に変換される
     paragraphs = [line.strip().lower().split(' . ')
                   for line in lines if len(line.split(' . ')) >= 2]
     random.shuffle(paragraphs)
@@ -107,7 +107,7 @@ def _get_nsp_data_from_paragraph(paragraph, paragraphs, vocab, max_len):
     for i in range(len(paragraph) - 1):
         tokens_a, tokens_b, is_next = _get_next_sentence(
             paragraph[i], paragraph[i + 1], paragraphs)
-        # Consider 1 '<cls>' token and 2 '<sep>' tokens
+        # `<cls>`トークン1個と`<sep>`トークン2個を考える
         if len(tokens_a) + len(tokens_b) + 3 > max_len:
             continue
         tokens, segments = d2l.get_tokens_and_segments(tokens_a, tokens_b)
@@ -137,12 +137,12 @@ BERT 入力系列から
 #@save
 def _replace_mlm_tokens(tokens, candidate_pred_positions, num_mlm_preds,
                         vocab):
-    # For the input of a masked language model, make a new copy of tokens and
-    # replace some of them by '<mask>' or random tokens
+    # マスク付き言語モデルへの入力として、トークンの新しいコピーを作成し、
+    # それらの一部を`<mask>`またはランダムなトークンに置き換える
     mlm_input_tokens = [token for token in tokens]
     pred_positions_and_labels = []
-    # Shuffle for getting 15% random tokens for prediction in the masked
-    # language modeling task
+    # 予測用にマスク内の15%のランダムなトークンを選ぶためにシャッフルする
+    # 言語モデリングタスク
     random.shuffle(candidate_pred_positions)
     for mlm_pred_position in candidate_pred_positions:
         if len(pred_positions_and_labels) >= num_mlm_preds:
@@ -178,7 +178,7 @@ def _get_mlm_data_from_tokens(tokens, vocab):
     candidate_pred_positions = []
     # `tokens` is a list of strings
     for i, token in enumerate(tokens):
-        # Special tokens are not predicted in the masked language modeling
+        # 特殊トークンはマスク付き言語モデルでは予測されない
         # task
         if token in ['<cls>', '<sep>']:
             continue
@@ -219,8 +219,8 @@ def _pad_bert_inputs(examples, max_len, vocab):
         valid_lens.append(np.array(len(token_ids), dtype='float32'))
         all_pred_positions.append(np.array(pred_positions + [0] * (
             max_num_mlm_preds - len(pred_positions)), dtype='int32'))
-        # Predictions of padded tokens will be filtered out in the loss via
-        # multiplication of 0 weights
+        # 損失では、パディングされたトークンの予測はで除外される
+        # 0の重みの乗算
         all_mlm_weights.append(
             np.array([1.0] * len(mlm_pred_label_ids) + [0.0] * (
                 max_num_mlm_preds - len(pred_positions)), dtype='float32'))
@@ -249,8 +249,8 @@ def _pad_bert_inputs(examples, max_len, vocab):
         valid_lens.append(torch.tensor(len(token_ids), dtype=torch.float32))
         all_pred_positions.append(torch.tensor(pred_positions + [0] * (
             max_num_mlm_preds - len(pred_positions)), dtype=torch.long))
-        # Predictions of padded tokens will be filtered out in the loss via
-        # multiplication of 0 weights
+        # 損失では、パディングされたトークンの予測はで除外される
+        # 0の重みの乗算
         all_mlm_weights.append(
             torch.tensor([1.0] * len(mlm_pred_label_ids) + [0.0] * (
                 max_num_mlm_preds - len(pred_positions)),
@@ -280,21 +280,21 @@ WordPiece のトークン化手法は、
 #@save
 class _WikiTextDataset(gluon.data.Dataset):
     def __init__(self, paragraphs, max_len):
-        # Input `paragraphs[i]` is a list of sentence strings representing a
-        # paragraph; while output `paragraphs[i]` is a list of sentences
-        # representing a paragraph, where each sentence is a list of tokens
+        # `paragraphs[i]` は文列のリストであり、を表す
+        # 段落; 一方、出力 `paragraphs[i]` は文のリストである
+        # 段落を表しており，各文はトークンのリストである
         paragraphs = [d2l.tokenize(
             paragraph, token='word') for paragraph in paragraphs]
         sentences = [sentence for paragraph in paragraphs
                      for sentence in paragraph]
         self.vocab = d2l.Vocab(sentences, min_freq=5, reserved_tokens=[
             '<pad>', '<mask>', '<cls>', '<sep>'])
-        # Get data for the next sentence prediction task
+        # 次文予測タスクのデータを取得する
         examples = []
         for paragraph in paragraphs:
             examples.extend(_get_nsp_data_from_paragraph(
                 paragraph, paragraphs, self.vocab, max_len))
-        # Get data for the masked language model task
+        # マスク付き言語モデルタスクのためのデータを取得する
         examples = [(_get_mlm_data_from_tokens(tokens, self.vocab)
                       + (segments, is_next))
                      for tokens, segments, is_next in examples]
@@ -319,21 +319,21 @@ class _WikiTextDataset(gluon.data.Dataset):
 #@save
 class _WikiTextDataset(torch.utils.data.Dataset):
     def __init__(self, paragraphs, max_len):
-        # Input `paragraphs[i]` is a list of sentence strings representing a
-        # paragraph; while output `paragraphs[i]` is a list of sentences
-        # representing a paragraph, where each sentence is a list of tokens
+        # `paragraphs[i]` は文列のリストであり、を表す
+        # 段落; 一方、出力 `paragraphs[i]` は文のリストである
+        # 段落を表しており，各文はトークンのリストである
         paragraphs = [d2l.tokenize(
             paragraph, token='word') for paragraph in paragraphs]
         sentences = [sentence for paragraph in paragraphs
                      for sentence in paragraph]
         self.vocab = d2l.Vocab(sentences, min_freq=5, reserved_tokens=[
             '<pad>', '<mask>', '<cls>', '<sep>'])
-        # Get data for the next sentence prediction task
+        # 次文予測タスクのデータを取得する
         examples = []
         for paragraph in paragraphs:
             examples.extend(_get_nsp_data_from_paragraph(
                 paragraph, paragraphs, self.vocab, max_len))
-        # Get data for the masked language model task
+        # マスク付き言語モデルタスクのためのデータを取得する
         examples = [(_get_mlm_data_from_tokens(tokens, self.vocab)
                       + (segments, is_next))
                      for tokens, segments, is_next in examples]

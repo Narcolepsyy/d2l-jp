@@ -221,20 +221,20 @@ one-hot エンコーディングに従えば、
 %%tab all
 @d2l.add_to_class(KaggleHouse)
 def preprocess(self):
-    # Remove the ID and label columns
+    # ID列とラベル列を削除する
     label = 'SalePrice'
     features = pd.concat(
         (self.raw_train.drop(columns=['Id', label]),
          self.raw_val.drop(columns=['Id'])))
-    # Standardize numerical columns
+    # 数値列を標準化する
     numeric_features = features.dtypes[features.dtypes!='object'].index
     features[numeric_features] = features[numeric_features].apply(
         lambda x: (x - x.mean()) / (x.std()))
-    # Replace NAN numerical features by 0
+    # NANの数値特徴量を0で置換する
     features[numeric_features] = features[numeric_features].fillna(0)
-    # Replace discrete features by one-hot encoding
+    # 離散特徴をワンホットエンコーディングで置き換える
     features = pd.get_dummies(features, dummy_na=True)
-    # Save preprocessed features
+    # 前処理済み特徴量を保存する
     self.train = features[:self.raw_train.shape[0]].copy()
     self.train[label] = self.raw_train[label]
     self.val = features[self.raw_train.shape[0]:].copy()
@@ -387,7 +387,7 @@ if tab.selected('jax'):
     preds = [model.apply({'params': trainer.state.params},
              d2l.tensor(data.val.values.astype(float), dtype=d2l.float32))
              for model in models]
-# Taking exponentiation of predictions in the logarithm scale
+# 対数スケールでの予測値の指数化
 ensemble_preds = d2l.reduce_mean(d2l.exp(d2l.concat(preds, 1)), 1)
 submission = pd.DataFrame({'Id':data.raw_val.Id,
                            'SalePrice':d2l.numpy(ensemble_preds)})

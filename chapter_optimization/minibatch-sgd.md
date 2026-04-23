@@ -113,7 +113,7 @@ timer = Timer()
 
 ```{.python .input}
 #@tab mxnet
-# Compute A = BC one element at a time
+# Aを1要素ずつ計算する
 timer.start()
 for i in range(256):
     for j in range(256):
@@ -124,7 +124,7 @@ timer.stop()
 
 ```{.python .input}
 #@tab pytorch
-# Compute A = BC one element at a time
+# Aを1要素ずつ計算する
 timer.start()
 for i in range(256):
     for j in range(256):
@@ -134,7 +134,7 @@ timer.stop()
 
 ```{.python .input}
 #@tab tensorflow
-# Compute A = BC one element at a time
+# Aを1要素ずつ計算する
 timer.start()
 for i in range(256):
     for j in range(256):
@@ -146,7 +146,7 @@ timer.stop()
 
 ```{.python .input}
 #@tab mxnet
-# Compute A = BC one column at a time
+# A を 1 列ずつ計算する
 timer.start()
 for j in range(256):
     A[:, j] = np.dot(B, C[:, j])
@@ -156,7 +156,7 @@ timer.stop()
 
 ```{.python .input}
 #@tab pytorch
-# Compute A = BC one column at a time
+# A を 1 列ずつ計算する
 timer.start()
 for j in range(256):
     A[:, j] = torch.mv(B, C[:, j])
@@ -179,7 +179,7 @@ timer.stop()
 
 ```{.python .input}
 #@tab mxnet
-# Compute A = BC in one go
+# AをBCの積として一度に計算する
 timer.start()
 A = np.dot(B, C)
 A.wait_to_read()
@@ -192,7 +192,7 @@ print(f'performance in Gigaflops: element {gigaflops[0]:.3f}, '
 
 ```{.python .input}
 #@tab pytorch
-# Compute A = BC in one go
+# AをBCの積として一度に計算する
 timer.start()
 A = torch.mm(B, C)
 timer.stop()

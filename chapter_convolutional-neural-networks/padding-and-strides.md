@@ -128,13 +128,13 @@ CNN では、1、3、5、7 などの奇数の高さと幅をもつ
 %%tab mxnet
 # We define a helper function to calculate convolutions. It initializes 
 # the convolutional layer weights and performs corresponding dimensionality 
-# elevations and reductions on the input and output
+# 入力と出力の昇降
 def comp_conv2d(conv2d, X):
     conv2d.initialize()
     # (1, 1) indicates that batch size and the number of channels are both 1
     X = X.reshape((1, 1) + X.shape)
     Y = conv2d(X)
-    # Strip the first two dimensions: examples and channels
+    # 最初の2次元、すなわちサンプルとチャネルを取り除く
     return Y.reshape(Y.shape[2:])
 
 # 1 row and column is padded on either side, so a total of 2 rows or columns are added
@@ -145,14 +145,14 @@ comp_conv2d(conv2d, X).shape
 
 ```{.python .input}
 %%tab pytorch
-# We define a helper function to calculate convolutions. It initializes the
-# convolutional layer weights and performs corresponding dimensionality
-# elevations and reductions on the input and output
+# 畳み込みを計算するための補助関数を定義する。これを初期化する
+# 畳み込み層の重みと対応する次元を処理する
+# 入力と出力の昇降
 def comp_conv2d(conv2d, X):
     # (1, 1) indicates that batch size and the number of channels are both 1
     X = X.reshape((1, 1) + X.shape)
     Y = conv2d(X)
-    # Strip the first two dimensions: examples and channels
+    # 最初の2次元、すなわちサンプルとチャネルを取り除く
     return Y.reshape(Y.shape[2:])
 
 # 1 row and column is padded on either side, so a total of 2 rows or columns
@@ -164,14 +164,14 @@ comp_conv2d(conv2d, X).shape
 
 ```{.python .input}
 %%tab tensorflow
-# We define a helper function to calculate convolutions. It initializes
-# the convolutional layer weights and performs corresponding dimensionality
-# elevations and reductions on the input and output
+# 畳み込みを計算する補助関数を定義する。初期化する
+# 畳み込み層の重みと対応する次元を計算する
+# 入力と出力の昇降
 def comp_conv2d(conv2d, X):
     # (1, 1) indicates that batch size and the number of channels are both 1
     X = tf.reshape(X, (1, ) + X.shape + (1, ))
     Y = conv2d(X)
-    # Strip the first two dimensions: examples and channels
+    # 最初の2次元、すなわちサンプルとチャネルを取り除く
     return tf.reshape(Y, Y.shape[1:3])
 # 1 row and column is padded on either side, so a total of 2 rows or columns
 # are added
@@ -182,15 +182,15 @@ comp_conv2d(conv2d, X).shape
 
 ```{.python .input}
 %%tab jax
-# We define a helper function to calculate convolutions. It initializes
-# the convolutional layer weights and performs corresponding dimensionality
-# elevations and reductions on the input and output
+# 畳み込みを計算する補助関数を定義する。初期化する
+# 畳み込み層の重みと対応する次元を計算する
+# 入力と出力の昇降
 def comp_conv2d(conv2d, X):
     # (1, X.shape, 1) indicates that batch size and the number of channels are both 1
     key = jax.random.PRNGKey(d2l.get_seed())
     X = X.reshape((1,) + X.shape + (1,))
     Y, _ = conv2d.init_with_output(key, X)
-    # Strip the dimensions: examples and channels
+    # 次元を削除する：サンプルとチャネル
     return Y.reshape(Y.shape[1:3])
 # 1 row and column is padded on either side, so a total of 2 rows or columns are added
 conv2d = nn.Conv(1, kernel_size=(3, 3), padding='SAME')
@@ -204,32 +204,32 @@ comp_conv2d(conv2d, X).shape
 
 ```{.python .input}
 %%tab mxnet
-# We use a convolution kernel with height 5 and width 3. The padding on
-# either side of the height and width are 2 and 1, respectively
+# 高さ5、幅3の畳み込みカーネルを用いる。パディングは
+# 高さと幅のそれぞれの両辺は2と1である
 conv2d = nn.Conv2D(1, kernel_size=(5, 3), padding=(2, 1))
 comp_conv2d(conv2d, X).shape
 ```
 
 ```{.python .input}
 %%tab pytorch
-# We use a convolution kernel with height 5 and width 3. The padding on either
-# side of the height and width are 2 and 1, respectively
+# 高さ5、幅3の畳み込みカーネルを用いる。両側のパディングは
+# 高さと幅はそれぞれ2と1である
 conv2d = nn.LazyConv2d(1, kernel_size=(5, 3), padding=(2, 1))
 comp_conv2d(conv2d, X).shape
 ```
 
 ```{.python .input}
 %%tab tensorflow
-# We use a convolution kernel with height 5 and width 3. The padding on
-# either side of the height and width are 2 and 1, respectively
+# 高さ5、幅3の畳み込みカーネルを用いる。パディングは
+# 高さと幅のそれぞれの両辺は2と1である
 conv2d = tf.keras.layers.Conv2D(1, kernel_size=(5, 3), padding='same')
 comp_conv2d(conv2d, X).shape
 ```
 
 ```{.python .input}
 %%tab jax
-# We use a convolution kernel with height 5 and width 3. The padding on
-# either side of the height and width are 2 and 1, respectively
+# 高さ5、幅3の畳み込みカーネルを用いる。パディングは
+# 高さと幅のそれぞれの両辺は2と1である
 conv2d = nn.Conv(1, kernel_size=(5, 3), padding=(2, 1))
 comp_conv2d(conv2d, X).shape
 ```

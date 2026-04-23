@@ -89,10 +89,10 @@ data_dir = d2l.download_extract('SNLI')
 def read_snli(data_dir, is_train):
     """Read the SNLI dataset into premises, hypotheses, and labels."""
     def extract_text(s):
-        # Remove information that will not be used by us
+        # 我々が使わない情報を取り除く
         s = re.sub('\\(', '', s) 
         s = re.sub('\\)', '', s)
-        # Substitute two or more consecutive whitespace with space
+        # 2つ以上連続する空白を1つの空白に置換する
         s = re.sub('\\s{2,}', ' ', s)
         return s.strip()
     label_set = {'entailment': 0, 'contradiction': 1, 'neutral': 2}

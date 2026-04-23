@@ -303,24 +303,24 @@ corr2d(d2l.transpose(X), K)
 
 ```{.python .input}
 %%tab mxnet
-# Construct a two-dimensional convolutional layer with 1 output channel and a
-# kernel of shape (1, 2). For the sake of simplicity, we ignore the bias here
+# 出力チャネル1の二次元畳み込み層を構築し、さらに
+# 形状が(1, 2)のカーネルである。簡潔のため、ここではバイアスを無視する。
 conv2d = nn.Conv2D(1, kernel_size=(1, 2), use_bias=False)
 conv2d.initialize()
 
-# The two-dimensional convolutional layer uses four-dimensional input and
-# output in the format of (example, channel, height, width), where the batch
-# size (number of examples in the batch) and the number of channels are both 1
+# 二次元畳み込み層は4次元の入力を用いる
+# （例、チャネル、高さ、幅）の形式で出力し、バッチは
+# サイズ（バッチ内のサンプル数）とチャネル数はいずれも1である
 X = X.reshape(1, 1, 6, 8)
 Y = Y.reshape(1, 1, 6, 7)
-lr = 3e-2  # Learning rate
+lr = 3e-2  # 学習率
 
 for i in range(10):
     with autograd.record():
         Y_hat = conv2d(X)
         l = (Y_hat - Y) ** 2
     l.backward()
-    # Update the kernel
+    # カーネルを更新する
     conv2d.weight.data()[:] -= lr * conv2d.weight.grad()
     if (i + 1) % 2 == 0:
         print(f'epoch {i + 1}, loss {float(l.sum()):.3f}')
@@ -328,23 +328,23 @@ for i in range(10):
 
 ```{.python .input}
 %%tab pytorch
-# Construct a two-dimensional convolutional layer with 1 output channel and a
-# kernel of shape (1, 2). For the sake of simplicity, we ignore the bias here
+# 出力チャネル1の二次元畳み込み層を構築し、さらに
+# 形状が(1, 2)のカーネルである。簡潔のため、ここではバイアスを無視する。
 conv2d = nn.LazyConv2d(1, kernel_size=(1, 2), bias=False)
 
-# The two-dimensional convolutional layer uses four-dimensional input and
-# output in the format of (example, channel, height, width), where the batch
-# size (number of examples in the batch) and the number of channels are both 1
+# 二次元畳み込み層は4次元の入力を用いる
+# （例、チャネル、高さ、幅）の形式で出力し、バッチは
+# サイズ（バッチ内のサンプル数）とチャネル数はいずれも1である
 X = X.reshape((1, 1, 6, 8))
 Y = Y.reshape((1, 1, 6, 7))
-lr = 3e-2  # Learning rate
+lr = 3e-2  # 学習率
 
 for i in range(10):
     Y_hat = conv2d(X)
     l = (Y_hat - Y) ** 2
     conv2d.zero_grad()
     l.sum().backward()
-    # Update the kernel
+    # カーネルを更新する
     conv2d.weight.data[:] -= lr * conv2d.weight.grad
     if (i + 1) % 2 == 0:
         print(f'epoch {i + 1}, loss {l.sum():.3f}')
@@ -352,16 +352,16 @@ for i in range(10):
 
 ```{.python .input}
 %%tab tensorflow
-# Construct a two-dimensional convolutional layer with 1 output channel and a
-# kernel of shape (1, 2). For the sake of simplicity, we ignore the bias here
+# 出力チャネル1の二次元畳み込み層を構築し、さらに
+# 形状が(1, 2)のカーネルである。簡潔のため、ここではバイアスを無視する。
 conv2d = tf.keras.layers.Conv2D(1, (1, 2), use_bias=False)
 
-# The two-dimensional convolutional layer uses four-dimensional input and
-# output in the format of (example, height, width, channel), where the batch
-# size (number of examples in the batch) and the number of channels are both 1
+# 二次元畳み込み層は4次元の入力を用いる
+# (example, height, width, channel) の形式で出力し、ここでバッチ
+# サイズ（バッチ内のサンプル数）とチャネル数はいずれも1である
 X = tf.reshape(X, (1, 6, 8, 1))
 Y = tf.reshape(Y, (1, 6, 7, 1))
-lr = 3e-2  # Learning rate
+lr = 3e-2  # 学習率
 
 Y_hat = conv2d(X)
 for i in range(10):
@@ -369,7 +369,7 @@ for i in range(10):
         g.watch(conv2d.weights[0])
         Y_hat = conv2d(X)
         l = (abs(Y_hat - Y)) ** 2
-        # Update the kernel
+        # カーネルを更新する
         update = tf.multiply(lr, g.gradient(l, conv2d.weights[0]))
         weights = conv2d.get_weights()
         weights[0] = conv2d.weights[0] - update
@@ -380,16 +380,16 @@ for i in range(10):
 
 ```{.python .input}
 %%tab jax
-# Construct a two-dimensional convolutional layer with 1 output channel and a
-# kernel of shape (1, 2). For the sake of simplicity, we ignore the bias here
+# 出力チャネル1の二次元畳み込み層を構築し、さらに
+# 形状が(1, 2)のカーネルである。簡潔のため、ここではバイアスを無視する。
 conv2d = nn.Conv(1, kernel_size=(1, 2), use_bias=False, padding='VALID')
 
-# The two-dimensional convolutional layer uses four-dimensional input and
-# output in the format of (example, height, width, channel), where the batch
-# size (number of examples in the batch) and the number of channels are both 1
+# 二次元畳み込み層は4次元の入力を用いる
+# (example, height, width, channel) の形式で出力し、ここでバッチ
+# サイズ（バッチ内のサンプル数）とチャネル数はいずれも1である
 X = X.reshape((1, 6, 8, 1))
 Y = Y.reshape((1, 6, 7, 1))
-lr = 3e-2  # Learning rate
+lr = 3e-2  # 学習率
 
 params = conv2d.init(jax.random.PRNGKey(d2l.get_seed()), X)
 
@@ -399,7 +399,7 @@ def loss(params, X, Y):
 
 for i in range(10):
     l, grads = jax.value_and_grad(loss)(params, X, Y)
-    # Update the kernel
+    # カーネルを更新する
     params = jax.tree_map(lambda p, g: p - lr * g, params, grads)
     if (i + 1) % 2 == 0:
         print(f'epoch {i + 1}, loss {l:.3f}')

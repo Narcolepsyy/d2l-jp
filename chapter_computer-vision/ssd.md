@@ -461,7 +461,7 @@ class TinySSD(nn.Block):
         super(TinySSD, self).__init__(**kwargs)
         self.num_classes = num_classes
         for i in range(5):
-            # Equivalent to the assignment statement `self.blk_i = get_blk(i)`
+            # 代入文 `self.blk_i = get_blk(i)` と等価である
             setattr(self, f'blk_{i}', get_blk(i))
             setattr(self, f'cls_{i}', cls_predictor(num_anchors, num_classes))
             setattr(self, f'bbox_{i}', bbox_predictor(num_anchors))
@@ -469,7 +469,7 @@ class TinySSD(nn.Block):
     def forward(self, X):
         anchors, cls_preds, bbox_preds = [None] * 5, [None] * 5, [None] * 5
         for i in range(5):
-            # Here `getattr(self, 'blk_%d' % i)` accesses `self.blk_i`
+            # ここでは `getattr(self, 'blk_%d' % i)` が `self.blk_i` にアクセスしている
             X, anchors[i], cls_preds[i], bbox_preds[i] = blk_forward(
                 X, getattr(self, f'blk_{i}'), sizes[i], ratios[i],
                 getattr(self, f'cls_{i}'), getattr(self, f'bbox_{i}'))
@@ -489,7 +489,7 @@ class TinySSD(nn.Module):
         self.num_classes = num_classes
         idx_to_in_channels = [64, 128, 128, 128, 128]
         for i in range(5):
-            # Equivalent to the assignment statement `self.blk_i = get_blk(i)`
+            # 代入文 `self.blk_i = get_blk(i)` と等価である
             setattr(self, f'blk_{i}', get_blk(i))
             setattr(self, f'cls_{i}', cls_predictor(idx_to_in_channels[i],
                                                     num_anchors, num_classes))
@@ -499,7 +499,7 @@ class TinySSD(nn.Module):
     def forward(self, X):
         anchors, cls_preds, bbox_preds = [None] * 5, [None] * 5, [None] * 5
         for i in range(5):
-            # Here `getattr(self, 'blk_%d' % i)` accesses `self.blk_i`
+            # ここでは `getattr(self, 'blk_%d' % i)` が `self.blk_i` にアクセスしている
             X, anchors[i], cls_preds[i], bbox_preds[i] = blk_forward(
                 X, getattr(self, f'blk_{i}'), sizes[i], ratios[i],
                 getattr(self, f'cls_{i}'), getattr(self, f'bbox_{i}'))
@@ -644,7 +644,7 @@ def calc_loss(cls_preds, cls_labels, bbox_preds, bbox_labels, bbox_masks):
 ```{.python .input}
 #@tab mxnet
 def cls_eval(cls_preds, cls_labels):
-    # Because the class prediction results are on the final dimension,
+    # クラス予測結果は最終次元にあるため、
     # `argmax` needs to specify this dimension
     return float((cls_preds.argmax(axis=-1).astype(
         cls_labels.dtype) == cls_labels).sum())
@@ -656,7 +656,7 @@ def bbox_eval(bbox_preds, bbox_labels, bbox_masks):
 ```{.python .input}
 #@tab pytorch
 def cls_eval(cls_preds, cls_labels):
-    # Because the class prediction results are on the final dimension,
+    # クラス予測結果は最終次元にあるため、
     # `argmax` needs to specify this dimension
     return float((cls_preds.argmax(dim=-1).type(
         cls_labels.dtype) == cls_labels).sum())
@@ -683,22 +683,22 @@ num_epochs, timer = 20, d2l.Timer()
 animator = d2l.Animator(xlabel='epoch', xlim=[1, num_epochs],
                         legend=['class error', 'bbox mae'])
 for epoch in range(num_epochs):
-    # Sum of training accuracy, no. of examples in sum of training accuracy,
-    # Sum of absolute error, no. of examples in sum of absolute error
+    # 訓練精度の総和，訓練精度の総和における例数
+    # 絶対誤差の総和、絶対誤差の総和におけるサンプル数
     metric = d2l.Accumulator(4)
     for features, target in train_iter:
         timer.start()
         X = features.as_in_ctx(device)
         Y = target.as_in_ctx(device)
         with autograd.record():
-            # Generate multiscale anchor boxes and predict their classes and
+            # 複数スケールのアンカーボックスを生成し、それらのクラスと
             # offsets
             anchors, cls_preds, bbox_preds = net(X)
-            # Label the classes and offsets of these anchor boxes
+            # これらのアンカーボックスのクラスとオフセットにラベルを付ける
             bbox_labels, bbox_masks, cls_labels = d2l.multibox_target(anchors,
                                                                       Y)
-            # Calculate the loss function using the predicted and labeled
-            # values of the classes and offsets
+            # 予測値とラベルを用いて損失関数を計算する
+            # クラス値とオフセット
             l = calc_loss(cls_preds, cls_labels, bbox_preds, bbox_labels,
                           bbox_masks)
         l.backward()
@@ -720,21 +720,21 @@ animator = d2l.Animator(xlabel='epoch', xlim=[1, num_epochs],
                         legend=['class error', 'bbox mae'])
 net = net.to(device)
 for epoch in range(num_epochs):
-    # Sum of training accuracy, no. of examples in sum of training accuracy,
-    # Sum of absolute error, no. of examples in sum of absolute error
+    # 訓練精度の総和，訓練精度の総和における例数
+    # 絶対誤差の総和、絶対誤差の総和におけるサンプル数
     metric = d2l.Accumulator(4)
     net.train()
     for features, target in train_iter:
         timer.start()
         trainer.zero_grad()
         X, Y = features.to(device), target.to(device)
-        # Generate multiscale anchor boxes and predict their classes and
+        # 複数スケールのアンカーボックスを生成し、それらのクラスと
         # offsets
         anchors, cls_preds, bbox_preds = net(X)
-        # Label the classes and offsets of these anchor boxes
+        # これらのアンカーボックスのクラスとオフセットにラベルを付ける
         bbox_labels, bbox_masks, cls_labels = d2l.multibox_target(anchors, Y)
-        # Calculate the loss function using the predicted and labeled values
-        # of the classes and offsets
+        # 予測値とラベル値を用いて損失関数を計算する
+        # クラスとオフセットのうち
         l = calc_loss(cls_preds, cls_labels, bbox_preds, bbox_labels,
                       bbox_masks)
         l.mean().backward()

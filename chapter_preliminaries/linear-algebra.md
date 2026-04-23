@@ -364,21 +364,21 @@ jnp.arange(24).reshape(2, 3, 4)
 ```{.python .input}
 %%tab mxnet
 A = np.arange(6).reshape(2, 3)
-B = A.copy()  # Assign a copy of A to B by allocating new memory
+B = A.copy()  # A のコピーを B に割り当て、新たにメモリを確保する
 A, A + B
 ```
 
 ```{.python .input}
 %%tab pytorch
 A = torch.arange(6, dtype=torch.float32).reshape(2, 3)
-B = A.clone()  # Assign a copy of A to B by allocating new memory
+B = A.clone()  # A のコピーを B に割り当て、新たにメモリを確保する
 A, A + B
 ```
 
 ```{.python .input}
 %%tab tensorflow
 A = tf.reshape(tf.range(6, dtype=tf.float32), (2, 3))
-B = A  # No cloning of A to B by allocating new memory
+B = A  # AをBへ新規メモリ割り当てで複製しない
 A, A + B
 ```
 
@@ -524,12 +524,12 @@ A.shape, tf.reduce_sum(A, axis=1).shape
 
 ```{.python .input}
 %%tab mxnet, pytorch, jax
-A.sum(axis=[0, 1]) == A.sum()  # Same as A.sum()
+A.sum(axis=[0, 1]) == A.sum()  # A.sum()と同じ
 ```
 
 ```{.python .input}
 %%tab tensorflow
-tf.reduce_sum(A, axis=[0, 1]), tf.reduce_sum(A)  # Same as tf.reduce_sum(A)
+tf.reduce_sum(A, axis=[0, 1]), tf.reduce_sum(A)  # tf.reduce_sum(A) と同じ
 ```
 
 [**関連する量として *平均*、別名 *アベレージ* がある。**]
@@ -961,7 +961,7 @@ tf.reduce_sum(tf.abs(u))
 
 ```{.python .input}
 %%tab jax
-jnp.linalg.norm(u, ord=1) # same as jnp.abs(u).sum()
+jnp.linalg.norm(u, ord=1) # jnp.abs(u).sum()と同じ
 ```
 
 $\ell_2$ ノルムと $\ell_1$ ノルムはどちらも、

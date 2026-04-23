@@ -143,8 +143,8 @@ $224 \times 224$ の入力画像に拡大縮小する。
 
 ```{.python .input}
 #@tab mxnet
-# Specify the means and standard deviations of the three RGB channels to
-# standardize each channel
+# 3つのRGBチャネルの平均と標準偏差を指定する
+# 各チャネルを標準化する
 normalize = gluon.data.vision.transforms.Normalize(
     [0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 
@@ -163,8 +163,8 @@ test_augs = gluon.data.vision.transforms.Compose([
 
 ```{.python .input}
 #@tab pytorch
-# Specify the means and standard deviations of the three RGB channels to
-# standardize each channel
+# 3つのRGBチャネルの平均と標準偏差を指定する
+# 各チャネルを標準化する
 normalize = torchvision.transforms.Normalize(
     [0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 
@@ -236,8 +236,8 @@ pretrained_net.fc
 finetune_net = gluon.model_zoo.vision.resnet18_v2(classes=2)
 finetune_net.features = pretrained_net.features
 finetune_net.output.initialize(init.Xavier())
-# The model parameters in the output layer will be iterated using a learning
-# rate ten times greater
+# 出力層のモデルパラメータは学習率を用いて反復的に更新される
+# 10倍大きい
 finetune_net.output.collect_params().setattr('lr_mult', 10)
 ```
 
@@ -271,8 +271,8 @@ def train_fine_tuning(net, learning_rate, batch_size=128, num_epochs=5):
 
 ```{.python .input}
 #@tab pytorch
-# If `param_group=True`, the model parameters in the output layer will be
-# updated using a learning rate ten times greater
+# もし`param_group=True`なら、出力層のモデルパラメータは
+# 学習率を10倍にして更新した
 def train_fine_tuning(net, learning_rate, batch_size=128, num_epochs=5,
                       param_group=True):
     train_iter = torch.utils.data.DataLoader(torchvision.datasets.ImageFolder(

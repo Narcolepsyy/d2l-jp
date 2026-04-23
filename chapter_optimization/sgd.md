@@ -67,10 +67,10 @@ $$\mathbb{E}_i \nabla f_i(\mathbf{x}) = \frac{1}{n} \sum_{i = 1}^n \nabla f_i(\m
 
 ```{.python .input}
 #@tab all
-def f(x1, x2):  # Objective function
+def f(x1, x2):  # 目的関数
     return x1 ** 2 + 2 * x2 ** 2
 
-def f_grad(x1, x2):  # Gradient of the objective function
+def f_grad(x1, x2):  # 目的関数の勾配
     return 2 * x1, 4 * x2
 ```
 
@@ -78,7 +78,7 @@ def f_grad(x1, x2):  # Gradient of the objective function
 #@tab mxnet
 def sgd(x1, x2, s1, s2, f_grad):
     g1, g2 = f_grad(x1, x2)
-    # Simulate noisy gradient
+    # ノイズのある勾配をシミュレートする
     g1 += d2l.normal(0.0, 1, (1,))
     g2 += d2l.normal(0.0, 1, (1,))
     eta_t = eta * lr()
@@ -89,7 +89,7 @@ def sgd(x1, x2, s1, s2, f_grad):
 #@tab pytorch
 def sgd(x1, x2, s1, s2, f_grad):
     g1, g2 = f_grad(x1, x2)
-    # Simulate noisy gradient
+    # ノイズのある勾配をシミュレートする
     g1 += torch.normal(0.0, 1, (1,)).item()
     g2 += torch.normal(0.0, 1, (1,)).item()
     eta_t = eta * lr()
@@ -100,7 +100,7 @@ def sgd(x1, x2, s1, s2, f_grad):
 #@tab tensorflow
 def sgd(x1, x2, s1, s2, f_grad):
     g1, g2 = f_grad(x1, x2)
-    # Simulate noisy gradient
+    # ノイズのある勾配をシミュレートする
     g1 += d2l.normal([1], 0.0, 1)
     g2 += d2l.normal([1], 0.0, 1)
     eta_t = eta * lr()
@@ -113,7 +113,7 @@ def constant_lr():
     return 1
 
 eta = 0.1
-lr = constant_lr  # Constant learning rate
+lr = constant_lr  # 一定の学習率
 d2l.show_trace_2d(f, d2l.train_2d(sgd, steps=50, f_grad=f_grad))
 ```
 
@@ -140,7 +140,7 @@ $$
 ```{.python .input}
 #@tab all
 def exponential_lr():
-    # Global variable that is defined outside this function and updated inside
+    # この関数の外部で定義され、内部で更新されるグローバル変数
     global t
     t += 1
     return math.exp(-0.1 * t)
@@ -155,7 +155,7 @@ d2l.show_trace_2d(f, d2l.train_2d(sgd, steps=1000, f_grad=f_grad))
 ```{.python .input}
 #@tab all
 def polynomial_lr():
-    # Global variable that is defined outside this function and updated inside
+    # この関数の外部で定義され、内部で更新されるグローバル変数
     global t
     t += 1
     return (1 + 0.1 * t) ** (-0.5)

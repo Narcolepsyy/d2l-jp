@@ -125,7 +125,7 @@ class HyperParameters:  #@save
 
 ```{.python .input}
 %%tab all
-# Call the fully implemented HyperParameters class saved in d2l
+# d2lに保存された完全実装済みのHyperParametersクラスを呼び出す
 class B(d2l.HyperParameters):
     def __init__(self, a, b, c):
         self.save_hyperparameters(ignore=['c'])
@@ -233,10 +233,10 @@ class Module(d2l.nn_Module, d2l.HyperParameters):  #@save
             self.training = None
 
     if tab.selected('jax'):
-        # No need for save_hyperparam when using Python dataclass
+        # Pythonのdataclassを使う場合、save_hyperparamは不要である
         plot_train_per_epoch: int = field(default=2, init=False)
         plot_valid_per_epoch: int = field(default=1, init=False)
-        # Use default_factory to make sure new plots are generated on each run
+        # default_factoryを用いて、実行ごとに新しいプロットが生成されるようにする
         board: ProgressBoard = field(default_factory=lambda: ProgressBoard(),
                                      init=False)
 
@@ -255,9 +255,9 @@ class Module(d2l.nn_Module, d2l.HyperParameters):  #@save
             return self.forward(X, *args)
 
     if tab.selected('jax'):
-        # JAX & Flax do not have a forward-method-like syntax. Flax uses setup
-        # and built-in __call__ magic methods for forward pass. Adding here
-        # for consistency
+        # JAXとFlaxにはforwardメソッド風の構文はない。Flaxはsetupを用いる
+        # 順伝播用の組み込みの `__call__` マジックメソッドを追加する。
+        # 整合性のため
         def forward(self, X, *args, **kwargs):
             assert hasattr(self, 'net'), 'Neural network is defined'
             return self.net(X, *args, **kwargs)
@@ -423,14 +423,14 @@ class Trainer(d2l.HyperParameters):  #@save
             params = variables['params']
 
             if 'batch_stats' in variables.keys():
-                # Here batch_stats will be used later (e.g., for batch norm)
+                # ここでは batch_stats は後で使用される（例: バッチ正規化）
                 batch_stats = variables['batch_stats']
             else:
                 batch_stats = {}
 
-            # Flax uses optax under the hood for a single state obj TrainState.
-            # More will be discussed later in the dropout and batch
-            # normalization section
+            # Flaxは単一の状態オブジェクトTrainStateの内部でoptaxを用いる。
+            # dropoutとバッチでさらに議論する
+            # 正規化の節
             class TrainState(train_state.TrainState):
                 batch_stats: Any
                 dropout_rng: jax.random.PRNGKeyArray

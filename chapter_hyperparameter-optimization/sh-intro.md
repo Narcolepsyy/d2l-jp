@@ -69,18 +69,18 @@ d2l.set_figsize()
 class SuccessiveHalvingScheduler(d2l.HPOScheduler):  #@save
     def __init__(self, searcher, eta, r_min, r_max, prefact=1):
         self.save_hyperparameters()
-        # Compute K, which is later used to determine the number of configurations
+        # 後で構成数を決定するために用いる K を計算する
         self.K = int(np.log(r_max / r_min) / np.log(eta))
-        # Define the rungs
+        # 段階を定義する
         self.rung_levels = [r_min * eta ** k for k in range(self.K + 1)]
         if r_max not in self.rung_levels:
-            # The final rung should be r_max
+            # 最後の段は r_max である
             self.rung_levels.append(r_max)
             self.K += 1
-        # Bookkeeping
+        # 記録用の処理
         self.observed_error_at_rungs = defaultdict(list)
         self.all_observed_error_at_rungs = defaultdict(list)
-        # Our processing queue
+        # 我々の処理キュー
         self.queue = []
 ```
 
@@ -96,14 +96,14 @@ class SuccessiveHalvingScheduler(d2l.HPOScheduler):  #@save
 @d2l.add_to_class(SuccessiveHalvingScheduler)  #@save
 def suggest(self):
     if len(self.queue) == 0:
-        # Start a new round of successive halving
-        # Number of configurations for the first rung:
+        # 逐次半減の新たなラウンドを開始する
+        # 最初の段の構成数:
         n0 = int(self.prefact * self.eta ** self.K)
         for _ in range(n0):
             config = self.searcher.sample_configuration()
-            config["max_epochs"] = self.r_min  # Set r = r_min
+            config["max_epochs"] = self.r_min  # r = r_min に設定する
             self.queue.append(config)
-    # Return an element from the queue
+    # キューから要素を取り出す
     return self.queue.pop()
 ```
 
@@ -116,18 +116,18 @@ def suggest(self):
 @d2l.add_to_class(SuccessiveHalvingScheduler)  #@save
 def update(self, config: dict, error: float, info=None):
     ri = int(config["max_epochs"])  # Rung r_i
-    # Update our searcher, e.g if we use Bayesian optimization later
+    # 例えば、後でベイズ最適化を使う場合に備えて、探索器を更新する。
     self.searcher.update(config, error, additional_info=info)
     self.all_observed_error_at_rungs[ri].append((config, error))
     if ri < self.r_max:
-        # Bookkeeping
+        # 記録用の処理
         self.observed_error_at_rungs[ri].append((config, error))
-        # Determine how many configurations should be evaluated on this rung
+        # このラングで評価すべき構成の数を決定する
         ki = self.K - self.rung_levels.index(ri)
         ni = int(self.prefact * self.eta ** ki)
-        # If we observed all configuration on this rung r_i, we estimate the
-        # top 1 / eta configuration, add them to queue and promote them for
-        # the next rung r_{i+1}
+        # この段のすべての構成を観測したなら，その値を推定する
+        # eta設定の上位1件をキューに追加し、昇格させる
+        # 次の段 r_{i+1}
         if len(self.observed_error_at_rungs[ri]) >= ni:
             kiplus1 = ki - 1
             niplus1 = int(self.prefact * self.eta ** kiplus1)
@@ -135,7 +135,7 @@ def update(self, config: dict, error: float, info=None):
                 rung_level=ri, n=niplus1
             )
             riplus1 = self.rung_levels[self.K - kiplus1]  # r_{i+1}
-            # Queue may not be empty: insert new entries at the beginning
+            # キューが空でない場合があるため、新しい要素を先頭に挿入する
             self.queue = [
                 dict(config, max_epochs=riplus1)
                 for config in best_performing_configurations

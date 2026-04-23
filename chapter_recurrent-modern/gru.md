@@ -183,7 +183,7 @@ class GRUScratch(d2l.Module):
                               init_weight(num_hiddens, num_hiddens),
                               tf.Variable(d2l.zeros(num_hiddens)))            
             
-        self.W_xz, self.W_hz, self.b_z = triple()  # Update gate
+        self.W_xz, self.W_hz, self.b_z = triple()  # 更新ゲート
         self.W_xr, self.W_hr, self.b_r = triple()  # Reset gate
         self.W_xh, self.W_hh, self.b_h = triple()  # Candidate hidden state        
 ```
@@ -204,9 +204,9 @@ class GRUScratch(d2l.Module):
             init_weight(f'W_h{name}', (self.num_hiddens, self.num_hiddens)),
             self.param(f'b_{name}', nn.initializers.zeros, (self.num_hiddens)))
 
-        self.W_xz, self.W_hz, self.b_z = triple('z')  # Update gate
+        self.W_xz, self.W_hz, self.b_z = triple('z')  # 更新ゲート
         self.W_xr, self.W_hr, self.b_r = triple('r')  # Reset gate
-        self.W_xh, self.W_hh, self.b_h = triple('h')  # Candidate hidden state
+        self.W_xh, self.W_hh, self.b_h = triple('h')  # 候補隠れ状態
 ```
 
 ### モデルの定義
@@ -219,7 +219,7 @@ class GRUScratch(d2l.Module):
 @d2l.add_to_class(GRUScratch)
 def forward(self, inputs, H=None):
     if H is None:
-        # Initial state with shape: (batch_size, num_hiddens)
+        # 初期状態の形状: (batch_size, num_hiddens)
         if tab.selected('mxnet'):
             H = d2l.zeros((inputs.shape[1], self.num_hiddens),
                           ctx=inputs.ctx)
@@ -245,8 +245,8 @@ def forward(self, inputs, H=None):
 %%tab jax
 @d2l.add_to_class(GRUScratch)
 def forward(self, inputs, H=None):
-    # Use lax.scan primitive instead of looping over the
-    # inputs, since scan saves time in jit compilation
+    # ループの代わりに lax.scan プリミティブを使用する
+    # 入力。scan は JIT コンパイル時の時間を節約するため。
     def scan_fn(H, X):
         Z = d2l.sigmoid(d2l.matmul(X, self.W_xz) + d2l.matmul(H, self.W_hz) +
                         self.b_z)
@@ -255,7 +255,7 @@ def forward(self, inputs, H=None):
         H_tilde = d2l.tanh(d2l.matmul(X, self.W_xh) +
                            d2l.matmul(R * H, self.W_hh) + self.b_h)
         H = Z * H + (1 - Z) * H_tilde
-        return H, H  # return carry, y
+        return H, H  # キャリーと y を返す
 
     if H is None:
         batch_size = inputs.shape[1]
@@ -263,7 +263,7 @@ def forward(self, inputs, H=None):
     else:
         carry = H
 
-    # scan takes the scan_fn, initial carry state, xs with leading axis to be scanned
+    # scanはscan_fn、初期carry状態、および先頭軸で走査されるxsを取る
     carry, outputs = jax.lax.scan(scan_fn, carry, inputs)
     return outputs, carry
 ```

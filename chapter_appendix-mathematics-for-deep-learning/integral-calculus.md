@@ -351,12 +351,12 @@ $$
 
 ```{.python .input}
 #@tab mxnet
-# Construct grid and compute function
+# グリッドを構築し、関数を計算する
 x, y = np.meshgrid(np.linspace(-2, 2, 101), np.linspace(-2, 2, 101),
                    indexing='ij')
 z = np.exp(- x**2 - y**2)
 
-# Plot function
+# 関数をプロットする
 ax = d2l.plt.figure().add_subplot(111, projection='3d')
 ax.plot_wireframe(x.asnumpy(), y.asnumpy(), z.asnumpy())
 d2l.plt.xlabel('x')
@@ -372,11 +372,11 @@ ax.dist = 12
 
 ```{.python .input}
 #@tab pytorch
-# Construct grid and compute function
+# グリッドを構築し、関数を計算する
 x, y = torch.meshgrid(torch.linspace(-2, 2, 101), torch.linspace(-2, 2, 101))
 z = torch.exp(- x**2 - y**2)
 
-# Plot function
+# 関数をプロットする
 ax = d2l.plt.figure().add_subplot(111, projection='3d')
 ax.plot_wireframe(x, y, z)
 d2l.plt.xlabel('x')
@@ -392,11 +392,11 @@ ax.dist = 12
 
 ```{.python .input}
 #@tab tensorflow
-# Construct grid and compute function
+# グリッドを構築し、関数を計算する
 x, y = tf.meshgrid(tf.linspace(-2., 2., 101), tf.linspace(-2., 2., 101))
 z = tf.exp(- x**2 - y**2)
 
-# Plot function
+# 関数をプロットする
 ax = d2l.plt.figure().add_subplot(111, projection='3d')
 ax.plot_wireframe(x, y, z)
 d2l.plt.xlabel('x')

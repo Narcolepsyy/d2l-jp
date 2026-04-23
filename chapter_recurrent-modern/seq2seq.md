@@ -103,7 +103,7 @@ import math
 import optax
 ```
 
-## Teacher Forcing
+## 教師強制
 
 入力系列に対してエンコーダを実行するのは
 比較的単純であるが、
@@ -201,12 +201,12 @@ class Seq2SeqEncoder(d2l.Encoder):  #@save
         self.initialize(init.Xavier())
             
     def forward(self, X, *args):
-        # X shape: (batch_size, num_steps)
+        # Xの形状: (batch_size, num_steps)
         embs = self.embedding(d2l.transpose(X))
         # embs shape: (num_steps, batch_size, embed_size)    
         outputs, state = self.rnn(embs)
-        # outputs shape: (num_steps, batch_size, num_hiddens)
-        # state shape: (num_layers, batch_size, num_hiddens)
+        # 出力の形状: (num_steps, batch_size, num_hiddens)
+        # 状態の形状: (num_layers, batch_size, num_hiddens)
         return outputs, state
 ```
 
@@ -234,12 +234,12 @@ class Seq2SeqEncoder(d2l.Encoder):  #@save
         self.apply(init_seq2seq)
             
     def forward(self, X, *args):
-        # X shape: (batch_size, num_steps)
+        # Xの形状: (batch_size, num_steps)
         embs = self.embedding(d2l.astype(d2l.transpose(X), d2l.int64))
-        # embs shape: (num_steps, batch_size, embed_size)
+        # 埋め込みの形状: (num_steps, batch_size, embed_size)
         outputs, state = self.rnn(embs)
-        # outputs shape: (num_steps, batch_size, num_hiddens)
-        # state shape: (num_layers, batch_size, num_hiddens)
+        # 出力の形状: (num_steps, batch_size, num_hiddens)
+        # 状態の形状: (num_layers, batch_size, num_hiddens)
         return outputs, state
 ```
 
@@ -254,12 +254,12 @@ class Seq2SeqEncoder(d2l.Encoder):  #@save
         self.rnn = d2l.GRU(num_hiddens, num_layers, dropout)
             
     def call(self, X, *args):
-        # X shape: (batch_size, num_steps)
+        # Xの形状: (batch_size, num_steps)
         embs = self.embedding(d2l.transpose(X))
         # embs shape: (num_steps, batch_size, embed_size)    
         outputs, state = self.rnn(embs)
-        # outputs shape: (num_steps, batch_size, num_hiddens)
-        # state shape: (num_layers, batch_size, num_hiddens)
+        # 出力の形状: (num_steps, batch_size, num_hiddens)
+        # 状態の形状: (num_layers, batch_size, num_hiddens)
         return outputs, state
 ```
 
@@ -278,12 +278,12 @@ class Seq2SeqEncoder(d2l.Encoder):  #@save
         self.rnn = d2l.GRU(self.num_hiddens, self.num_layers, self.dropout)
 
     def __call__(self, X, *args, training=False):
-        # X shape: (batch_size, num_steps)
+        # Xの形状: (batch_size, num_steps)
         embs = self.embedding(d2l.astype(d2l.transpose(X), d2l.int32))
-        # embs shape: (num_steps, batch_size, embed_size)
+        # 埋め込みの形状: (num_steps, batch_size, embed_size)
         outputs, state = self.rnn(embs, training=training)
-        # outputs shape: (num_steps, batch_size, num_hiddens)
-        # state shape: (num_layers, batch_size, num_hiddens)
+        # 出力の形状: (num_steps, batch_size, num_hiddens)
+        # 状態の形状: (num_layers, batch_size, num_hiddens)
         return outputs, state
 ```
 
@@ -384,20 +384,20 @@ class Seq2SeqDecoder(d2l.Decoder):
         return enc_all_outputs 
 
     def forward(self, X, state):
-        # X shape: (batch_size, num_steps)
-        # embs shape: (num_steps, batch_size, embed_size)
+        # Xの形状: (batch_size, num_steps)
+        # 埋め込みの形状: (num_steps, batch_size, embed_size)
         embs = self.embedding(d2l.transpose(X))
         enc_output, hidden_state = state
-        # context shape: (batch_size, num_hiddens)
+        # コンテキストの形状: (batch_size, num_hiddens)
         context = enc_output[-1]
-        # Broadcast context to (num_steps, batch_size, num_hiddens)
+        # (num_steps, batch_size, num_hiddens) にブロードキャストする
         context = np.tile(context, (embs.shape[0], 1, 1))
-        # Concat at the feature dimension
+        # 特徴次元で結合する
         embs_and_context = d2l.concat((embs, context), -1)
         outputs, hidden_state = self.rnn(embs_and_context, hidden_state)
         outputs = d2l.swapaxes(self.dense(outputs), 0, 1)
-        # outputs shape: (batch_size, num_steps, vocab_size)
-        # hidden_state shape: (num_layers, batch_size, num_hiddens)
+        # 出力の形状: (batch_size, num_steps, vocab_size)
+        # 隠れ状態の形状: (num_layers, batch_size, num_hiddens)
         return outputs, [enc_output, hidden_state]
 ```
 
@@ -418,20 +418,20 @@ class Seq2SeqDecoder(d2l.Decoder):
         return enc_all_outputs
 
     def forward(self, X, state):
-        # X shape: (batch_size, num_steps)
-        # embs shape: (num_steps, batch_size, embed_size)
+        # Xの形状: (batch_size, num_steps)
+        # 埋め込みの形状: (num_steps, batch_size, embed_size)
         embs = self.embedding(d2l.astype(d2l.transpose(X), d2l.int32))
         enc_output, hidden_state = state
-        # context shape: (batch_size, num_hiddens)
+        # コンテキストの形状: (batch_size, num_hiddens)
         context = enc_output[-1]
-        # Broadcast context to (num_steps, batch_size, num_hiddens)
+        # (num_steps, batch_size, num_hiddens) にブロードキャストする
         context = context.repeat(embs.shape[0], 1, 1)
-        # Concat at the feature dimension
+        # 特徴次元で結合する
         embs_and_context = d2l.concat((embs, context), -1)
         outputs, hidden_state = self.rnn(embs_and_context, hidden_state)
         outputs = d2l.swapaxes(self.dense(outputs), 0, 1)
-        # outputs shape: (batch_size, num_steps, vocab_size)
-        # hidden_state shape: (num_layers, batch_size, num_hiddens)
+        # 出力の形状: (batch_size, num_steps, vocab_size)
+        # 隠れ状態の形状: (num_layers, batch_size, num_hiddens)
         return outputs, [enc_output, hidden_state]
 ```
 
@@ -450,20 +450,20 @@ class Seq2SeqDecoder(d2l.Decoder):
         return enc_all_outputs
 
     def call(self, X, state):
-        # X shape: (batch_size, num_steps)
-        # embs shape: (num_steps, batch_size, embed_size)
+        # Xの形状: (batch_size, num_steps)
+        # 埋め込みの形状: (num_steps, batch_size, embed_size)
         embs = self.embedding(d2l.transpose(X))
         enc_output, hidden_state = state
-        # context shape: (batch_size, num_hiddens)
+        # コンテキストの形状: (batch_size, num_hiddens)
         context = enc_output[-1]
-        # Broadcast context to (num_steps, batch_size, num_hiddens)
+        # (num_steps, batch_size, num_hiddens) にブロードキャストする
         context = tf.tile(tf.expand_dims(context, 0), (embs.shape[0], 1, 1))
-        # Concat at the feature dimension
+        # 特徴次元で結合する
         embs_and_context = d2l.concat((embs, context), -1)
         outputs, hidden_state = self.rnn(embs_and_context, hidden_state)
         outputs = d2l.transpose(self.dense(outputs), (1, 0, 2))
-        # outputs shape: (batch_size, num_steps, vocab_size)
-        # hidden_state shape: (num_layers, batch_size, num_hiddens)
+        # 出力の形状: (batch_size, num_steps, vocab_size)
+        # 隠れ状態の形状: (num_layers, batch_size, num_hiddens)
         return outputs, [enc_output, hidden_state]
 ```
 
@@ -486,21 +486,21 @@ class Seq2SeqDecoder(d2l.Decoder):
         return enc_all_outputs
 
     def __call__(self, X, state, training=False):
-        # X shape: (batch_size, num_steps)
-        # embs shape: (num_steps, batch_size, embed_size)
+        # Xの形状: (batch_size, num_steps)
+        # 埋め込みの形状: (num_steps, batch_size, embed_size)
         embs = self.embedding(d2l.astype(d2l.transpose(X), d2l.int32))
         enc_output, hidden_state = state
-        # context shape: (batch_size, num_hiddens)
+        # コンテキストの形状: (batch_size, num_hiddens)
         context = enc_output[-1]
-        # Broadcast context to (num_steps, batch_size, num_hiddens)
+        # (num_steps, batch_size, num_hiddens) にブロードキャストする
         context = jnp.tile(context, (embs.shape[0], 1, 1))
-        # Concat at the feature dimension
+        # 特徴次元で結合する
         embs_and_context = d2l.concat((embs, context), -1)
         outputs, hidden_state = self.rnn(embs_and_context, hidden_state,
                                          training=training)
         outputs = d2l.swapaxes(self.dense(outputs), 0, 1)
-        # outputs shape: (batch_size, num_steps, vocab_size)
-        # hidden_state shape: (num_layers, batch_size, num_hiddens)
+        # 出力の形状: (batch_size, num_steps, vocab_size)
+        # 隠れ状態の形状: (num_layers, batch_size, num_hiddens)
         return outputs, [enc_output, hidden_state]
 ```
 
@@ -558,7 +558,7 @@ class Seq2Seq(d2l.EncoderDecoder):  #@save
         self.plot('loss', self.loss(Y_hat, batch[-1]), train=False)
         
     def configure_optimizers(self):
-        # Adam optimizer is used here
+        # ここではAdam最適化器を用いる
         if tab.selected('mxnet'):
             return gluon.Trainer(self.parameters(), 'adam',
                                  {'learning_rate': self.lr})
@@ -582,7 +582,7 @@ class Seq2Seq(d2l.EncoderDecoder):  #@save
         self.plot('loss', l, train=False)
 
     def configure_optimizers(self):
-        # Adam optimizer is used here
+        # ここではAdam最適化器を用いる
         return optax.adam(learning_rate=self.lr)
 ```
 
@@ -708,7 +708,7 @@ def predict_step(self, batch, device, num_steps,
         if tab.selected('tensorflow'):
             Y, dec_state = self.decoder(outputs[-1], dec_state, training=False)
         outputs.append(d2l.argmax(Y, 2))
-        # Save attention weights (to be covered later)
+        # 注意重みを保存する（後で扱う）
         if save_attention_weights:
             attention_weights.append(self.decoder.attention_weights)
     return d2l.concat(outputs[1:], 1), attention_weights
@@ -723,11 +723,11 @@ def predict_step(self, params, batch, num_steps,
     enc_all_outputs, inter_enc_vars = self.encoder.apply(
         {'params': params['encoder']}, src, src_valid_len, training=False,
         mutable='intermediates')
-    # Save encoder attention weights if inter_enc_vars containing encoder
-    # attention weights is not empty. (to be covered later)
+    # inter_enc_vars に encoder を含む場合はエンコーダの注意重みを保存する
+    # attention重みは空ではない。（後で扱う）
     enc_attention_weights = []
     if bool(inter_enc_vars) and save_attention_weights:
-        # Encoder Attention Weights saved in the intermediates collection
+        # 中間コレクションに保存されたエンコーダの注意重み
         enc_attention_weights = inter_enc_vars[
             'intermediates']['enc_attention_weights'][0]
 
@@ -738,9 +738,9 @@ def predict_step(self, params, batch, num_steps,
             {'params': params['decoder']}, outputs[-1], dec_state,
             training=False, mutable='intermediates')
         outputs.append(d2l.argmax(Y, 2))
-        # Save attention weights (to be covered later)
+        # 注意重みを保存する（後で扱う）
         if save_attention_weights:
-            # Decoder Attention Weights saved in the intermediates collection
+            # 中間コレクションに保存されたデコーダの注意重み
             dec_attention_weights = inter_dec_vars[
                 'intermediates']['dec_attention_weights'][0]
             attention_weights.append(dec_attention_weights)

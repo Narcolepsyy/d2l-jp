@@ -50,7 +50,7 @@ with d2l.Benchmark('mxnet.np'):
 
 ```{.python .input}
 #@tab pytorch
-# Warmup for GPU computation
+# GPU計算のウォームアップ
 device = d2l.try_gpu()
 a = torch.randn(size=(1000, 1000), device=device)
 b = torch.mm(a, a)

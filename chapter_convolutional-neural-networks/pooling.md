@@ -222,27 +222,27 @@ X
 ```{.python .input}
 %%tab mxnet
 pool2d = nn.MaxPool2D(3)
-# Pooling has no model parameters, hence it needs no initialization
+# プーリングにはモデルパラメータがないため、初期化は不要である
 pool2d(X)
 ```
 
 ```{.python .input}
 %%tab pytorch
 pool2d = nn.MaxPool2d(3)
-# Pooling has no model parameters, hence it needs no initialization
+# プーリングにはモデルパラメータがないため、初期化は不要である
 pool2d(X)
 ```
 
 ```{.python .input}
 %%tab tensorflow
 pool2d = tf.keras.layers.MaxPool2D(pool_size=[3, 3])
-# Pooling has no model parameters, hence it needs no initialization
+# プーリングにはモデルパラメータがないため、初期化は不要である
 pool2d(X)
 ```
 
 ```{.python .input}
 %%tab jax
-# Pooling has no model parameters, hence it needs no initialization
+# プーリングにはモデルパラメータがないため、初期化は不要である
 nn.max_pool(X, window_shape=(3, 3), strides=(3, 3))
 ```
 
@@ -329,7 +329,7 @@ X
 
 ```{.python .input}
 %%tab tensorflow, jax
-# Concatenate along `dim=3` due to channels-last syntax
+# チャネル最後の構文のため`dim=3`に沿って連結する
 X = d2l.concat([X, X + 1], 3)
 X
 ```

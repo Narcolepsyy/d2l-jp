@@ -279,7 +279,7 @@ ln.initialize()
 bn = nn.BatchNorm()
 bn.initialize()
 X = d2l.tensor([[1, 2], [2, 3]])
-# Compute mean and variance from X in the training mode
+# 訓練モードでXから平均と分散を計算する
 with autograd.record():
     print('layer norm:', ln(X), '\nbatch norm:', bn(X))
 ```
@@ -289,7 +289,7 @@ with autograd.record():
 ln = nn.LayerNorm(2)
 bn = nn.LazyBatchNorm1d()
 X = d2l.tensor([[1, 2], [2, 3]], dtype=torch.float32)
-# Compute mean and variance from X in the training mode
+# 訓練モードでXから平均と分散を計算する
 print('layer norm:', ln(X), '\nbatch norm:', bn(X))
 ```
 
@@ -306,7 +306,7 @@ print('layer norm:', ln(X), '\nbatch norm:', bn(X, training=True))
 ln = nn.LayerNorm()
 bn = nn.BatchNorm()
 X = d2l.tensor([[1, 2], [2, 3]], dtype=d2l.float32)
-# Compute mean and variance from X in the training mode
+# 訓練モードでXから平均と分散を計算する
 print('layer norm:', ln.init_with_output(d2l.get_key(), X)[0],
       '\nbatch norm:', bn.init_with_output(d2l.get_key(), X,
                                            use_running_average=False)[0])
@@ -390,7 +390,7 @@ d2l.check_shape(add_norm(d2l.ones(shape), d2l.ones(shape)), shape)
 
 ```{.python .input}
 %%tab tensorflow
-# Normalized_shape is: [i for i in range(len(input.shape))][1:]
+# 正規化対象のshapeは: [i for i in range(len(input.shape))][1:]
 add_norm = AddNorm([1, 2], 0.5)
 shape = (2, 3, 4)
 d2l.check_shape(add_norm(tf.ones(shape), tf.ones(shape), training=False),
@@ -565,9 +565,9 @@ class TransformerEncoder(d2l.Encoder):  #@save
         self.initialize()
 
     def forward(self, X, valid_lens):
-        # Since positional encoding values are between -1 and 1, the embedding
-        # values are multiplied by the square root of the embedding dimension
-        # to rescale before they are summed up
+        # 位置エンコーディングの値は -1 と 1 の間にあるため、埋め込み
+        # 値は埋め込み次元の平方根を掛ける
+        # 和を取る前に再スケールするため
         X = self.pos_encoding(self.embedding(X) * math.sqrt(self.num_hiddens))
         self.attention_weights = [None] * len(self.blks)
         for i, blk in enumerate(self.blks):
@@ -593,9 +593,9 @@ class TransformerEncoder(d2l.Encoder):  #@save
                 num_hiddens, ffn_num_hiddens, num_heads, dropout, use_bias))
 
     def forward(self, X, valid_lens):
-        # Since positional encoding values are between -1 and 1, the embedding
-        # values are multiplied by the square root of the embedding dimension
-        # to rescale before they are summed up
+        # 位置エンコーディングの値は -1 と 1 の間にあるため、埋め込み
+        # 値は埋め込み次元の平方根を掛ける
+        # 和を取る前に再スケールするため
         X = self.pos_encoding(self.embedding(X) * math.sqrt(self.num_hiddens))
         self.attention_weights = [None] * len(self.blks)
         for i, blk in enumerate(self.blks):
@@ -622,9 +622,9 @@ class TransformerEncoder(d2l.Encoder):  #@save
             num_blks)]
 
     def call(self, X, valid_lens, **kwargs):
-        # Since positional encoding values are between -1 and 1, the embedding
-        # values are multiplied by the square root of the embedding dimension
-        # to rescale before they are summed up
+        # 位置エンコーディングの値は -1 と 1 の間にあるため、埋め込み
+        # 値は埋め込み次元の平方根を掛ける
+        # 和を取る前に再スケールするため
         X = self.pos_encoding(self.embedding(X) * tf.math.sqrt(
             tf.cast(self.num_hiddens, dtype=tf.float32)), **kwargs)
         self.attention_weights = [None] * len(self.blks)
@@ -657,16 +657,16 @@ class TransformerEncoder(d2l.Encoder):  #@save
                      for _ in range(self.num_blks)]
 
     def __call__(self, X, valid_lens, training=False):
-        # Since positional encoding values are between -1 and 1, the embedding
-        # values are multiplied by the square root of the embedding dimension
-        # to rescale before they are summed up
+        # 位置エンコーディングの値は -1 と 1 の間にあるため、埋め込み
+        # 値は埋め込み次元の平方根を掛ける
+        # 和を取る前に再スケールするため
         X = self.embedding(X) * math.sqrt(self.num_hiddens)
         X = self.pos_encoding(X, training=training)
         attention_weights = [None] * len(self.blks)
         for i, blk in enumerate(self.blks):
             X, attention_w = blk(X, valid_lens, training=training)
             attention_weights[i] = attention_w
-        # Flax sow API is used to capture intermediate variables
+        # Flax sow APIは中間変数を捕捉するために用いられる
         self.sow('intermediates', 'enc_attention_weights', attention_weights)
         return X
 ```
@@ -745,7 +745,7 @@ d2l.check_shape(encoder.init_with_output(d2l.get_key(),
 ```{.python .input}
 %%tab mxnet
 class TransformerDecoderBlock(nn.Block):
-    # The i-th block in the Transformer decoder
+    # Transformerデコーダーのi番目のブロック
     def __init__(self, num_hiddens, ffn_num_hiddens, num_heads, dropout, i):
         super().__init__()
         self.i = i
@@ -760,11 +760,11 @@ class TransformerDecoderBlock(nn.Block):
 
     def forward(self, X, state):
         enc_outputs, enc_valid_lens = state[0], state[1]
-        # During training, all the tokens of any output sequence are processed
-        # at the same time, so state[2][self.i] is None as initialized. When
-        # decoding any output sequence token by token during prediction,
-        # state[2][self.i] contains representations of the decoded output at
-        # the i-th block up to the current time step
+        # 訓練中、任意の出力系列のすべてのトークンが処理される
+        # 同時に、state[2][self.i] は初期化時のまま None である。すると
+        # 予測時に出力系列を1トークンずつ復号する,
+        # state[2][self.i] には、デコード済み出力の表現が含まれている
+        # 現在時刻までの第iブロック
         if state[2][self.i] is None:
             key_values = X
         else:
@@ -773,16 +773,16 @@ class TransformerDecoderBlock(nn.Block):
 
         if autograd.is_training():
             batch_size, num_steps, _ = X.shape
-            # Shape of dec_valid_lens: (batch_size, num_steps), where every
-            # row is [1, 2, ..., num_steps]
+            # dec_valid_lensの形状: (batch_size, num_steps)。各要素は
+            # 行は[1, 2, ..., num_steps]である
             dec_valid_lens = np.tile(np.arange(1, num_steps + 1, ctx=X.ctx),
                                      (batch_size, 1))
         else:
             dec_valid_lens = None
-        # Self-attention
+        # 自己注意
         X2 = self.attention1(X, key_values, key_values, dec_valid_lens)
         Y = self.addnorm1(X, X2)
-        # Encoder-decoder attention. Shape of enc_outputs:
+        # エンコーダ-デコーダ注意機構。enc_outputsの形状:
         # (batch_size, num_steps, num_hiddens)
         Y2 = self.attention2(Y, enc_outputs, enc_outputs, enc_valid_lens)
         Z = self.addnorm2(Y, Y2)
@@ -792,7 +792,7 @@ class TransformerDecoderBlock(nn.Block):
 ```{.python .input}
 %%tab pytorch
 class TransformerDecoderBlock(nn.Module):
-    # The i-th block in the Transformer decoder
+    # Transformerデコーダーのi番目のブロック
     def __init__(self, num_hiddens, ffn_num_hiddens, num_heads, dropout, i):
         super().__init__()
         self.i = i
@@ -807,11 +807,11 @@ class TransformerDecoderBlock(nn.Module):
 
     def forward(self, X, state):
         enc_outputs, enc_valid_lens = state[0], state[1]
-        # During training, all the tokens of any output sequence are processed
-        # at the same time, so state[2][self.i] is None as initialized. When
-        # decoding any output sequence token by token during prediction,
-        # state[2][self.i] contains representations of the decoded output at
-        # the i-th block up to the current time step
+        # 訓練中、任意の出力系列のすべてのトークンが処理される
+        # 同時に、state[2][self.i] は初期化時のまま None である。すると
+        # 予測時に出力系列を1トークンずつ復号する,
+        # state[2][self.i] には、デコード済み出力の表現が含まれている
+        # 現在時刻までの第iブロック
         if state[2][self.i] is None:
             key_values = X
         else:
@@ -819,16 +819,16 @@ class TransformerDecoderBlock(nn.Module):
         state[2][self.i] = key_values
         if self.training:
             batch_size, num_steps, _ = X.shape
-            # Shape of dec_valid_lens: (batch_size, num_steps), where every
-            # row is [1, 2, ..., num_steps]
+            # dec_valid_lensの形状: (batch_size, num_steps)。各要素は
+            # 行は[1, 2, ..., num_steps]である
             dec_valid_lens = torch.arange(
                 1, num_steps + 1, device=X.device).repeat(batch_size, 1)
         else:
             dec_valid_lens = None
-        # Self-attention
+        # 自己注意
         X2 = self.attention1(X, key_values, key_values, dec_valid_lens)
         Y = self.addnorm1(X, X2)
-        # Encoder-decoder attention. Shape of enc_outputs:
+        # エンコーダ-デコーダ注意機構。enc_outputsの形状:
         # (batch_size, num_steps, num_hiddens)
         Y2 = self.attention2(Y, enc_outputs, enc_outputs, enc_valid_lens)
         Z = self.addnorm2(Y, Y2)
@@ -838,7 +838,7 @@ class TransformerDecoderBlock(nn.Module):
 ```{.python .input}
 %%tab tensorflow
 class TransformerDecoderBlock(tf.keras.layers.Layer):
-    # The i-th block in the Transformer decoder
+    # Transformerデコーダーのi番目のブロック
     def __init__(self, key_size, query_size, value_size, num_hiddens,
                  norm_shape, ffn_num_hiddens, num_heads, dropout, i):
         super().__init__()
@@ -854,11 +854,11 @@ class TransformerDecoderBlock(tf.keras.layers.Layer):
 
     def call(self, X, state, **kwargs):
         enc_outputs, enc_valid_lens = state[0], state[1]
-        # During training, all the tokens of any output sequence are processed
-        # at the same time, so state[2][self.i] is None as initialized. When
-        # decoding any output sequence token by token during prediction,
-        # state[2][self.i] contains representations of the decoded output at
-        # the i-th block up to the current time step
+        # 訓練中、任意の出力系列のすべてのトークンが処理される
+        # 同時に、state[2][self.i] は初期化時のまま None である。すると
+        # 予測時に出力系列を1トークンずつ復号する,
+        # state[2][self.i] には、デコード済み出力の表現が含まれている
+        # 現在時刻までの第iブロック
         if state[2][self.i] is None:
             key_values = X
         else:
@@ -866,18 +866,18 @@ class TransformerDecoderBlock(tf.keras.layers.Layer):
         state[2][self.i] = key_values
         if kwargs["training"]:
             batch_size, num_steps, _ = X.shape
-            # Shape of dec_valid_lens: (batch_size, num_steps), where every
-            # row is [1, 2, ..., num_steps]
+            # dec_valid_lensの形状: (batch_size, num_steps)。各要素は
+            # 行は[1, 2, ..., num_steps]である
             dec_valid_lens = tf.repeat(
                 tf.reshape(tf.range(1, num_steps + 1),
                            shape=(-1, num_steps)), repeats=batch_size, axis=0)
         else:
             dec_valid_lens = None
-        # Self-attention
+        # 自己注意
         X2 = self.attention1(X, key_values, key_values, dec_valid_lens,
                              **kwargs)
         Y = self.addnorm1(X, X2, **kwargs)
-        # Encoder-decoder attention. Shape of enc_outputs:
+        # エンコーダ-デコーダ注意機構。enc_outputsの形状:
         # (batch_size, num_steps, num_hiddens)
         Y2 = self.attention2(Y, enc_outputs, enc_outputs, enc_valid_lens,
                              **kwargs)
@@ -888,7 +888,7 @@ class TransformerDecoderBlock(tf.keras.layers.Layer):
 ```{.python .input}
 %%tab jax
 class TransformerDecoderBlock(nn.Module):
-    # The i-th block in the Transformer decoder
+    # Transformerデコーダーのi番目のブロック
     num_hiddens: int
     ffn_num_hiddens: int
     num_heads: int
@@ -909,11 +909,11 @@ class TransformerDecoderBlock(nn.Module):
 
     def __call__(self, X, state, training=False):
         enc_outputs, enc_valid_lens = state[0], state[1]
-        # During training, all the tokens of any output sequence are processed
-        # at the same time, so state[2][self.i] is None as initialized. When
-        # decoding any output sequence token by token during prediction,
-        # state[2][self.i] contains representations of the decoded output at
-        # the i-th block up to the current time step
+        # 訓練中、任意の出力系列のすべてのトークンが処理される
+        # 同時に、state[2][self.i] は初期化時のまま None である。すると
+        # 予測時に出力系列を1トークンずつ復号する,
+        # state[2][self.i] には、デコード済み出力の表現が含まれている
+        # 現在時刻までの第iブロック
         if state[2][self.i] is None:
             key_values = X
         else:
@@ -921,17 +921,17 @@ class TransformerDecoderBlock(nn.Module):
         state[2][self.i] = key_values
         if training:
             batch_size, num_steps, _ = X.shape
-            # Shape of dec_valid_lens: (batch_size, num_steps), where every
-            # row is [1, 2, ..., num_steps]
+            # dec_valid_lensの形状: (batch_size, num_steps)。各要素は
+            # 行は[1, 2, ..., num_steps]である
             dec_valid_lens = jnp.tile(jnp.arange(1, num_steps + 1),
                                       (batch_size, 1))
         else:
             dec_valid_lens = None
-        # Self-attention
+        # 自己注意
         X2, attention_w1 = self.attention1(X, key_values, key_values,
                                            dec_valid_lens, training=training)
         Y = self.addnorm1(X, X2, training=training)
-        # Encoder-decoder attention. Shape of enc_outputs:
+        # エンコーダ-デコーダ注意機構。enc_outputsの形状:
         # (batch_size, num_steps, num_hiddens)
         Y2, attention_w2 = self.attention2(Y, enc_outputs, enc_outputs,
                                            enc_valid_lens, training=training)
@@ -1013,10 +1013,10 @@ class TransformerDecoder(d2l.AttentionDecoder):
         self._attention_weights = [[None] * len(self.blks) for _ in range (2)]
         for i, blk in enumerate(self.blks):
             X, state = blk(X, state)
-            # Decoder self-attention weights
+            # デコーダの自己注意重み
             self._attention_weights[0][
                 i] = blk.attention1.attention.attention_weights
-            # Encoder-decoder attention weights
+            # エンコーダ・デコーダの注意重み
             self._attention_weights[1][
                 i] = blk.attention2.attention.attention_weights
         return self.dense(X), state
@@ -1050,10 +1050,10 @@ class TransformerDecoder(d2l.AttentionDecoder):
         self._attention_weights = [[None] * len(self.blks) for _ in range (2)]
         for i, blk in enumerate(self.blks):
             X, state = blk(X, state)
-            # Decoder self-attention weights
+            # デコーダの自己注意重み
             self._attention_weights[0][
                 i] = blk.attention1.attention.attention_weights
-            # Encoder-decoder attention weights
+            # エンコーダ・デコーダの注意重み
             self._attention_weights[1][
                 i] = blk.attention2.attention.attention_weights
         return self.dense(X), state
@@ -1090,10 +1090,10 @@ class TransformerDecoder(d2l.AttentionDecoder):
         self._attention_weights = [[None] * len(self.blks) for _ in range(2)]
         for i, blk in enumerate(self.blks):
             X, state = blk(X, state, **kwargs)
-            # Decoder self-attention weights
+            # デコーダの自己注意重み
             self._attention_weights[0][i] = (
                 blk.attention1.attention.attention_weights)
-            # Encoder-decoder attention weights
+            # エンコーダ・デコーダの注意重み
             self._attention_weights[1][i] = (
                 blk.attention2.attention.attention_weights)
         return self.dense(X), state
@@ -1133,11 +1133,11 @@ class TransformerDecoder(nn.Module):
         for i, blk in enumerate(self.blks):
             X, state, attention_w1, attention_w2 = blk(X, state,
                                                        training=training)
-            # Decoder self-attention weights
+            # デコーダの自己注意重み
             attention_weights[0][i] = attention_w1
-            # Encoder-decoder attention weights
+            # エンコーダ・デコーダの注意重み
             attention_weights[1][i] = attention_w2
-        # Flax sow API is used to capture intermediate variables
+        # Flax sow APIは中間変数を捕捉するために用いられる
         self.sow('intermediates', 'dec_attention_weights', attention_weights)
         return self.dense(X), state
 ```

@@ -91,7 +91,7 @@ Hello world <blank> <blank>
 %%tab mxnet
 def masked_softmax(X, valid_lens):  #@save
     """Perform softmax operation by masking elements on the last axis."""
-    # X: 3D tensor, valid_lens: 1D or 2D tensor
+    # X: 3次元テンソル, valid_lens: 1次元または2次元テンソル
     if valid_lens is None:
         return npx.softmax(X)
     else:
@@ -100,8 +100,8 @@ def masked_softmax(X, valid_lens):  #@save
             valid_lens = valid_lens.repeat(shape[1])
         else:
             valid_lens = valid_lens.reshape(-1)
-        # On the last axis, replace masked elements with a very large negative
-        # value, whose exponentiation outputs 0
+        # 最後の軸では、マスクされた要素を非常に大きい負の値で置き換える
+        # 指数関数を取ると0になる値
         X = npx.sequence_mask(X.reshape(-1, shape[-1]), valid_lens, True,
                               value=-1e6, axis=1)
         return npx.softmax(X).reshape(shape)
@@ -127,8 +127,8 @@ def masked_softmax(X, valid_lens):  #@save
             valid_lens = torch.repeat_interleave(valid_lens, shape[1])
         else:
             valid_lens = valid_lens.reshape(-1)
-        # On the last axis, replace masked elements with a very large negative
-        # value, whose exponentiation outputs 0
+        # 最後の軸では、マスクされた要素を非常に大きい負の値で置き換える
+        # 指数関数を取ると0になる値
         X = _sequence_mask(X.reshape(-1, shape[-1]), valid_lens, value=-1e6)
         return nn.functional.softmax(X.reshape(shape), dim=-1)
 ```
@@ -137,7 +137,7 @@ def masked_softmax(X, valid_lens):  #@save
 %%tab tensorflow
 def masked_softmax(X, valid_lens):  #@save
     """Perform softmax operation by masking elements on the last axis."""
-    # X: 3D tensor, valid_lens: 1D or 2D tensor
+    # X: 3次元テンソル, valid_lens: 1次元または2次元テンソル
     def _sequence_mask(X, valid_len, value=0):
         maxlen = X.shape[1]
         mask = tf.range(start=0, limit=maxlen, dtype=tf.float32)[
@@ -157,7 +157,7 @@ def masked_softmax(X, valid_lens):  #@save
             
         else:
             valid_lens = tf.reshape(valid_lens, shape=-1)
-        # On the last axis, replace masked elements with a very large negative
+        # 最後の軸では、マスクされた要素を非常に大きい負の値で置き換える
         # value, whose exponentiation outputs 0    
         X = _sequence_mask(tf.reshape(X, shape=(-1, shape[-1])), valid_lens,
                            value=-1e6)    
@@ -168,7 +168,7 @@ def masked_softmax(X, valid_lens):  #@save
 %%tab jax
 def masked_softmax(X, valid_lens):  #@save
     """Perform softmax operation by masking elements on the last axis."""
-    # X: 3D tensor, valid_lens: 1D or 2D tensor
+    # X: 3次元テンソル, valid_lens: 1次元または2次元テンソル
     def _sequence_mask(X, valid_len, value=0):
         maxlen = X.shape[1]
         mask = jnp.arange((maxlen),
@@ -183,8 +183,8 @@ def masked_softmax(X, valid_lens):  #@save
             valid_lens = jnp.repeat(valid_lens, shape[1])
         else:
             valid_lens = valid_lens.reshape(-1)
-        # On the last axis, replace masked elements with a very large negative
-        # value, whose exponentiation outputs 0
+        # 最後の軸では、マスクされた要素を非常に大きい負の値で置き換える
+        # 指数関数を取ると0になる値
         X = _sequence_mask(X.reshape(-1, shape[-1]), valid_lens, value=-1e6)
         return nn.softmax(X.reshape(shape), axis=-1)
 ```
@@ -299,13 +299,13 @@ class DotProductAttention(nn.Block):  #@save
         super().__init__()
         self.dropout = nn.Dropout(dropout)
 
-    # Shape of queries: (batch_size, no. of queries, d)
-    # Shape of keys: (batch_size, no. of key-value pairs, d)
-    # Shape of values: (batch_size, no. of key-value pairs, value dimension)
-    # Shape of valid_lens: (batch_size,) or (batch_size, no. of queries)
+    # クエリの形状: (batch_size, クエリ数, d)
+    # キーの形状: (batch_size, キー・値ペア数, d)
+    # 値の形状: (batch_size, キー・バリューペア数, 値の次元)
+    # valid_lens の形状: (batch_size,) または (batch_size, クエリ数)
     def forward(self, queries, keys, values, valid_lens=None):
         d = queries.shape[-1]
-        # Set transpose_b=True to swap the last two dimensions of keys
+        # transpose_b=Trueを設定して、keysの最後の2次元を入れ替える
         scores = npx.batch_dot(queries, keys, transpose_b=True) / math.sqrt(d)
         self.attention_weights = masked_softmax(scores, valid_lens)
         return npx.batch_dot(self.dropout(self.attention_weights), values)
@@ -319,13 +319,13 @@ class DotProductAttention(nn.Module):  #@save
         super().__init__()
         self.dropout = nn.Dropout(dropout)
 
-    # Shape of queries: (batch_size, no. of queries, d)
-    # Shape of keys: (batch_size, no. of key-value pairs, d)
-    # Shape of values: (batch_size, no. of key-value pairs, value dimension)
-    # Shape of valid_lens: (batch_size,) or (batch_size, no. of queries)
+    # クエリの形状: (batch_size, クエリ数, d)
+    # キーの形状: (batch_size, キー・値ペア数, d)
+    # 値の形状: (batch_size, キー・バリューペア数, 値の次元)
+    # valid_lens の形状: (batch_size,) または (batch_size, クエリ数)
     def forward(self, queries, keys, values, valid_lens=None):
         d = queries.shape[-1]
-        # Swap the last two dimensions of keys with keys.transpose(1, 2)
+        # keysの最後の2次元をkeys.transpose(1, 2)で入れ替える
         scores = torch.bmm(queries, keys.transpose(1, 2)) / math.sqrt(d)
         self.attention_weights = masked_softmax(scores, valid_lens)
         return torch.bmm(self.dropout(self.attention_weights), values)
@@ -339,10 +339,10 @@ class DotProductAttention(tf.keras.layers.Layer):  #@save
         super().__init__()
         self.dropout = tf.keras.layers.Dropout(dropout)
         
-    # Shape of queries: (batch_size, no. of queries, d)
-    # Shape of keys: (batch_size, no. of key-value pairs, d)
-    # Shape of values: (batch_size, no. of key-value pairs, value dimension)
-    # Shape of valid_lens: (batch_size,) or (batch_size, no. of queries)
+    # クエリの形状: (batch_size, クエリ数, d)
+    # キーの形状: (batch_size, キー・値ペア数, d)
+    # 値の形状: (batch_size, キー・バリューペア数, 値の次元)
+    # valid_lens の形状: (batch_size,) または (batch_size, クエリ数)
     def call(self, queries, keys, values, valid_lens=None, **kwargs):
         d = queries.shape[-1]
         scores = tf.matmul(queries, keys, transpose_b=True)/tf.math.sqrt(
@@ -357,15 +357,15 @@ class DotProductAttention(nn.Module):  #@save
     """Scaled dot product attention."""
     dropout: float
 
-    # Shape of queries: (batch_size, no. of queries, d)
-    # Shape of keys: (batch_size, no. of key-value pairs, d)
-    # Shape of values: (batch_size, no. of key-value pairs, value dimension)
-    # Shape of valid_lens: (batch_size,) or (batch_size, no. of queries)
+    # クエリの形状: (batch_size, クエリ数, d)
+    # キーの形状: (batch_size, キー・値ペア数, d)
+    # 値の形状: (batch_size, キー・バリューペア数, 値の次元)
+    # valid_lens の形状: (batch_size,) または (batch_size, クエリ数)
     @nn.compact
     def __call__(self, queries, keys, values, valid_lens=None,
                  training=False):
         d = queries.shape[-1]
-        # Swap the last two dimensions of keys with keys.swapaxes(1, 2)
+        # keysの最後の2次元をkeys.swapaxes(1, 2)で入れ替える
         scores = queries@(keys.swapaxes(1, 2)) / math.sqrt(d)
         attention_weights = masked_softmax(scores, valid_lens)
         dropout_layer = nn.Dropout(self.dropout, deterministic=not training)
@@ -453,8 +453,8 @@ class AdditiveAttention(nn.Block):  #@save
     """Additive attention."""
     def __init__(self, num_hiddens, dropout, **kwargs):
         super(AdditiveAttention, self).__init__(**kwargs)
-        # Use flatten=False to only transform the last axis so that the
-        # shapes for the other axes are kept the same
+        # flatten=False を使うと最後の軸のみを変換するので、その
+        # 他の軸の形状は同じに保たれる
         self.W_k = nn.Dense(num_hiddens, use_bias=False, flatten=False)
         self.W_q = nn.Dense(num_hiddens, use_bias=False, flatten=False)
         self.w_v = nn.Dense(1, use_bias=False, flatten=False)
@@ -462,19 +462,19 @@ class AdditiveAttention(nn.Block):  #@save
 
     def forward(self, queries, keys, values, valid_lens):
         queries, keys = self.W_q(queries), self.W_k(keys)
-        # After dimension expansion, shape of queries: (batch_size, no. of
-        # queries, 1, num_hiddens) and shape of keys: (batch_size, 1,
-        # no. of key-value pairs, num_hiddens). Sum them up with
-        # broadcasting
+        # 次元拡張後のクエリの形状: (batch_size, 個数の
+        # クエリの形状: (batch_size, 1, num_hiddens) とキーの形状: (batch_size, 1,
+        # キー値ペアの数、num_hiddens）。これらを合計するには
+        # ブロードキャスティング
         features = np.expand_dims(queries, axis=2) + np.expand_dims(
             keys, axis=1)
         features = np.tanh(features)
-        # There is only one output of self.w_v, so we remove the last
-        # one-dimensional entry from the shape. Shape of scores:
+        # self.w_v の出力は 1 つしかないので、最後を削除する
+        # shapeからの1次元の要素。scoresの形状:
         # (batch_size, no. of queries, no. of key-value pairs)
         scores = np.squeeze(self.w_v(features), axis=-1)
         self.attention_weights = masked_softmax(scores, valid_lens)
-        # Shape of values: (batch_size, no. of key-value pairs, value
+        # 値の形状: (batch_size, キー値ペア数, value
         # dimension)
         return npx.batch_dot(self.dropout(self.attention_weights), values)
 ```
@@ -492,17 +492,17 @@ class AdditiveAttention(nn.Module):  #@save
 
     def forward(self, queries, keys, values, valid_lens):
         queries, keys = self.W_q(queries), self.W_k(keys)
-        # After dimension expansion, shape of queries: (batch_size, no. of
-        # queries, 1, num_hiddens) and shape of keys: (batch_size, 1, no. of
-        # key-value pairs, num_hiddens). Sum them up with broadcasting
+        # 次元拡張後のクエリの形状: (batch_size, 個数の
+        # queries の形状は (batch_size, 1, num_hiddens)、keys の形状は (batch_size, 1, no. of
+        # key-value対とnum_hiddens。ブロードキャストでそれらを足し合わせる
         features = queries.unsqueeze(2) + keys.unsqueeze(1)
         features = torch.tanh(features)
-        # There is only one output of self.w_v, so we remove the last
-        # one-dimensional entry from the shape. Shape of scores: (batch_size,
-        # no. of queries, no. of key-value pairs)
+        # self.w_v の出力は 1 つしかないので、最後を削除する
+        # 形状からの1次元要素。スコアの形状: (batch_size,
+        # クエリ数，キー・バリューペア数
         scores = self.w_v(features).squeeze(-1)
         self.attention_weights = masked_softmax(scores, valid_lens)
-        # Shape of values: (batch_size, no. of key-value pairs, value
+        # 値の形状: (batch_size, キー値ペア数, value
         # dimension)
         return torch.bmm(self.dropout(self.attention_weights), values)
 ```
@@ -520,18 +520,18 @@ class AdditiveAttention(tf.keras.layers.Layer):  #@save
         
     def call(self, queries, keys, values, valid_lens, **kwargs):
         queries, keys = self.W_q(queries), self.W_k(keys)
-        # After dimension expansion, shape of queries: (batch_size, no. of
-        # queries, 1, num_hiddens) and shape of keys: (batch_size, 1, no. of
-        # key-value pairs, num_hiddens). Sum them up with broadcasting
+        # 次元拡張後のクエリの形状: (batch_size, 個数の
+        # queries の形状は (batch_size, 1, num_hiddens)、keys の形状は (batch_size, 1, no. of
+        # key-value対とnum_hiddens。ブロードキャストでそれらを足し合わせる
         features = tf.expand_dims(queries, axis=2) + tf.expand_dims(
             keys, axis=1)
         features = tf.nn.tanh(features)
-        # There is only one output of self.w_v, so we remove the last
-        # one-dimensional entry from the shape. Shape of scores: (batch_size,
-        # no. of queries, no. of key-value pairs)
+        # self.w_v の出力は 1 つしかないので、最後を削除する
+        # 形状からの1次元要素。スコアの形状: (batch_size,
+        # クエリ数，キー・バリューペア数
         scores = tf.squeeze(self.w_v(features), axis=-1)
         self.attention_weights = masked_softmax(scores, valid_lens)
-        # Shape of values: (batch_size, no. of key-value pairs, value
+        # 値の形状: (batch_size, キー値ペア数, value
         # dimension)
         return tf.matmul(self.dropout(
             self.attention_weights, **kwargs), values)
@@ -551,18 +551,18 @@ class AdditiveAttention(nn.Module):  #@save
     @nn.compact
     def __call__(self, queries, keys, values, valid_lens, training=False):
         queries, keys = self.W_q(queries), self.W_k(keys)
-        # After dimension expansion, shape of queries: (batch_size, no. of
-        # queries, 1, num_hiddens) and shape of keys: (batch_size, 1, no. of
-        # key-value pairs, num_hiddens). Sum them up with broadcasting
+        # 次元拡張後のクエリの形状: (batch_size, 個数の
+        # queries の形状は (batch_size, 1, num_hiddens)、keys の形状は (batch_size, 1, no. of
+        # key-value対とnum_hiddens。ブロードキャストでそれらを足し合わせる
         features = jnp.expand_dims(queries, axis=2) + jnp.expand_dims(keys, axis=1)
         features = nn.tanh(features)
-        # There is only one output of self.w_v, so we remove the last
-        # one-dimensional entry from the shape. Shape of scores: (batch_size,
-        # no. of queries, no. of key-value pairs)
+        # self.w_v の出力は 1 つしかないので、最後を削除する
+        # 形状からの1次元要素。スコアの形状: (batch_size,
+        # クエリ数，キー・バリューペア数
         scores = self.w_v(features).squeeze(-1)
         attention_weights = masked_softmax(scores, valid_lens)
         dropout_layer = nn.Dropout(self.dropout, deterministic=not training)
-        # Shape of values: (batch_size, no. of key-value pairs, value
+        # 値の形状: (batch_size, キー値ペア数, value
         # dimension)
         return dropout_layer(attention_weights)@values, attention_weights
 ```

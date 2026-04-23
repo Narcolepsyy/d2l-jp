@@ -65,7 +65,7 @@ h, w
 #@tab mxnet
 def display_anchors(fmap_w, fmap_h, s):
     d2l.set_figsize()
-    # Values on the first two dimensions do not affect the output
+    # 最初の2次元の値は出力に影響しない
     fmap = np.zeros((1, 10, fmap_h, fmap_w))
     anchors = npx.multibox_prior(fmap, sizes=s, ratios=[1, 2, 0.5])
     bbox_scale = np.array((w, h, w, h))
@@ -77,7 +77,7 @@ def display_anchors(fmap_w, fmap_h, s):
 #@tab pytorch
 def display_anchors(fmap_w, fmap_h, s):
     d2l.set_figsize()
-    # Values on the first two dimensions do not affect the output
+    # 最初の2次元の値は出力に影響しない
     fmap = d2l.zeros((1, 10, fmap_h, fmap_w))
     anchors = d2l.multibox_prior(fmap, sizes=s, ratios=[1, 2, 0.5])
     bbox_scale = d2l.tensor((w, h, w, h))
