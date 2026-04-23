@@ -26,7 +26,7 @@ AWS アカウントにログインしたら、
 [コンソール](http://console.aws.amazon.com/) を開いて "Amazon SageMaker" を検索し（:numref:`fig_sagemaker` を参照）、
 それをクリックして SageMaker パネルを開く。
 
-![Search for and open the SageMaker panel.](../img/sagemaker.png)
+![SageMakerパネルを検索して開く。](../img/sagemaker.png)
 :width:`300px`
 :label:`fig_sagemaker`
 
@@ -34,7 +34,7 @@ AWS アカウントにログインしたら、
 
 次に、 :numref:`fig_sagemaker-create` に示すようにノートブックインスタンスを作成しよう。
 
-![Create a SageMaker instance.](../img/sagemaker-create.png)
+![SageMakerインスタンスを作成する。](../img/sagemaker-create.png)
 :width:`400px`
 :label:`fig_sagemaker-create`
 
@@ -43,7 +43,7 @@ SageMaker には、計算性能と価格が異なる複数の[インスタンス
 その名前とタイプを指定できる。
 :numref:`fig_sagemaker-create-2` では、`ml.p3.2xlarge` を選択している。1 基の Tesla V100 GPU と 8 コア CPU を備えており、このインスタンスは本書の大部分に対して十分な性能を持っている。
 
-![Choose the instance type.](../img/sagemaker-create-2.png)
+![インスタンスタイプを選択する。](../img/sagemaker-create-2.png)
 :width:`400px`
 :label:`fig_sagemaker-create-2`
 
@@ -59,7 +59,7 @@ SageMaker で実行するための ipynb 形式の本書全体は https://github
 SageMaker で実行するための ipynb 形式の本書全体は https://github.com/d2l-ai/d2l-tensorflow-sagemaker で利用できる。インスタンス作成時に SageMaker がそれをクローンできるよう、この GitHub リポジトリの URL（:numref:`fig_sagemaker-create-3`）を指定できる。
 :end_tab:
 
-![Specify the GitHub repository.](../img/sagemaker-create-3.png)
+![GitHubリポジトリを指定する。](../img/sagemaker-create-3.png)
 :width:`400px`
 :label:`fig_sagemaker-create-3`
 
@@ -74,7 +74,7 @@ SageMaker で実行するための ipynb 形式の本書全体は https://github
 編集・実行できるようにする
 （:numref:`sec_jupyter` の手順と同様である）。
 
-![Open Jupyter on the created SageMaker instance.](../img/sagemaker-open.png)
+![作成したSageMakerインスタンスでJupyterを開く。](../img/sagemaker-open.png)
 :width:`400px`
 :label:`fig_sagemaker-open`
 
@@ -83,7 +83,7 @@ SageMaker で実行するための ipynb 形式の本書全体は https://github
 それ以上課金されないように
 インスタンスを停止することを忘れないこと（:numref:`fig_sagemaker-stop`）。
 
-![Stop a SageMaker instance.](../img/sagemaker-stop.png)
+![SageMakerインスタンスを停止する。](../img/sagemaker-stop.png)
 :width:`300px`
 :label:`fig_sagemaker-stop`
 
@@ -109,7 +109,7 @@ SageMaker インスタンス上でターミナルを開きます（:numref:`fig_
 :end_tab:
 
 
-![Open a terminal on the SageMaker instance.](../img/sagemaker-terminal.png)
+![SageMakerインスタンスでターミナルを開く。](../img/sagemaker-terminal.png)
 :width:`300px`
 :label:`fig_sagemaker-terminal`
 

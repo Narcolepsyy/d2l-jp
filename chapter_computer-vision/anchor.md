@@ -245,7 +245,7 @@ IoU の範囲は 0 から 1 である。
 0 は2つのバウンディングボックスがまったく重なっていないことを意味し、
 1 は2つのバウンディングボックスが等しいことを示す。
 
-![IoU is the ratio of the intersection area to the union area of two bounding boxes.](../img/iou.svg)
+![IoUは2つのバウンディングボックスの積集合の面積と和集合の面積の比率である。](../img/iou.svg)
 :label:`fig_iou`
 
 この節の残りでは、IoU を用いてアンカーボックスと真のバウンディングボックスの類似度、および異なるアンカーボックス同士の類似度を測る。
@@ -340,7 +340,7 @@ def box_iou(boxes1, boxes2):
 最後に、 :numref:`fig_anchor_label`（右）に示すように、行5と列4のすべての要素を破棄し、残りの要素（網掛け部分）の中で最大の $x_{92}$ を見つけ、真のバウンディングボックス $B_2$ をアンカーボックス $A_9$ に割り当てる。
 その後は、残りのアンカーボックス $A_1, A_3, A_4, A_6, A_8$ を走査し、しきい値に従って真のバウンディングボックスを割り当てるかどうかを決めるだけである。
 
-![Assigning ground-truth bounding boxes to anchor boxes.](../img/anchor-label.svg)
+![グラウンドトゥルース・バウンディングボックスをアンカーボックスに割り当てる。](../img/anchor-label.svg)
 :label:`fig_anchor_label`
 
 このアルゴリズムは、次の `assign_anchor_to_bbox` 関数で実装されている。

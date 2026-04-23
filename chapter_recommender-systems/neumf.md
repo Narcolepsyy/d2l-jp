@@ -34,7 +34,7 @@ $$
 
 次の図は NeuMF のモデルアーキテクチャを示している。
 
-![Illustration of the NeuMF model](../img/rec-neumf.svg)
+![NeuMFモデルの図](../img/rec-neumf.svg)
 
 ```{.python .input  n=1}
 #@tab mxnet

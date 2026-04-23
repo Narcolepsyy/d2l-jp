@@ -31,7 +31,7 @@ $\mathcal{K}=\{(u, i) \mid \mathbf{R}_{ui} \textrm{ is known}\}$ に格納され
 
 行列分解モデルの直感的な図を以下に示す。
 
-![Illustration of matrix factorization model](../img/rec-mf.svg)
+![行列分解モデルの図](../img/rec-mf.svg)
 
 この節の残りでは、行列分解の実装を説明し、MovieLens データセットでモデルを学習する。
 

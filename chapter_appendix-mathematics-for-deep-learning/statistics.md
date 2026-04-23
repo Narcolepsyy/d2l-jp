@@ -295,7 +295,7 @@ $$ \textrm{statistical significance }= 1 - \alpha = 1 - P(\textrm{reject } H_0 \
 
 :numref:`fig_statistical_significance` は、2標本仮説検定における観測値と、与えられた正規分布の確率を示している。観測データの例が $95\%$ の閾値の外側にある場合、帰無仮説の下では非常に起こりにくい観測である。したがって、帰無仮説に何か問題がある可能性があり、それを棄却することになる。
 
-![Statistical significance.](../img/statistical-significance.svg)
+![統計的有意性。](../img/statistical-significance.svg)
 :label:`fig_statistical_significance`
 
 

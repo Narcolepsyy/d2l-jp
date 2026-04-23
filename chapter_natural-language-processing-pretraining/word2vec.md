@@ -80,7 +80,7 @@ $$P(\textrm{"the"},\textrm{"man"},\textrm{"his"},\textrm{"son"}\mid\textrm{"love
 
 $$P(\textrm{"the"}\mid\textrm{"loves"})\cdot P(\textrm{"man"}\mid\textrm{"loves"})\cdot P(\textrm{"his"}\mid\textrm{"loves"})\cdot P(\textrm{"son"}\mid\textrm{"loves"}).$$
 
-![The skip-gram model considers the conditional probability of generating the surrounding context words given a center word.](../img/skip-gram.svg)
+![skip-gramモデルは、中心語が与えられた場合に周囲の文脈語を生成する条件付き確率を考慮する。](../img/skip-gram.svg)
 :label:`fig_skip_gram`
 
 skip-gram モデルでは、各単語は条件付き確率を計算するために2つの $d$ 次元ベクトル表現を持つ。
@@ -162,7 +162,7 @@ continuous bag of words モデルは
 
 $$P(\textrm{"loves"}\mid\textrm{"the"},\textrm{"man"},\textrm{"his"},\textrm{"son"}).$$
 
-![The continuous bag of words model considers the conditional probability of generating the center word given its surrounding context words.](../img/cbow.svg)
+![CBOWモデルは、周囲の文脈語が与えられた場合に中心語を生成する条件付き確率を考慮する。](../img/cbow.svg)
 :label:`fig_cbow`
 
 

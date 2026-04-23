@@ -29,7 +29,7 @@ $$
 
 ここで $D \stackrel{\textrm{def}}{=} \{(u, i, j) \mid i \in I^+_u \wedge j \in I \backslash I^+_u \}$ は学習集合であり、$I^+_u$ はユーザー $u$ が好んだアイテム、$I$ は全アイテム、$I \backslash I^+_u$ はユーザーが好んだアイテムを除くその他すべてのアイテムを表す。$\hat{y}_{ui}$ と $\hat{y}_{uj}$ は、それぞれユーザー $u$ に対するアイテム $i$ と $j$ の予測スコアである。事前分布 $p(\Theta)$ は、平均0、分散共分散行列 $\Sigma_\Theta$ をもつ正規分布である。ここでは $\Sigma_\Theta = \lambda_\Theta I$ とする。
 
-![Illustration of Bayesian Personalized Ranking](../img/rec-ranking.svg)
+![ベイズ個人化ランキングの図](../img/rec-ranking.svg)
 基底クラス `mxnet.gluon.loss.Loss` を実装し、`forward` メソッドをオーバーライドして Bayesian personalized ranking loss を構成する。まず、Loss クラスと np モジュールをインポートする。
 
 ```{.python .input  n=5}

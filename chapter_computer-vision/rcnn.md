@@ -29,7 +29,7 @@
 予測する。
 
 
-![The R-CNN model.](../img/r-cnn.svg)
+![R-CNNモデル。](../img/r-cnn.svg)
 :label:`fig_r-cnn`
 
 :numref:`fig_r-cnn` は R-CNN モデルを示している。より具体的には、R-CNN は次の 4 つのステップから構成される。
@@ -66,7 +66,7 @@ CNN の順伝播を
 :cite:`Girshick.2015`。
 
 
-![The fast R-CNN model.](../img/fast-rcnn.svg)
+![fast R-CNNモデル。](../img/fast-rcnn.svg)
 :label:`fig_fast_r-cnn`
 
 :numref:`fig_fast_r-cnn` は fast R-CNN モデルを示している。主な計算は次のとおりです。
@@ -113,7 +113,7 @@ $2\times 2$ の出力を得る。
 8, 9（最大値は 9）、
 および 10 が含まれることに注意しよう。
 
-![A $2\times 2$ region of interest pooling layer.](../img/roi.svg)
+![$2\times 2$の関心領域プーリング層。](../img/roi.svg)
 :label:`fig_roi`
 
 以下では、region of interest pooling 層の計算を示す。CNN で抽出された特徴 `X` の高さと幅がともに 4 で、チャネルが 1 つだけであると仮定する。
@@ -182,7 +182,7 @@ selective search によって
 
 
 
-![The faster R-CNN model.](../img/faster-rcnn.svg)
+![faster R-CNNモデル。](../img/faster-rcnn.svg)
 :label:`fig_faster_r-cnn`
 
 
@@ -228,7 +228,7 @@ region proposal network は
 :cite:`He.Gkioxari.Dollar.ea.2017`。
 
 
-![The mask R-CNN model.](../img/mask-rcnn.svg)
+![mask R-CNNモデル。](../img/mask-rcnn.svg)
 :label:`fig_mask_r-cnn`
 
 :numref:`fig_mask_r-cnn` に示すように、

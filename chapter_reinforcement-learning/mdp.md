@@ -6,7 +6,7 @@
 
 マルコフ決定過程（MDP） :cite:`BellmanMDP` は、システムにさまざまな行動が適用されたときに、そのシステムの状態がどのように変化するかを表すモデルである。MDPは、いくつかの異なる量が組み合わさって構成される。
 
-![A simple gridworld navigation task where the robot not only has to find its way to the goal location (shown as a green house) but also has to avoid trap locations (shown as red cross signs).](../img/mdp.png)
+![ロボットが目的地（緑の家として表示）への経路を見つけるだけでなく、罠（赤いバツ印として表示）を回避しなければならない単純なグリッドワールドナビゲーションタスク。](../img/mdp.png)
 :width:`250px`
 :label:`fig_mdp`
 

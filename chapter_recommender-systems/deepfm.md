@@ -28,7 +28,7 @@ $$
 $$
 
 ここで $\sigma$ はシグモイド関数である。DeepFM のアーキテクチャを以下に示す。
-![Illustration of the DeepFM model](../img/rec-deepfm.svg)
+![DeepFMモデルの図](../img/rec-deepfm.svg)
 
 DeepFM は、深層ニューラルネットワークと FM を組み合わせる唯一の方法ではないことに注意しよう。特徴相互作用の上に非線形層を追加することもできる :cite:`He.Chua.2017`。
 
@@ -104,12 +104,12 @@ d2l.train_ch13(net, train_iter, test_iter, loss, trainer, num_epochs, devices)
 
 FM と比べると、DeepFM はより速く収束し、より良い性能を達成する。
 
-## Summary
+## まとめ
 
 * FM にニューラルネットワークを統合することで、複雑で高次の相互作用をモデル化できるようになる。
 * DeepFM は広告データセットにおいて、元の FM を上回る性能を示す。
 
-## Exercises
+## 演習
 
 * MLP の構造を変えて、モデル性能への影響を確認しよう。
 * データセットを Criteo に変更し、元の FM モデルと比較しよう。
