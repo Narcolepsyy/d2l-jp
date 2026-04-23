@@ -612,6 +612,20 @@ def remove_jquery(html):
     return html
 
 
+
+def fix_src_trailing_spaces(html):
+    """Strip trailing whitespace inside src= and href= attributes.
+
+    The mxtheme layout.html template has a trailing space in its
+    ``sphinx_materialdesign_theme.js`` src attribute.  This produces
+    ``src="...theme.js "`` which causes a 404 and silently breaks the
+    entire MDL layout initialization, rendering the page blank.
+    """
+    html = re.sub(r'src="([^"]*?)\s+"', r'src="\1"', html)
+    html = re.sub(r"src='([^']*?)\s+'", r"src='\1'", html)
+    return html
+
+
 def process_file(filepath):
     """Apply all page speed optimizations to a single HTML file."""
     with open(filepath, "r", encoding="utf-8") as f:
@@ -619,6 +633,7 @@ def process_file(filepath):
 
     original = content
 
+    content = fix_src_trailing_spaces(content)
     content = convert_img_src_to_webp(content)
     content = add_resource_hints(content)
     content = inline_critical_css(content)
