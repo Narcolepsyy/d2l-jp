@@ -135,7 +135,7 @@ def frozen_lake(seed): #@save
     env_info['env'] = env
 
     for (s, others) in env.P.items():
-        # others(s) = {a0: [ (p(s'|s,a0), s', 報酬, 終了),...], a1:[...], ...}
+        # others(s) = {a0: [ (p(s'|s,a0), s', reward, done),...], a1:[...], ...}
 
         for (a, pxrds) in others.items():
             # pxrdsは[(p1,next1,r1,d1),(p2,next2,r2,d2),..]である。
