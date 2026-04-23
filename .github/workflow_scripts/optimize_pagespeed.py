@@ -590,25 +590,13 @@ def preload_lcp_image(html):
 
 
 def remove_jquery(html):
-    """Strip jQuery from pages — the theme JS is self-contained.
+    """DISABLED: jQuery is required by sphinx_materialdesign_theme.js,
+    d2l.js, and _sphinx_javascript_frameworks_compat.js.
 
-    jQuery (32KB gzipped) is loaded by Sphinx but the Material Design
-    theme doesn't depend on it.  The only jQuery usage is Sphinx's own
-    search.html which we keep (it has its own inline $() block that
-    executes after jQuery, and defer preserves order).  For all other
-    pages, removing jQuery saves 32KB transfer + ~100ms eval.
+    Removing it causes 'jQuery is not defined' / '$ is not defined'
+    errors that prevent the MDL layout from initializing, rendering
+    the page completely blank.
     """
-    # Keep jQuery on search page — it uses $.getJSON for search index
-    if 'id="search-results"' in html or 'searchindex.js' in html:
-        return html
-
-    # Remove the jQuery script tag
-    html = re.sub(
-        r'\s*<script[^>]*jquery[^>]*>\s*</script>',
-        '',
-        html,
-        flags=re.IGNORECASE,
-    )
     return html
 
 
