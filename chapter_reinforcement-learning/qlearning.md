@@ -1,7 +1,7 @@
 {.python .input}
 %load_ext d2lbook.tab
 tab.interact_select(["pytorch"])
-#必要なライブラリを指定する("setuptools==66", "wheel==0.38.4", "gym==0.21.0")
+# required_libs("setuptools==66", "wheel==0.38.4", "gym==0.21.0")
 ```
 
 # Q学習

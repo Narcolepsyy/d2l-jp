@@ -1,7 +1,7 @@
 {.python .input}
 %load_ext d2lbook.tab
 tab.interact_select(["pytorch"])
-#gpytorchが必要である
+# required_libs("gpytorch")
 ```
 
 # ガウス過程推論

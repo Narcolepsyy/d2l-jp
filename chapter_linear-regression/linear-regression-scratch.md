@@ -201,7 +201,7 @@ class SGD(d2l.HyperParameters):  #@save
     # Optaxの主要な変換はGradientTransformationである
     # initとupdateという2つのメソッドで定義される。
     # initは状態を初期化し、updateは勾配を変換する。
-    # URL先の内容を取得できないため、翻訳対象のコメント文をそのまま貼り付けてほしい。
+    # https://github.com/deepmind/optax/blob/master/optax/_src/transform.py
     def __init__(self, lr):
         self.save_hyperparameters()
 

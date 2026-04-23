@@ -1,7 +1,7 @@
 {.python .input}
 %load_ext d2lbook.tab
 tab.interact_select(["pytorch"])
-#必要なライブラリを`syne-tune[gpsearchers]==0.3.2`にする
+# required_libs("syne-tune[gpsearchers]==0.3.2")
 ```
 
 # 非同期逐次半減法
