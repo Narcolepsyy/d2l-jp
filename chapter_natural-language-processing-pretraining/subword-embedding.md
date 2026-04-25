@@ -117,7 +117,7 @@ token_freqs
 ```
 
 以下の `get_max_freq_pair` 関数を定義する。
-、入力辞書 `token_freqs` のキーに含まれる単語から、
+これは、入力辞書 `token_freqs` のキーに含まれる単語から、
 単語内で最も頻出する連続シンボルのペアを返す。
 
 ```{.python .input}

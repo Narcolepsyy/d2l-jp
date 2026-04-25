@@ -61,7 +61,7 @@ $$\mathbb{E}_i \nabla f_i(\mathbf{x}) = \frac{1}{n} \sum_{i = 1}^n \nabla f_i(\m
 
 だからである。
 
-、平均的には確率的勾配が勾配のよい推定値であることを意味する。
+これは、平均的には確率的勾配が勾配のよい推定値であることを意味する。
 
 ここでは、平均 0、分散 1 のランダムノイズを勾配に加えて確率的勾配降下法を模擬し、勾配降下法と比較してみる。
 
@@ -213,7 +213,7 @@ $$f(\boldsymbol{\xi}_t, \mathbf{x}^*) \geq f(\boldsymbol{\xi}_t, \mathbf{x}_t) +
 $$\|\mathbf{x}_{t} - \mathbf{x}^*\|^2 - \|\mathbf{x}_{t+1} - \mathbf{x}^*\|^2 \geq 2 \eta_t (f(\boldsymbol{\xi}_t, \mathbf{x}_t) - f(\boldsymbol{\xi}_t, \mathbf{x}^*)) - \eta_t^2 L^2.$$
 :eqlabel:`eqref_sgd-xt-diff`
 
-、現在の損失と最適損失の差が $\eta_t L^2/2$ を上回る限り、進展があることを意味する。この差はゼロに収束するはずなので、学習率 $\eta_t$ も*消失*する必要がある。
+これは、現在の損失と最適損失の差が $\eta_t L^2/2$ を上回る限り、進展があることを意味する。この差はゼロに収束するはずなので、学習率 $\eta_t$ も*消失*する必要がある。
 
 次に、:eqref:`eqref_sgd-xt-diff` の期待値を取る。すると
 

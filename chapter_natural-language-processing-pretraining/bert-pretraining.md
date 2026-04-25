@@ -267,7 +267,7 @@ encoded_text.shape, encoded_text_cls.shape, encoded_text_crane[0][:3]
 "a crane driver came" と "he just left" を考える。**]
 同様に、`encoded_pair[:, 0, :]` は事前学習済み BERT による文対全体の符号化結果である。
 多義語トークン "crane" の最初の 3 要素は、文脈が異なるときには先ほどとは異なることに注意しよう。
-、BERT の表現が文脈依存であることを示している。
+これは、BERT の表現が文脈依存であることを示している。
 
 ```{.python .input}
 #@tab all

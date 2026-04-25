@@ -23,7 +23,7 @@ $$f(x - \eta f'(x)) = f(x) - \eta f'^2(x) + \mathcal{O}(\eta^2 f'^2(x)).$$
 
 $$f(x - \eta f'(x)) \lessapprox f(x).$$
 
-、$x$ を反復更新する際に
+これは、$x$ を反復更新する際に
 
 $$x \leftarrow x - \eta f'(x)$$
 

@@ -381,7 +381,7 @@ Fashion-MNISTのような小規模データセットでは、
 :numref:`sec_resnet` のResNetを上回らないことに
 気づいたかもしれない。
 同様の観察は、ImageNetデータセット（120万枚の画像）でも成り立つ。
-、Transformerには
+これは、Transformerには
 畳み込みにおける有用な帰納バイアス、
 たとえば平行移動不変性や局所性（:numref:`sec_why-conv`）が
 *欠けている* ためである。

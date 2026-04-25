@@ -225,7 +225,7 @@ get_analogy('man', 'woman', 'son', glove_6b50d)
 以下は  
 “capital-country” のアナロジーを完成させる。  
 “beijing”:“china”::“tokyo”:“japan”。  
-、  
+これは、  
 事前学習済み単語ベクトルに意味情報が含まれていることを示している。
 
 ```{.python .input}

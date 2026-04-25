@@ -123,7 +123,7 @@ $\mathbf{R}_t$ と $\mathbf{H}_{t-1}$ の要素ごとの乗算によって
 ## 隠れ状態
 
 最後に、更新ゲート$\mathbf{Z}_t$の効果を組み込む必要がある。
-、新しい隠れ状態$\mathbf{H}_t \in \mathbb{R}^{n \times h}$ が古い状態$\mathbf{H}_{t-1}$にどの程度一致するかと、
+これは、新しい隠れ状態$\mathbf{H}_t \in \mathbb{R}^{n \times h}$ が古い状態$\mathbf{H}_{t-1}$にどの程度一致するかと、
 新しい候補状態$\tilde{\mathbf{H}}_t$にどの程度似るかを決定する。
 更新ゲート$\mathbf{Z}_t$は、この目的のために、
 $\mathbf{H}_{t-1}$と$\tilde{\mathbf{H}}_t$の要素ごとの凸結合を取るだけで用いることができる。

@@ -1,7 +1,7 @@
 # ディープラーニング用語集 (Deep Learning Glossary)
 :label:`chap_glossary`
 
-、Dive into Deep Learning (D2L) で使用される重要なディープラーニングおよび機械学習の概念をまとめた用語集である。
+これは、Dive into Deep Learning (D2L) で使用される重要なディープラーニングおよび機械学習の概念をまとめた用語集である。
 各用語ページには、定義と関連する章へのリンクが含まれている。
 
 ```toc

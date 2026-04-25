@@ -91,7 +91,7 @@ $$(n_\textrm{h}-k_\textrm{h}+p_\textrm{h}+1)\times(n_\textrm{w}-k_\textrm{w}+p_\
 
 となる。
 
-、出力の高さと幅がそれぞれ $p_\textrm{h}$ と $p_\textrm{w}$ だけ増えることを意味する。
+これは、出力の高さと幅がそれぞれ $p_\textrm{h}$ と $p_\textrm{w}$ だけ増えることを意味する。
 
 多くの場合、入力と出力の高さと幅を同じにするために、
 $p_\textrm{h}=k_\textrm{h}-1$ および $p_\textrm{w}=k_\textrm{w}-1$ と設定したくなる。

@@ -170,7 +170,7 @@ $$
 \mathbf{A}^n = \overbrace{\mathbf{A}\cdots \mathbf{A}}^{\textrm{$n$ times}} = \overbrace{(\mathbf{W}\boldsymbol{\Sigma} \mathbf{W}^{-1})\cdots(\mathbf{W}\boldsymbol{\Sigma} \mathbf{W}^{-1})}^{\textrm{$n$ times}} =  \mathbf{W}\overbrace{\boldsymbol{\Sigma}\cdots\boldsymbol{\Sigma}}^{\textrm{$n$ times}}\mathbf{W}^{-1} = \mathbf{W}\boldsymbol{\Sigma}^n \mathbf{W}^{-1}.
 $$
 
-、行列の任意の正のべきについて、
+これは、行列の任意の正のべきについて、
 固有分解では固有値を同じべきに上げるだけでよいことを示している。
 負のべきについても同様に示せるので、
 行列を逆にしたいなら、各固有値を逆数にするだけでよいことになる。

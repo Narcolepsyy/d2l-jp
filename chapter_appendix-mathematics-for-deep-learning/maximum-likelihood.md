@@ -83,7 +83,7 @@ p = theta**9 * (1 - theta)**4.
 d2l.plot(theta, p, 'theta', 'likelihood')
 ```
 
-、期待される $9/13 \approx 0.7\ldots$ の近くで最大値をとる。これが正確にそこなのかを見るには、微積分を使える。最大値では関数の傾きが 0 になることに注意しようう。したがって、導関数が 0 となる $\theta$ の値を見つけ、その中で最も高い確率を与えるものを選べば、最尤推定 :eqref:`eq_max_like` を求められる。計算すると、
+これは、期待される $9/13 \approx 0.7\ldots$ の近くで最大値をとる。これが正確にそこなのかを見るには、微積分を使える。最大値では関数の傾きが 0 になることに注意しようう。したがって、導関数が 0 となる $\theta$ の値を見つけ、その中で最も高い確率を与えるものを選べば、最尤推定 :eqref:`eq_max_like` を求められる。計算すると、
 
 $$
 \begin{aligned}
@@ -198,7 +198,7 @@ $$
 P(X\mid\boldsymbol{\theta}) = p(x_1\mid\boldsymbol{\theta})\cdot p(x_2\mid\boldsymbol{\theta})\cdots p(x_n\mid\boldsymbol{\theta}).
 $$
 
-、導関数を求めるために直接積の微分法則を適用すると、
+これは、導関数を求めるために直接積の微分法則を適用すると、
 
 $$
 \begin{aligned}

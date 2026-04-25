@@ -15,7 +15,7 @@ tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
 特異な構造は含んでいない。
 このデータセットは :citet:`De-Cock.2011` によって収集されたもので、
 2006--2010年のアイオワ州エイムズの住宅価格を扱っている。
-、Harrison と Rubinfeld (1978) による有名な [Boston housing dataset](https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.names)
+これは、Harrison と Rubinfeld (1978) による有名な [Boston housing dataset](https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.names)
 よりもかなり大きく、データ例の数も特徴量の数も多くなっている。
 
 
@@ -206,7 +206,7 @@ $E[\frac{x-\mu}{\sigma}] = \frac{\mu - \mu}{\sigma} = 0$ であり、
 [**次に離散値を扱う。**]
 これには "MSZoning" のような特徴量が含まれる。
 [**これらは one-hot エンコーディングで置き換える**]
-、先に多クラスラベルをベクトルに変換したときと同じ方法である
+これは、先に多クラスラベルをベクトルに変換したときと同じ方法である
 (:numref:`subsec_classification-problem` を参照)。
 たとえば、"MSZoning" は "RL" と "RM" の値を取る。
 "MSZoning" 特徴量を削除すると、
@@ -305,7 +305,7 @@ def get_dataloader(self, train):
 ここではそれを活用して、モデル設計の選択やハイパーパラメータの調整を行う。
 まず、$K$-分割交差検証手順におけるデータの
 $i^\textrm{th}$ 分割を返す関数が必要である。
-、$i^\textrm{th}$ 区間を検証データとして切り出し、
+これは、$i^\textrm{th}$ 区間を検証データとして切り出し、
 残りを訓練データとして返す。
 データの扱いとして最も効率的な方法ではないことに注意されたい。
 データセットがかなり大きい場合には、

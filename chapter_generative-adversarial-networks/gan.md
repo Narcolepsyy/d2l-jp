@@ -33,7 +33,7 @@ $$ \max_G \{ - (1-y) \log(1-D(G(\mathbf z))) \} = \max_G \{ - \log(1-D(G(\mathbf
 
 $$ \min_G \{ - y \log(D(G(\mathbf z))) \} = \min_G \{ - \log(D(G(\mathbf z))) \}, $$
 
-、$\mathbf x'=G(\mathbf z)$ を識別器に入力する一方で、ラベル $y=1$ を与えるのと同じである。
+これは、$\mathbf x'=G(\mathbf z)$ を識別器に入力する一方で、ラベル $y=1$ を与えるのと同じである。
 
 
 要するに、$D$ と $G$ は次の包括的な目的関数を用いた「ミニマックス」ゲームを行っている。
