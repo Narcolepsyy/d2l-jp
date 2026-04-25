@@ -325,8 +325,3 @@ for sentence in ['Go .', 'Wow !', "I'm OK .", 'I won !']:
 1. ニューラル機械翻訳以外に、seq2seq の他の用途を思いつけますか。
 1. この節の例で入力系列がもっと長かったらどうなりますか。
 1. 損失関数で `SequenceMask` を使わないと、何が起こるでしょうか。
-
-
-## [Discussions](https://discuss.mxnet.io/t/4357)
-
-![](../img/qr_seq2seq.svg)\n

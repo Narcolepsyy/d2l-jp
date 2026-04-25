@@ -224,8 +224,3 @@ visualization(token_pairs, glove_6b50d)
 
 1. `TokenEmbedding('wiki.en')` を使って fastText の結果を確認しなさい。
 1. 辞書が非常に大きい場合、類義語や類推の探索をどのように高速化できますか？
-
-
-## [Discussions](https://discuss.mxnet.io/t/2390)
-
-![](../img/qr_similarity-analogy.svg)\n
