@@ -1,3 +1,8 @@
+{.python .input}
+%load_ext d2lbook.tab
+tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
+```
+
 # 長短期記憶（LSTM）とは
 :label:`sec_lstm`
 
@@ -29,11 +34,6 @@ LSTM モデルは、記憶セルを通じて中間的な種類の記憶を導入
 記憶セルは、より単純なノードから
 特定の接続パターンで構成された複合ユニットであり、
 乗算ノードが新たに組み込まれている。
-
-```{.python .input}
-%load_ext d2lbook.tab
-tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
-```
 
 ```{.python .input}
 %%tab mxnet

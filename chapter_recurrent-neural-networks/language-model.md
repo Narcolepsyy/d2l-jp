@@ -1,3 +1,8 @@
+{.python .input}
+%load_ext d2lbook.tab
+tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
+```
+
 # 言語モデル
 :label:`sec_language-model`
 
@@ -18,11 +23,6 @@ $$P(x_1, x_2, \ldots, x_T),$$
 言語モデルを用いれば、後者の変換を突飛なものとして棄却することで容易に解決できる。
 同様に、文書要約アルゴリズムでは、
 「dog bites man」が「man bites dog」よりはるかに頻出であることや、「I want to eat grandma」がかなり不穏な表現である一方、「I want to eat, grandma」ははるかに無害であることを知っていると有益である。
-
-```{.python .input  n=1}
-%load_ext d2lbook.tab
-tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
-```
 
 ```{.python .input  n=2}
 %%tab mxnet

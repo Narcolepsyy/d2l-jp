@@ -1,3 +1,8 @@
+{.python .input}
+%load_ext d2lbook.tab
+tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
+```
+
 # 生テキストを系列データに変換する
 :label:`sec_text-sequence`
 
@@ -15,11 +20,6 @@
 1. 文字列をトークン（例：単語や文字）に分割する。
 1. 各語彙要素を数値インデックスに対応付けるための語彙辞書を構築する。
 1. テキストを数値インデックスの系列に変換する。
-
-```{.python .input  n=1}
-%load_ext d2lbook.tab
-tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
-```
 
 ```{.python .input  n=2}
 %%tab mxnet

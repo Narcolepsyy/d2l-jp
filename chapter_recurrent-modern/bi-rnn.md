@@ -1,3 +1,8 @@
+{.python .input}
+%load_ext d2lbook.tab
+tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
+```
+
 # 双方向リカレントニューラルネットワーク
 :label:`sec_bi_rnn`
 
@@ -64,11 +69,6 @@ $$\mathbf{O}_t = \mathbf{H}_t \mathbf{W}_{\textrm{hq}} + \mathbf{b}_\textrm{q}.$
 厳密には、2つの方向で異なる数の隠れユニットを持たせることもできるが、
 実際にはこの設計が選ばれることはほとんどない。
 それでは、双方向 RNN の簡単な実装を示す。
-
-```{.python .input}
-%load_ext d2lbook.tab
-tab.interact_select('mxnet', 'pytorch', 'tensorflow', 'jax')
-```
 
 ```{.python .input}
 %%tab mxnet

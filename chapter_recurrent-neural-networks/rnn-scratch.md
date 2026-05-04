@@ -1,3 +1,8 @@
+{.python .input}
+%load_ext d2lbook.tab
+tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
+```
+
 # ゼロからの再帰ニューラルネットワークの実装
 :label:`sec_rnn-scratch`
 
@@ -9,11 +14,6 @@
 :numref:`sec_text-sequence` で概説した
 データ処理手順に従う。
 まずデータセットを読み込む。
-
-```{.python .input}
-%load_ext d2lbook.tab
-tab.interact_select('mxnet', 'pytorch', 'tensorflow', 'jax')
-```
 
 ```{.python .input  n=2}
 %%tab mxnet

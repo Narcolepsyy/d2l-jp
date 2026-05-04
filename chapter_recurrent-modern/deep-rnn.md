@@ -1,3 +1,8 @@
+{.python .input}
+%load_ext d2lbook.tab
+tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
+```
+
 # 深層再帰ニューラルネットワーク
 
 :label:`sec_deep_rnn`
@@ -40,11 +45,6 @@ $$\mathbf{O}_t = \mathbf{H}_t^{(L)} \mathbf{W}_{\textrm{hq}} + \mathbf{b}_\textr
 MLPと同様に、隠れ層の数 $L$ と隠れユニット数 $h$ は調整可能なハイパーパラメータである。  
 一般的なRNN層の幅（$h$）は $(64, 2056)$ の範囲にあり、一般的な深さ（$L$）は $(1, 8)$ の範囲にある。  
 さらに、:eqref:`eq_deep_rnn_H` の隠れ状態計算をLSTMやGRUのものに置き換えることで、深いゲート付きRNNを容易に得ることができる。
-
-```{.python .input}
-%load_ext d2lbook.tab
-tab.interact_select('mxnet', 'pytorch', 'tensorflow', 'jax')
-```
 
 ```{.python .input}
 %%tab mxnet

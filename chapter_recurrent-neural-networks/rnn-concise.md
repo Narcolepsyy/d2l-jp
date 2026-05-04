@@ -1,3 +1,8 @@
+{.python .input}
+%load_ext d2lbook.tab
+tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
+```
+
 # リカレントニューラルネットワークの簡潔な実装
 :label:`sec_rnn-concise`
 
@@ -16,11 +21,6 @@
 同じ言語モデルをより効率的に実装する方法を示す。
 まずはこれまでと同様に、
 *タイムマシン* データセットを読み込む。
-
-```{.python .input}
-%load_ext d2lbook.tab
-tab.interact_select('mxnet', 'pytorch', 'tensorflow', 'jax')
-```
 
 ```{.python .input}
 %%tab mxnet

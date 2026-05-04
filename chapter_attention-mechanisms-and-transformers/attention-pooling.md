@@ -1,3 +1,8 @@
+{.python .input}
+%load_ext d2lbook.tab
+tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
+```
+
 # 類似度によるアテンションプーリング
 
 :label:`sec_attention-pooling`
@@ -17,11 +22,6 @@ $$
 $$f(\mathbf{q}) = \sum_i \mathbf{v}_i \frac{\alpha(\mathbf{q}, \mathbf{k}_i)}{\sum_j \alpha(\mathbf{q}, \mathbf{k}_j)}.$$
 
 特徴量とラベルの観測 $(\mathbf{x}_i, y_i)$ を用いる（スカラー）回帰の場合、$\mathbf{v}_i = y_i$ はスカラー、$\mathbf{k}_i = \mathbf{x}_i$ はベクトルであり、クエリ $\mathbf{q}$ は $f$ を評価すべき新しい位置を表す。（多クラス）分類の場合は、$y_i$ の one-hot エンコーディングを用いて $\mathbf{v}_i$ を得る。この推定量の便利な性質の一つは、学習を必要としないことである。さらに、データ量の増加に応じてカーネルを適切に狭めれば、この手法は整合的であり :cite:`mack1982weak`、すなわち統計的に最適な解のいずれかに収束する。まずはいくつかのカーネルを見てみよう。
-
-```{.python .input}
-%load_ext d2lbook.tab
-tab.interact_select('mxnet', 'pytorch', 'tensorflow', 'jax')
-```
 
 ```{.python .input}
 %%tab mxnet

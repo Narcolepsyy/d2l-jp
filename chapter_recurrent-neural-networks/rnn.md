@@ -1,3 +1,8 @@
+{.python .input}
+%load_ext d2lbook.tab
+tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
+```
+
 # 再帰型ニューラルネットワーク
 :label:`sec_rnn`
 
@@ -28,11 +33,6 @@ $$h_t = f(x_{t}, h_{t-1}).$$
 過去の時刻のデータを見て初めて計算できる。
 
 *再帰型ニューラルネットワーク*（RNN）は、隠れ状態を持つニューラルネットワークである。RNN モデルを導入する前に、まず :numref:`sec_mlp` で導入した MLP モデルを振り返ろう。
-
-```{.python .input}
-%load_ext d2lbook.tab
-tab.interact_select('mxnet', 'pytorch', 'tensorflow', 'jax')
-```
 
 ```{.python .input}
 %%tab mxnet

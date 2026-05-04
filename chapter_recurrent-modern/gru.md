@@ -1,3 +1,8 @@
+{.python .input}
+%load_ext d2lbook.tab
+tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
+```
+
 # ゲート付き再帰ユニット（GRU）とは
 :label:`sec_gru`
 
@@ -10,11 +15,6 @@
 LSTMのメモリセルを簡潔にした版を提供し、
 しばしば同等の性能を達成しつつ、
 計算がより高速であるという利点を持つ :cite:`Chung.Gulcehre.Cho.ea.2014`。
-
-```{.python .input  n=5}
-%load_ext d2lbook.tab
-tab.interact_select(['mxnet', 'pytorch', 'tensorflow', 'jax'])
-```
 
 ```{.python .input  n=6}
 %%tab mxnet
