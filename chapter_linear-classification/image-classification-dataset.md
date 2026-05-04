@@ -226,19 +226,38 @@ def show_images(imgs, num_rows, num_cols, titles=None, scale=1.5):  #@save
 人間は異常を見つけるのが非常に得意なので、可視化は実験設計におけるミスや誤りに対する追加の安全策として役立ちる。以下は、学習データセットの最初のいくつかのデータ例について、[**画像とそれに対応するラベル**]（テキスト表示）である。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet
 @d2l.add_to_class(FashionMNIST)  #@save
 def visualize(self, batch, nrows=1, ncols=8, labels=[]):
     X, y = batch
     if not labels:
         labels = self.text_labels(y)
-    if tab.selected('mxnet', 'pytorch'):
-        d2l.show_images(X.squeeze(1), nrows, ncols, titles=labels)
-    if tab.selected('tensorflow'):
-        d2l.show_images(tf.squeeze(X), nrows, ncols, titles=labels)
-    if tab.selected('jax'):
-        d2l.show_images(jnp.squeeze(X), nrows, ncols, titles=labels)
+    d2l.show_images(X.squeeze(1), nrows, ncols, titles=labels)
+batch = next(iter(data.val_dataloader()))
+data.visualize(batch)
+```
 
+```{.python .input}
+%%tab jax
+@d2l.add_to_class(FashionMNIST)  #@save
+def visualize(self, batch, nrows=1, ncols=8, labels=[]):
+    X, y = batch
+    if not labels:
+        labels = self.text_labels(y)
+    d2l.show_images(jnp.squeeze(X), nrows, ncols, titles=labels)
+
+batch = next(iter(data.val_dataloader()))
+data.visualize(batch)
+```
+
+```{.python .input}
+%%tab tensorflow
+@d2l.add_to_class(FashionMNIST)  #@save
+def visualize(self, batch, nrows=1, ncols=8, labels=[]):
+    X, y = batch
+    if not labels:
+        labels = self.text_labels(y)
+    d2l.show_images(tf.squeeze(X), nrows, ncols, titles=labels)
 batch = next(iter(data.val_dataloader()))
 data.visualize(batch)
 ```

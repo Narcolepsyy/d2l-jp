@@ -1155,39 +1155,56 @@ TransformerエンコーダとTransformerデコーダの両方が
 Transformerモデルを学習する。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet
 data = d2l.MTFraEng(batch_size=128)
 num_hiddens, num_blks, dropout = 256, 2, 0.2
 ffn_num_hiddens, num_heads = 64, 4
-if tab.selected('tensorflow'):
-    key_size, query_size, value_size = 256, 256, 256
-    norm_shape = [2]
-if tab.selected('pytorch', 'mxnet', 'jax'):
+encoder = TransformerEncoder(
+    len(data.src_vocab), num_hiddens, ffn_num_hiddens, num_heads,
+    num_blks, dropout)
+decoder = TransformerDecoder(
+    len(data.tgt_vocab), num_hiddens, ffn_num_hiddens, num_heads,
+    num_blks, dropout)
+model = d2l.Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
+                    lr=0.001)
+trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1, num_gpus=1)
+trainer.fit(model, data)
+```
+
+```{.python .input}
+%%tab jax
+data = d2l.MTFraEng(batch_size=128)
+num_hiddens, num_blks, dropout = 256, 2, 0.2
+ffn_num_hiddens, num_heads = 64, 4
+encoder = TransformerEncoder(
+    len(data.src_vocab), num_hiddens, ffn_num_hiddens, num_heads,
+    num_blks, dropout)
+decoder = TransformerDecoder(
+    len(data.tgt_vocab), num_hiddens, ffn_num_hiddens, num_heads,
+    num_blks, dropout)
+model = d2l.Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
+                    lr=0.001, training=True)
+trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1, num_gpus=1)
+trainer.fit(model, data)
+```
+
+```{.python .input}
+%%tab tensorflow
+data = d2l.MTFraEng(batch_size=128)
+num_hiddens, num_blks, dropout = 256, 2, 0.2
+ffn_num_hiddens, num_heads = 64, 4
+key_size, query_size, value_size = 256, 256, 256
+norm_shape = [2]
+with d2l.try_gpu():
     encoder = TransformerEncoder(
-        len(data.src_vocab), num_hiddens, ffn_num_hiddens, num_heads,
-        num_blks, dropout)
+        len(data.src_vocab), key_size, query_size, value_size, num_hiddens,
+        norm_shape, ffn_num_hiddens, num_heads, num_blks, dropout)
     decoder = TransformerDecoder(
-        len(data.tgt_vocab), num_hiddens, ffn_num_hiddens, num_heads,
-        num_blks, dropout)
-if tab.selected('mxnet', 'pytorch'):
+        len(data.tgt_vocab), key_size, query_size, value_size, num_hiddens,
+        norm_shape, ffn_num_hiddens, num_heads, num_blks, dropout)
     model = d2l.Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
                         lr=0.001)
-    trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1, num_gpus=1)
-if tab.selected('jax'):
-    model = d2l.Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
-                        lr=0.001, training=True)
-    trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1, num_gpus=1)
-if tab.selected('tensorflow'):
-    with d2l.try_gpu():
-        encoder = TransformerEncoder(
-            len(data.src_vocab), key_size, query_size, value_size, num_hiddens,
-            norm_shape, ffn_num_hiddens, num_heads, num_blks, dropout)
-        decoder = TransformerDecoder(
-            len(data.tgt_vocab), key_size, query_size, value_size, num_hiddens,
-            norm_shape, ffn_num_hiddens, num_heads, num_blks, dropout)
-        model = d2l.Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
-                            lr=0.001)
-    trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1)
+trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1)
 trainer.fit(model, data)
 ```
 
@@ -1196,15 +1213,27 @@ Transformerモデルを用いて
 いくつかの英語文を[**フランス語に翻訳**]し、そのBLEUスコアを計算する。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, tensorflow
 engs = ['go .', 'i lost .', 'he\'s calm .', 'i\'m home .']
 fras = ['va !', 'j\'ai perdu .', 'il est calme .', 'je suis chez moi .']
-if tab.selected('pytorch', 'mxnet', 'tensorflow'):
-    preds, _ = model.predict_step(
-        data.build(engs, fras), d2l.try_gpu(), data.num_steps)
-if tab.selected('jax'):
-    preds, _ = model.predict_step(
-        trainer.state.params, data.build(engs, fras), data.num_steps)
+preds, _ = model.predict_step(
+    data.build(engs, fras), d2l.try_gpu(), data.num_steps)
+for en, fr, p in zip(engs, fras, preds):
+    translation = []
+    for token in data.tgt_vocab.to_tokens(p):
+        if token == '<eos>':
+            break
+        translation.append(token)
+    print(f'{en} => {translation}, bleu,'
+          f'{d2l.bleu(" ".join(translation), fr, k=2):.3f}')
+```
+
+```{.python .input}
+%%tab jax
+engs = ['go .', 'i lost .', 'he\'s calm .', 'i\'m home .']
+fras = ['va !', 'j\'ai perdu .', 'il est calme .', 'je suis chez moi .']
+preds, _ = model.predict_step(
+    trainer.state.params, data.build(engs, fras), data.num_steps)
 for en, fr, p in zip(engs, fras, preds):
     translation = []
     for token in data.tgt_vocab.to_tokens(p):

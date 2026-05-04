@@ -474,13 +474,17 @@ $$p(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{1}{2 \sigma^2} (x - \m
 以下では [**正規分布を計算する関数を定義する**]。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, tensorflow
 def normal(x, mu, sigma):
     p = 1 / math.sqrt(2 * math.pi * sigma**2)
-    if tab.selected('jax'):
-        return p * jnp.exp(-0.5 * (x - mu)**2 / sigma**2)
-    if tab.selected('pytorch', 'mxnet', 'tensorflow'):
-        return p * np.exp(-0.5 * (x - mu)**2 / sigma**2)
+    return p * np.exp(-0.5 * (x - mu)**2 / sigma**2)
+```
+
+```{.python .input}
+%%tab jax
+def normal(x, mu, sigma):
+    p = 1 / math.sqrt(2 * math.pi * sigma**2)
+    return p * jnp.exp(-0.5 * (x - mu)**2 / sigma**2)
 ```
 
 これで [**正規分布を可視化**] できる。

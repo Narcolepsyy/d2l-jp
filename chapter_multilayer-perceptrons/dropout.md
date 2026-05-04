@@ -182,15 +182,32 @@ def dropout_layer(X, dropout, key=d2l.get_key()):
 入力 `X` をそれぞれ確率 0、0.5、1 のドロップアウト操作に通する。
 
 ```{.python .input}
-%%tab all
-if tab.selected('mxnet'):
-    X = np.arange(16).reshape(2, 8)
-if tab.selected('pytorch'):
-    X = torch.arange(16, dtype = torch.float32).reshape((2, 8))
-if tab.selected('tensorflow'):
-    X = tf.reshape(tf.range(16, dtype=tf.float32), (2, 8))
-if tab.selected('jax'):
-    X = jnp.arange(16, dtype=jnp.float32).reshape(2, 8)
+%%tab pytorch
+X = torch.arange(16, dtype = torch.float32).reshape((2, 8))
+print('dropout_p = 0:', dropout_layer(X, 0))
+print('dropout_p = 0.5:', dropout_layer(X, 0.5))
+print('dropout_p = 1:', dropout_layer(X, 1))
+```
+
+```{.python .input}
+%%tab mxnet
+X = np.arange(16).reshape(2, 8)
+print('dropout_p = 0:', dropout_layer(X, 0))
+print('dropout_p = 0.5:', dropout_layer(X, 0.5))
+print('dropout_p = 1:', dropout_layer(X, 1))
+```
+
+```{.python .input}
+%%tab jax
+X = jnp.arange(16, dtype=jnp.float32).reshape(2, 8)
+print('dropout_p = 0:', dropout_layer(X, 0))
+print('dropout_p = 0.5:', dropout_layer(X, 0.5))
+print('dropout_p = 1:', dropout_layer(X, 1))
+```
+
+```{.python .input}
+%%tab tensorflow
+X = tf.reshape(tf.range(16, dtype=tf.float32), (2, 8))
 print('dropout_p = 0:', dropout_layer(X, 0))
 print('dropout_p = 0.5:', dropout_layer(X, 0.5))
 print('dropout_p = 1:', dropout_layer(X, 1))

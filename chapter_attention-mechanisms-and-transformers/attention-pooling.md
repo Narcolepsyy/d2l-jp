@@ -65,7 +65,7 @@ from flax import linen as nn
 この節で定義するすべてのカーネル $\alpha(\mathbf{k}, \mathbf{q})$ は *平行移動および回転に不変* である。つまり、$\mathbf{k}$ と $\mathbf{q}$ を同じように平行移動・回転させても、$\alpha$ の値は変わらない。簡単のため、ここではスカラー引数 $k, q \in \mathbb{R}$ を取り、キー $k = 0$ を原点として選ぶ。すると次のようになる。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch
 # いくつかのカーネルを定義する
 def gaussian(x):
     return d2l.exp(-x**2 / 2)
@@ -76,32 +76,81 @@ def boxcar(x):
 def constant(x):
     return 1.0 + 0 * x
  
-if tab.selected('pytorch'):
-    def epanechikov(x):
-        return torch.max(1 - d2l.abs(x), torch.zeros_like(x))
-if tab.selected('mxnet'):
-    def epanechikov(x):
-        return np.maximum(1 - d2l.abs(x), 0)
-if tab.selected('tensorflow'):
-    def epanechikov(x):
-        return tf.maximum(1 - d2l.abs(x), 0)
-if tab.selected('jax'):
-    def epanechikov(x):
-        return jnp.maximum(1 - d2l.abs(x), 0)
+def epanechikov(x):
+    return torch.max(1 - d2l.abs(x), torch.zeros_like(x))
 ```
 
 ```{.python .input}
-%%tab all
+%%tab mxnet
+# いくつかのカーネルを定義する
+def gaussian(x):
+    return d2l.exp(-x**2 / 2)
+
+def boxcar(x):
+    return d2l.abs(x) < 1.0
+
+def constant(x):
+    return 1.0 + 0 * x
+ 
+def epanechikov(x):
+    return np.maximum(1 - d2l.abs(x), 0)
+```
+
+```{.python .input}
+%%tab jax
+# いくつかのカーネルを定義する
+def gaussian(x):
+    return d2l.exp(-x**2 / 2)
+
+def boxcar(x):
+    return d2l.abs(x) < 1.0
+
+def constant(x):
+    return 1.0 + 0 * x
+ 
+def epanechikov(x):
+    return jnp.maximum(1 - d2l.abs(x), 0)
+```
+
+```{.python .input}
+%%tab tensorflow
+# いくつかのカーネルを定義する
+def gaussian(x):
+    return d2l.exp(-x**2 / 2)
+
+def boxcar(x):
+    return d2l.abs(x) < 1.0
+
+def constant(x):
+    return 1.0 + 0 * x
+ 
+def epanechikov(x):
+    return tf.maximum(1 - d2l.abs(x), 0)
+```
+
+```{.python .input}
+%%tab pytorch, mxnet, tensorflow
 fig, axes = d2l.plt.subplots(1, 4, sharey=True, figsize=(12, 3))
 
 kernels = (gaussian, boxcar, constant, epanechikov)
 names = ('Gaussian', 'Boxcar', 'Constant', 'Epanechikov')
 x = d2l.arange(-2.5, 2.5, 0.1)
 for kernel, name, ax in zip(kernels, names, axes):
-    if tab.selected('pytorch', 'mxnet', 'tensorflow'):
-        ax.plot(d2l.numpy(x), d2l.numpy(kernel(x)))
-    if tab.selected('jax'):
-        ax.plot(x, kernel(x))
+    ax.plot(d2l.numpy(x), d2l.numpy(kernel(x)))
+    ax.set_xlabel(name)
+
+d2l.plt.show()
+```
+
+```{.python .input}
+%%tab jax
+fig, axes = d2l.plt.subplots(1, 4, sharey=True, figsize=(12, 3))
+
+kernels = (gaussian, boxcar, constant, epanechikov)
+names = ('Gaussian', 'Boxcar', 'Constant', 'Epanechikov')
+x = d2l.arange(-2.5, 2.5, 0.1)
+for kernel, name, ax in zip(kernels, names, axes):
+    ax.plot(x, kernel(x))
     ax.set_xlabel(name)
 
 d2l.plt.show()
@@ -116,23 +165,49 @@ $$y_i = 2\sin(x_i) + x_i + \epsilon,$$
 ここで $\epsilon$ は平均 0、分散 1 の正規分布から生成される。40 個の訓練例をサンプルする。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch
 def f(x):
     return 2 * d2l.sin(x) + x
 
 n = 40
-if tab.selected('pytorch'):
-    x_train, _ = torch.sort(d2l.rand(n) * 5)
-    y_train = f(x_train) + d2l.randn(n)
-if tab.selected('mxnet'):
-    x_train = np.sort(d2l.rand(n) * 5, axis=None)
-    y_train = f(x_train) + d2l.randn(n)
-if tab.selected('tensorflow'):
-    x_train = tf.sort(d2l.rand((n,1)) * 5, 0)
-    y_train = f(x_train) + d2l.normal((n, 1))
-if tab.selected('jax'):
-    x_train = jnp.sort(jax.random.uniform(d2l.get_key(), (n,)) * 5)
-    y_train = f(x_train) + jax.random.normal(d2l.get_key(), (n,))
+x_train, _ = torch.sort(d2l.rand(n) * 5)
+y_train = f(x_train) + d2l.randn(n)
+x_val = d2l.arange(0, 5, 0.1)
+y_val = f(x_val)
+```
+
+```{.python .input}
+%%tab mxnet
+def f(x):
+    return 2 * d2l.sin(x) + x
+
+n = 40
+x_train = np.sort(d2l.rand(n) * 5, axis=None)
+y_train = f(x_train) + d2l.randn(n)
+x_val = d2l.arange(0, 5, 0.1)
+y_val = f(x_val)
+```
+
+```{.python .input}
+%%tab jax
+def f(x):
+    return 2 * d2l.sin(x) + x
+
+n = 40
+x_train = jnp.sort(jax.random.uniform(d2l.get_key(), (n,)) * 5)
+y_train = f(x_train) + jax.random.normal(d2l.get_key(), (n,))
+x_val = d2l.arange(0, 5, 0.1)
+y_val = f(x_val)
+```
+
+```{.python .input}
+%%tab tensorflow
+def f(x):
+    return 2 * d2l.sin(x) + x
+
+n = 40
+x_train = tf.sort(d2l.rand((n,1)) * 5, 0)
+y_train = f(x_train) + d2l.normal((n, 1))
 x_val = d2l.arange(0, 5, 0.1)
 y_val = f(x_val)
 ```
@@ -144,37 +219,70 @@ y_val = f(x_val)
 :eqref:`eq_attention_pooling` のアテンションプーリングを思い出してほしい。各検証特徴をクエリとし、各訓練特徴--ラベルの組をキー--値のペアとみなす。その結果、正規化された相対カーネル重み（以下の `attention_w`）が *アテンション重み* になる。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, jax
 def nadaraya_watson(x_train, y_train, x_val, kernel):
     dists = d2l.reshape(x_train, (-1, 1)) - d2l.reshape(x_val, (1, -1))
     # 各列/行はそれぞれのクエリ/キーに対応する
     k = d2l.astype(kernel(dists), d2l.float32)
     # 各クエリに対するキー方向の正規化
     attention_w = k / d2l.reduce_sum(k, 0)
-    if tab.selected('pytorch'):
-        y_hat = y_train@attention_w
-    if tab.selected('mxnet'):
-        y_hat = np.dot(y_train, attention_w)
-    if tab.selected('tensorflow'):
-        y_hat = d2l.transpose(d2l.transpose(y_train)@attention_w)
-    if tab.selected('jax'):
-        y_hat = y_train@attention_w
+    y_hat = y_train@attention_w
+    return y_hat, attention_w
+```
+
+```{.python .input}
+%%tab mxnet
+def nadaraya_watson(x_train, y_train, x_val, kernel):
+    dists = d2l.reshape(x_train, (-1, 1)) - d2l.reshape(x_val, (1, -1))
+    # 各列/行はそれぞれのクエリ/キーに対応する
+    k = d2l.astype(kernel(dists), d2l.float32)
+    # 各クエリに対するキー方向の正規化
+    attention_w = k / d2l.reduce_sum(k, 0)
+    y_hat = np.dot(y_train, attention_w)
+    return y_hat, attention_w
+```
+
+```{.python .input}
+%%tab tensorflow
+def nadaraya_watson(x_train, y_train, x_val, kernel):
+    dists = d2l.reshape(x_train, (-1, 1)) - d2l.reshape(x_val, (1, -1))
+    # 各列/行はそれぞれのクエリ/キーに対応する
+    k = d2l.astype(kernel(dists), d2l.float32)
+    # 各クエリに対するキー方向の正規化
+    attention_w = k / d2l.reduce_sum(k, 0)
+    y_hat = d2l.transpose(d2l.transpose(y_train)@attention_w)
     return y_hat, attention_w
 ```
 
 異なるカーネルがどのような推定を生み出すか見てみよう。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, tensorflow
 def plot(x_train, y_train, x_val, y_val, kernels, names, attention=False):
     fig, axes = d2l.plt.subplots(1, 4, sharey=True, figsize=(12, 3))
     for kernel, name, ax in zip(kernels, names, axes):
         y_hat, attention_w = nadaraya_watson(x_train, y_train, x_val, kernel)
         if attention:
-            if tab.selected('pytorch', 'mxnet', 'tensorflow'):
-                pcm = ax.imshow(d2l.numpy(attention_w), cmap='Reds')
-            if tab.selected('jax'):
-                pcm = ax.imshow(attention_w, cmap='Reds')
+            pcm = ax.imshow(d2l.numpy(attention_w), cmap='Reds')
+        else:
+            ax.plot(x_val, y_hat)
+            ax.plot(x_val, y_val, 'm--')
+            ax.plot(x_train, y_train, 'o', alpha=0.5);
+        ax.set_xlabel(name)
+        if not attention:
+            ax.legend(['y_hat', 'y'])
+    if attention:
+        fig.colorbar(pcm, ax=axes, shrink=0.7)
+```
+
+```{.python .input}
+%%tab jax
+def plot(x_train, y_train, x_val, y_val, kernels, names, attention=False):
+    fig, axes = d2l.plt.subplots(1, 4, sharey=True, figsize=(12, 3))
+    for kernel, name, ax in zip(kernels, names, axes):
+        y_hat, attention_w = nadaraya_watson(x_train, y_train, x_val, kernel)
+        if attention:
+            pcm = ax.imshow(attention_w, cmap='Reds')
         else:
             ax.plot(x_val, y_hat)
             ax.plot(x_val, y_val, 'm--')

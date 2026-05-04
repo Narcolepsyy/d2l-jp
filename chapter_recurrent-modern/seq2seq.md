@@ -298,15 +298,22 @@ class Seq2SeqEncoder(d2l.Encoder):  #@save
 （時系列長、バッチサイズ、隠れユニット数）の形状を持つテンソルになる。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, tensorflow
 vocab_size, embed_size, num_hiddens, num_layers = 10, 8, 16, 2
 batch_size, num_steps = 4, 9
 encoder = Seq2SeqEncoder(vocab_size, embed_size, num_hiddens, num_layers)
 X = d2l.zeros((batch_size, num_steps))
-if tab.selected('pytorch', 'mxnet', 'tensorflow'):
-    enc_outputs, enc_state = encoder(X)
-if tab.selected('jax'):
-    (enc_outputs, enc_state), _ = encoder.init_with_output(d2l.get_key(), X)
+enc_outputs, enc_state = encoder(X)
+d2l.check_shape(enc_outputs, (num_steps, batch_size, num_hiddens))
+```
+
+```{.python .input}
+%%tab jax
+vocab_size, embed_size, num_hiddens, num_layers = 10, 8, 16, 2
+batch_size, num_steps = 4, 9
+encoder = Seq2SeqEncoder(vocab_size, embed_size, num_hiddens, num_layers)
+X = d2l.zeros((batch_size, num_steps))
+(enc_outputs, enc_state), _ = encoder.init_with_output(d2l.get_key(), X)
 
 d2l.check_shape(enc_outputs, (num_steps, batch_size, num_hiddens))
 ```
@@ -316,12 +323,14 @@ d2l.check_shape(enc_outputs, (num_steps, batch_size, num_hiddens))
 （隠れ層数、バッチサイズ、隠れユニット数）である。
 
 ```{.python .input}
-%%tab all
-if tab.selected('mxnet', 'pytorch', 'jax'):
-    d2l.check_shape(enc_state, (num_layers, batch_size, num_hiddens))
-if tab.selected('tensorflow'):
-    d2l.check_len(enc_state, num_layers)
-    d2l.check_shape(enc_state[0], (batch_size, num_hiddens))
+%%tab pytorch, mxnet, jax
+d2l.check_shape(enc_state, (num_layers, batch_size, num_hiddens))
+```
+
+```{.python .input}
+%%tab tensorflow
+d2l.check_len(enc_state, num_layers)
+d2l.check_shape(enc_state[0], (batch_size, num_hiddens))
 ```
 
 ## [**デコーダ**]
@@ -513,23 +522,34 @@ class Seq2SeqDecoder(d2l.Decoder):
 予測されたトークン分布が格納される。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet
 decoder = Seq2SeqDecoder(vocab_size, embed_size, num_hiddens, num_layers)
-if tab.selected('mxnet', 'pytorch', 'tensorflow'):
-    state = decoder.init_state(encoder(X))
-    dec_outputs, state = decoder(X, state)
-if tab.selected('jax'):
-    state = decoder.init_state(encoder.init_with_output(d2l.get_key(), X)[0])
-    (dec_outputs, state), _ = decoder.init_with_output(d2l.get_key(), X,
-                                                       state)
+state = decoder.init_state(encoder(X))
+dec_outputs, state = decoder(X, state)
+d2l.check_shape(dec_outputs, (batch_size, num_steps, vocab_size))
+d2l.check_shape(state[1], (num_layers, batch_size, num_hiddens))
+```
+
+```{.python .input}
+%%tab jax
+decoder = Seq2SeqDecoder(vocab_size, embed_size, num_hiddens, num_layers)
+state = decoder.init_state(encoder.init_with_output(d2l.get_key(), X)[0])
+(dec_outputs, state), _ = decoder.init_with_output(d2l.get_key(), X,
+                                                   state)
 
 
 d2l.check_shape(dec_outputs, (batch_size, num_steps, vocab_size))
-if tab.selected('mxnet', 'pytorch', 'jax'):
-    d2l.check_shape(state[1], (num_layers, batch_size, num_hiddens))
-if tab.selected('tensorflow'):
-    d2l.check_len(state[1], num_layers)
-    d2l.check_shape(state[1][0], (batch_size, num_hiddens))
+d2l.check_shape(state[1], (num_layers, batch_size, num_hiddens))
+```
+
+```{.python .input}
+%%tab tensorflow
+decoder = Seq2SeqDecoder(vocab_size, embed_size, num_hiddens, num_layers)
+state = decoder.init_state(encoder(X))
+dec_outputs, state = decoder(X, state)
+d2l.check_shape(dec_outputs, (batch_size, num_steps, vocab_size))
+d2l.check_len(state[1], num_layers)
+d2l.check_shape(state[1][0], (batch_size, num_hiddens))
 ```
 
 上のRNNエンコーダ--デコーダモデルの各層は、
@@ -636,31 +656,45 @@ def loss(self, params, X, Y, state, averaged=False):
 [**RNNエンコーダ--デコーダモデルを作成して学習**]できる。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet
 data = d2l.MTFraEng(batch_size=128) 
 embed_size, num_hiddens, num_layers, dropout = 256, 256, 2, 0.2
-if tab.selected('mxnet', 'pytorch', 'jax'):
+encoder = Seq2SeqEncoder(
+    len(data.src_vocab), embed_size, num_hiddens, num_layers, dropout)
+decoder = Seq2SeqDecoder(
+    len(data.tgt_vocab), embed_size, num_hiddens, num_layers, dropout)
+model = Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
+                lr=0.005)
+trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1, num_gpus=1)
+trainer.fit(model, data)
+```
+
+```{.python .input}
+%%tab jax
+data = d2l.MTFraEng(batch_size=128) 
+embed_size, num_hiddens, num_layers, dropout = 256, 256, 2, 0.2
+encoder = Seq2SeqEncoder(
+    len(data.src_vocab), embed_size, num_hiddens, num_layers, dropout)
+decoder = Seq2SeqDecoder(
+    len(data.tgt_vocab), embed_size, num_hiddens, num_layers, dropout)
+model = Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
+                lr=0.005, training=True)
+trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1, num_gpus=1)
+trainer.fit(model, data)
+```
+
+```{.python .input}
+%%tab tensorflow
+data = d2l.MTFraEng(batch_size=128) 
+embed_size, num_hiddens, num_layers, dropout = 256, 256, 2, 0.2
+with d2l.try_gpu():
     encoder = Seq2SeqEncoder(
         len(data.src_vocab), embed_size, num_hiddens, num_layers, dropout)
     decoder = Seq2SeqDecoder(
         len(data.tgt_vocab), embed_size, num_hiddens, num_layers, dropout)
-if tab.selected('mxnet', 'pytorch'):
     model = Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
                     lr=0.005)
-if tab.selected('jax'):
-    model = Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
-                    lr=0.005, training=True)
-if tab.selected('mxnet', 'pytorch', 'jax'):
-    trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1, num_gpus=1)
-if tab.selected('tensorflow'):
-    with d2l.try_gpu():
-        encoder = Seq2SeqEncoder(
-            len(data.src_vocab), embed_size, num_hiddens, num_layers, dropout)
-        decoder = Seq2SeqDecoder(
-            len(data.tgt_vocab), embed_size, num_hiddens, num_layers, dropout)
-        model = Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
-                        lr=0.005)
-    trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1)
+trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1)
 trainer.fit(model, data)
 ```
 
@@ -823,15 +857,27 @@ def bleu(pred_seq, label_seq, k):  #@save
 その結果のBLEUを計算する。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, tensorflow
 engs = ['go .', 'i lost .', 'he\'s calm .', 'i\'m home .']
 fras = ['va !', 'j\'ai perdu .', 'il est calme .', 'je suis chez moi .']
-if tab.selected('pytorch', 'mxnet', 'tensorflow'):
-    preds, _ = model.predict_step(
-        data.build(engs, fras), d2l.try_gpu(), data.num_steps)
-if tab.selected('jax'):
-    preds, _ = model.predict_step(trainer.state.params, data.build(engs, fras),
-                                  data.num_steps)
+preds, _ = model.predict_step(
+    data.build(engs, fras), d2l.try_gpu(), data.num_steps)
+for en, fr, p in zip(engs, fras, preds):
+    translation = []
+    for token in data.tgt_vocab.to_tokens(p):
+        if token == '<eos>':
+            break
+        translation.append(token)        
+    print(f'{en} => {translation}, bleu,'
+          f'{bleu(" ".join(translation), fr, k=2):.3f}')
+```
+
+```{.python .input}
+%%tab jax
+engs = ['go .', 'i lost .', 'he\'s calm .', 'i\'m home .']
+fras = ['va !', 'j\'ai perdu .', 'il est calme .', 'je suis chez moi .']
+preds, _ = model.predict_step(trainer.state.params, data.build(engs, fras),
+                              data.num_steps)
 for en, fr, p in zip(engs, fras, preds):
     translation = []
     for token in data.tgt_vocab.to_tokens(p):

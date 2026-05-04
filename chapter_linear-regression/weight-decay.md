@@ -222,20 +222,45 @@ $\ell_2$ 正則化が他の最適化アルゴリズムでは重み減衰と等�
 過学習の影響を顕著にできる。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet
 class Data(d2l.DataModule):
     def __init__(self, num_train, num_val, num_inputs, batch_size):
         self.save_hyperparameters()                
         n = num_train + num_val 
-        if tab.selected('mxnet') or tab.selected('pytorch'):
-            self.X = d2l.randn(n, num_inputs)
-            noise = d2l.randn(n, 1) * 0.01
-        if tab.selected('tensorflow'):
-            self.X = d2l.normal((n, num_inputs))
-            noise = d2l.normal((n, 1)) * 0.01
-        if tab.selected('jax'):
-            self.X = jax.random.normal(jax.random.PRNGKey(0), (n, num_inputs))
-            noise = jax.random.normal(jax.random.PRNGKey(0), (n, 1)) * 0.01
+        self.X = d2l.randn(n, num_inputs)
+        noise = d2l.randn(n, 1) * 0.01
+        w, b = d2l.ones((num_inputs, 1)) * 0.01, 0.05
+        self.y = d2l.matmul(self.X, w) + b + noise
+
+    def get_dataloader(self, train):
+        i = slice(0, self.num_train) if train else slice(self.num_train, None)
+        return self.get_tensorloader([self.X, self.y], train, i)
+```
+
+```{.python .input}
+%%tab jax
+class Data(d2l.DataModule):
+    def __init__(self, num_train, num_val, num_inputs, batch_size):
+        self.save_hyperparameters()                
+        n = num_train + num_val 
+        self.X = jax.random.normal(jax.random.PRNGKey(0), (n, num_inputs))
+        noise = jax.random.normal(jax.random.PRNGKey(0), (n, 1)) * 0.01
+        w, b = d2l.ones((num_inputs, 1)) * 0.01, 0.05
+        self.y = d2l.matmul(self.X, w) + b + noise
+
+    def get_dataloader(self, train):
+        i = slice(0, self.num_train) if train else slice(self.num_train, None)
+        return self.get_tensorloader([self.X, self.y], train, i)
+```
+
+```{.python .input}
+%%tab tensorflow
+class Data(d2l.DataModule):
+    def __init__(self, num_train, num_val, num_inputs, batch_size):
+        self.save_hyperparameters()                
+        n = num_train + num_val 
+        self.X = d2l.normal((n, num_inputs))
+        noise = d2l.normal((n, 1)) * 0.01
         w, b = d2l.ones((num_inputs, 1)) * 0.01, 0.05
         self.y = d2l.matmul(self.X, w) + b + noise
 
@@ -293,7 +318,7 @@ class WeightDecayScratch(d2l.LinearRegressionScratch):
 次のコードは、20例の訓練セットでモデルを学習し、100例の検証セットで評価する。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, tensorflow
 data = Data(num_train=20, num_val=100, num_inputs=200, batch_size=5)
 trainer = d2l.Trainer(max_epochs=10)
 
@@ -301,11 +326,20 @@ def train_scratch(lambd):
     model = WeightDecayScratch(num_inputs=200, lambd=lambd, lr=0.01)
     model.board.yscale='log'
     trainer.fit(model, data)
-    if tab.selected('pytorch', 'mxnet', 'tensorflow'):
-        print('L2 norm of w:', float(l2_penalty(model.w)))
-    if tab.selected('jax'):
-        print('L2 norm of w:',
-              float(l2_penalty(trainer.state.params['w'])))
+    print('L2 norm of w:', float(l2_penalty(model.w)))
+```
+
+```{.python .input}
+%%tab jax
+data = Data(num_train=20, num_val=100, num_inputs=200, batch_size=5)
+trainer = d2l.Trainer(max_epochs=10)
+
+def train_scratch(lambd):    
+    model = WeightDecayScratch(num_inputs=200, lambd=lambd, lr=0.01)
+    model.board.yscale='log'
+    trainer.fit(model, data)
+    print('L2 norm of w:',
+          float(l2_penalty(trainer.state.params['w'])))
 ```
 
 ### [**正則化なしでの学習**]
@@ -437,15 +471,21 @@ class WeightDecay(d2l.LinearRegression):
 これらの利点はさらに顕著になる。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, tensorflow
 model = WeightDecay(wd=3, lr=0.01)
 model.board.yscale='log'
 trainer.fit(model, data)
 
-if tab.selected('jax'):
-    print('L2 norm of w:', float(l2_penalty(model.get_w_b(trainer.state)[0])))
-if tab.selected('pytorch', 'mxnet', 'tensorflow'):
-    print('L2 norm of w:', float(l2_penalty(model.get_w_b()[0])))
+print('L2 norm of w:', float(l2_penalty(model.get_w_b()[0])))
+```
+
+```{.python .input}
+%%tab jax
+model = WeightDecay(wd=3, lr=0.01)
+model.board.yscale='log'
+trainer.fit(model, data)
+
+print('L2 norm of w:', float(l2_penalty(model.get_w_b(trainer.state)[0])))
 ```
 
 ここまでで、単純な線形関数を構成するものについて

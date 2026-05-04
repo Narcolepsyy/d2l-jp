@@ -274,17 +274,21 @@ def forward(self, inputs, H=None):
 :numref:`sec_rnn-scratch` とまったく同じである。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, jax
 data = d2l.TimeMachine(batch_size=1024, num_steps=32)
-if tab.selected('mxnet', 'pytorch', 'jax'):
+gru = GRUScratch(num_inputs=len(data.vocab), num_hiddens=32)
+model = d2l.RNNLMScratch(gru, vocab_size=len(data.vocab), lr=4)
+trainer = d2l.Trainer(max_epochs=50, gradient_clip_val=1, num_gpus=1)
+trainer.fit(model, data)
+```
+
+```{.python .input}
+%%tab tensorflow
+data = d2l.TimeMachine(batch_size=1024, num_steps=32)
+with d2l.try_gpu():
     gru = GRUScratch(num_inputs=len(data.vocab), num_hiddens=32)
     model = d2l.RNNLMScratch(gru, vocab_size=len(data.vocab), lr=4)
-    trainer = d2l.Trainer(max_epochs=50, gradient_clip_val=1, num_gpus=1)
-if tab.selected('tensorflow'):
-    with d2l.try_gpu():
-        gru = GRUScratch(num_inputs=len(data.vocab), num_hiddens=32)
-        model = d2l.RNNLMScratch(gru, vocab_size=len(data.vocab), lr=4)
-    trainer = d2l.Trainer(max_epochs=50, gradient_clip_val=1)
+trainer = d2l.Trainer(max_epochs=50, gradient_clip_val=1)
 trainer.fit(model, data)
 ```
 
@@ -330,16 +334,24 @@ class GRU(d2l.RNN):
 このコードは、Pythonではなくコンパイル済みオペレータを使用するため、学習時に大幅に高速である。
 
 ```{.python .input}
-%%tab all
-if tab.selected('mxnet', 'pytorch', 'tensorflow'):
-    gru = GRU(num_inputs=len(data.vocab), num_hiddens=32)
-if tab.selected('jax'):
-    gru = GRU(num_hiddens=32)
-if tab.selected('mxnet', 'pytorch', 'jax'):
+%%tab pytorch, mxnet
+gru = GRU(num_inputs=len(data.vocab), num_hiddens=32)
+model = d2l.RNNLM(gru, vocab_size=len(data.vocab), lr=4)
+trainer.fit(model, data)
+```
+
+```{.python .input}
+%%tab jax
+gru = GRU(num_hiddens=32)
+model = d2l.RNNLM(gru, vocab_size=len(data.vocab), lr=4)
+trainer.fit(model, data)
+```
+
+```{.python .input}
+%%tab tensorflow
+gru = GRU(num_inputs=len(data.vocab), num_hiddens=32)
+with d2l.try_gpu():
     model = d2l.RNNLM(gru, vocab_size=len(data.vocab), lr=4)
-if tab.selected('tensorflow'):
-    with d2l.try_gpu():
-        model = d2l.RNNLM(gru, vocab_size=len(data.vocab), lr=4)
 trainer.fit(model, data)
 ```
 

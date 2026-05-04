@@ -299,12 +299,16 @@ trainer.fit(model, data)
 モデルは[**いくつかの画像を分類する準備ができた。**]
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, tensorflow
 X, y = next(iter(data.val_dataloader()))
-if tab.selected('pytorch', 'mxnet', 'tensorflow'):
-    preds = d2l.argmax(model(X), axis=1)
-if tab.selected('jax'):
-    preds = d2l.argmax(model.apply({'params': trainer.state.params}, X), axis=1)
+preds = d2l.argmax(model(X), axis=1)
+preds.shape
+```
+
+```{.python .input}
+%%tab jax
+X, y = next(iter(data.val_dataloader()))
+preds = d2l.argmax(model.apply({'params': trainer.state.params}, X), axis=1)
 preds.shape
 ```
 

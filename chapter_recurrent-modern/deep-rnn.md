@@ -133,19 +133,23 @@ def forward(self, inputs, Hs=None):
 簡単のため、層数は2に設定する。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, jax
 data = d2l.TimeMachine(batch_size=1024, num_steps=32)
-if tab.selected('mxnet', 'pytorch', 'jax'):
+rnn_block = StackedRNNScratch(num_inputs=len(data.vocab),
+                              num_hiddens=32, num_layers=2)
+model = d2l.RNNLMScratch(rnn_block, vocab_size=len(data.vocab), lr=2)
+trainer = d2l.Trainer(max_epochs=100, gradient_clip_val=1, num_gpus=1)
+trainer.fit(model, data)
+```
+
+```{.python .input}
+%%tab tensorflow
+data = d2l.TimeMachine(batch_size=1024, num_steps=32)
+with d2l.try_gpu():
     rnn_block = StackedRNNScratch(num_inputs=len(data.vocab),
-                                  num_hiddens=32, num_layers=2)
+                              num_hiddens=32, num_layers=2)
     model = d2l.RNNLMScratch(rnn_block, vocab_size=len(data.vocab), lr=2)
-    trainer = d2l.Trainer(max_epochs=100, gradient_clip_val=1, num_gpus=1)
-if tab.selected('tensorflow'):
-    with d2l.try_gpu():
-        rnn_block = StackedRNNScratch(num_inputs=len(data.vocab),
-                                  num_hiddens=32, num_layers=2)
-        model = d2l.RNNLMScratch(rnn_block, vocab_size=len(data.vocab), lr=2)
-    trainer = d2l.Trainer(max_epochs=100, gradient_clip_val=1)
+trainer = d2l.Trainer(max_epochs=100, gradient_clip_val=1)
 trainer.fit(model, data)
 ```
 

@@ -342,16 +342,28 @@ class Module(d2l.nn_Module, d2l.HyperParameters):  #@save
 `DataModule` クラスはデータのための基底クラスである。かなり頻繁に、`__init__` メソッドはデータの準備に使われる。必要ならダウンロードや前処理も含まれる。`train_dataloader` は学習データセット用のデータローダーを返す。データローダーは、使われるたびにデータバッチを1つ返す（Pythonの）ジェネレータである。このバッチは `Module` の `training_step` メソッドに渡され、損失を計算する。検証データセット用のローダーを返す `val_dataloader` も任意で用意できる。こちらも同様に動作するが、`Module` の `validation_step` メソッドに渡すデータバッチを返す。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet
 class DataModule(d2l.HyperParameters):  #@save
     """The base class of data."""
-    if tab.selected('mxnet', 'pytorch'):
-        def __init__(self, root='../data', num_workers=4):
-            self.save_hyperparameters()
+    def __init__(self, root='../data', num_workers=4):
+        self.save_hyperparameters()
 
-    if tab.selected('tensorflow', 'jax'):
-        def __init__(self, root='../data'):
-            self.save_hyperparameters()
+    def get_dataloader(self, train):
+        raise NotImplementedError
+
+    def train_dataloader(self):
+        return self.get_dataloader(train=True)
+
+    def val_dataloader(self):
+        return self.get_dataloader(train=False)
+```
+
+```{.python .input}
+%%tab jax, tensorflow
+class DataModule(d2l.HyperParameters):  #@save
+    """The base class of data."""
+    def __init__(self, root='../data'):
+        self.save_hyperparameters()
 
     def get_dataloader(self, train):
         raise NotImplementedError
@@ -375,7 +387,7 @@ class DataModule(d2l.HyperParameters):  #@save
 :end_tab:
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, tensorflow
 class Trainer(d2l.HyperParameters):  #@save
     """The base class for training models with data."""
     def __init__(self, max_epochs, num_gpus=0, gradient_clip_val=0):
@@ -394,57 +406,79 @@ class Trainer(d2l.HyperParameters):  #@save
         model.board.xlim = [0, self.max_epochs]
         self.model = model
 
-    if tab.selected('pytorch', 'mxnet', 'tensorflow'):
-        def fit(self, model, data):
-            self.prepare_data(data)
-            self.prepare_model(model)
-            self.optim = model.configure_optimizers()
-            self.epoch = 0
-            self.train_batch_idx = 0
-            self.val_batch_idx = 0
-            for self.epoch in range(self.max_epochs):
-                self.fit_epoch()
+    def fit(self, model, data):
+        self.prepare_data(data)
+        self.prepare_model(model)
+        self.optim = model.configure_optimizers()
+        self.epoch = 0
+        self.train_batch_idx = 0
+        self.val_batch_idx = 0
+        for self.epoch in range(self.max_epochs):
+            self.fit_epoch()
 
-    if tab.selected('jax'):
-        def fit(self, model, data, key=None):
-            self.prepare_data(data)
-            self.prepare_model(model)
-            self.optim = model.configure_optimizers()
+    def fit_epoch(self):
+        raise NotImplementedError
+```
 
-            if key is None:
-                root_key = d2l.get_key()
-            else:
-                root_key = key
-            params_key, dropout_key = jax.random.split(root_key)
-            key = {'params': params_key, 'dropout': dropout_key}
+```{.python .input}
+%%tab jax
+class Trainer(d2l.HyperParameters):  #@save
+    """The base class for training models with data."""
+    def __init__(self, max_epochs, num_gpus=0, gradient_clip_val=0):
+        self.save_hyperparameters()
+        assert num_gpus == 0, 'No GPU support yet'
 
-            dummy_input = next(iter(self.train_dataloader))[:-1]
-            variables = model.apply_init(dummy_input, key=key)
-            params = variables['params']
+    def prepare_data(self, data):
+        self.train_dataloader = data.train_dataloader()
+        self.val_dataloader = data.val_dataloader()
+        self.num_train_batches = len(self.train_dataloader)
+        self.num_val_batches = (len(self.val_dataloader)
+                                if self.val_dataloader is not None else 0)
 
-            if 'batch_stats' in variables.keys():
-                # ここでは batch_stats は後で使用される（例: バッチ正規化）
-                batch_stats = variables['batch_stats']
-            else:
-                batch_stats = {}
+    def prepare_model(self, model):
+        model.trainer = self
+        model.board.xlim = [0, self.max_epochs]
+        self.model = model
 
-            # Flaxは単一の状態オブジェクトTrainStateの内部でoptaxを用いる。
-            # dropoutとバッチでさらに議論する
-            # 正規化の節
-            class TrainState(train_state.TrainState):
-                batch_stats: Any
-                dropout_rng: jax.random.PRNGKeyArray
+    def fit(self, model, data, key=None):
+        self.prepare_data(data)
+        self.prepare_model(model)
+        self.optim = model.configure_optimizers()
 
-            self.state = TrainState.create(apply_fn=model.apply,
-                                           params=params,
-                                           batch_stats=batch_stats,
-                                           dropout_rng=dropout_key,
-                                           tx=model.configure_optimizers())
-            self.epoch = 0
-            self.train_batch_idx = 0
-            self.val_batch_idx = 0
-            for self.epoch in range(self.max_epochs):
-                self.fit_epoch()
+        if key is None:
+            root_key = d2l.get_key()
+        else:
+            root_key = key
+        params_key, dropout_key = jax.random.split(root_key)
+        key = {'params': params_key, 'dropout': dropout_key}
+
+        dummy_input = next(iter(self.train_dataloader))[:-1]
+        variables = model.apply_init(dummy_input, key=key)
+        params = variables['params']
+
+        if 'batch_stats' in variables.keys():
+            # ここでは batch_stats は後で使用される（例: バッチ正規化）
+            batch_stats = variables['batch_stats']
+        else:
+            batch_stats = {}
+
+        # Flaxは単一の状態オブジェクトTrainStateの内部でoptaxを用いる。
+        # dropoutとバッチでさらに議論する
+        # 正規化の節
+        class TrainState(train_state.TrainState):
+            batch_stats: Any
+            dropout_rng: jax.random.PRNGKeyArray
+
+        self.state = TrainState.create(apply_fn=model.apply,
+                                       params=params,
+                                       batch_stats=batch_stats,
+                                       dropout_rng=dropout_key,
+                                       tx=model.configure_optimizers())
+        self.epoch = 0
+        self.train_batch_idx = 0
+        self.val_batch_idx = 0
+        for self.epoch in range(self.max_epochs):
+            self.fit_epoch()
 
     def fit_epoch(self):
         raise NotImplementedError

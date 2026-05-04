@@ -379,14 +379,21 @@ Kaggle への結果アップロードが簡単になる。
 次のコードは `submission.csv` というファイルを生成する。
 
 ```{.python .input}
-%%tab all
-if tab.selected('pytorch', 'mxnet', 'tensorflow'):
-    preds = [model(d2l.tensor(data.val.values.astype(float), dtype=d2l.float32))
-             for model in models]
-if tab.selected('jax'):
-    preds = [model.apply({'params': trainer.state.params},
-             d2l.tensor(data.val.values.astype(float), dtype=d2l.float32))
-             for model in models]
+%%tab pytorch, mxnet, tensorflow
+preds = [model(d2l.tensor(data.val.values.astype(float), dtype=d2l.float32))
+         for model in models]
+# 対数スケールでの予測値の指数化
+ensemble_preds = d2l.reduce_mean(d2l.exp(d2l.concat(preds, 1)), 1)
+submission = pd.DataFrame({'Id':data.raw_val.Id,
+                           'SalePrice':d2l.numpy(ensemble_preds)})
+submission.to_csv('submission.csv', index=False)
+```
+
+```{.python .input}
+%%tab jax
+preds = [model.apply({'params': trainer.state.params},
+         d2l.tensor(data.val.values.astype(float), dtype=d2l.float32))
+         for model in models]
 # 対数スケールでの予測値の指数化
 ensemble_preds = d2l.reduce_mean(d2l.exp(d2l.concat(preds, 1)), 1)
 submission = pd.DataFrame({'Id':data.raw_val.Id,

@@ -69,7 +69,7 @@ import tensorflow_datasets as tfds
 `batch_size` は後で決定する。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet
 class SyntheticRegressionData(d2l.DataModule):  #@save
     """線形回帰のための合成データ。"""
     def __init__(self, w, b, noise=0.01, num_train=1000, num_val=1000, 
@@ -77,17 +77,38 @@ class SyntheticRegressionData(d2l.DataModule):  #@save
         super().__init__()
         self.save_hyperparameters()
         n = num_train + num_val
-        if tab.selected('pytorch') or tab.selected('mxnet'):                
-            self.X = d2l.randn(n, len(w))
-            noise = d2l.randn(n, 1) * noise
-        if tab.selected('tensorflow'):
-            self.X = tf.random.normal((n, w.shape[0]))
-            noise = tf.random.normal((n, 1)) * noise
-        if tab.selected('jax'):
-            key = jax.random.PRNGKey(0)
-            key1, key2 = jax.random.split(key)
-            self.X = jax.random.normal(key1, (n, w.shape[0]))
-            noise = jax.random.normal(key2, (n, 1)) * noise
+        self.X = d2l.randn(n, len(w))
+        noise = d2l.randn(n, 1) * noise
+        self.y = d2l.matmul(self.X, d2l.reshape(w, (-1, 1))) + b + noise
+```
+
+```{.python .input}
+%%tab jax
+class SyntheticRegressionData(d2l.DataModule):  #@save
+    """線形回帰のための合成データ。"""
+    def __init__(self, w, b, noise=0.01, num_train=1000, num_val=1000, 
+                 batch_size=32):
+        super().__init__()
+        self.save_hyperparameters()
+        n = num_train + num_val
+        key = jax.random.PRNGKey(0)
+        key1, key2 = jax.random.split(key)
+        self.X = jax.random.normal(key1, (n, w.shape[0]))
+        noise = jax.random.normal(key2, (n, 1)) * noise
+        self.y = d2l.matmul(self.X, d2l.reshape(w, (-1, 1))) + b + noise
+```
+
+```{.python .input}
+%%tab tensorflow
+class SyntheticRegressionData(d2l.DataModule):  #@save
+    """線形回帰のための合成データ。"""
+    def __init__(self, w, b, noise=0.01, num_train=1000, num_val=1000, 
+                 batch_size=32):
+        super().__init__()
+        self.save_hyperparameters()
+        n = num_train + num_val
+        self.X = tf.random.normal((n, w.shape[0]))
+        noise = tf.random.normal((n, 1)) * noise
         self.y = d2l.matmul(self.X, d2l.reshape(w, (-1, 1))) + b + noise
 ```
 
@@ -120,7 +141,7 @@ print('features:', data.X[0],'\nlabel:', data.y[0])
 後者では、あらかじめ定めた順序でデータを読み出せることがデバッグ上重要になる場合がある。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, jax
 @d2l.add_to_class(SyntheticRegressionData)
 def get_dataloader(self, train):
     if train:
@@ -130,12 +151,23 @@ def get_dataloader(self, train):
     else:
         indices = list(range(self.num_train, self.num_train+self.num_val))
     for i in range(0, len(indices), self.batch_size):
-        if tab.selected('mxnet', 'pytorch', 'jax'):
-            batch_indices = d2l.tensor(indices[i: i+self.batch_size])
-            yield self.X[batch_indices], self.y[batch_indices]
-        if tab.selected('tensorflow'):
-            j = tf.constant(indices[i : i+self.batch_size])
-            yield tf.gather(self.X, j), tf.gather(self.y, j)
+        batch_indices = d2l.tensor(indices[i: i+self.batch_size])
+        yield self.X[batch_indices], self.y[batch_indices]
+```
+
+```{.python .input}
+%%tab tensorflow
+@d2l.add_to_class(SyntheticRegressionData)
+def get_dataloader(self, train):
+    if train:
+        indices = list(range(0, self.num_train))
+        # 例はランダムな順序で読み込まれる
+        random.shuffle(indices)
+    else:
+        indices = list(range(self.num_train, self.num_train+self.num_val))
+    for i in range(0, len(indices), self.batch_size):
+        j = tf.constant(indices[i : i+self.batch_size])
+        yield tf.gather(self.X, j), tf.gather(self.y, j)
 ```
 
 直感をつかむために、最初のミニバッチのデータを見てみよう。
@@ -178,30 +210,46 @@ JAX は、デバイス加速と関数型変換を備えた NumPy 風 API を中�
 :end_tab:
 
 ```{.python .input}
-%%tab all
+%%tab pytorch
 @d2l.add_to_class(d2l.DataModule)  #@save
 def get_tensorloader(self, tensors, train, indices=slice(0, None)):
     tensors = tuple(a[indices] for a in tensors)
-    if tab.selected('mxnet'):
-        dataset = gluon.data.ArrayDataset(*tensors)
-        return gluon.data.DataLoader(dataset, self.batch_size,
-                                     shuffle=train)
-    if tab.selected('pytorch'):
-        dataset = torch.utils.data.TensorDataset(*tensors)
-        return torch.utils.data.DataLoader(dataset, self.batch_size,
-                                           shuffle=train)
-    if tab.selected('jax'):
-        # Tensorflow DatasetsとDataloaderを使用する。JAXやFlaxは提供しない
-        # データ読み込み機能はあるか
-        shuffle_buffer = tensors[0].shape[0] if train else 1
-        return tfds.as_numpy(
-            tf.data.Dataset.from_tensor_slices(tensors).shuffle(
-                buffer_size=shuffle_buffer).batch(self.batch_size))
+    dataset = torch.utils.data.TensorDataset(*tensors)
+    return torch.utils.data.DataLoader(dataset, self.batch_size,
+                                       shuffle=train)
+```
 
-    if tab.selected('tensorflow'):
-        shuffle_buffer = tensors[0].shape[0] if train else 1
-        return tf.data.Dataset.from_tensor_slices(tensors).shuffle(
-            buffer_size=shuffle_buffer).batch(self.batch_size)
+```{.python .input}
+%%tab mxnet
+@d2l.add_to_class(d2l.DataModule)  #@save
+def get_tensorloader(self, tensors, train, indices=slice(0, None)):
+    tensors = tuple(a[indices] for a in tensors)
+    dataset = gluon.data.ArrayDataset(*tensors)
+    return gluon.data.DataLoader(dataset, self.batch_size,
+                                 shuffle=train)
+```
+
+```{.python .input}
+%%tab jax
+@d2l.add_to_class(d2l.DataModule)  #@save
+def get_tensorloader(self, tensors, train, indices=slice(0, None)):
+    tensors = tuple(a[indices] for a in tensors)
+    # Tensorflow DatasetsとDataloaderを使用する。JAXやFlaxは提供しない
+    # データ読み込み機能はあるか
+    shuffle_buffer = tensors[0].shape[0] if train else 1
+    return tfds.as_numpy(
+        tf.data.Dataset.from_tensor_slices(tensors).shuffle(
+            buffer_size=shuffle_buffer).batch(self.batch_size))
+```
+
+```{.python .input}
+%%tab tensorflow
+@d2l.add_to_class(d2l.DataModule)  #@save
+def get_tensorloader(self, tensors, train, indices=slice(0, None)):
+    tensors = tuple(a[indices] for a in tensors)
+    shuffle_buffer = tensors[0].shape[0] if train else 1
+    return tf.data.Dataset.from_tensor_slices(tensors).shuffle(
+        buffer_size=shuffle_buffer).batch(self.batch_size)
 ```
 
 ```{.python .input}

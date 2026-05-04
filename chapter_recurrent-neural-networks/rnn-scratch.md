@@ -333,18 +333,35 @@ jax.nn.one_hot(jnp.array([0, 2]), 5)
 （たとえば、上の `forward` メソッドのように）。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch
 @d2l.add_to_class(RNNLMScratch)  #@save
 def one_hot(self, X):    
     # Output shape: (num_steps, batch_size, vocab_size)    
-    if tab.selected('mxnet'):
-        return npx.one_hot(X.T, self.vocab_size)
-    if tab.selected('pytorch'):
-        return F.one_hot(X.T, self.vocab_size).type(torch.float32)
-    if tab.selected('tensorflow'):
-        return tf.one_hot(tf.transpose(X), self.vocab_size)
-    if tab.selected('jax'):
-        return jax.nn.one_hot(X.T, self.vocab_size)
+    return F.one_hot(X.T, self.vocab_size).type(torch.float32)
+```
+
+```{.python .input}
+%%tab mxnet
+@d2l.add_to_class(RNNLMScratch)  #@save
+def one_hot(self, X):    
+    # Output shape: (num_steps, batch_size, vocab_size)    
+    return npx.one_hot(X.T, self.vocab_size)
+```
+
+```{.python .input}
+%%tab jax
+@d2l.add_to_class(RNNLMScratch)  #@save
+def one_hot(self, X):    
+    # Output shape: (num_steps, batch_size, vocab_size)    
+    return jax.nn.one_hot(X.T, self.vocab_size)
+```
+
+```{.python .input}
+%%tab tensorflow
+@d2l.add_to_class(RNNLMScratch)  #@save
+def one_hot(self, X):    
+    # Output shape: (num_steps, batch_size, vocab_size)    
+    return tf.one_hot(tf.transpose(X), self.vocab_size)
 ```
 
 ### RNN出力の変換
@@ -536,17 +553,21 @@ def clip_gradients(self, grad_clip_val, grads):
 モデルパラメータを更新することに注意せよ。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, jax
 data = d2l.TimeMachine(batch_size=1024, num_steps=32)
-if tab.selected('mxnet', 'pytorch', 'jax'):
+rnn = RNNScratch(num_inputs=len(data.vocab), num_hiddens=32)
+model = RNNLMScratch(rnn, vocab_size=len(data.vocab), lr=1)
+trainer = d2l.Trainer(max_epochs=100, gradient_clip_val=1, num_gpus=1)
+trainer.fit(model, data)
+```
+
+```{.python .input}
+%%tab tensorflow
+data = d2l.TimeMachine(batch_size=1024, num_steps=32)
+with d2l.try_gpu():
     rnn = RNNScratch(num_inputs=len(data.vocab), num_hiddens=32)
     model = RNNLMScratch(rnn, vocab_size=len(data.vocab), lr=1)
-    trainer = d2l.Trainer(max_epochs=100, gradient_clip_val=1, num_gpus=1)
-if tab.selected('tensorflow'):
-    with d2l.try_gpu():
-        rnn = RNNScratch(num_inputs=len(data.vocab), num_hiddens=32)
-        model = RNNLMScratch(rnn, vocab_size=len(data.vocab), lr=1)
-    trainer = d2l.Trainer(max_epochs=100, gradient_clip_val=1)
+trainer = d2l.Trainer(max_epochs=100, gradient_clip_val=1)
 trainer.fit(model, data)
 ```
 

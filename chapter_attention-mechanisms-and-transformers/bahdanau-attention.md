@@ -300,31 +300,63 @@ class Seq2SeqAttentionDecoder(nn.Module):
 以下では、長さ7の時系列をそれぞれ持つ4つの系列からなるミニバッチを用いて、[**実装した注意付きデコーダをテストする**]。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch
 vocab_size, embed_size, num_hiddens, num_layers = 10, 8, 16, 2
 batch_size, num_steps = 4, 7
 encoder = d2l.Seq2SeqEncoder(vocab_size, embed_size, num_hiddens, num_layers)
 decoder = Seq2SeqAttentionDecoder(vocab_size, embed_size, num_hiddens,
                                   num_layers)
-if tab.selected('mxnet'):
-    X = d2l.zeros((batch_size, num_steps))
-    state = decoder.init_state(encoder(X), None)
-    output, state = decoder(X, state)
-if tab.selected('pytorch'):
-    X = d2l.zeros((batch_size, num_steps), dtype=torch.long)
-    state = decoder.init_state(encoder(X), None)
-    output, state = decoder(X, state)
-if tab.selected('tensorflow'):
-    X = tf.zeros((batch_size, num_steps))
-    state = decoder.init_state(encoder(X, training=False), None)
-    output, state = decoder(X, state, training=False)
-if tab.selected('jax'):
-    X = jnp.zeros((batch_size, num_steps), dtype=jnp.int32)
-    state = decoder.init_state(encoder.init_with_output(d2l.get_key(),
-                                                        X, training=False)[0],
-                               None)
-    (output, state), _ = decoder.init_with_output(d2l.get_key(), X,
-                                                  state, training=False)
+X = d2l.zeros((batch_size, num_steps), dtype=torch.long)
+state = decoder.init_state(encoder(X), None)
+output, state = decoder(X, state)
+d2l.check_shape(output, (batch_size, num_steps, vocab_size))
+d2l.check_shape(state[0], (batch_size, num_steps, num_hiddens))
+d2l.check_shape(state[1][0], (batch_size, num_hiddens))
+```
+
+```{.python .input}
+%%tab mxnet
+vocab_size, embed_size, num_hiddens, num_layers = 10, 8, 16, 2
+batch_size, num_steps = 4, 7
+encoder = d2l.Seq2SeqEncoder(vocab_size, embed_size, num_hiddens, num_layers)
+decoder = Seq2SeqAttentionDecoder(vocab_size, embed_size, num_hiddens,
+                                  num_layers)
+X = d2l.zeros((batch_size, num_steps))
+state = decoder.init_state(encoder(X), None)
+output, state = decoder(X, state)
+d2l.check_shape(output, (batch_size, num_steps, vocab_size))
+d2l.check_shape(state[0], (batch_size, num_steps, num_hiddens))
+d2l.check_shape(state[1][0], (batch_size, num_hiddens))
+```
+
+```{.python .input}
+%%tab jax
+vocab_size, embed_size, num_hiddens, num_layers = 10, 8, 16, 2
+batch_size, num_steps = 4, 7
+encoder = d2l.Seq2SeqEncoder(vocab_size, embed_size, num_hiddens, num_layers)
+decoder = Seq2SeqAttentionDecoder(vocab_size, embed_size, num_hiddens,
+                                  num_layers)
+X = jnp.zeros((batch_size, num_steps), dtype=jnp.int32)
+state = decoder.init_state(encoder.init_with_output(d2l.get_key(),
+                                                    X, training=False)[0],
+                           None)
+(output, state), _ = decoder.init_with_output(d2l.get_key(), X,
+                                              state, training=False)
+d2l.check_shape(output, (batch_size, num_steps, vocab_size))
+d2l.check_shape(state[0], (batch_size, num_steps, num_hiddens))
+d2l.check_shape(state[1][0], (batch_size, num_hiddens))
+```
+
+```{.python .input}
+%%tab tensorflow
+vocab_size, embed_size, num_hiddens, num_layers = 10, 8, 16, 2
+batch_size, num_steps = 4, 7
+encoder = d2l.Seq2SeqEncoder(vocab_size, embed_size, num_hiddens, num_layers)
+decoder = Seq2SeqAttentionDecoder(vocab_size, embed_size, num_hiddens,
+                                  num_layers)
+X = tf.zeros((batch_size, num_steps))
+state = decoder.init_state(encoder(X, training=False), None)
+output, state = decoder(X, state, training=False)
 d2l.check_shape(output, (batch_size, num_steps, vocab_size))
 d2l.check_shape(state[0], (batch_size, num_steps, num_hiddens))
 d2l.check_shape(state[1][0], (batch_size, num_hiddens))
@@ -336,31 +368,45 @@ d2l.check_shape(state[1][0], (batch_size, num_hiddens))
 すなわち、ハイパーパラメータを指定し、通常のエンコーダと注意付きデコーダをインスタンス化し、このモデルを機械翻訳のために学習する。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet
 data = d2l.MTFraEng(batch_size=128)
 embed_size, num_hiddens, num_layers, dropout = 256, 256, 2, 0.2
-if tab.selected('mxnet', 'pytorch', 'jax'):
+encoder = d2l.Seq2SeqEncoder(
+    len(data.src_vocab), embed_size, num_hiddens, num_layers, dropout)
+decoder = Seq2SeqAttentionDecoder(
+    len(data.tgt_vocab), embed_size, num_hiddens, num_layers, dropout)
+model = d2l.Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
+                    lr=0.005)
+trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1, num_gpus=1)
+trainer.fit(model, data)
+```
+
+```{.python .input}
+%%tab jax
+data = d2l.MTFraEng(batch_size=128)
+embed_size, num_hiddens, num_layers, dropout = 256, 256, 2, 0.2
+encoder = d2l.Seq2SeqEncoder(
+    len(data.src_vocab), embed_size, num_hiddens, num_layers, dropout)
+decoder = Seq2SeqAttentionDecoder(
+    len(data.tgt_vocab), embed_size, num_hiddens, num_layers, dropout)
+model = d2l.Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
+                    lr=0.005, training=True)
+trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1, num_gpus=1)
+trainer.fit(model, data)
+```
+
+```{.python .input}
+%%tab tensorflow
+data = d2l.MTFraEng(batch_size=128)
+embed_size, num_hiddens, num_layers, dropout = 256, 256, 2, 0.2
+with d2l.try_gpu():
     encoder = d2l.Seq2SeqEncoder(
         len(data.src_vocab), embed_size, num_hiddens, num_layers, dropout)
     decoder = Seq2SeqAttentionDecoder(
         len(data.tgt_vocab), embed_size, num_hiddens, num_layers, dropout)
-if tab.selected('mxnet', 'pytorch'):
     model = d2l.Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
                         lr=0.005)
-if tab.selected('jax'):
-    model = d2l.Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
-                        lr=0.005, training=True)
-if tab.selected('mxnet', 'pytorch', 'jax'):
-    trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1, num_gpus=1)
-if tab.selected('tensorflow'):
-    with d2l.try_gpu():
-        encoder = d2l.Seq2SeqEncoder(
-            len(data.src_vocab), embed_size, num_hiddens, num_layers, dropout)
-        decoder = Seq2SeqAttentionDecoder(
-            len(data.tgt_vocab), embed_size, num_hiddens, num_layers, dropout)
-        model = d2l.Seq2Seq(encoder, decoder, tgt_pad=data.tgt_vocab['<pad>'],
-                            lr=0.005)
-    trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1)
+trainer = d2l.Trainer(max_epochs=30, gradient_clip_val=1)
 trainer.fit(model, data)
 ```
 
@@ -369,15 +415,27 @@ trainer.fit(model, data)
 それらの BLEU スコアを計算する。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, tensorflow
 engs = ['go .', 'i lost .', 'he\'s calm .', 'i\'m home .']
 fras = ['va !', 'j\'ai perdu .', 'il est calme .', 'je suis chez moi .']
-if tab.selected('pytorch', 'mxnet', 'tensorflow'):
-    preds, _ = model.predict_step(
-        data.build(engs, fras), d2l.try_gpu(), data.num_steps)
-if tab.selected('jax'):
-    preds, _ = model.predict_step(
-        trainer.state.params, data.build(engs, fras), data.num_steps)
+preds, _ = model.predict_step(
+    data.build(engs, fras), d2l.try_gpu(), data.num_steps)
+for en, fr, p in zip(engs, fras, preds):
+    translation = []
+    for token in data.tgt_vocab.to_tokens(p):
+        if token == '<eos>':
+            break
+        translation.append(token)
+    print(f'{en} => {translation}, bleu,'
+          f'{d2l.bleu(" ".join(translation), fr, k=2):.3f}')
+```
+
+```{.python .input}
+%%tab jax
+engs = ['go .', 'i lost .', 'he\'s calm .', 'i\'m home .']
+fras = ['va !', 'j\'ai perdu .', 'il est calme .', 'je suis chez moi .']
+preds, _ = model.predict_step(
+    trainer.state.params, data.build(engs, fras), data.num_steps)
 for en, fr, p in zip(engs, fras, preds):
     translation = []
     for token in data.tgt_vocab.to_tokens(p):
@@ -393,14 +451,19 @@ for en, fr, p in zip(engs, fras, preds):
 これは、各デコードステップで入力系列の異なる部分が注意プーリングで選択的に集約されていることを示している。
 
 ```{.python .input}
-%%tab all
-if tab.selected('pytorch', 'mxnet', 'tensorflow'):
-    _, dec_attention_weights = model.predict_step(
-        data.build([engs[-1]], [fras[-1]]), d2l.try_gpu(), data.num_steps, True)
-if tab.selected('jax'):
-    _, (dec_attention_weights, _) = model.predict_step(
-        trainer.state.params, data.build([engs[-1]], [fras[-1]]),
-        data.num_steps, True)
+%%tab pytorch, mxnet, tensorflow
+_, dec_attention_weights = model.predict_step(
+    data.build([engs[-1]], [fras[-1]]), d2l.try_gpu(), data.num_steps, True)
+attention_weights = d2l.concat(
+    [step[0][0][0] for step in dec_attention_weights], 0)
+attention_weights = d2l.reshape(attention_weights, (1, 1, -1, data.num_steps))
+```
+
+```{.python .input}
+%%tab jax
+_, (dec_attention_weights, _) = model.predict_step(
+    trainer.state.params, data.build([engs[-1]], [fras[-1]]),
+    data.num_steps, True)
 attention_weights = d2l.concat(
     [step[0][0][0] for step in dec_attention_weights], 0)
 attention_weights = d2l.reshape(attention_weights, (1, 1, -1, data.num_steps))

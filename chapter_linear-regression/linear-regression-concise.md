@@ -260,18 +260,32 @@ Gluon の `Trainer` クラスは最適化アルゴリズムそのものを表す
 :end_tab:
 
 ```{.python .input}
-%%tab all
+%%tab pytorch
 @d2l.add_to_class(LinearRegression)  #@save
 def configure_optimizers(self):
-    if tab.selected('mxnet'):
-        return gluon.Trainer(self.collect_params(),
-                             'sgd', {'learning_rate': self.lr})
-    if tab.selected('pytorch'):
-        return torch.optim.SGD(self.parameters(), self.lr)
-    if tab.selected('tensorflow'):
-        return tf.keras.optimizers.SGD(self.lr)
-    if tab.selected('jax'):
-        return optax.sgd(self.lr)
+    return torch.optim.SGD(self.parameters(), self.lr)
+```
+
+```{.python .input}
+%%tab mxnet
+@d2l.add_to_class(LinearRegression)  #@save
+def configure_optimizers(self):
+    return gluon.Trainer(self.collect_params(),
+                         'sgd', {'learning_rate': self.lr})
+```
+
+```{.python .input}
+%%tab jax
+@d2l.add_to_class(LinearRegression)  #@save
+def configure_optimizers(self):
+    return optax.sgd(self.lr)
+```
+
+```{.python .input}
+%%tab tensorflow
+@d2l.add_to_class(LinearRegression)  #@save
+def configure_optimizers(self):
+    return tf.keras.optimizers.SGD(self.lr)
 ```
 
 ## 学習

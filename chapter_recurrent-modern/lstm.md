@@ -369,17 +369,21 @@ def forward(self, inputs, H_C=None):
 LSTM モデルを学習しよう。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch, mxnet, jax
 data = d2l.TimeMachine(batch_size=1024, num_steps=32)
-if tab.selected('mxnet', 'pytorch', 'jax'):
+lstm = LSTMScratch(num_inputs=len(data.vocab), num_hiddens=32)
+model = d2l.RNNLMScratch(lstm, vocab_size=len(data.vocab), lr=4)
+trainer = d2l.Trainer(max_epochs=50, gradient_clip_val=1, num_gpus=1)
+trainer.fit(model, data)
+```
+
+```{.python .input}
+%%tab tensorflow
+data = d2l.TimeMachine(batch_size=1024, num_steps=32)
+with d2l.try_gpu():
     lstm = LSTMScratch(num_inputs=len(data.vocab), num_hiddens=32)
     model = d2l.RNNLMScratch(lstm, vocab_size=len(data.vocab), lr=4)
-    trainer = d2l.Trainer(max_epochs=50, gradient_clip_val=1, num_gpus=1)
-if tab.selected('tensorflow'):
-    with d2l.try_gpu():
-        lstm = LSTMScratch(num_inputs=len(data.vocab), num_hiddens=32)
-        model = d2l.RNNLMScratch(lstm, vocab_size=len(data.vocab), lr=4)
-    trainer = d2l.Trainer(max_epochs=50, gradient_clip_val=1)
+trainer = d2l.Trainer(max_epochs=50, gradient_clip_val=1)
 trainer.fit(model, data)
 ```
 
@@ -453,16 +457,24 @@ class LSTM(d2l.RNN):
 ```
 
 ```{.python .input}
-%%tab all
-if tab.selected('pytorch'):
-    lstm = LSTM(num_inputs=len(data.vocab), num_hiddens=32)
-if tab.selected('mxnet', 'tensorflow', 'jax'):
-    lstm = LSTM(num_hiddens=32)
-if tab.selected('mxnet', 'pytorch', 'jax'):
+%%tab pytorch
+lstm = LSTM(num_inputs=len(data.vocab), num_hiddens=32)
+model = d2l.RNNLM(lstm, vocab_size=len(data.vocab), lr=4)
+trainer.fit(model, data)
+```
+
+```{.python .input}
+%%tab mxnet, jax
+lstm = LSTM(num_hiddens=32)
+model = d2l.RNNLM(lstm, vocab_size=len(data.vocab), lr=4)
+trainer.fit(model, data)
+```
+
+```{.python .input}
+%%tab tensorflow
+lstm = LSTM(num_hiddens=32)
+with d2l.try_gpu():
     model = d2l.RNNLM(lstm, vocab_size=len(data.vocab), lr=4)
-if tab.selected('tensorflow'):
-    with d2l.try_gpu():
-        model = d2l.RNNLM(lstm, vocab_size=len(data.vocab), lr=4)
 trainer.fit(model, data)
 ```
 

@@ -215,33 +215,47 @@ class GoogleNet(d2l.Classifier):
 2つ目のモジュールは2つの畳み込み層を使う。まず 64 チャネルの $1\times 1$ 畳み込み層を適用し、その後にチャネル数を3倍にする $3\times 3$ 畳み込み層を続ける。 Inception ブロックの第2ブランチに対応し、body の設計を完了する。この時点でチャネル数は192である。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch
 @d2l.add_to_class(GoogleNet)
 def b2(self):
-    if tab.selected('mxnet'):
-        net = nn.Sequential()
-        net.add(nn.Conv2D(64, kernel_size=1, activation='relu'),
-               nn.Conv2D(192, kernel_size=3, padding=1, activation='relu'),
-               nn.MaxPool2D(pool_size=3, strides=2, padding=1))
-        return net
-    if tab.selected('pytorch'):
-        return nn.Sequential(
-            nn.LazyConv2d(64, kernel_size=1), nn.ReLU(),
-            nn.LazyConv2d(192, kernel_size=3, padding=1), nn.ReLU(),
-            nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
-    if tab.selected('tensorflow'):
-        return tf.keras.Sequential([
-            tf.keras.layers.Conv2D(64, 1, activation='relu'),
-            tf.keras.layers.Conv2D(192, 3, padding='same', activation='relu'),
-            tf.keras.layers.MaxPool2D(pool_size=3, strides=2, padding='same')])
-    if tab.selected('jax'):
-        return nn.Sequential([nn.Conv(64, kernel_size=(1, 1)),
-                              nn.relu,
-                              nn.Conv(192, kernel_size=(3, 3), padding='same'),
-                              nn.relu,
-                              lambda x: nn.max_pool(x, window_shape=(3, 3),
-                                                    strides=(2, 2),
-                                                    padding='same')])
+    return nn.Sequential(
+        nn.LazyConv2d(64, kernel_size=1), nn.ReLU(),
+        nn.LazyConv2d(192, kernel_size=3, padding=1), nn.ReLU(),
+        nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
+```
+
+```{.python .input}
+%%tab mxnet
+@d2l.add_to_class(GoogleNet)
+def b2(self):
+    net = nn.Sequential()
+    net.add(nn.Conv2D(64, kernel_size=1, activation='relu'),
+           nn.Conv2D(192, kernel_size=3, padding=1, activation='relu'),
+           nn.MaxPool2D(pool_size=3, strides=2, padding=1))
+    return net
+```
+
+```{.python .input}
+%%tab jax
+@d2l.add_to_class(GoogleNet)
+def b2(self):
+    return nn.Sequential([nn.Conv(64, kernel_size=(1, 1)),
+                          nn.relu,
+                          nn.Conv(192, kernel_size=(3, 3), padding='same'),
+                          nn.relu,
+                          lambda x: nn.max_pool(x, window_shape=(3, 3),
+                                                strides=(2, 2),
+                                                padding='same')])
+```
+
+```{.python .input}
+%%tab tensorflow
+@d2l.add_to_class(GoogleNet)
+def b2(self):
+    return tf.keras.Sequential([
+        tf.keras.layers.Conv2D(64, 1, activation='relu'),
+        tf.keras.layers.Conv2D(192, 3, padding='same', activation='relu'),
+        tf.keras.layers.MaxPool2D(pool_size=3, strides=2, padding='same')])
 ```
 
 3つ目のモジュールは、2つの完全な Inception ブロックを直列に接続する。最初の Inception ブロックの出力チャネル数は $64+128+32+32=256$ である。4つのブランチ間での出力チャネル数の比が $2:4:1:1$ であることに相当する。これを実現するために、まず第2ブランチと第3ブランチで入力次元をそれぞれ $\frac{1}{2}$ と $\frac{1}{12}$ に削減し、結果としてそれぞれ $96 = 192/2$ チャネルと $16 = 192/12$ チャネルにする。
@@ -249,104 +263,146 @@ def b2(self):
 2つ目の Inception ブロックの出力チャネル数は $128+192+96+64=480$ に増え、比は $128:192:96:64 = 4:6:3:2$ になる。前と同様に、第2チャネルと第3チャネルでは中間次元数を減らす必要がある。それぞれ $\frac{1}{2}$ と $\frac{1}{8}$ のスケールで十分であり、結果としてそれぞれ 128 チャネルと 32 チャネルになる。以下の `Inception` ブロックのコンストラクタ引数に反映されている。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch
 @d2l.add_to_class(GoogleNet)
 def b3(self):
-    if tab.selected('mxnet'):
-        net = nn.Sequential()
-        net.add(Inception(64, (96, 128), (16, 32), 32),
-               Inception(128, (128, 192), (32, 96), 64),
-               nn.MaxPool2D(pool_size=3, strides=2, padding=1))
-        return net
-    if tab.selected('pytorch'):
-        return nn.Sequential(Inception(64, (96, 128), (16, 32), 32),
-                             Inception(128, (128, 192), (32, 96), 64),
-                             nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
-    if tab.selected('tensorflow'):
-        return tf.keras.models.Sequential([
-            Inception(64, (96, 128), (16, 32), 32),
-            Inception(128, (128, 192), (32, 96), 64),
-            tf.keras.layers.MaxPool2D(pool_size=3, strides=2, padding='same')])
-    if tab.selected('jax'):
-        return nn.Sequential([Inception(64, (96, 128), (16, 32), 32),
-                              Inception(128, (128, 192), (32, 96), 64),
-                              lambda x: nn.max_pool(x, window_shape=(3, 3),
-                                                    strides=(2, 2),
-                                                    padding='same')])
+    return nn.Sequential(Inception(64, (96, 128), (16, 32), 32),
+                         Inception(128, (128, 192), (32, 96), 64),
+                         nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
+```
+
+```{.python .input}
+%%tab mxnet
+@d2l.add_to_class(GoogleNet)
+def b3(self):
+    net = nn.Sequential()
+    net.add(Inception(64, (96, 128), (16, 32), 32),
+           Inception(128, (128, 192), (32, 96), 64),
+           nn.MaxPool2D(pool_size=3, strides=2, padding=1))
+    return net
+```
+
+```{.python .input}
+%%tab jax
+@d2l.add_to_class(GoogleNet)
+def b3(self):
+    return nn.Sequential([Inception(64, (96, 128), (16, 32), 32),
+                          Inception(128, (128, 192), (32, 96), 64),
+                          lambda x: nn.max_pool(x, window_shape=(3, 3),
+                                                strides=(2, 2),
+                                                padding='same')])
+```
+
+```{.python .input}
+%%tab tensorflow
+@d2l.add_to_class(GoogleNet)
+def b3(self):
+    return tf.keras.models.Sequential([
+        Inception(64, (96, 128), (16, 32), 32),
+        Inception(128, (128, 192), (32, 96), 64),
+        tf.keras.layers.MaxPool2D(pool_size=3, strides=2, padding='same')])
 ```
 
 4つ目のモジュールはより複雑である。5つの Inception ブロックを直列に接続し、それぞれの出力チャネル数は $192+208+48+64=512$、$160+224+64+64=512$、$128+256+64+64=512$、$112+288+64+64=528$、$256+320+128+128=832$ である。各ブランチに割り当てられるチャネル数は3つ目のモジュールと似ているが、具体的な値は異なる。第2ブランチの $3\times 3$ 畳み込み層が最も多くのチャネルを出力し、次に $1\times 1$ 畳み込み層のみを持つ第1ブランチ、$5\times 5$ 畳み込み層を持つ第3ブランチ、そして $3\times 3$ 最大プーリング層を持つ第4ブランチが続く。第2ブランチと第3ブランチでは、まず比率に従ってチャネル数を削減する。これらの比率は Inception ブロックごとに少しずつ異なる。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch
 @d2l.add_to_class(GoogleNet)
 def b4(self):
-    if tab.selected('mxnet'):
-        net = nn.Sequential()
-        net.add(Inception(192, (96, 208), (16, 48), 64),
-                Inception(160, (112, 224), (24, 64), 64),
-                Inception(128, (128, 256), (24, 64), 64),
-                Inception(112, (144, 288), (32, 64), 64),
-                Inception(256, (160, 320), (32, 128), 128),
-                nn.MaxPool2D(pool_size=3, strides=2, padding=1))
-        return net
-    if tab.selected('pytorch'):
-        return nn.Sequential(Inception(192, (96, 208), (16, 48), 64),
-                             Inception(160, (112, 224), (24, 64), 64),
-                             Inception(128, (128, 256), (24, 64), 64),
-                             Inception(112, (144, 288), (32, 64), 64),
-                             Inception(256, (160, 320), (32, 128), 128),
-                             nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
-    if tab.selected('tensorflow'):
-        return tf.keras.Sequential([
-            Inception(192, (96, 208), (16, 48), 64),
+    return nn.Sequential(Inception(192, (96, 208), (16, 48), 64),
+                         Inception(160, (112, 224), (24, 64), 64),
+                         Inception(128, (128, 256), (24, 64), 64),
+                         Inception(112, (144, 288), (32, 64), 64),
+                         Inception(256, (160, 320), (32, 128), 128),
+                         nn.MaxPool2d(kernel_size=3, stride=2, padding=1))
+```
+
+```{.python .input}
+%%tab mxnet
+@d2l.add_to_class(GoogleNet)
+def b4(self):
+    net = nn.Sequential()
+    net.add(Inception(192, (96, 208), (16, 48), 64),
             Inception(160, (112, 224), (24, 64), 64),
             Inception(128, (128, 256), (24, 64), 64),
             Inception(112, (144, 288), (32, 64), 64),
             Inception(256, (160, 320), (32, 128), 128),
-            tf.keras.layers.MaxPool2D(pool_size=3, strides=2, padding='same')])
-    if tab.selected('jax'):
-        return nn.Sequential([Inception(192, (96, 208), (16, 48), 64),
-                              Inception(160, (112, 224), (24, 64), 64),
-                              Inception(128, (128, 256), (24, 64), 64),
-                              Inception(112, (144, 288), (32, 64), 64),
-                              Inception(256, (160, 320), (32, 128), 128),
-                              lambda x: nn.max_pool(x, window_shape=(3, 3),
-                                                    strides=(2, 2),
-                                                    padding='same')])
+            nn.MaxPool2D(pool_size=3, strides=2, padding=1))
+    return net
+```
+
+```{.python .input}
+%%tab jax
+@d2l.add_to_class(GoogleNet)
+def b4(self):
+    return nn.Sequential([Inception(192, (96, 208), (16, 48), 64),
+                          Inception(160, (112, 224), (24, 64), 64),
+                          Inception(128, (128, 256), (24, 64), 64),
+                          Inception(112, (144, 288), (32, 64), 64),
+                          Inception(256, (160, 320), (32, 128), 128),
+                          lambda x: nn.max_pool(x, window_shape=(3, 3),
+                                                strides=(2, 2),
+                                                padding='same')])
+```
+
+```{.python .input}
+%%tab tensorflow
+@d2l.add_to_class(GoogleNet)
+def b4(self):
+    return tf.keras.Sequential([
+        Inception(192, (96, 208), (16, 48), 64),
+        Inception(160, (112, 224), (24, 64), 64),
+        Inception(128, (128, 256), (24, 64), 64),
+        Inception(112, (144, 288), (32, 64), 64),
+        Inception(256, (160, 320), (32, 128), 128),
+        tf.keras.layers.MaxPool2D(pool_size=3, strides=2, padding='same')])
 ```
 
 5つ目のモジュールは2つの Inception ブロックからなり、出力チャネル数はそれぞれ $256+320+128+128=832$ と $384+384+128+128=1024$ である。各ブランチに割り当てられるチャネル数は3つ目と4つ目のモジュールと同じであるが、具体的な値は異なる。なお、5つ目のブロックの後には出力層が続く。このブロックでは NiN と同様に global average pooling 層を使って、各チャネルの高さと幅を1に変換する。最後に、出力を2次元配列に変換し、その後に全結合層を適用する。この全結合層の出力数はラベルクラス数である。
 
 ```{.python .input}
-%%tab all
+%%tab pytorch
 @d2l.add_to_class(GoogleNet)
 def b5(self):
-    if tab.selected('mxnet'):
-        net = nn.Sequential()
-        net.add(Inception(256, (160, 320), (32, 128), 128),
-                Inception(384, (192, 384), (48, 128), 128),
-                nn.GlobalAvgPool2D())
-        return net
-    if tab.selected('pytorch'):
-        return nn.Sequential(Inception(256, (160, 320), (32, 128), 128),
-                             Inception(384, (192, 384), (48, 128), 128),
-                             nn.AdaptiveAvgPool2d((1,1)), nn.Flatten())
-    if tab.selected('tensorflow'):
-        return tf.keras.Sequential([
-            Inception(256, (160, 320), (32, 128), 128),
+    return nn.Sequential(Inception(256, (160, 320), (32, 128), 128),
+                         Inception(384, (192, 384), (48, 128), 128),
+                         nn.AdaptiveAvgPool2d((1,1)), nn.Flatten())
+```
+
+```{.python .input}
+%%tab mxnet
+@d2l.add_to_class(GoogleNet)
+def b5(self):
+    net = nn.Sequential()
+    net.add(Inception(256, (160, 320), (32, 128), 128),
             Inception(384, (192, 384), (48, 128), 128),
-            tf.keras.layers.GlobalAvgPool2D(),
-            tf.keras.layers.Flatten()])
-    if tab.selected('jax'):
-        return nn.Sequential([Inception(256, (160, 320), (32, 128), 128),
-                              Inception(384, (192, 384), (48, 128), 128),
-                              # FlaxにはGlobalAvgPool2D層がない
-                              lambda x: nn.avg_pool(x,
-                                                    window_shape=x.shape[1:3],
-                                                    strides=x.shape[1:3],
-                                                    padding='valid'),
-                              lambda x: x.reshape((x.shape[0], -1))])
+            nn.GlobalAvgPool2D())
+    return net
+```
+
+```{.python .input}
+%%tab jax
+@d2l.add_to_class(GoogleNet)
+def b5(self):
+    return nn.Sequential([Inception(256, (160, 320), (32, 128), 128),
+                          Inception(384, (192, 384), (48, 128), 128),
+                          # FlaxにはGlobalAvgPool2D層がない
+                          lambda x: nn.avg_pool(x,
+                                                window_shape=x.shape[1:3],
+                                                strides=x.shape[1:3],
+                                                padding='valid'),
+                          lambda x: x.reshape((x.shape[0], -1))])
+```
+
+```{.python .input}
+%%tab tensorflow
+@d2l.add_to_class(GoogleNet)
+def b5(self):
+    return tf.keras.Sequential([
+        Inception(256, (160, 320), (32, 128), 128),
+        Inception(384, (192, 384), (48, 128), 128),
+        tf.keras.layers.GlobalAvgPool2D(),
+        tf.keras.layers.Flatten()])
 ```
 
 ここまでで `b1` から `b5` までのすべてのブロックを定義したので、あとはそれらをまとめて完全なネットワークに組み立てるだけである。
