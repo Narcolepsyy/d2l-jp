@@ -4,9 +4,9 @@
 
 *Dive into Deep Learning* を最大限に活用するために、
 この付録では、
-この対話型のオープンソース書籍を
-実行したり、貢献したりするための
-さまざまなツールについて説明します。
+この対話型のオープンソース書籍を実行したり
+貢献したりするための
+さまざまなツールについて説明する。
 
 ```toc
 :maxdepth: 2
@@ -17,5 +17,6 @@ aws
 colab
 selecting-servers-gpus
 contributing
+utils
 d2l
-```\n
+```
